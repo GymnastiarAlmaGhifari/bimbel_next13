@@ -3,8 +3,9 @@ import React from 'react';
 import Sidebar from '../components/Sidebar';
 import prisma from '@/libs/prismadb';
 import { ModalDetail } from "@/pages/components/Modal";
-import UserEdit from './editUser';
-
+import UserEdit from './edit/[id]';
+import Link from "next/link";
+import { useRouter } from 'next/router';
 
 interface User {
     id: string;
@@ -24,8 +25,11 @@ interface Props {
 
 const User: React.FC<Props> = ({ users }) => {
 
-    // buat select id
-    const [selectedUser, setSelectedUser] = React.useState<User | null>(null);
+    const router = useRouter();
+
+    const backPengguna = () => {
+        router.push("/pengguna");
+    };
 
     return (
         <div>
@@ -56,24 +60,35 @@ const User: React.FC<Props> = ({ users }) => {
                                 <td>{user.createdAt.toString()}</td>
                                 <td>{user.updatedAt.toString()}</td>
                                 <td>
-                                    <button
-                                        onClick={() => setSelectedUser(user)}
-                                        className="rounded-full bg-white/10 px-10 py-3 font-semibold text-black no-underline transition hover:bg-white/20">
-                                        edit
-                                    </button>
+                                    <Link
+                                        href={`/pengguna/?edit=${user.id}`}
+                                        as={`/pengguna/edit/${user.id}`}
+                                    >
+                                        <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                                            Edit
+                                        </button>
+                                    </Link>
+
                                 </td>
                             </tr>
                         ))}
                     </tbody>
                 </table>
             </div>
-            {selectedUser && (
-                <ModalDetail onClose={() => setSelectedUser(null)}>
-                    <UserEdit
-                        onClose={() => setSelectedUser(null)}
-                        userId={selectedUser.id} />
-                </ModalDetail>
-            )}
+            {
+                router.query.edit && (
+                    <ModalDetail
+                        onClose={backPengguna}
+                    >
+                        <UserEdit
+                            userId={router.query.edit as string}
+                            onClose={backPengguna}
+                        />
+                    </ModalDetail>
+                )
+
+            }
+
         </div>
     );
 

@@ -1,6 +1,6 @@
 import { ModalDetail } from "@/pages/components/Modal";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter } from "next/router";
 import useSWR, { mutate } from "swr"
 import fetcher from "@/libs/fetcher";
 
@@ -50,13 +50,14 @@ const UserEdit = ({ userId, onClose }: UserEditProps) => {
             // memperbarui data buku di halaman dengan SWR
             mutate(`/api/user/${userId}`);
 
+            router.push("/pengguna");
 
-            setShowSuccess(true);
-            setTimeout(() => {
-                setShowSuccess(false);
-                onClose();
-            }, 2000);
-            router.refresh();
+            // setShowSuccess(true);
+            // setTimeout(() => {
+            //     setShowSuccess(false);
+            //     onClose();
+            // }, 2000);
+            // router.refresh();
 
 
         } catch (error) {

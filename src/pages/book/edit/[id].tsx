@@ -1,8 +1,11 @@
-import { ModalDetail } from "@/pages/components/Modal";
+"use client"
+
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter } from "next/router";
 import useSWR, { mutate } from "swr"
 import fetcher from "@/libs/fetcher";
+import { ModalDetail } from "@/pages/components/Modal";
+
 
 
 interface BookEditProps {
@@ -11,7 +14,6 @@ interface BookEditProps {
 }
 
 const BookEdit = ({ bookId, onClose }: BookEditProps) => {
-
     const router = useRouter();
     const [title, setTitle] = useState("");
     const [author, setAuthor] = useState("");
@@ -23,6 +25,7 @@ const BookEdit = ({ bookId, onClose }: BookEditProps) => {
 
     if (error) return <div>Error loading book.</div>;
     if (!book) return <div>Loading...</div>;
+
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -43,15 +46,7 @@ const BookEdit = ({ bookId, onClose }: BookEditProps) => {
 
             // memperbarui data buku di halaman dengan SWR
             mutate(`/api/books/${bookId}`);
-
-
-            setShowSuccess(true);
-            setTimeout(() => {
-                setShowSuccess(false);
-                onClose();
-            }, 2000);
-            router.refresh();
-
+            router.push("/book");
 
         } catch (error) {
             console.error(error);
@@ -122,5 +117,3 @@ const BookEdit = ({ bookId, onClose }: BookEditProps) => {
 };
 
 export default BookEdit;
-
-
