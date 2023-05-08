@@ -66,6 +66,7 @@ model jadwal_detail{
 model ruang {
   id String @id @default(cuid())
   nama String
+  tipe TipeRuang
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   jadwal_details jadwal_detail[]
@@ -128,18 +129,17 @@ model program{
 model siswa {
   id String @id @default(cuid())
   nama String
-  email String @unique
-  password String
   nomor_telepon String
   alamat String
   sekolah String
   hp_ortu String
   image String
+  email String
   program program? @relation(fields: [program_id], references: [id])
   program_id String?
   kelas kelas? @relation(fields: [kelas_id], references: [id])
   kelas_id String?
-  token String?
+  token String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   tagihans tagihan[]
@@ -209,6 +209,12 @@ enum Tipe {
   SEMI_PRIVATE
   KELOMPOK
 }
+
+enum TipeRuang {
+  KELAS
+  RUMAH
+}
+
 enum TipePembayaran {
   TUNAI
   TRANSFER
