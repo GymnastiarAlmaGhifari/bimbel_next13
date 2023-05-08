@@ -9,9 +9,17 @@ import fetcher from "@/libs/fetcher";
 interface UserEditProps {
     userId: string;
     onClose: () => void;
+    // pass onchange string to parent
+    onChange: (value: string) => void;
 }
 
-const UserEdit = ({ userId, onClose }: UserEditProps) => {
+const UserEdit = (
+    {
+        userId,
+        onClose,
+        onChange,
+
+    }: UserEditProps) => {
 
     const router = useRouter();
     const [name, setName] = useState("");
@@ -19,7 +27,7 @@ const UserEdit = ({ userId, onClose }: UserEditProps) => {
     const [role, setRole] = useState("");
     const [nomor_telepon, setNomor_telepon] = useState("");
     const [alamat, setAlamat] = useState("");
-    const [showSuccess, setShowSuccess] = useState(false);
+    // const [showSuccess, setShowSuccess] = useState(false);
 
     // mengambil data buku dari API menggunakan SWR
     const { data: user, error } = useSWR(`/api/user/${userId}`, fetcher);
@@ -50,7 +58,12 @@ const UserEdit = ({ userId, onClose }: UserEditProps) => {
             // memperbarui data buku di halaman dengan SWR
             mutate(`/api/user/${userId}`);
 
+            onChange(name);
+
+
+
             router.push("/pengguna");
+
 
             // setShowSuccess(true);
             // setTimeout(() => {
@@ -67,19 +80,6 @@ const UserEdit = ({ userId, onClose }: UserEditProps) => {
 
     return (
         <>
-            {showSuccess && (
-                <ModalDetail
-                    onClose={() => setShowSuccess(false)}
-                >
-                    <div className="flex flex-col items-center gap-2">
-                        <h1 className="text-2xl font-semibold">Success</h1>
-                        <p className="text-gray-500">user has been updated.</p>
-                        {/* ambil nama buku dari data yang diambil dari API */}
-                        <p className="text-gray-500">{user.title}</p>
-                    </div>
-                </ModalDetail>
-            )}
-
             <form onSubmit={handleSubmit}>
                 <div className="flex flex-col gap-2">
                     <label htmlFor="name">Name</label>
@@ -182,3 +182,15 @@ const UserEdit = ({ userId, onClose }: UserEditProps) => {
 export default UserEdit;
 
 
+// {showSuccess && (
+//     <ModalDetail
+//         onClose={() => setShowSuccess(false)}
+//     >
+//         <div className="flex flex-col items-center gap-2">
+//             <h1 className="text-2xl font-semibold">Success</h1>
+//             <p className="text-gray-500">user has been updated.</p>
+//             {/* ambil nama buku dari data yang diambil dari API */}
+//             <p className="text-gray-500">{user.title}</p>
+//         </div>
+//     </ModalDetail>
+// )}
