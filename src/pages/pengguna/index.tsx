@@ -1,5 +1,5 @@
 import { GetServerSideProps } from 'next';
-import React from 'react';
+import React, { useState } from 'react';
 import Sidebar from '../components/Sidebar';
 import prisma from '@/libs/prismadb';
 import { ModalDetail } from "@/pages/components/Modal";
@@ -27,9 +27,19 @@ const User: React.FC<Props> = ({ users }) => {
 
     const router = useRouter();
 
+
     const backPengguna = () => {
         router.push("/pengguna");
     };
+
+    // onchange untuk open modal
+    const getName = (data: string) => {
+        return <div>
+            {data}
+        </div>
+    };
+
+
 
     return (
         <div>
@@ -83,11 +93,15 @@ const User: React.FC<Props> = ({ users }) => {
                         <UserEdit
                             userId={router.query.edit as string}
                             onClose={backPengguna}
+                            onChange={getName}
                         />
                     </ModalDetail>
                 )
-
             }
+
+            {/* buat modal dari getname  */}
+
+
 
         </div>
     );
