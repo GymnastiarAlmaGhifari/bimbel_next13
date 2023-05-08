@@ -187,6 +187,7 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import { HiOutlineMenuAlt4 } from "react-icons/hi";
 import { AiOutlineClose } from "react-icons/ai";
+import { useSession } from "next-auth/react";
 
 const Sidebar = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -195,6 +196,8 @@ const Sidebar = () => {
     const toggleMenu = () => {
         setIsOpen(!isOpen);
     };
+
+    const { data: session, status } = useSession();
 
     return (
         <>
@@ -211,36 +214,110 @@ const Sidebar = () => {
                 </div>
                 <nav className={`${isOpen ? "" : ""} px-4 pt-6`}>
                     <ul>
-                        <li>
-                            <Link href="/dashboard">
-                                <button
-                                    className={`${router.pathname === "/dashboard" ? "text-blue-500" : ""
-                                        } block py-2 hover:text-blue-500`}
-                                >
-                                    Home
-                                </button>
-                            </Link>
-                        </li>
-                        <li>
-                            <Link href="/jadwal">
-                                <button
-                                    className={`${router.pathname === "/jadwal" ? "text-blue-500" : ""
-                                        } block py-2 hover:text-blue-500`}
-                                >
-                                    About
-                                </button>
-                            </Link>
-                        </li>
-                        <li>
-                            <Link href="/pengguna">
-                                <button
-                                    className={`${router.pathname === "/pengguna" ? "text-blue-500" : ""
-                                        } block py-2 hover:text-blue-500`}
-                                >
-                                    User
-                                </button>
-                            </Link>
-                        </li>
+
+                        {session?.user.role === "SUPER" && (
+                            <>
+
+                                <li>
+
+                                    <Link href="/dashboard">
+                                        <button
+                                            className={`${router.pathname === "/dashboard" ? "text-blue-500" : ""
+                                                } block py-2 hover:text-blue-500`}
+                                        >
+                                            Home
+                                        </button>
+                                    </Link>
+                                </li>
+                                <li>
+                                    <Link href="/jadwal">
+                                        <button
+                                            className={`${router.pathname === "/jadwal" ? "text-blue-500" : ""
+                                                } block py-2 hover:text-blue-500`}
+                                        >
+                                            About
+                                        </button>
+                                    </Link>
+                                </li>
+                                <li>
+                                    <Link href="/pengguna">
+                                        <button
+                                            className={`${router.pathname === "/pengguna" ? "text-blue-500" : ""
+                                                } block py-2 hover:text-blue-500`}
+                                        >
+                                            User
+                                        </button>
+                                    </Link>
+                                </li>
+                                <li>
+                                    <Link href="/pembayaran">
+                                        <button
+                                            className={`${router.pathname === "/pembayaran" ? "text-blue-500" : ""
+                                                } block py-2 hover:text-blue-500`}
+                                        >
+                                            pembayaran
+                                        </button>
+                                    </Link>
+                                </li>
+                                <li>
+                                    <Link href="/siswa">
+                                        <button
+                                            className={`${router.pathname === "/siswa" ? "text-blue-500" : ""
+                                                } block py-2 hover:text-blue-500`}
+                                        >
+                                            Siswa
+                                        </button>
+                                    </Link>
+                                </li>
+                                <li>
+                                    <Link href="/kelompok">
+                                        <button
+                                            className={`${router.pathname === "/kelompok" ? "text-blue-500" : ""
+                                                } block py-2 hover:text-blue-500`}
+                                        >
+                                            kelompok
+                                        </button>
+                                    </Link>
+                                </li>
+                                <li>
+                                    <Link href="/pengaturan">
+                                        <button
+                                            className={`${router.pathname === "/pengaturan" ? "text-blue-500" : ""
+                                                } block py-2 hover:text-blue-500`}
+                                        >
+                                            pengaturan
+                                        </button>
+                                    </Link>
+                                </li>
+                            </>
+                        )}
+                        {session?.user.role === "TENTOR" && (
+                            <>
+
+                                <li>
+
+                                    <Link href="/dashboard">
+                                        <button
+                                            className={`${router.pathname === "/dashboard" ? "text-blue-500" : ""
+                                                } block py-2 hover:text-blue-500`}
+                                        >
+                                            Home
+                                        </button>
+                                    </Link>
+                                </li>
+                                <li>
+                                    <Link href="/jadwal">
+                                        <button
+                                            className={`${router.pathname === "/jadwal" ? "text-blue-500" : ""
+                                                } block py-2 hover:text-blue-500`}
+                                        >
+                                            About
+                                        </button>
+                                    </Link>
+                                </li>
+                            </>
+                        )}
+
                     </ul>
                 </nav>
             </div>

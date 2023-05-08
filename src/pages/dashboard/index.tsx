@@ -1,9 +1,11 @@
 import { GetServerSideProps } from 'next';
 import React from 'react';
 import Sidebar from '../components/Sidebar';
-import prisma from '@/libs/prismadb';
 import { ModalDetail } from "@/pages/components/Modal";
-import BookEdit from "./editBook";
+import BookEdit from "./edit/[id]";
+import prisma from '@/libs/prismadb';
+import Link from "next/link";
+import { useRouter } from 'next/router';
 
 
 interface Book {
@@ -21,10 +23,10 @@ interface Props {
 }
 
 const Dashboard: React.FC<Props> = ({ books }) => {
-
-    // buat select id
-    const [selectedBook, setSelectedBook] = React.useState<Book | null>(null);
-
+    const router = useRouter();
+    const backDashboard = () => {
+        router.push("/dashboard");
+    };
     return (
         <div>
             <Sidebar />
@@ -54,31 +56,37 @@ const Dashboard: React.FC<Props> = ({ books }) => {
                                 <td>{book.createdAt.toString()}</td>
                                 <td>{book.updatedAt.toString()}</td>
                                 <td>
-                                    <button
-                                        onClick={() => setSelectedBook(book)}
-                                        className="rounded-full bg-white/10 px-10 py-3 font-semibold text-black no-underline transition hover:bg-white/20">
-                                        edit
-                                    </button>
+                                    <Link
+                                        href={`/dashboard/?edit=${book.id}`}
+                                        as={`/dashboard/edit/${book.id}`}
+                                    >
+                                        <button
+                                            className="rounded-full bg-white/10 px-10 py-3 font-semibold text-black no-underline transition hover:bg-white/20"
+                                        >
+                                            edit
+                                        </button>
+                                    </Link>
                                 </td>
                             </tr>
                         ))}
                     </tbody>
                 </table>
+                {
+                    router.query.edit && (<ModalDetail onClose={backDashboard}>
+                        <BookEdit
+                            bookId={router.query.edit as string}
+                            onClose={backDashboard}
+                        />
+                    </ModalDetail>
+                    )
+                }
             </div>
-            {selectedBook && (
-                <ModalDetail onClose={() => setSelectedBook(null)}>
-                    <BookEdit
-                        onClose={() => setSelectedBook(null)}
-                        bookId={selectedBook.id} />
-                </ModalDetail>
-            )}
+
         </div>
     );
-
 };
 
 export const getServerSideProps: GetServerSideProps = async () => {
-
     const books = await prisma.books.findMany();
     // Convert Date objects to string
     const serializedBooks = books.map((book) => ({
