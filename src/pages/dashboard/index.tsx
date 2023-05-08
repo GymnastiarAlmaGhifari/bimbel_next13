@@ -78,27 +78,19 @@ const Dashboard: React.FC<Props> = ({ books }) => {
 };
 
 export const getServerSideProps: GetServerSideProps = async () => {
-    try {
-        const books = await prisma.books.findMany();
-        // Convert Date objects to string
-        const serializedBooks = books.map((book) => ({
-            ...book,
-            createdAt: book.createdAt.toString(),
-            updatedAt: book.updatedAt.toString(),
-        }));
-        return {
-            props: {
-                books: serializedBooks,
-            },
-        };
-    } catch (error) {
-        console.error(error);
-        return {
-            props: {
-                books: [],
-            },
-        };
-    }
+
+    const books = await prisma.books.findMany();
+    // Convert Date objects to string
+    const serializedBooks = books.map((book) => ({
+        ...book,
+        createdAt: book.createdAt.toString(),
+        updatedAt: book.updatedAt.toString(),
+    }));
+    return {
+        props: {
+            books: serializedBooks,
+        },
+    };
 };
 
 export default Dashboard;

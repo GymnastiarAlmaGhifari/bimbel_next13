@@ -231,6 +231,16 @@ const Sidebar = () => {
                                 </button>
                             </Link>
                         </li>
+                        <li>
+                            <Link href="/pengguna">
+                                <button
+                                    className={`${router.pathname === "/pengguna" ? "text-blue-500" : ""
+                                        } block py-2 hover:text-blue-500`}
+                                >
+                                    User
+                                </button>
+                            </Link>
+                        </li>
                     </ul>
                 </nav>
             </div>
