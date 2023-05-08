@@ -1,0 +1,244 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                String  @id @default(cuid())
+  email             String  @unique
+  password          String
+  name              String?
+  role              UserRole //@default(USER)
+  nomor_telepon     String?
+  alamat            String?
+  image             String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt 
+  jadwal_details    jadwal_detail[]
+  gaji              gaji[]
+  tagihan_details   tagihan_detail[]
+}
+
+model Books{
+    id String @id @default(cuid())
+    title String
+    author String
+    description String
+    price Int
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}
+  
+
+model jadwal{
+  id String @id @default(cuid())
+  nama String
+  jadwal_detail jadwal_detail[]
+  program program?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model jadwal_detail{
+  id String @id @default(cuid())
+  hari Hari
+  jadwal jadwal @relation(fields: [jadwal_id], references: [id])
+  jadwal_id String
+  sesi sesi? @relation(fields: [sesi_id], references: [id])
+  sesi_id String?
+  mapel mapel? @relation(fields: [mapel_id], references: [id])
+  mapel_id String?
+  user User? @relation(fields: [user_id], references: [id])
+  user_id String?
+  ruang ruang? @relation(fields: [ruang_id], references: [id])
+  ruang_id String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model ruang {
+  id String @id @default(cuid())
+  nama String
+  tipe TipeRuang
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  jadwal_details jadwal_detail[]
+  }
+
+model kelas{
+  id String @id @default(cuid())
+  nama_kelas String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  mapels mapel[]
+  siswas siswa[]
+}
+
+model mapel{
+  id String @id @default(cuid())
+  nama_mapel String
+  kelas_id String?  // Define a foreign key field for the `kelas` model
+  kelas kelas? @relation(fields: [kelas_id], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  jadwal_details jadwal_detail[]
+  modules module[]
+}
+
+model sesi {
+  id        String   @id @default(cuid())
+  nama_sesi String
+  jam_mulai  DateTime @db.Time
+  jam_selesai DateTime @db.Time
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  jadwal_details jadwal_detail[]
+}
+
+model gaji{
+  id String @id @default(cuid())
+  user User @relation(fields: [user_id], references: [id])
+  user_id String
+  jumlah_gaji Int
+  tanggal_gaji DateTime @db.Date
+  tipe_pembayaran TipePembayaran
+  status_pembayaran StatusPembayaran
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model program{
+  id String @id @default(cuid())
+  nama_program String
+  tipe Tipe
+  level Level
+  jadwal jadwal? @relation(fields: [jadwal_id], references: [id])
+  jadwal_id String? @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  Siswa siswa[]
+}
+
+model siswa {
+  id String @id @default(cuid())
+  nama String
+  nomor_telepon String
+  alamat String
+  sekolah String
+  hp_ortu String
+  image String
+  email String
+  program program? @relation(fields: [program_id], references: [id])
+  program_id String?
+  kelas kelas? @relation(fields: [kelas_id], references: [id])
+  kelas_id String?
+  token String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  tagihans tagihan[]
+  presensis presensi[]
+}
+
+model module {
+  id String @id @default(cuid())
+  nama_module String
+  url String
+  thumbnail String
+  mapel mapel? @relation(fields: [mapel_id], references: [id])
+  mapel_id String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model presensi {
+  id String @id @default(cuid())
+  siswa_id String?
+  siswa siswa? @relation(fields: [siswa_id], references: [id])
+  status StatusPresensi
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model tagihan {
+  id String @id @default(cuid())
+  siswa_id String?
+  siswa siswa? @relation(fields: [siswa_id], references: [id])
+  jumlah_tagihan Int
+  tanggal_tagihan DateTime @db.Date
+  status Status
+  nota String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  tagihan_details tagihan_detail?
+}
+
+model tagihan_detail {
+  tagihan_id String @unique
+  tagihan tagihan? @relation(fields: [tagihan_id], references: [id])
+  user_id String?
+  user User? @relation(fields: [user_id], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+}
+
+enum UserRole {
+  TENTOR
+  ADMIN
+  SUPER
+}
+
+enum Hari {
+  SENIN
+  SELASA
+  RABU
+  KAMIS
+  JUMAT
+  SABTU
+  MINGGU
+}
+enum Tipe {
+  PRIVATE
+  SEMI_PRIVATE
+  KELOMPOK
+}
+
+enum TipeRuang {
+  KELAS
+  RUMAH
+}
+
+enum TipePembayaran {
+  TUNAI
+  TRANSFER
+}
+
+enum StatusPembayaran {
+  BELUM_DIBAYAR
+  SUDAH_DIBAYAR
+}
+
+enum Level {
+  PREMIUM
+  REGULER
+}
+enum Status {
+  LUNAS
+  JATUH_TEMPO
+  PENDING
+  BELUM_LUNAS
+}
+enum StatusPresensi {
+  HADIR
+  SAKIT
+  IZIN
+  ALPHA
+}
+
