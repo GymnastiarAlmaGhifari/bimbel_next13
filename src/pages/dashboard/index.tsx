@@ -72,11 +72,15 @@ const Dashboard: React.FC<Props> = ({ books }) => {
                     </tbody>
                 </table>
                 {
-                    router.query.edit && (<ModalDetail onClose={backDashboard}>
+                    router.query.edit && (
+                    <ModalDetail 
+                    onOpen={true}
+                    onClose={backDashboard}>
                         <BookEdit
                             bookId={router.query.edit as string}
                             onClose={backDashboard}
                         />
+
                     </ModalDetail>
                     )
                 }
