@@ -58,6 +58,7 @@ const BookEdit = ({ bookId, onClose }: BookEditProps) => {
             {showSuccess && (
                 <ModalDetail
                     onClose={() => setShowSuccess(false)}
+                    onOpen={true}
                 >
                     <div className="flex flex-col items-center gap-2">
                         <h1 className="text-2xl font-semibold">Success</h1>

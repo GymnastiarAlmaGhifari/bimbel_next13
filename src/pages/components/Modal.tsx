@@ -6,6 +6,8 @@ import { Dialog } from '@headlessui/react';
 interface ModalDetailProps {
     children: React.ReactNode;
     onClose: () => void;
+    onOpen: boolean;
+
 }
 interface ModalProps {
     // children: React.ReactNode
@@ -53,10 +55,10 @@ const Modal: FC<ModalProps> = ({ isVisible, onClose, children }) => {
 
 export default Modal
 
-export const ModalDetail: FC<ModalDetailProps> = ({ children, onClose }) => {
+export const ModalDetail: FC<ModalDetailProps> = ({ children, onClose, onOpen }) => {
     return (
         <Dialog
-            open={true}
+            open={onOpen}
             onClose={onClose}
             className="relative z-50"
         >
