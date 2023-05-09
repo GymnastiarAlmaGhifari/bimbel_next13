@@ -9,15 +9,17 @@ import fetcher from "@/libs/fetcher";
 interface UserEditProps {
     userId: string;
     onClose: () => void;
+    onSucsess: () => void;
     // pass onchange string to parent
-    onChange: (value: string) => void;
+    // onChange: (value: string) => void;
 }
 
 const UserEdit = (
     {
         userId,
         onClose,
-        onChange,
+        onSucsess,
+        // onChange,
 
     }: UserEditProps) => {
 
@@ -30,10 +32,12 @@ const UserEdit = (
     // const [showSuccess, setShowSuccess] = useState(false);
 
     // mengambil data buku dari API menggunakan SWR
-    const { data: user, error } = useSWR(`/api/user/${userId}`, fetcher);
+    const { data: user, error, isLoading } = useSWR(`/api/user/${userId}`, fetcher);
 
     if (error) return <div>Error loading user.</div>;
     if (!user) return <div>Loading...</div>;
+
+    if (isLoading) return <div>Loading...</div>;
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -58,18 +62,19 @@ const UserEdit = (
             // memperbarui data buku di halaman dengan SWR
             mutate(`/api/user/${userId}`);
 
-            onChange(name);
 
 
+            // router.push("/pengguna");
 
-            router.push("/pengguna");
-
+            onClose();
+            onSucsess();
+            // onChange(name);
 
             // setShowSuccess(true);
             // setTimeout(() => {
-            //     setShowSuccess(false);
-            //     onClose();
-            // }, 2000);
+            // setShowSuccess(false);
+            // onClose();
+            // }, 500);
             // router.refresh();
 
 
