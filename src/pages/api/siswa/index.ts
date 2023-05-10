@@ -26,7 +26,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       res.status(201).json(siswa);
     } catch (error) {
       console.error(error);
-      res.status(500).json({ message: "Error creating siswa." });
+      res.status(500).json({ message: "Error creating siswa.", error });
     }
   } else {
     res.status(405).json({ message: "Method not allowed." });
