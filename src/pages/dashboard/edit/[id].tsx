@@ -33,7 +33,7 @@ const BookEdit: React.FC<BookEditProps> = ({ bookId, onClose }) => {
     const router = useRouter();
     // const { data: book, error, isLoading } = useSWR(`/api/books/${bookId}`, fetcher);
 
-
+    // jika id tidak ditemukan maka akan di redirect ke halaman dashboard
     const {
         register,
         handleSubmit,
@@ -43,6 +43,9 @@ const BookEdit: React.FC<BookEditProps> = ({ bookId, onClose }) => {
             const { data, status, } = await axios.get(`/api/books/${bookId}`);
             if (status !== 200) {
                 throw new Error("Gagal mendapatkan data buku");
+            }
+            if (!data) {
+                router.push("/dashboard");
             }
             return data;
         },
