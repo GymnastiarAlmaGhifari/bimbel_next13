@@ -154,6 +154,7 @@ model siswa {
   nama String
   email String @unique
   password String
+  token String? @unique
   nomor_telepon String
   alamat String?
   sekolah String?
@@ -163,7 +164,6 @@ model siswa {
   kelompok_id String?
   kelas kelas? @relation(fields: [kelas_id], references: [id])
   kelas_id String?
-  token String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   tagihans tagihan[]
