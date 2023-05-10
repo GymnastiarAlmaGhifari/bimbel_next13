@@ -58,7 +58,7 @@ const Dashboard: React.FC<Props> = ({ books }) => {
                                 <td>
                                     <Link
                                         href={`/dashboard/?edit=${book.id}`}
-                                        as={`/dashboard/edit/${book.id}`}
+                                        as={`/dashboard/edit`}
                                     >
                                         <button
                                             className="rounded-full bg-white/10 px-10 py-3 font-semibold text-black no-underline transition hover:bg-white/20"
