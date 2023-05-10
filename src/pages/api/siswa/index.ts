@@ -12,7 +12,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       res.status(500).json({ message: "Error loading siswas." });
     }
   } else if (req.method === "POST") {
-    const { nama, email, password, nomor_telepon, alamat, sekolah, hp_ortu, image, token } = req.body;
+    const { nama, email, password, nomor_telepon,} = req.body;
 
     try {
       const siswa = await prisma.siswa.create({
@@ -21,11 +21,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           email,
           password: await bcrypt.hash(password, 10),
           nomor_telepon,
-          alamat,
-          sekolah,
-          hp_ortu,
-          image,
-          token,
         },
       });
       res.status(201).json(siswa);
