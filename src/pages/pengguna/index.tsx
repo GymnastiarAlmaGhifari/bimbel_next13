@@ -106,7 +106,7 @@ const User: React.FC<Props> = ({ users }) => {
                                 <td>
                                     <Link
                                         href={`/pengguna/?edit=${user.id}`}
-                                        as={`/pengguna/edit/${user.id}`}
+                                        as={`/pengguna/edit`}
                                         onClick={() => setSelected(user)}
                                     >
                                         <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">

@@ -24,27 +24,39 @@ const schema = yup.object().shape({
     author: yup.string().required(),
     description: yup.string().required(),
 });
+
 type FormData = yup.InferType<typeof schema>;
 
 
 
 const BookEdit: React.FC<BookEditProps> = ({ bookId, onClose }) => {
     const router = useRouter();
+    // const { data: book, error, isLoading } = useSWR(`/api/books/${bookId}`, fetcher);
 
-    const { data: book, error } = useSWR(`/api/books/${bookId}`, fetcher);
 
     const {
         register,
         handleSubmit,
         formState: { errors },
     } = useForm<FormData>({
-        defaultValues: {
-            title: book?.title,
-            author: book?.author,
-            description: book?.description,
+        defaultValues: async () => {
+            const { data, status, } = await axios.get(`/api/books/${bookId}`);
+            if (status !== 200) {
+                throw new Error("Gagal mendapatkan data buku");
+            }
+            return data;
         },
         resolver: yupResolver(schema),
     });
+
+
+
+
+    // const defaultValues = {
+    //     title: book?.title,
+    //     author: book?.author,
+    //     description: book?.description,
+    // };
 
     // tanpa yup
     // const {

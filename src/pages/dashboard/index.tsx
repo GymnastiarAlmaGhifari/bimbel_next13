@@ -1,9 +1,8 @@
 import { GetServerSideProps } from 'next';
-import React from 'react';
+import prisma from '@/libs/prismadb';
 import Sidebar from '../components/Sidebar';
 import { ModalDetail } from "@/pages/components/Modal";
 import BookEdit from "./edit/[id]";
-import prisma from '@/libs/prismadb';
 import Link from "next/link";
 import { useRouter } from 'next/router';
 
@@ -58,7 +57,7 @@ const Dashboard: React.FC<Props> = ({ books }) => {
                                 <td>
                                     <Link
                                         href={`/dashboard/?edit=${book.id}`}
-                                        as={`/dashboard/edit/${book.id}`}
+                                        as={`/dashboard/edit`}
                                     >
                                         <button
                                             className="rounded-full bg-white/10 px-10 py-3 font-semibold text-black no-underline transition hover:bg-white/20"
@@ -73,15 +72,15 @@ const Dashboard: React.FC<Props> = ({ books }) => {
                 </table>
                 {
                     router.query.edit && (
-                    <ModalDetail 
-                    onOpen={true}
-                    onClose={backDashboard}>
-                        <BookEdit
-                            bookId={router.query.edit as string}
-                            onClose={backDashboard}
-                        />
+                        <ModalDetail
+                            onOpen={true}
+                            onClose={backDashboard}>
+                            <BookEdit
+                                bookId={router.query.edit as string}
+                                onClose={backDashboard}
+                            />
 
-                    </ModalDetail>
+                        </ModalDetail>
                     )
                 }
             </div>
