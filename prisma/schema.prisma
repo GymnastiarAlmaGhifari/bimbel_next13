@@ -105,8 +105,8 @@ model mapel{
 model sesi {
   id        String   @id @default(cuid())
   nama_sesi String
-  jam_mulai  DateTime @db.Time
-  jam_selesai DateTime @db.Time
+  jam_mulai  DateTime @db.Time()
+  jam_selesai DateTime @db.Time ()
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   jadwal_details jadwal_detail[]
