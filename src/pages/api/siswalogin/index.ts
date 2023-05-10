@@ -36,11 +36,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             id: siswa.id,
             name: siswa.nama,
             email: siswa.email,
-            token: siswa.token,
-            nomor: siswa.nomor_telepon,
-            alamat: siswa.alamat,
-            sekolah: siswa.sekolah,
-            nomor_ortu: siswa.hp_ortu,
+            // token: siswa.token,
+            // nomor: siswa.nomor_telepon,
+            // alamat: siswa.alamat,
+            // sekolah: siswa.sekolah,
+            // nomor_ortu: siswa.hp_ortu,
             
             }
         }
