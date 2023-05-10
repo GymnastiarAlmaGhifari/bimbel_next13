@@ -7,7 +7,6 @@ interface Mapel {
     kelas: any;
     id: string;
     nama_mapel: string;
-    kelas_id: string;
     nama_kelas: string;
     createdAt: Date;
     updatedAt: Date;
@@ -28,7 +27,6 @@ const Mapel: React.FC<Props> = ({ mapel }) => {
                     <tr>
                         <th>ID</th>
                         <th>Nama Mapel</th>
-                        <th>Kelas ID</th>
                         <th>Nama Kelas</th>
                         <th>Created At</th>
                         <th>Updated At</th>
@@ -40,7 +38,6 @@ const Mapel: React.FC<Props> = ({ mapel }) => {
                         <tr key={item.id}>
                             <td>{item.id}</td>
                             <td>{item.nama_mapel}</td>
-                            <td>{item.kelas_id}</td>
                             <td>{item.kelas.nama_kelas}</td>
                             <td>{item.createdAt.toString()}</td>
                             <td>{item.updatedAt.toString()}</td>
@@ -79,7 +76,6 @@ export const getServerSideProps: GetServerSideProps = async () => {
         select: {
             id: true,
             nama_mapel: true,
-            kelas_id: true,
             kelas: {
                 select: {
                     nama_kelas: true
