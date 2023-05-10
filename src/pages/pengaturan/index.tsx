@@ -42,6 +42,15 @@ const Pengaturan = () => {
                         kelas
                     </button>
                 </Link>
+                <Link
+                    href="/pengaturan/program"
+                >
+                    <button
+                        className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'
+                    >
+                        program
+                    </button>
+                </Link>
             </div>
             <Sidebar />
         </div>

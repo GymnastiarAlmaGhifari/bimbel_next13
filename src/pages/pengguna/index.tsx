@@ -70,11 +70,6 @@ const User: React.FC<Props> = ({ users }) => {
         };
     }, [showSuccess]);
 
-
-
-
-
-
     return (
         <div>
             <Sidebar />

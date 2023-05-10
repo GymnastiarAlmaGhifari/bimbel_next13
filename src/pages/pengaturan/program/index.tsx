@@ -3,49 +3,53 @@ import React from 'react'
 import { GetServerSideProps } from 'next';
 import prisma from '@/libs/prismadb';
 
-interface Kelompok {
-    program: any;
-    jadwal: any;
+interface Program {
+    kelas: any;
     id: string;
-    nama_kelompok: string;
     nama_program: string;
-    nama: string;
+    level: string;
+    tipe: string;
+    nama_kelas: string;
     createdAt: Date;
     updatedAt: Date;
 }
 
 interface Props {
-    kelompok: Kelompok[];
+    program: Program[];
 }
 
 
-const Kelompok: React.FC<Props> = ({ kelompok }) => {
+const Program: React.FC<Props> = ({ program }) => {
 
     return (
         <div>
-            <h1 className="font-bold text-4xl my-10">List Kelompok</h1>
+            <h1 className="font-bold text-4xl my-10">List Program</h1>
             <table>
                 <thead>
                     <tr>
-                        <th>Nama Kelompok</th>
-                        <th>program</th>
-                        <th>jadwal</th>
+                        <th>ID</th>
+                        <th>Nama Program</th>
+                        <th>Level</th>
+                        <th>Tipe</th>
+                        <th>Kelas</th>
                         <th>Created At</th>
                         <th>Updated At</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {kelompok.map((item) => (
+                    {program.map((item) => (
                         <tr key={item.id}>
-                            <td>{item.nama_kelompok}</td>
-                            <td>{item.program.nama_program}</td>
-                            <td>{item.jadwal.nama}</td>
+                            <td>{item.id}</td>
+                            <td>{item.nama_program}</td>
+                            <td>{item.level}</td>
+                            <td>{item.tipe}</td>
+                            <td>{item.kelas.nama_kelas}</td>
                             <td>{item.createdAt.toString()}</td>
                             <td>{item.updatedAt.toString()}</td>
                             <td>
                                 <Link
-                                    href={`/pengaturan/kelompok/edit/${item.id}`}
+                                    href={`/pengaturan/program/edit/${item.id}`}
                                 >
                                     <button
                                         className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'
@@ -73,19 +77,16 @@ const Kelompok: React.FC<Props> = ({ kelompok }) => {
 
 export const getServerSideProps: GetServerSideProps = async () => {
 
-    // buatjoin dari table kelompok dan kelas
-    const kelompok = await prisma.kelompok.findMany({
+    // buatjoin dari table program dan kelas
+    const program = await prisma.program.findMany({
         select: {
             id: true,
-            nama_kelompok: true,
-            program: {
+            nama_program: true,
+            tipe: true,
+            level: true,
+            kelas: {
                 select: {
-                    nama_program: true
-                }
-            },
-            jadwal: {
-                select: {
-                    nama: true,
+                    nama_kelas: true
                 }
             },
             createdAt: true,
@@ -93,7 +94,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
         }
     });
 
-    const serializedMapel = kelompok.map((item) => ({
+    const serializedMapel = program.map((item) => ({
         ...item,
         createdAt: item.createdAt.toString(),
         updatedAt: item.updatedAt.toString()
@@ -101,9 +102,9 @@ export const getServerSideProps: GetServerSideProps = async () => {
 
     return {
         props: {
-            kelompok: serializedMapel
+            program: serializedMapel
         }
     }
 }
 
-export default Kelompok
+export default Program

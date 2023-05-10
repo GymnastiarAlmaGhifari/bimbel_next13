@@ -51,7 +51,7 @@ model jadwal{
   id String @id @default(cuid())
   nama String
   jadwal_detail jadwal_detail[]
-  program program?
+  kelompok kelompok?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -89,6 +89,7 @@ model kelas{
   updatedAt DateTime @updatedAt
   mapels mapel[]
   siswas siswa[]
+  programs program[]
 }
 
 model mapel{
@@ -124,11 +125,23 @@ model gaji{
   updatedAt DateTime @updatedAt
 }
 
-model program{
+model program {
   id String @id @default(cuid())
   nama_program String
-  tipe Tipe
   level Level
+  tipe Tipe
+  kelas kelas @relation(fields: [kelas_id], references: [id])
+  kelas_id String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  kelompoks kelompok[]
+}
+
+model kelompok{
+  id String @id @default(cuid())
+  nama_kelompok String
+  program program @relation(fields: [program_id], references: [id])
+  program_id String
   jadwal jadwal? @relation(fields: [jadwal_id], references: [id])
   jadwal_id String? @unique
   createdAt DateTime @default(now())
@@ -146,8 +159,8 @@ model siswa {
   sekolah String?
   hp_ortu String?
   image String?
-  program program? @relation(fields: [program_id], references: [id])
-  program_id String?
+  kelompok kelompok? @relation(fields: [kelompok_id], references: [id])
+  kelompok_id String?
   kelas kelas? @relation(fields: [kelas_id], references: [id])
   kelas_id String?
   token String?
