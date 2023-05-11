@@ -1,6 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import prisma from "@/libs/prismadb";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 
 //used login with parameter email and password
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -28,13 +29,29 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             };
             return res.status(401).json(response);
         }
-        
+
+        if (!process.env.JWT_SECRET) {
+            throw new Error('JWT secret not defined in environment variables');
+          }
+        //generate token using jwt
+        const secret=process.env.JWT_SECRET;
+        const payload = {
+            id: siswa.id,
+            name: siswa.nama,
+          };
+        const token = jwt.sign(payload, secret, {
+            expiresIn: "7d",
+        });
+        //update token to database
+        await prisma.siswa.update({
+            where: { id: siswa.id },
+            data: { token },
+        });
+
         const response = {
             status: 200,
             message: "Login success",
             data: {
-            id: siswa.id,
-            name: siswa.nama,
             // email: siswa.email,
             token: siswa.token,
             // nomor: siswa.nomor_telepon,

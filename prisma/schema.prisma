@@ -84,7 +84,7 @@ model ruang {
 
 model kelas{
   id String @id @default(cuid())
-  nama_kelas String
+  nama_kelas String @unique
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   mapels mapel[]
@@ -154,7 +154,7 @@ model siswa {
   nama String
   email String @unique
   password String
-  token String? @unique
+  token String? @unique @db.VarChar(255)
   nomor_telepon String
   alamat String?
   sekolah String?
