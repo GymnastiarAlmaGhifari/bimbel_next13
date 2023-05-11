@@ -4,11 +4,11 @@ import Program from "@/pages/pengaturan/program";
 
 //if token match then return login success and the email
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-    const { token } = req.body;
+    const  token  = req.headers.authorization;
     if (req.method === "POST") {
         try {
             const siswa = await prisma.siswa.findUnique({
-                where: { token },
+                where: {token} ,
             });
             if (!siswa) {
                 const response = {
@@ -47,7 +47,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                         id: siswa.id,
                         name: siswa.nama,
                         email: siswa.email,
-                        token: siswa.token,
+                        kelompok: null,
+                        Tipe: null,
                     },
                 };
                 return res.status(200).json(response);
