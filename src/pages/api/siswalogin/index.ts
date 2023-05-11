@@ -35,8 +35,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             data: {
             id: siswa.id,
             name: siswa.nama,
-            email: siswa.email,
-            // token: siswa.token,
+            // email: siswa.email,
+            token: siswa.token,
             // nomor: siswa.nomor_telepon,
             // alamat: siswa.alamat,
             // sekolah: siswa.sekolah,

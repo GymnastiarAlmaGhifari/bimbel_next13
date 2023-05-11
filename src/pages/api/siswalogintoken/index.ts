@@ -1,5 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import prisma from "@/libs/prismadb";
+import Program from "@/pages/pengaturan/program";
 
 //if token match then return login success and the email
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -16,15 +17,43 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 };
                 return res.status(404).json(response);
             }
-            const response = {
-                status: 200,
-                message: "Login success",
-                data: {
-                    email: siswa.email,
-                },
-            };
-            res.status(200).json(response);
+            //if siswa has kelompok id then respon with kelompok
+            if (siswa.kelompok_id) {
+                const kelompok = await prisma.kelompok.findUnique({
+                    where: { id: siswa.kelompok_id },
+                });
+                const program = await prisma.program.findUnique({
+                    where: { id: kelompok?.program_id },
+                });
+                const response = {
+                    status: 200,
+                    message: "Login success",
+                    data: {
+                        id: siswa.id,
+                        name: siswa.nama,
+                        email: siswa.email,
+                        kelompok: kelompok?.nama_kelompok,
+                        Tipe: program?.nama_program,
+                    },
+                };
+                return res.status(200).json(response);
+            }
+            //if siswa has no kelompok id then respon without kelompok
+            else {
+                const response = {
+                    status: 200,
+                    message: "Login success",
+                    data: {
+                        id: siswa.id,
+                        name: siswa.nama,
+                        email: siswa.email,
+                        token: siswa.token,
+                    },
+                };
+                return res.status(200).json(response);
+            }
         }
+
         catch (error) {
             console.error(error);
             const response = {
