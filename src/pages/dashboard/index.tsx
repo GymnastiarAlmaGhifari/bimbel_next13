@@ -5,6 +5,7 @@ import { ModalDetail } from "@/pages/components/Modal";
 import BookEdit from "./edit/[id]";
 import Link from "next/link";
 import { useRouter } from 'next/router';
+import { signOut } from 'next-auth/react';
 import Navbar from '../components/Navbar';
 
 
@@ -34,6 +35,14 @@ const Dashboard: React.FC<Props> = ({ books }) => {
             <div className="ml-10 w-full">
                 <Navbar/>
                 <h1 className="font-bold text-4xl my-10">List Buku</h1>
+                {/* button signout */}
+                <button
+                    onClick={() => signOut()}
+                    className="rounded-full bg-white/10 px-10 py-3 font-semibold text-black no-underline transition hover:bg-white/20"
+                >
+                    Sign Out
+                </button>
+
                 <table>
                     <thead>
                         <tr>
