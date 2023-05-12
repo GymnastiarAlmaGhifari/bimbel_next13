@@ -1,11 +1,10 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import prisma from "@/libs/prismadb";
 import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
 
-//used login with parameter email and password
+//if email and password match then update token from body
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-    const { email, password } = req.body;
+    const { email, password, token } = req.body;
     
     if (req.method === "POST") {
         try {
@@ -29,35 +28,20 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             };
             return res.status(401).json(response);
         }
-
-        if (!process.env.JWT_SECRET) {
-            throw new Error('JWT secret not defined in environment variables');
-          }
-        //generate token using jwt
-        const secret=process.env.JWT_SECRET;
-        const payload = {
-            id: siswa.id,
-            name: siswa.nama,
-          };
-        const token = jwt.sign(payload, secret, {
-            expiresIn: "7d",
-        });
-        //update token to database
-        await prisma.siswa.update({
+        
+        const updateSiswa = await prisma.siswa.update({
             where: { id: siswa.id },
-            data: { token },
+            data: { token: token },
         });
-
+        
         const response = {
             status: 200,
-            message: "Login success",
+            message: "Update token success",
             data: {
-            // email: siswa.email,
-            token: siswa.token,
-            // nomor: siswa.nomor_telepon,
-            // alamat: siswa.alamat,
-            // sekolah: siswa.sekolah,
-            // nomor_ortu: siswa.hp_ortu,
+            id: updateSiswa.id,
+            name: updateSiswa.nama,
+            email: updateSiswa.email,
+            token: updateSiswa.token,
             
             }
         }
@@ -67,9 +51,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         const response = {
             status: 500,
             message: "Internal server error",
-            error: error
         };
         res.status(500).json(response);
         }
     }
-    }
+
+}

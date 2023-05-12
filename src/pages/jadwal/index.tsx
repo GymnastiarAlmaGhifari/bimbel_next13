@@ -4,8 +4,8 @@ import Sidebar from '../components/Sidebar'
 const Jadwal = () => {
     return (
         <div>
-            <h1>Jadwal</h1>
             <Sidebar />
+            <h1>Jadwal</h1>
         </div>
     )
 }
