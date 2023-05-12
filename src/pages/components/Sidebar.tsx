@@ -22,7 +22,7 @@
 //     // }, [isOpen]);
 
 //     const MenuSuper = [
-//         { icon: AiFillHome, title: "Dashboard", href: `/dashboard`, isOpen: isOpen },
+//         { icon: AiFillHome, title: "Dashboard", href: "/dashboard", isOpen: isOpen },
 //         { icon: MdCalendarToday, title: "Jadwal", href: "/jadwal", isOpen: isOpen },
 //         // { icon: MdCalendarToday, title: "Siswa", href: "/siswa", isOpen: isOpen },
 //         // { icon: MdCalendarToday, title: "Kelompok", href: "/kelompok", isOpen: isOpen },
@@ -33,7 +33,7 @@
 //     ] as MenuItemProps[];
 
 //     const MenuTentor = [
-//         { icon: AiFillHome, title: "Dashboard", href: `/dashboard`, isOpen: isOpen },
+//         { icon: AiFillHome, title: "Dashboard", href: "/dashboard", isOpen: isOpen },
 //         { icon: MdCalendarToday, title: "Jadwal", href: "/jadwal", isOpen: isOpen },
 //     ] as MenuItemProps[];
 
@@ -201,7 +201,8 @@ const Sidebar = () => {
 
     return (
         <>
-            <div className="fixed top-0 left-0 h-screen w-64 bg-gray-800 text-white z-50">
+            <div className={`${isOpen ? "w-64" : "w-32"} "top-0 left-0 h-screen bg-gray-800 text-white z-50"`}
+            >
                 <div className="px-4 py-3 border-b border-gray-700 flex justify-between items-center">
                     <span className="font-semibold text-xl">Sidebar</span>
                     <button onClick={toggleMenu} className="block ">
@@ -212,14 +213,12 @@ const Sidebar = () => {
                         )}
                     </button>
                 </div>
+
                 <nav className={`${isOpen ? "" : ""} px-4 pt-6`}>
                     <ul>
-
                         {session?.user.role === "SUPER" && (
                             <>
-
                                 <li>
-
                                     <Link href="/dashboard">
                                         <button
                                             className={`${router.pathname === "/dashboard" ? "text-blue-500" : ""
@@ -317,7 +316,6 @@ const Sidebar = () => {
                                 </li>
                             </>
                         )}
-
                     </ul>
                 </nav>
             </div>

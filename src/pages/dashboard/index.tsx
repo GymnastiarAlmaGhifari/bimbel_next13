@@ -5,6 +5,7 @@ import { ModalDetail } from "@/pages/components/Modal";
 import BookEdit from "./edit/[id]";
 import Link from "next/link";
 import { useRouter } from 'next/router';
+import Navbar from '../components/Navbar';
 
 
 interface Book {
@@ -27,9 +28,11 @@ const Dashboard: React.FC<Props> = ({ books }) => {
         router.push("/dashboard");
     };
     return (
-        <div>
+        <div className='flex flex-row'>
             <Sidebar />
-            <div className="ml-80">
+            
+            <div className="ml-10 w-full">
+                <Navbar/>
                 <h1 className="font-bold text-4xl my-10">List Buku</h1>
                 <table>
                     <thead>

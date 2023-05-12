@@ -1,20 +1,29 @@
-"use client"
+"use client";
 import { signIn } from "next-auth/react";
-
+import Header from "./landingPage/Header";
+import AboutUs from "./landingPage/About";
+import Program from "./landingPage/Program";
+import Benefit from "./landingPage/Benefit";
+import DetailProgram from "./landingPage/DetailProgram";
+import Diskon from "./landingPage/Diskon";
+import Login from "./landingPage/Login";
+import NavbarLanding from "./landingPage/NavbarLanding";
 
 export default function Home() {
-
   const consolLogAgim = () => {
     console.log("Agim");
-  }
+  };
 
   return (
-    <div>
-      <h1 className="text-4xl font-bold text-Error-40">Hello World</h1>
-      <div>
-        <button onClick={() => signIn()}>Sign In</button>
-
-      </div>
+    <div className="font-mulish">
+      <NavbarLanding />
+      <Header />
+      <AboutUs />
+      <Program />
+      <Benefit />
+      <Diskon />
+      <DetailProgram />
+      <Login />
     </div>
-  )
+  );
 }

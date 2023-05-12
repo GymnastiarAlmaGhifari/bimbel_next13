@@ -1,61 +1,52 @@
-// "use client"
+// "use client";
 // import Link from "next/link";
-// import { usePathname } from 'next/navigation';
+// // import { usePathname } from 'next/navigation';
+// import { useRouter } from "next/router";
 // import { FC } from "react";
 // import { IconType } from "react-icons";
 
 // export interface MenuItemProps {
-//     icon: IconType;
-//     title: string;
-//     href: string;
-//     isOpen: boolean;
+//   icon: IconType;
+//   title: string;
+//   href: string;
+//   isOpen: boolean;
 // }
 
-// const MenuItem: FC<MenuItemProps> = ({ icon: Icon, title, href, isOpen
-// }) => {
-//     const router = usePathname();
+// const MenuItem: FC<MenuItemProps> = ({ icon: Icon, title, href, isOpen }) => {
+//   // const router = usePathname();
+//     console.log({href})
 
-//     const isActive = router === href;
+//   const router = useRouter();
 
-//     return (
-//         <li>
-//             <Link href={href}>
-//                 <button
-//                     className={`relative flex rounded py-3 px-4 ${isActive ? "button-text bg-red-600" : "opacity-75 bg-green-600"
-//                         }`}
-//                 >
-//                     <span
-//                         className={`mr-3 text-2xl ${isActive ? "text-white" : "text-primary"
+//   // const isActive = router === href;
+
+//   return (
+//     <li>
+//       <Link href={href}>
+//         <button className={`relative flex rounded py-3 px-4 `}>
+//           <span
+//             className={`mr-3 text-2xl 
 //                             }`}
-//                     >
-//                         <Icon
-//                             size={24}
-//                         />
-//                     </span>
-//                     <span
-//                         className={`font-medium
-//                         ${isActive ? "text-white" : "text-primary"}
-//                         ${isOpen ? "ml-2" : "hidden"}`
-//                         }
-//                     >
-//                         {title}
-//                     </span>
-//                 </button>
-//             </Link>
-//         </li>
-//     );
+//           >
+//             <Icon size={24} />
+//           </span>
+//           <span className={`font-medium`}>{title}</span>
+//         </button>
+//       </Link>
+//     </li>
+//   );
 // };
 
 // export default MenuItem;
 
-import React from 'react'
+// import React from 'react'
 
-const MenuItem = () => {
-    return (
-        <div>
+// const MenuItem = () => {
+//     return (
+//         <div>
 
-        </div>
-    )
-}
+//         </div>
+//     )
+// }
 
-export default MenuItem
+// export default MenuItem
