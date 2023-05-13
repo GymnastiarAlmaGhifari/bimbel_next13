@@ -51,11 +51,12 @@ const BookEdit: FC<BookEditProps> = ({ bookId, onClose, data }) => {
 
             mutate("/api/books");
 
-            onClose();
+
         } catch (error) {
             console.error(error);
         } finally {
-            setIsLoading(false); // Set loading state to false
+            setIsLoading(false);
+            onClose(); // Set loading state to false
         }
     };
 
