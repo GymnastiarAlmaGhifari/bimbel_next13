@@ -4,8 +4,14 @@ import prisma from "@/libs/prismadb";
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === "GET") {
     try {
-      const mapels = await prisma.mapel.findMany({});
+      const mapels = await prisma.mapel.findMany({
+        include: {
+          kelas: true,
+        },
+      });
+      
       res.status(200).json(mapels);
+      // res.status(200).json(mapels);
     } catch (error) {
       console.error(error);
       res.status(500).json({ message: "Error loading mapels." });
