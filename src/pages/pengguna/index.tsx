@@ -5,6 +5,7 @@ import Sidebar from '../components/Sidebar';
 import { ModalDetail } from "@/pages/components/Modal";
 import UserEdit from './edit';
 import Navbar from '../components/Navbar';
+import Create from './create';
 
 interface User {
     id: string;
@@ -37,6 +38,8 @@ const User: React.FC<Props> = () => {
         setSelected(null);
     };
 
+    // open modal create
+    const [showCreate, setShowCreate] = useState(false);
 
     const [showSuccess, setShowSuccess] = useState(false);
 
@@ -58,6 +61,20 @@ const User: React.FC<Props> = () => {
             <div className="ml-10 w-full">
                 <Navbar />
                 <h1 className="font-bold text-4xl my-10">List user</h1>
+
+                {/* button create */}
+                <button
+                    onClick={
+                        () => {
+                            setShowCreate(true);
+                        }
+                    }
+                    className="rounded-full bg-white/10 px-10 py-3 font-semibold text-black no-underline transition hover:bg-white/20"
+                >
+                    Create
+                </button>
+
+
                 {users ? (
                     <>
                         {users.length === 0 ? (
@@ -137,6 +154,17 @@ const User: React.FC<Props> = () => {
                         <h1 className="text-2xl font-bold text-green-500">Berhasil</h1>
                         <p className="text-sm text-gray-500">{selected?.name}Data berhasil diubah</p>
                     </div>
+                </ModalDetail>
+            )
+            }
+
+            {/* modal create */}
+            {showCreate && (
+                <ModalDetail
+                    onOpen={true}
+                    onClose={() => setShowCreate(false)}
+                >
+                    <Create />
                 </ModalDetail>
             )
             }

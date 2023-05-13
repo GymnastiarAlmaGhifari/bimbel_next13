@@ -97,14 +97,17 @@ const UserEdit: FC<UserEditProps> = ({ userId, onClose, onSucsess, data }) => {
                             defaultValue={data?.email}
                         />
 
-                        <Input
-                            id="role"
-                            label="Role"
-                            type="text"
-                            register={{ ...register("role") }}
-                            errors={errors}
-                            defaultValue={data?.role}
-                        />
+                        {/* buat selected berisi SUPER ADMIN dan TENTOR*/}
+                        <div>
+                            <label htmlFor="role">Role</label>
+                            <select id="role" {...register("role")} defaultValue={data?.role}>
+                                <option value="SUPER ADMIN">SUPER ADMIN</option>
+                                <option value="ADMIN">ADMIN</option>
+                                <option value="TENTOR">TENTOR</option>
+                            </select>
+                        </div>
+
+
                         <Input
                             id="nomor_telepon"
                             label="Nomor Telepon"
