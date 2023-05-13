@@ -20,6 +20,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   } else if (req.method === "GET") {
     try {
       const result = await prisma.program.findMany({
+        include: {
+          kelas: true,
+        },
         orderBy: {
           nama_program: "asc",
         },
