@@ -3,6 +3,8 @@ import React, { FC } from 'react'
 import { useEffect, useState } from 'react';
 import useSWR from 'swr';
 import fetcher from '@/libs/fetcher';
+import { ModalDetail } from '@/pages/components/Modal';
+import ProgramEdit from './edit';
 
 
 interface Program {
@@ -74,15 +76,13 @@ const Program: FC<Props> = () => {
                                             <td>{item.createdAt.toString()}</td>
                                             <td>{item.updatedAt.toString()}</td>
                                             <td>
-                                                <Link
-                                                    href={`/pengaturan/program/edit/${item.id}`}
+                                                <button
+                                                    className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'
+                                                    onClick={() => setSelectedProgram(item)}
                                                 >
-                                                    <button
-                                                        className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'
-                                                    >
-                                                        edit
-                                                    </button>
-                                                </Link>
+                                                    Edit
+                                                </button>
+
                                             </td>
                                         </tr>
                                     ))}
@@ -105,6 +105,23 @@ const Program: FC<Props> = () => {
                     kembali
                 </button>
             </Link>
+
+            {
+                selectedProgram && (
+                    <ModalDetail
+                        onOpen={true}
+                        onClose={onClose}
+                    >
+                        <ProgramEdit
+                            data={selectedProgram}
+                            onClose={onClose}
+                            programId={selectedProgram.id}
+                        />
+                    </ModalDetail>
+                )
+            }
+
+
         </div>
     )
 }

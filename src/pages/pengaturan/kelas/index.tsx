@@ -3,6 +3,8 @@ import React, { FC } from 'react'
 import { useEffect, useState } from 'react';
 import useSWR from 'swr';
 import fetcher from '@/libs/fetcher';
+import { ModalDetail } from '@/pages/components/Modal';
+import KelasEdit from './edit';
 
 
 interface Kelas {
@@ -17,11 +19,15 @@ interface Props {
 }
 
 
-const Kelas: React.FC<Props> = () => {
+const Kelas: FC<Props> = () => {
 
     const { data: kelas, error } = useSWR<Kelas[]>('/api/kelas', fetcher, {});
 
     const [selectedKelas, setSelectedKelas] = useState<Kelas | null>(null);
+
+    const onClose = () => {
+        setSelectedKelas(null);
+    };
 
     return (
         <div>
@@ -78,6 +84,21 @@ const Kelas: React.FC<Props> = () => {
                     kembali
                 </button>
             </Link>
+
+            {selectedKelas && (
+                <ModalDetail
+                    onOpen={true}
+                    onClose={onClose}
+                >
+                    <KelasEdit
+                        kelasId={selectedKelas.id}
+                        data={selectedKelas}
+                        onClose={onClose}
+                    />
+
+                </ModalDetail>
+            )
+            }
         </div>
     )
 }
