@@ -164,7 +164,14 @@ const User: React.FC<Props> = () => {
                     onOpen={true}
                     onClose={() => setShowCreate(false)}
                 >
-                    <Create />
+                    <Create
+                        onClose={() => setShowCreate(false)}
+                        onSucsess={
+                            () => {
+                                setShowSuccess(true);
+                            }
+                        }
+                    />
                 </ModalDetail>
             )
             }
