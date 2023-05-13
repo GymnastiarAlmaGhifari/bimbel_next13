@@ -17,7 +17,9 @@ interface UserCreateProps {
 const schema = yup.object().shape({
     name: yup.string().required("tidak boleh kosong").min(3, "judul minimal 3 karakter"),
     email: yup.string().required(),
+    password: yup.string().required(),
     role: yup.string().required(),
+    // nomor_telepon: harus bertipe number
     nomor_telepon: yup.string().required(),
     alamat: yup.string().required(),
 });
@@ -40,7 +42,7 @@ const Create: FC<UserCreateProps> = ({ onClose, onSucsess }) => {
     });
 
     const onSubmit: SubmitHandler<FormData> = async (data) => {
-        const { name, email, role, nomor_telepon, alamat } = data;
+        const { name, email, password, role, nomor_telepon, alamat } = data;
 
         setIsLoading(true); // Set loading state to true
         setError(null);
@@ -49,12 +51,14 @@ const Create: FC<UserCreateProps> = ({ onClose, onSucsess }) => {
             await axios.post(`/api/user`, {
                 name,
                 email,
+                password,
                 role,
                 nomor_telepon,
                 alamat,
             });
 
             mutate("/api/user");
+            onClose(); // Set loading state to false
 
         } catch (error: any) {
             console.error(error);
@@ -64,13 +68,23 @@ const Create: FC<UserCreateProps> = ({ onClose, onSucsess }) => {
                 if (axiosError.response) {
                     console.log("Response data:", axiosError.response.data);
                     console.log("Response status:", axiosError.response.status);
-                    setError(`An error occurred: ${axiosError.response.data}`); // Set custom error message
+
+                    const responseData = axiosError.response.data as { message: string };
+
+                    // Extract the main error message from the response data
+                    const errorMessage = responseData.message;
+
+                    setError(`An error occurred: ${errorMessage}`);
                 } else if (axiosError.request) {
                     console.log("No response received:", axiosError.request);
-                    setError("No response received. Please check your internet connection.");
+
+                    const request = axiosError.request.toString();
+                    setError(`No response received: ${request}`);
                 } else {
                     console.log("Error setting up the request:", axiosError.message);
-                    setError(`Error setting up the request. Please try again., ${axiosError.message}`);
+
+                    const request = axiosError.message.toString();
+                    setError(`Error setting up the request: ${request}`);
                 }
             } else {
                 console.log("Error:", error.message);
@@ -78,7 +92,6 @@ const Create: FC<UserCreateProps> = ({ onClose, onSucsess }) => {
             }
         } finally {
             setIsLoading(false);
-            onClose(); // Set loading state to false
         }
     };
 
@@ -108,9 +121,18 @@ const Create: FC<UserCreateProps> = ({ onClose, onSucsess }) => {
             {errors.email && <p className="text-red-500">{errors.email.message}</p>}
 
             <Input
+                id="password"
+                label="Password"
+                type="password"
+                register={{ ...register("password") }}
+                errors={errors}
+            />
+            {errors.password && <p className="text-red-500">{errors.password.message}</p>}
+
+            <Input
                 id="nomor_telepon"
                 label="Nomor Telepon"
-                type="text"
+                type="number"
                 register={{ ...register("nomor_telepon") }}
                 errors={errors}
             />
