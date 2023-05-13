@@ -14,6 +14,7 @@ interface InputProps {
     required?: boolean;
     register: any;
     errors: FieldErrors
+    defaultvalue?: string | number;
 }
 
 const Input: React.FC<InputProps> = ({
@@ -25,6 +26,7 @@ const Input: React.FC<InputProps> = ({
     register,
     required,
     errors,
+    defaultvalue
 }) => {
     return (
         <div className="w-full relative">
@@ -45,6 +47,7 @@ const Input: React.FC<InputProps> = ({
                 {...register}
                 placeholder=" "
                 type={type}
+                defaultValue={defaultvalue}
                 className={`
             peer
             w-full
