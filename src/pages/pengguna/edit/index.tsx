@@ -56,12 +56,12 @@ const UserEdit: FC<UserEditProps> = ({ userId, onClose, onSucsess, data }) => {
 
             mutate("/api/user");
 
-            onClose();
-            onSucsess();
         } catch (error) {
             console.error(error);
         } finally {
             setIsLoading(false); // Set loading state to false
+            onClose();
+            onSucsess();
         }
     };
 
