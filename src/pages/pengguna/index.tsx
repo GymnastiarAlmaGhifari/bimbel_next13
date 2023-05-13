@@ -1,11 +1,10 @@
-import { GetServerSideProps } from 'next';
+import useSWR from 'swr';
+import fetcher from '@/libs/fetcher';
 import React, { useEffect, useState } from 'react';
 import Sidebar from '../components/Sidebar';
-import prisma from '@/libs/prismadb';
 import { ModalDetail } from "@/pages/components/Modal";
-import UserEdit from './edit/[id]';
-import Link from "next/link";
-import { useRouter } from 'next/router';
+import UserEdit from './edit';
+import Navbar from '../components/Navbar';
 
 interface User {
     id: string;
@@ -23,39 +22,21 @@ interface Props {
     users: User[];
 }
 
-const User: React.FC<Props> = ({ users }) => {
-
-    const router = useRouter();
+const User: React.FC<Props> = () => {
+    const { data: users, error } = useSWR<User[]>('/api/user', fetcher);
     const [selected, setSelected] = useState<User | null>(null);
+
+    useEffect(() => {
+        if (error) {
+
+        }
+    }, [error]);
 
 
     const backPengguna = () => {
-        router.push("/pengguna");
+        setSelected(null);
     };
 
-    // onchange untuk open modal
-    // const [nama, setNama] = useState("");
-
-    // // Fungsi untuk menangkap input nama dari UserEdit
-    // const getName = (data: string) => {
-    //     setNama(data);
-    // };
-
-    // // onclose setnama null dan time out 1 detik
-    // const onClose = () => {
-    //     setNama("");
-    // };
-
-    // useEffect(() => {
-    //     // set a timeout to clear the name state variable after 1 second
-    //     const timeoutId = setTimeout(() => {
-    //         onClose();
-    //     }, 1000);
-
-    //     return () => {
-    //         clearTimeout(timeoutId);
-    //     };
-    // }, [nama]);
 
     const [showSuccess, setShowSuccess] = useState(false);
 
@@ -71,65 +52,75 @@ const User: React.FC<Props> = ({ users }) => {
     }, [showSuccess]);
 
     return (
-        <div>
+        <div className="flex flex-row">
             <Sidebar />
-            <div className="ml-80">
-                <h1 className="font-bold text-4xl my-10">List Buku</h1>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Nama</th>
-                            <th>Email</th>
-                            <th>Role</th>
-                            <th>Nomor Telepon</th>
-                            <th>Alamat</th>
-                            <th>Created At</th>
-                            <th>Updated At</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {users.map((user) => (
-                            <tr key={user.id}>
-                                <td>{user.name}</td>
-                                <td>{user.email}</td>
-                                <td>{user.role}</td>
-                                <td>{user.nomor_telepon}</td>
-                                <td>{user.alamat}</td>
-                                <td>{user.createdAt.toString()}</td>
-                                <td>{user.updatedAt.toString()}</td>
-                                <td>
-                                    <Link
-                                        href={`/pengguna/?edit=${user.id}`}
-                                        as={`/pengguna/edit`}
-                                        onClick={() => setSelected(user)}
-                                    >
-                                        <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                                            Edit
-                                        </button>
-                                    </Link>
 
-                                </td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
+            <div className="ml-10 w-full">
+                <Navbar />
+                <h1 className="font-bold text-4xl my-10">List user</h1>
+                {users ? (
+                    <>
+                        {users.length === 0 ? (
+                            <p>No books found.</p>
+                        ) : (
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Nama</th>
+                                        <th>Email</th>
+                                        <th>Role</th>
+                                        <th>Nomor Telepon</th>
+                                        <th>Alamat</th>
+                                        <th>Created At</th>
+                                        <th>Updated At</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {users.map((user: User) => (
+                                        <tr key={user.id}>
+                                            <td>{user.name}</td>
+                                            <td>{user.email}</td>
+                                            <td>{user.role}</td>
+                                            <td>{user.nomor_telepon}</td>
+                                            <td>{user.alamat}</td>
+                                            <td>{user.createdAt.toString()}</td>
+                                            <td>{user.updatedAt.toString()}</td>
+                                            <td>
+                                                <button
+                                                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                                                    onClick={() => setSelected(user)}
+                                                >
+                                                    Edit
+                                                </button>
+
+
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        )}
+                    </>
+                ) : (
+                    <p>Loading...</p>
+                )}
             </div>
             {
-                router.query.edit && (
+                selected && (
                     <ModalDetail
                         onOpen={true}
                         onClose={backPengguna}
                     >
                         <UserEdit
-                            userId={router.query.edit as string}
+                            userId={selected.id}
                             onClose={backPengguna}
                             onSucsess={
                                 () => {
                                     setShowSuccess(true);
                                 }
                             }
-                        // onChange={getName}
+                            data={selected}
                         />
                     </ModalDetail>
                 )
@@ -150,28 +141,9 @@ const User: React.FC<Props> = ({ users }) => {
             )
             }
 
-
-
-
         </div>
     );
 
-};
-
-export const getServerSideProps: GetServerSideProps = async () => {
-
-    const users = await prisma.user.findMany();
-    // Convert Date objects to string
-    const serializedUsers = users.map((user) => ({
-        ...user,
-        createdAt: user.createdAt.toString(),
-        updatedAt: user.updatedAt.toString(),
-    }));
-    return {
-        props: {
-            users: serializedUsers,
-        },
-    };
 };
 
 export default User;

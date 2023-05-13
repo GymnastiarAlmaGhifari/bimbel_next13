@@ -234,7 +234,7 @@ const Sidebar = () => {
                                             className={`${router.pathname === "/jadwal" ? "text-blue-500" : ""
                                                 } block py-2 hover:text-blue-500`}
                                         >
-                                            About
+                                            jadwal
                                         </button>
                                     </Link>
                                 </li>
@@ -245,6 +245,16 @@ const Sidebar = () => {
                                                 } block py-2 hover:text-blue-500`}
                                         >
                                             User
+                                        </button>
+                                    </Link>
+                                </li>
+                                <li>
+                                    <Link href="/siswa">
+                                        <button
+                                            className={`${router.pathname === "/siswa" ? "text-blue-500" : ""
+                                                } block py-2 hover:text-blue-500`}
+                                        >
+                                            Siswa
                                         </button>
                                     </Link>
                                 </li>
