@@ -1,13 +1,10 @@
-import { useEffect } from 'react';
-import useSWR, { mutate } from 'swr';
-import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
+import useSWR from 'swr';
 import { signOut } from 'next-auth/react';
-import Link from 'next/link';
 import Sidebar from '../components/Sidebar';
 import Navbar from '../components/Navbar';
 import { ModalDetail } from '@/pages/components/Modal';
-import BookEdit from './edit/[id]';
-import { GetServerSideProps } from 'next';
+import BookEdit from './edit/index';
 import fetcher from '@/libs/fetcher';
 
 interface Book {
@@ -24,34 +21,23 @@ interface Props {
     books: Book[];
 }
 
-const Dashboard: React.FC<Props> = ({
-    // books,
-}) => {
-    const router = useRouter();
-
-
+const Dashboard: React.FC<Props> = () => {
     const { data: books, error } = useSWR<Book[]>('/api/books', fetcher, {});
-
-
+    const [selectedBook, setSelectedBook] = useState<Book | null>(null);
 
     useEffect(() => {
         if (error) {
-            // Handle error if necessary
+
         }
     }, [error]);
 
-    const backDashboard = () => {
-        router.push('/dashboard');
+    const onClose = () => {
+        setSelectedBook(null);
     };
 
     if (error) {
         return <p>Error loading books.</p>;
     }
-
-
-    // data sudah berubah tetapi halaman harus di reload untuk melihat perubahan
-
-
     return (
         <div className="flex flex-row">
             <Sidebar />
@@ -96,14 +82,14 @@ const Dashboard: React.FC<Props> = ({
                                             <td>{book.createdAt.toString()}</td>
                                             <td>{book.updatedAt.toString()}</td>
                                             <td>
-                                                <Link
-                                                    href={`/dashboard/?edit=${book.id}`}
-                                                    as={`/dashboard/edit`}
+                                                <button
+                                                    className="rounded-full bg-white/10 px-10 py-3 font-semibold text-black no-underline transition hover:bg-white/20"
+                                                    onClick={() => {
+                                                        setSelectedBook(book);
+                                                    }}
                                                 >
-                                                    <button className="rounded-full bg-white/10 px-10 py-3 font-semibold text-black no-underline transition hover:bg-white/20">
-                                                        edit
-                                                    </button>
-                                                </Link>
+                                                    edit
+                                                </button>
                                             </td>
                                         </tr>
                                     ))}
@@ -114,12 +100,12 @@ const Dashboard: React.FC<Props> = ({
                 ) : (
                     <p>Loading...</p>
                 )}
-                {router.query.edit && (
-                    <ModalDetail onOpen={true} onClose={backDashboard}>
+                {selectedBook && (
+                    <ModalDetail onOpen={true} onClose={onClose}>
                         <BookEdit
-                            bookId={router.query.edit as string}
-                            onClose={backDashboard}
-
+                            bookId={selectedBook.id}
+                            data={selectedBook}
+                            onClose={onClose}
                         />
                     </ModalDetail>
                 )}
