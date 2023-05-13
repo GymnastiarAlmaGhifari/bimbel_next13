@@ -4,6 +4,8 @@ import { useEffect, useState } from 'react';
 import useSWR from 'swr';
 import fetcher from '@/libs/fetcher';
 import { GetServerSideProps } from 'next';
+import { ModalDetail } from '@/pages/components/Modal';
+import RuangEdit from './edit';
 
 interface Ruang {
     id: string;
@@ -70,15 +72,13 @@ const Ruang: FC<Props> = () => {
                                             <td>{ruang.createdAt.toString()}</td>
                                             <td>{ruang.updatedAt.toString()}</td>
                                             <td>
-                                                <Link
-                                                    href={`/pengaturan/ruang/edit/${ruang.id}`}
+                                                <button
+                                                    className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'
+                                                    onClick={() => setSelectedRuang(ruang)}
                                                 >
-                                                    <button
-                                                        className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'
-                                                    >
-                                                        edit
-                                                    </button>
-                                                </Link>
+                                                    Edit
+                                                </button>
+
                                             </td>
                                         </tr>
                                     ))}
@@ -101,6 +101,20 @@ const Ruang: FC<Props> = () => {
                     kembali
                 </button>
             </Link>
+            {
+                selectedRuang && (
+                    <ModalDetail
+                        onOpen={true}
+                        onClose={onClose}
+                    >
+                        <RuangEdit
+                            data={selectedRuang}
+                            onClose={onClose}
+                            ruangId={selectedRuang.id}
+                        />
+                    </ModalDetail>
+                )
+            }
         </div>
     )
 }
