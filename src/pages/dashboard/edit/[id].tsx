@@ -1,7 +1,7 @@
 "use client"
 import fetcher from "@/libs/fetcher";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import axios from "axios";
 import useSWR, { mutate } from "swr";
@@ -17,6 +17,7 @@ import * as yup from "yup";
 interface BookEditProps {
     bookId: string;
     onClose: () => void;
+
 }
 
 const schema = yup.object().shape({
@@ -31,7 +32,7 @@ type FormData = yup.InferType<typeof schema>;
 
 const BookEdit: React.FC<BookEditProps> = ({ bookId, onClose }) => {
     const router = useRouter();
-    // const { data: book, error, isLoading } = useSWR(`/api/books/${bookId}`, fetcher);
+    const { data: bookData, error, isLoading } = useSWR(`/api/books/${bookId}`, fetcher);
 
     // jika id tidak ditemukan maka akan di redirect ke halaman dashboard
     const {
@@ -39,96 +40,72 @@ const BookEdit: React.FC<BookEditProps> = ({ bookId, onClose }) => {
         handleSubmit,
         formState: { errors },
     } = useForm<FormData>({
-        defaultValues: async () => {
-            const { data, status, } = await axios.get(`/api/books/${bookId}`);
-            if (status !== 200) {
-                throw new Error("Gagal mendapatkan data buku");
-            }
-            if (!data) {
-                router.push("/dashboard");
-            }
-            return data;
-        },
         resolver: yupResolver(schema),
     });
-
-
-
-
-    // const defaultValues = {
-    //     title: book?.title,
-    //     author: book?.author,
-    //     description: book?.description,
-    // };
-
-    // tanpa yup
-    // const {
-    //     register,
-    //     handleSubmit,
-    //     formState: {
-    //         errors,
-    //     },
-    // } = useForm<FieldValues>({
-    //     defaultValues: {
-    //         defaultValues: {
-    //             title: book?.title,
-    //             author: book?.author,
-    //             description: book?.description,
-    //         },
-    //     },
-    // });
-
 
     const onSubmit: SubmitHandler<FormData> = async (data) => {
         const { title, author, description } = data;
 
         try {
+            // Perform the update request here using the bookId and the updated data
             await axios.put(`/api/books/${bookId}`, {
                 title,
                 author,
                 description,
             });
 
-            mutate(`/api/books/${bookId}`);
-            onClose();
+            // Update the local data without a revalidation
+            mutate("/api/books");
+
+            // Redirect to the dashboard page after successful update
             router.push("/dashboard");
         } catch (error) {
-            console.error(error);
+            // Handle any errors that occurred during the update
+            console.error("Failed to update book:", error);
         }
     };
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
-            <Input
-                id="title"
-                label="Title"
-                type="text"
-                register={{ ...register("title") }}
-                errors={errors}
-            />
-            {
-                errors.title && <p className="text-red-500">
-                    {errors.title.message}
-                </p>
-            }
+            {isLoading ? (
+                <p>Loading...</p>
+            ) : (
+                <>
+                    <Input
+                        id="title"
+                        label="Title"
+                        type="text"
+                        register={{ ...register("title") }}
+                        errors={errors}
+                        defaultvalue={bookData?.title}
+                    />
+                    {
+                        errors.title && <p className="text-red-500">
+                            {errors.title.message}
+                        </p>
+                    }
 
-            <Input
-                id="author"
-                label="Author"
-                type="text"
-                register={{ ...register("author") }}
-                errors={errors}
-            />
+                    <Input
+                        id="author"
+                        label="Author"
+                        type="text"
+                        register={{ ...register("author") }}
+                        errors={errors}
+                        defaultvalue={bookData?.author}
+                    />
 
-            <Input
-                id="description"
-                label="Description"
-                type="text"
-                register={{ ...register("description") }}
-                errors={errors}
-            />
+                    <Input
+                        id="description"
+                        label="Description"
+                        type="text"
+                        register={{ ...register("description") }}
+                        errors={errors}
+                        defaultvalue={bookData?.description}
+                    />
 
-            <button type="submit">Submit</button>
+                    <button type="submit">Submit</button>
+                </>
+            )}
         </form>
     );
 };
