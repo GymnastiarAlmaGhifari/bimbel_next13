@@ -15,7 +15,6 @@ interface BookEditProps {
     bookId: string;
     data: any;
     onClose: () => void;
-
 }
 
 const schema = yup.object().shape({

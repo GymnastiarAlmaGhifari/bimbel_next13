@@ -3,6 +3,8 @@ import React, { FC } from 'react'
 import { useEffect, useState } from 'react';
 import useSWR from 'swr';
 import fetcher from '@/libs/fetcher';
+import { ModalDetail } from '@/pages/components/Modal';
+import MapelEdit from './edit';
 
 interface Mapel {
     kelas: any;
@@ -13,12 +15,7 @@ interface Mapel {
     updatedAt: Date;
 }
 
-interface Props {
-    mapel: Mapel[];
-}
-
-
-const Mapel: FC<Props> = () => {
+const Mapel: FC<Mapel> = () => {
 
     const { data: mapel, error } = useSWR<Mapel[]>('/api/mapel', fetcher, {});
 
@@ -97,9 +94,22 @@ const Mapel: FC<Props> = () => {
                     kembali
                 </button>
             </Link>
+            {
+                selectedMapel && (
+                    <ModalDetail
+                        onOpen={true}
+                        onClose={onClose}
+                    >
+                        <MapelEdit
+                            data={selectedMapel}
+                            onClose={onClose}
+                            mapelId={selectedMapel.id}
+                        />
+                    </ModalDetail>
+                )
+            }
         </div>
     )
 }
-
 
 export default Mapel
