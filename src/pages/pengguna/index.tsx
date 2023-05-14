@@ -12,134 +12,145 @@ import Navbar from "../components/Navbar";
 import Create from "./create";
 
 interface User {
-  id: string;
-  name: string;
-  email: string;
-  role: string;
-  nomor_telepon: string;
-  alamat: string;
-  createdAt: Date;
-  updatedAt: Date;
-  img: string;
+    id: string;
+    name: string;
+    email: string;
+    role: string;
+    nomor_telepon: string;
+    alamat: string;
+    createdAt: Date;
+    updatedAt: Date;
+    img: string;
 }
 
 interface Props {
-  users: User[];
+    users: User[];
 }
 
 const User: React.FC<Props> = () => {
-  const { data: users, error } = useSWR<User[]>("/api/user", fetcher);
-  const [selected, setSelected] = useState<User | null>(null);
+    const { data: users, error } = useSWR<User[]>("/api/user", fetcher);
+    const [selected, setSelected] = useState<User | null>(null);
 
-  useEffect(() => {
-    if (error) {
-    }
-  }, [error]);
+    useEffect(() => {
+        if (error) {
+        }
+    }, [error]);
 
-  const backPengguna = () => {
-    setSelected(null);
-  };
-
-  // open modal create
-  const [showCreate, setShowCreate] = useState(false);
-
-  const [showSuccess, setShowSuccess] = useState(false);
-
-  useEffect(() => {
-    // set a timeout to clear the name state variable after 1 second
-    const timeoutId = setTimeout(() => {
-      setShowSuccess(false);
-    }, 1000);
-
-    return () => {
-      clearTimeout(timeoutId);
+    const backPengguna = () => {
+        setSelected(null);
     };
-  }, [showSuccess]);
 
-  return (
-    <div className="flex flex-row">
-      <Sidebar />
+    // open modal create
+    const [showCreate, setShowCreate] = useState(false);
 
-      <div className="ml-10 w-full">
-        <Navbar />
-        <h1 className="font-bold text-4xl my-10">List User</h1>
-        <table>
-          <thead>
-            <tr>
-              <th>Nama</th>
-              <th>Email</th>
-              <th>Role</th>
-              <th>Nomor Telepon</th>
-              <th>Alamat</th>
-              <th>Created At</th>
-              <th>Updated At</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {users.map((user) => (
-              <tr key={user.id}>
-                <td>{user.name}</td>
-                <td>{user.email}</td>
-                <td>{user.role}</td>
-                <td>{user.nomor_telepon}</td>
-                <td>{user.alamat}</td>
-                <td>{user.createdAt.toString()}</td>
-                <td>{user.updatedAt.toString()}</td>
-                <td>
-                  <Link
-                    href={`/pengguna/?edit=${user.id}`}
-                    as={`/pengguna/edit`}
-                    onClick={() => setSelected(user)}
-                  >
-                    <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                      Edit
-                    </button>
-                  </Link>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-      {selected && (
-        <ModalDetail onOpen={true} onClose={backPengguna}>
-          <UserEdit
-            userId={selected.id}
-            onClose={backPengguna}
-            onSucsess={() => {
-              setShowSuccess(true);
-            }}
-            data={selected}
-          />
-        </ModalDetail>
-      )}
+    const [showSuccess, setShowSuccess] = useState(false);
 
-      {/* buat modal dari getname  */}
-      {showSuccess && (
-        <ModalDetail onOpen={true} onClose={() => setShowSuccess(false)}>
-          <div className="flex flex-col items-center justify-center">
-            <h1 className="text-2xl font-bold text-green-500">Berhasil</h1>
-            <p className="text-sm text-gray-500">
-              {selected?.name}Data berhasil diubah
-            </p>
-          </div>
-        </ModalDetail>
-      )}
+    useEffect(() => {
+        // set a timeout to clear the name state variable after 1 second
+        const timeoutId = setTimeout(() => {
+            setShowSuccess(false);
+        }, 1000);
 
-      {/* modal create */}
-      {showCreate && (
-        <ModalDetail onOpen={true} onClose={() => setShowCreate(false)}>
-          <Create
-            onClose={() => setShowCreate(false)}
-            onSucsess={() => {
-              setShowSuccess(true);
-            }}
-          />
-        </ModalDetail>
-      )}
-    </div>
-  );
+        return () => {
+            clearTimeout(timeoutId);
+        };
+    }, [showSuccess]);
+
+    return (
+        <div className="flex flex-row">
+            <Sidebar />
+
+            <div className="ml-10 w-full">
+                <Navbar />
+                <h1 className="font-bold text-4xl my-10">List User</h1>
+                {
+                    users ? (
+                        <>
+                            {users.length === 0 ? (
+                                <p>No program found.</p>
+                            ) : (
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Nama</th>
+                                            <th>Email</th>
+                                            <th>Role</th>
+                                            <th>Nomor Telepon</th>
+                                            <th>Alamat</th>
+                                            <th>Created At</th>
+                                            <th>Updated At</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {users.map((user) => (
+                                            <tr key={user.id}>
+                                                <td>{user.name}</td>
+                                                <td>{user.email}</td>
+                                                <td>{user.role}</td>
+                                                <td>{user.nomor_telepon}</td>
+                                                <td>{user.alamat}</td>
+                                                <td>{user.createdAt.toString()}</td>
+                                                <td>{user.updatedAt.toString()}</td>
+                                                <td>
+                                                    <Link
+                                                        href={`/pengguna/?edit=${user.id}`}
+                                                        as={`/pengguna/edit`}
+                                                        onClick={() => setSelected(user)}
+                                                    >
+                                                        <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                                                            Edit
+                                                        </button>
+                                                    </Link>
+                                                </td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            )}
+                        </>
+                    ) : (
+                        <p>Loading...</p>
+                    )}
+            </div>
+            {selected && (
+                <ModalDetail onOpen={true} onClose={backPengguna}>
+                    <UserEdit
+                        userId={selected.id}
+                        onClose={backPengguna}
+                        onSucsess={() => {
+                            setShowSuccess(true);
+                        }}
+                        data={selected}
+                    />
+                </ModalDetail>
+            )}
+
+            {/* buat modal dari getname  */}
+            {showSuccess && (
+                <ModalDetail onOpen={true} onClose={() => setShowSuccess(false)}>
+                    <div className="flex flex-col items-center justify-center">
+                        <h1 className="text-2xl font-bold text-green-500">Berhasil</h1>
+                        <p className="text-sm text-gray-500">
+                            {selected?.name}Data berhasil diubah
+                        </p>
+                    </div>
+                </ModalDetail>
+            )}
+
+            {/* modal create */}
+            {showCreate && (
+                <ModalDetail onOpen={true} onClose={() => setShowCreate(false)}>
+                    <Create
+                        onClose={() => setShowCreate(false)}
+                        onSucsess={() => {
+                            setShowSuccess(true);
+                        }}
+                    />
+                </ModalDetail>
+            )}
+        </div>
+    );
 };
 
 export default User;
