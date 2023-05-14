@@ -68,7 +68,7 @@ const RuangEdit: FC<RuangEditProps> = ({ ruangId, onClose, data }) => {
                                 label="Nama Ruang"
                                 errors={errors}
                                 register={{ ...register("nama") }}
-                                defaultValue={data.nama}
+                                defaultValue={data?.nama ?? ""}
                             />
                             {
                                 errors.nama && <p className="text-red-500">
@@ -82,7 +82,7 @@ const RuangEdit: FC<RuangEditProps> = ({ ruangId, onClose, data }) => {
                             <select
                                 className="form-select"
                                 {...register("tipe")}
-                                defaultValue={data.tipe}
+                                defaultValue={data?.tipe ?? "KELAS"}
                             >
                                 <option value="KELAS">Kelas</option>
                                 <option value="RUMAH">Rumah</option>

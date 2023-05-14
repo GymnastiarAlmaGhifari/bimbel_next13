@@ -80,7 +80,7 @@ const MapelEdit: FC<MapelEditProps> = ({ mapelId, onClose, data }) => {
                                 label="Nama Mapel"
                                 register={{ ...register("nama_mapel") }}
                                 errors={errors}
-                                defaultValue={data.nama_mapel}
+                                defaultValue={data?.nama_mapel ?? ""}
                             />
                             {
                                 errors.nama_mapel && <p className="text-red-500">
@@ -97,7 +97,7 @@ const MapelEdit: FC<MapelEditProps> = ({ mapelId, onClose, data }) => {
                                     id="kelas_id"
                                     autoComplete="kelas_id"
                                     {...register("kelas_id")}
-                                    defaultValue={data.kelas_id}
+                                    defaultValue={data?.kelas_id ?? ""}
                                     className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
 
                                     <option value="">Pilih Kelas</option>
