@@ -1,7 +1,6 @@
 "use client";
 import { Inter } from "next/font/google";
 
-
 import Button from "@/pages/components/buttons/Button";
 import Diskon from "./Diskon";
 // import { Parallax } from 'react-parallax';

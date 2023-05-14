@@ -5,7 +5,6 @@
 // import { MdCalendarToday } from "react-icons/md";
 // import { useSession } from "next-auth/react";
 
-
 // const Sidebar = () => {
 //     // const [isOpen, setIsOpen] = useState(
 //     //     localStorage.getItem("sidebar") === "true" ? true : false
@@ -36,7 +35,6 @@
 //         { icon: AiFillHome, title: "Dashboard", href: "/dashboard", isOpen: isOpen },
 //         { icon: MdCalendarToday, title: "Jadwal", href: "/jadwal", isOpen: isOpen },
 //     ] as MenuItemProps[];
-
 
 //     const { data: session, status } = useSession();
 
@@ -130,7 +128,6 @@
 
 // // ] as Menu[];
 
-
 // // function MainMenu() {
 // //     return (
 // //         <div className="flex w-60 flex-none flex-col justify-between bg-black p-6 text-white">
@@ -186,37 +183,238 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { HiOutlineMenuAlt4 } from "react-icons/hi";
-import { AiOutlineClose } from "react-icons/ai";
+import { AiFillHome, AiOutlineClose } from "react-icons/ai";
+import { BsFillPersonFill, BsCalendar } from "react-icons/bs";
+import { MdPayment, MdPeopleAlt } from "react-icons/md";
+import { IoMdSchool, IoMdSettings } from "react-icons/io";
 import { useSession } from "next-auth/react";
+import Image from "next/image";
 
 const Sidebar = () => {
-    const [isOpen, setIsOpen] = useState(false);
-    const router = useRouter();
+  const [isOpen, setIsOpen] = useState(false);
+  const router = useRouter();
 
-    const toggleMenu = () => {
-        setIsOpen(!isOpen);
-    };
+  const toggleMenu = () => {
+    setIsOpen(!isOpen);
+  };
 
-    const { data: session, status } = useSession();
+  const { data: session, status } = useSession();
+  const baseStyleButtonSideBar = "h-14 px-3 flex flex-row gap-3 bg-Neutral-100 items-center text-Primary-10 font-bold rounded-lg";
+  const activeStyleButtonSideBar =
+    "text-Primary-90 bg-Primary-20 hover:bg-Primary-20 cursor-auto";
 
-    return (
-        <>
-            <div className={`${isOpen ? "w-64" : "w-32"} "top-0 left-0 h-screen bg-gray-800 text-white z-50"`}
-            >
-                <div className="px-4 py-3 border-b border-gray-700 flex justify-between items-center">
-                    <span className="font-semibold text-xl">Sidebar</span>
-                    <button onClick={toggleMenu} className="block ">
-                        {isOpen ? (
-                            <AiOutlineClose size={24} />
-                        ) : (
-                            <HiOutlineMenuAlt4 size={24} />
-                        )}
+  return (
+    <>
+      <div
+        className={`${
+          isOpen ? "w-64" : "w-32"
+        } " h-full z-50"`}
+      >
+        <div className="h-14 py-2 flex justify-between items-center gap-6 pl-7">
+          <div className="w-full">
+            <Image
+              src={isOpen ? "LogoSidebarOpen.svg" : "LogoSidebarClose.svg"}
+              alt="Logo"
+              width={100}
+              height={100}
+            />
+          </div>
+          <button
+            onClick={toggleMenu}
+            className="block border rounded-full p-1 text-Primary-10 translate-x-4 bg-Neutral-100"
+          >
+            {isOpen ? (
+              <AiOutlineClose size={24} />
+            ) : (
+              <HiOutlineMenuAlt4 size={24} />
+            )}
+          </button>
+        </div>
+
+        <nav className={`${isOpen ? "" : ""}  px-4 pt-6`}>
+          <ul className="flex flex-col gap-4">
+            {session?.user.role === "SUPER" && (
+              <>
+                <li>
+                  <Link href="/dashboard">
+                    <button
+                      className={`${
+                        router.pathname === "/dashboard"
+                          ? activeStyleButtonSideBar
+                          : "hover:bg-Primary-90"
+                      } ${baseStyleButtonSideBar} ${
+                        isOpen ? "w-full" : "w-14 justify-center"
+                      }`}
+                    >
+                      <div className="">
+                        <AiFillHome size={24} />
+                      </div>
+                      {isOpen ? "Home" : ""}
                     </button>
-                </div>
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/jadwal">
+                    <button
+                      className={`${
+                        router.pathname === "/jadwal"
+                          ? activeStyleButtonSideBar
+                          : "hover:bg-Primary-90"
+                      } ${baseStyleButtonSideBar} ${
+                        isOpen ? "w-full" : "w-14 justify-center"
+                      }`}
+                    >
+                      <div>
+                        <BsCalendar size={24} />
+                      </div>
+                      {isOpen ? "Jadwal" : ""}
+                    </button>
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/pengguna">
+                    <button
+                      className={`${
+                        router.pathname === "/pengguna"
+                          ? activeStyleButtonSideBar
+                          : "hover:bg-Primary-90"
+                      } ${baseStyleButtonSideBar} ${
+                        isOpen ? "w-full" : "w-14 justify-center"
+                      }`}
+                    >
+                      <div>
+                        <BsFillPersonFill size={24} />
+                      </div>
+                      {isOpen ? "User" : ""}
+                    </button>
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/pembayaran">
+                    <button
+                      className={`${
+                        router.pathname === "/pembayaran"
+                          ? activeStyleButtonSideBar
+                          : "hover:bg-Primary-90"
+                      } ${baseStyleButtonSideBar} ${
+                        isOpen ? "w-full" : "w-14 justify-center"
+                      }`}
+                    >
+                      <div>
+                        <MdPayment size={24} />
+                      </div>
+                      {isOpen ? "Pembayaran" : ""}
+                    </button>
+
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/siswa">
+                    <button
+                      className={`${
+                        router.pathname === "/siswa"
+                          ? activeStyleButtonSideBar
+                          : "hover:bg-Primary-90"
+                      } ${baseStyleButtonSideBar} ${
+                        isOpen ? "w-full" : "w-14 justify-center"
+                      }`}
+                    >
+                      <div>
+                        <IoMdSchool size={24} />
+                      </div>
+                      {isOpen ? "Siswa" : ""}
+                    </button>
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/kelompok">
+                    <button
+                      className={`${
+                        router.pathname === "/kelompok"
+                          ? activeStyleButtonSideBar
+                          : "hover:bg-Primary-90"
+                      } ${baseStyleButtonSideBar} ${
+                        isOpen ? "w-full" : "w-14 justify-center"
+                      }`}
+                    >
+                      <div>
+                        <MdPeopleAlt size={24} />
+                      </div>
+                      {isOpen ? "Kelompok" : ""}
+                    </button>
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/pengaturan">
+                    <button
+                      className={`${
+                        router.pathname === "/pengaturan"
+                          ? activeStyleButtonSideBar
+                          : "hover:bg-Primary-90"
+                      } ${baseStyleButtonSideBar} ${
+                        isOpen ? "w-full" : "w-14 justify-center"
+                      }`}
+                    >
+                      <div>
+                        <IoMdSettings size={24} />
+                      </div>
+                      {isOpen ? "Pengaturan" : ""}
+                    </button>
+                  </Link>
+                </li>
+              </>
+            )}
+            {session?.user.role === "TENTOR" && (
+              <>
+                <li>
+                  <Link href="/dashboard">
+                    <button
+                      className={`${
+                        router.pathname === "/dashboard"
+                          ? activeStyleButtonSideBar
+                          : "hover:bg-Primary-90"
+                      } ${baseStyleButtonSideBar} ${
+                        isOpen ? "w-full" : "w-14 justify-center"
+                      }`}
+                    >
+                      <div>
+                        <BsFillPersonFill size={24} />
+                      </div>
+                      {isOpen ? "Home" : ""}
+                    </button>
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/jadwal">
+                    <button
+                      className={`${
+                        router.pathname === "/jadwal"
+                          ? activeStyleButtonSideBar
+                          : "hover:bg-Primary-90"
+                      } ${baseStyleButtonSideBar} ${
+                        isOpen ? "w-full" : "w-14 justify-center"
+                      }`}
+                    >
+                      <div>
+                        <BsFillPersonFill size={24} />
+                      </div>
+                      {isOpen ? "About" : ""}
+                    </button>
+                  </Link>
+                </li>
+              </>
+            )}
+          </ul>
+        </nav>
+      </div>
+    </>
+  );
+// =======
+<!--                 </div>
 
                 <nav className={`${isOpen ? "" : ""} px-4 pt-6`}>
                     <ul>
-                        {session?.user.role === "SUPER" && (
+<!--                         {session?.user.role === "SUPER" && (
                             <>
                                 <li>
                                     <Link href="/dashboard">
@@ -300,7 +498,7 @@ const Sidebar = () => {
                                 </li>
                             </>
                         )}
-                        {session?.user.role === "TENTOR" && (
+<!--                         {session?.user.role === "TENTOR" && (
                             <>
 
                                 <li>
@@ -330,8 +528,8 @@ const Sidebar = () => {
                 </nav>
             </div>
         </>
-    );
+    ); -->
+<!-- >>>>>>> main -->
 };
 
 export default Sidebar;
-

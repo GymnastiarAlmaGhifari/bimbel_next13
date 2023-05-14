@@ -18,7 +18,7 @@ const ButtonInAbout: React.FC<ButtonProps> = ({
       }
     return (
         <button onClick={ToSocialMedia}>
-        <Image src={fileLogo} alt={text} width={500} height={500} />
+        <Image src={fileLogo} alt={text} width={24} height={24} />
       </button>
     )
 }
