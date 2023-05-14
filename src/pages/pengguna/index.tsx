@@ -6,6 +6,7 @@ import { ModalDetail } from "@/pages/components/Modal";
 import UserEdit from './edit/[id]';
 import Link from "next/link";
 import { useRouter } from 'next/router';
+import Navbar from '../components/Navbar';
 
 interface User {
     id: string;
@@ -71,10 +72,12 @@ const User: React.FC<Props> = ({ users }) => {
     }, [showSuccess]);
 
     return (
-        <div>
-            <Sidebar />
-            <div className="ml-80">
-                <h1 className="font-bold text-4xl my-10">List Buku</h1>
+        <div className='flex flex-row'>
+        <Sidebar />
+        
+        <div className="ml-10 w-full">
+            <Navbar/>
+            <h1 className="font-bold text-4xl my-10">List User</h1>
                 <table>
                     <thead>
                         <tr>

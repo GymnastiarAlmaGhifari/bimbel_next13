@@ -1,4 +1,5 @@
 // "use client";
+// import React from 'react';
 // import Link from "next/link";
 // // import { usePathname } from 'next/navigation';
 // import { useRouter } from "next/router";
@@ -25,7 +26,7 @@
 //       <Link href={href}>
 //         <button className={`relative flex rounded py-3 px-4 `}>
 //           <span
-//             className={`mr-3 text-2xl 
+//             className={`mr-3 text-2xl
 //                             }`}
 //           >
 //             <Icon size={24} />
@@ -37,16 +38,11 @@
 //   );
 // };
 
-// export default MenuItem;
 
-// import React from 'react'
+import React from "react";
 
-// const MenuItem = () => {
-//     return (
-//         <div>
+function MenuItem() {
+  return <div>Menu Item</div>;
+}
 
-//         </div>
-//     )
-// }
-
-// export default MenuItem
+export default MenuItem;
