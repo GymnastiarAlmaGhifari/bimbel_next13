@@ -12,10 +12,10 @@ const Navbar = () => {
           <p className="font-bold">Agimul Karim</p>
           <p className="font-semibold text-sm">Super Admin</p>
         </div>
-        <div className="w-10 h-10 rounded-full overflow-clip">
+        <div className="w-10 h-10 rounded-full overflow-clip scale-100 bg-red-400">
           <Image
-            src="https://th.bing.com/th/id/OIP.jUTdbKVku8FQ84w4R169wAHaGN?pid=ImgDet&rs=1"
-            alt="Profile" width={100} height={100}
+            src="https://img.jakpost.net/c/2017/02/15/2017_02_15_21637_1487139254._large.jpg"
+            alt="Profile" width={40} height={40} className="rounded-full w-full h-full object-cover"
           />
         </div>
         <IoIosArrowDown/>
