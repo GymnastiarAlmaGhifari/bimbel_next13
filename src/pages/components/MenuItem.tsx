@@ -1,4 +1,5 @@
 // "use client";
+// import React from 'react';
 // import Link from "next/link";
 // // import { usePathname } from 'next/navigation';
 // import { useRouter } from "next/router";
@@ -25,7 +26,7 @@
 //       <Link href={href}>
 //         <button className={`relative flex rounded py-3 px-4 `}>
 //           <span
-//             className={`mr-3 text-2xl 
+//             className={`mr-3 text-2xl
 //                             }`}
 //           >
 //             <Icon size={24} />
@@ -37,27 +38,30 @@
 //   );
 // };
 
-// export default MenuItem;
 
+import React from "react";
+
+function MenuItem() {
+  return <div>Menu Item</div>;
+}
+
+
+export default MenuItem;
+// =======
+// //         </div>
+// //     )
+// // }
+
+// // export default MenuItem
 // import React from 'react'
 
-// const MenuItem = () => {
-//     return (
-//         <div>
+// type Props = {}
 
-//         </div>
+// function MenuItem({ }: Props) {
+//     return (
+//         <div>MenuItem</div>
 //     )
 // }
 
 // export default MenuItem
-import React from 'react'
-
-type Props = {}
-
-function MenuItem({ }: Props) {
-    return (
-        <div>MenuItem</div>
-    )
-}
-
-export default MenuItem
+// >>>>>>> main

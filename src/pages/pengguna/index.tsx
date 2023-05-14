@@ -3,9 +3,16 @@ import fetcher from '@/libs/fetcher';
 import React, { useEffect, useState } from 'react';
 import Sidebar from '../components/Sidebar';
 import { ModalDetail } from "@/pages/components/Modal";
-import UserEdit from './edit';
+
+import UserEdit from './edit/[id]';
+import Link from "next/link";
+import { useRouter } from 'next/router';
 import Navbar from '../components/Navbar';
-import Create from './create';
+
+<!-- import UserEdit from './edit';
+import Navbar from '../components/Navbar';
+import Create from './create'; -->
+
 
 interface User {
     id: string;
@@ -55,7 +62,54 @@ const User: React.FC<Props> = () => {
     }, [showSuccess]);
 
     return (
-        <div className="flex flex-row">
+
+        <div className='flex flex-row'>
+        <Sidebar />
+        
+        <div className="ml-10 w-full">
+            <Navbar/>
+            <h1 className="font-bold text-4xl my-10">List User</h1>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Nama</th>
+                            <th>Email</th>
+                            <th>Role</th>
+                            <th>Nomor Telepon</th>
+                            <th>Alamat</th>
+                            <th>Created At</th>
+                            <th>Updated At</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {users.map((user) => (
+                            <tr key={user.id}>
+                                <td>{user.name}</td>
+                                <td>{user.email}</td>
+                                <td>{user.role}</td>
+                                <td>{user.nomor_telepon}</td>
+                                <td>{user.alamat}</td>
+                                <td>{user.createdAt.toString()}</td>
+                                <td>{user.updatedAt.toString()}</td>
+                                <td>
+                                    <Link
+                                        href={`/pengguna/?edit=${user.id}`}
+                                        as={`/pengguna/edit`}
+                                        onClick={() => setSelected(user)}
+                                    >
+                                        <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                                            Edit
+                                        </button>
+                                    </Link>
+
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+
+<!--         <div className="flex flex-row">
             <Sidebar />
 
             <div className="ml-10 w-full">
@@ -75,9 +129,9 @@ const User: React.FC<Props> = () => {
                 </button>
 
 
-                {users ? (
+<!--                 {users ? (
                     <>
-                        {users.length === 0 ? (
+<!--                         {users.length === 0 ? (
                             <p>No books found.</p>
                         ) : (
                             <table>
@@ -94,7 +148,7 @@ const User: React.FC<Props> = () => {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {users.map((user: User) => (
+<!--                                     {users.map((user: User) => (
                                         <tr key={user.id}>
                                             <td>{user.name}</td>
                                             <td>{user.email}</td>
@@ -121,7 +175,8 @@ const User: React.FC<Props> = () => {
                     </>
                 ) : (
                     <p>Loading...</p>
-                )}
+                )} -->
+
             </div>
             {
                 selected && (
