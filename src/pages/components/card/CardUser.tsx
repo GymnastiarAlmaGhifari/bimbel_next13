@@ -1,14 +1,22 @@
 import Image from "next/image";
 import { FC } from "react";
+import ButtonEdit from "../buttons/ButtonEdit";
 
 interface UserCard {
   nama_user: string;
-  institut: string;
+  universitas: string;
   nama_mapel: string;
+  onClick: () => void;
   role: string;
 }
 
-const UserCard: FC<UserCard> = ({ nama_mapel, institut, nama_user, role }) => {
+const UserCard: FC<UserCard> = ({
+  nama_mapel,
+  universitas,
+  onClick,
+  nama_user,
+  role,
+}) => {
   return (
     <div className="flex flex-col bg-Neutral-100 border rounded-lg py-5 px-4 gap-3">
       <div className="flex justify-between">
@@ -26,12 +34,14 @@ const UserCard: FC<UserCard> = ({ nama_mapel, institut, nama_user, role }) => {
           </div>
           <div className="flex flex-col gap-2">
             <h1 className=" text-Neutral-10 font-bold">{nama_user}</h1>
-            <div className="flex flex-col  gap-1">
-              <h3 className="text-sm text-Neutral-30">Asal Insitut</h3>
-              <span className="font-bold text-sm text-Primary-10">
-                {institut}
-              </span>
-            </div>
+            {universitas && (
+              <div className="flex flex-col  gap-1">
+                <h3 className="text-sm text-Neutral-30">Asal Insitut</h3>
+                <span className="font-bold text-sm text-Primary-10">
+                  {universitas}
+                </span>
+              </div>
+            )}
           </div>
         </div>
         <div className="flex flex-col items-end gap-1">
@@ -45,7 +55,7 @@ const UserCard: FC<UserCard> = ({ nama_mapel, institut, nama_user, role }) => {
       <div className="w-full h-[1px] bg-Neutral-30"></div>
       <div className="flex justify-between">
         <h2 className="font-bold text-Primary-10">{role}</h2>
-        <button>Edit Pengguna</button>
+        <ButtonEdit label="Edit Pengguna" onClick={onClick} />
       </div>
     </div>
   );
