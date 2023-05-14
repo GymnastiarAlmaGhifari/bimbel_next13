@@ -14,6 +14,9 @@ interface InputProps {
     required?: boolean;
     register: any;
     errors: FieldErrors
+    defaultValue?: string | number;
+    inputMode?: string;
+    className?: string;
 }
 
 const Input: React.FC<InputProps> = ({
@@ -25,6 +28,9 @@ const Input: React.FC<InputProps> = ({
     register,
     required,
     errors,
+    defaultValue,
+    inputMode,
+    className,
 }) => {
     return (
         <div className="w-full relative">
@@ -45,6 +51,8 @@ const Input: React.FC<InputProps> = ({
                 {...register}
                 placeholder=" "
                 type={type}
+                inputMode={inputMode}
+                defaultValue={defaultValue}
                 className={`
             peer
             w-full
@@ -60,7 +68,7 @@ const Input: React.FC<InputProps> = ({
             disabled:cursor-not-allowed
             ${formatPrice ? 'pl-9' : 'pl-4'}
 
-          `}
+          ` + className}
             />
             <label
                 className={`

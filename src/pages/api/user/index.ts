@@ -14,22 +14,33 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   } else if (req.method === "POST") {
     const { name, email, password, role, nomor_telepon, alamat, image } = req.body;
 
-    try {
-      const user = await prisma.user.create({
-        data: {
-          name,
-          email,
-          password: await bcrypt.hash(password, 10),
-          role,
-          nomor_telepon,
-          alamat,
-          image,
-        },
-      });
-      res.status(201).json(user);
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ message: "Error creating user." });
+    //check if email already exists
+    const user = await prisma.user.findUnique({
+      where: {
+        email,
+      },
+    });
+
+    if (user) {
+      return res.status(400).json({ message: "Email already exists." });
+    } else {
+      try {
+        const user = await prisma.user.create({
+          data: {
+            name,
+            email,
+            password: await bcrypt.hash(password, 10),
+            role,
+            nomor_telepon,
+            alamat,
+            image,
+          },
+        });
+        res.status(201).json(user);
+      } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Error creating user." });
+      }
     }
   } else {
     res.status(405).json({ message: "Method not allowed." });
