@@ -108,7 +108,7 @@ const Program: FC<Props> = () => {
 
             {
                 selectedProgram && (
-                    <ModalDetail
+                    <ModalDetail titleModal='Edit Program'
                         onOpen={true}
                         onClose={onClose}
                     >
