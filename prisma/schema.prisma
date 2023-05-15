@@ -144,6 +144,7 @@ model program {
 model kelompok{
   id String @id @default(cuid())
   nama_kelompok String
+  ketua_kelompok_id String?
   program program @relation(fields: [program_id], references: [id])
   program_id String
   jadwal jadwal? @relation(fields: [jadwal_id], references: [id])
