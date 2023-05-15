@@ -11,7 +11,7 @@ import UserEdit from "./edit";
 import Navbar from "../components/Navbar";
 import Create from "./create";
 import HeadTable from "../components/HeadTable";
-import UserCard from "../components/card/CardUser";
+import UserCard from "../components/card/CardPengguna";
 
 interface User {
   id: string;
@@ -66,7 +66,7 @@ const User: FC<User> = () => {
         <Navbar />
         <div className="h-full p-10 bg-Neutral-95 ">
           <div className="flex flex-col h-full bg-Neutral-100 py-4 gap-4 rounded-lg">
-            <HeadTable role />
+            <HeadTable />
             <div className="flex flex-col rounded-bl-lg rounded-br-lg p-4 gap-4 overflow-y-auto scrollbar-thin scrollbar-track-Neutral-100 scrollbar-thumb-Primary-40 scrollbar-rounded-lg">
               {users ? (
                 <>
@@ -79,7 +79,6 @@ const User: FC<User> = () => {
                         nama_user={user.name}
                         universitas={user.universitas}
                         nama_mapel={user.mapel?.nama_mapel}
-
                         gambar={user.image}
                         role={user.role}
                         onClick={
