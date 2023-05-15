@@ -6,25 +6,26 @@ import { MdModeEdit } from "react-icons/md";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 
 interface CardKelompokProps {
+  level: string;
+  tipe: string;
   nama_kelompok: string;
-  nama_program: string;
-  nama: string;
-  onClick?: () => void;
+  onClick: () => void;
 }
 
 const CardKelompok: FC<CardKelompokProps> = ({
   nama_kelompok,
-  nama_program,
-  nama,
+  tipe,
+  level,
+  onClick,
 }) => {
   return (
     <div className="flex flex-col bg-Neutral-100 border rounded-lg py-5 px-4 gap-3">
       <div className="flex justify-between">
         <div className="flex items-center gap-3">
-          <h1 className="text-xl text-Neutral-10 font-bold">6A</h1>
-          <span className="text-Neutral-30">Private</span>
+          <h1 className="text-xl text-Neutral-10 font-bold">{nama_kelompok}</h1>
+          <span className="text-Neutral-30">{level}</span>
         </div>
-        <h3 className="text-sm text-Neutral-30 font-bold">Reguler</h3>
+        <h3 className="text-sm text-Neutral-30 font-bold">{tipe}</h3>
       </div>
       <div className="w-full h-[1px] bg-Neutral-30"></div>
       <div className="flex justify-between">
@@ -53,7 +54,7 @@ const CardKelompok: FC<CardKelompokProps> = ({
           label="Edit Kelompok"
           textColor="text-Tertiary-50"
           icon={MdModeEdit}
-          // onClick={onClick}
+          onClick={onClick}
         />
       </div>
     </div>

@@ -25,9 +25,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           nama_kelompok: "asc",
         },
       });
-      res.status(200).json({ message: "Data berhasil ditemukan", data: result });
+      res.status(200).json(result);
     } catch (error) {
-      res.status(400).json({ message: "Data gagal ditemukan", error });
+      res.status(400).json(error);
     }
   }
 }
