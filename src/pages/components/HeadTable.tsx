@@ -7,9 +7,10 @@ import { FC } from "react";
 
 interface HeadTableProps {
   role?: boolean;
+  onClick?: () => void;
 }
 
-const HeadTable: FC<HeadTableProps> = ({ role }) => {
+const HeadTable: FC<HeadTableProps> = ({ role, onClick }) => {
   return (
     <div className="bg-Neutral-100 flex flex-row items-center h-[72px] px-5">
       <div className="flex flex-row items-center gap-14 w-full">
@@ -30,6 +31,7 @@ const HeadTable: FC<HeadTableProps> = ({ role }) => {
           bgColor="bg-Tertiary-50"
           label="Tambah"
           icon={IoIosAdd}
+          onClick={onClick}
           outlined
         />
         {role ? (
