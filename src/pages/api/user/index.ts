@@ -16,7 +16,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       res.status(500).json({ message: "Error loading users." });
     }
   } else if (req.method === "POST") {
-    const { name, email, password, role, nomor_telepon, alamat, image } = req.body;
+    const { name, email, password, role, nomor_telepon, alamat, image, universitas, mapel_id } = req.body;
 
     //check if email already exists
     const user = await prisma.user.findUnique({
@@ -36,6 +36,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             password: await bcrypt.hash(password, 10),
             role,
             nomor_telepon,
+            universitas,
+            mapel_id,
             alamat,
             image,
           },

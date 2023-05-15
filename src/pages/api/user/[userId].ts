@@ -26,6 +26,34 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       res.status(500).json({ message: "Error loading user" });
     }
   } else if (req.method === "PUT") {
+
+    const directory = path.join(process.cwd(), "public", "img", "user");
+    const filenameWithoutExt = userId;
+
+    let filePath;
+    fs.readdir(directory)
+      .then((files) => {
+        console.log("Filenames in directory:", files); // log the filenames
+        const foundFile = files.find((file) => path.parse(file).name === filenameWithoutExt);
+        if (foundFile) {
+          filePath = path.join(foundFile);
+          console.log("Found file:", filePath);
+          return filePath.toString();
+        } else {
+          const foundFileWithExt = files.find((file) => file.startsWith(filenameWithoutExt + "."));
+          if (foundFileWithExt) {
+            filePath = path.join(foundFileWithExt);
+            console.log("Found file:", filePath);
+            return filePath.toString();
+          } else {
+            console.log("File not found");
+          }
+        }
+      })
+      .catch((err) => console.error(err));
+
+      const { name, email, role, password, nomor_telepon, alamat, image, universitas, mapel_id } = req.body;
+      
     try {
       const users = await prisma.user.findUnique({
         where: { id: userId },
