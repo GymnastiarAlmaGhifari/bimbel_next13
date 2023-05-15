@@ -96,7 +96,7 @@ const Mapel: FC<Mapel> = () => {
             </Link>
             {
                 selectedMapel && (
-                    <ModalDetail
+                    <ModalDetail titleModal='Edit Mapel'
                         onOpen={true}
                         onClose={onClose}
                     >

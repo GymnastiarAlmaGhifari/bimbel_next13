@@ -86,7 +86,7 @@ const Kelas: FC<Props> = () => {
             </Link>
 
             {selectedKelas && (
-                <ModalDetail
+                <ModalDetail titleModal='Edit Kelas'
                     onOpen={true}
                     onClose={onClose}
                 >

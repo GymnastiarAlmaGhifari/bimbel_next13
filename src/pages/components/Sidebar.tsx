@@ -206,7 +206,7 @@ const Sidebar = () => {
 
   return (
     <>
-      <div className={`${isOpen ? "w-64" : "w-32"} " h-full z-50"`}>
+      <div className={`${isOpen ? "w-64" : "w-32"} "h-full z-50 relative"`}>
         <div className="h-14 py-2 flex justify-between items-center gap-6 pl-7">
           <div className="w-full">
             <Image
@@ -218,7 +218,7 @@ const Sidebar = () => {
           </div>
           <button
             onClick={toggleMenu}
-            className="block border rounded-full p-1 text-Primary-10 translate-x-4 bg-Neutral-100"
+            className=" block border rounded-full p-1 text-Primary-10 translate-x-4 bg-Neutral-100"
           >
             {isOpen ? (
               <AiOutlineClose size={24} />

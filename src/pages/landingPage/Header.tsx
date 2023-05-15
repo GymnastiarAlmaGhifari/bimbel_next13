@@ -21,6 +21,9 @@ export default function Header() {
             <p className="text-white ">Solusi Pintar Teman Belajar</p>
           </div>
           <Button
+            brColor=""
+            textColor="text-Primary-10"
+            type="button"
             bgColor="bg-Neutral-100"
             onClick={downloadAppMobile}
             label="Download Aplikasi Mobile"

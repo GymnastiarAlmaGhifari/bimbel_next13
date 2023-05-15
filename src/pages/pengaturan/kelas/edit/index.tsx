@@ -5,6 +5,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import Input from "@/pages/components/inputs/Input";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import Button from "@/pages/components/buttons/Button";
 
 interface KelasEditProps {
   kelasId: string;
@@ -52,7 +53,7 @@ const KelasEdit: FC<KelasEditProps> = ({ kelasId, onClose, data }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5">
       <>
         {isLoading && <div className="loader">Loading...</div>}
 
@@ -68,12 +69,24 @@ const KelasEdit: FC<KelasEditProps> = ({ kelasId, onClose, data }) => {
             {errors.nama_kelas && (
               <p className="text-red-500">{errors.nama_kelas.message}</p>
             )}
-            <button
-              type="submit"
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-            >
-              Simpan
-            </button>
+            <div className="flex flex-row justify-between ">
+              <Button
+                bgColor="bg-Error-50"
+                brColor=""
+                label="Hapus Kelas"
+                textColor="text-Neutral-100"
+                type="button"
+                withBgColor
+              />
+              <Button
+                type="submit"
+                bgColor="bg-Tertiary-50"
+                brColor=""
+                label="Konfirmasi"
+                textColor="text-Neutral-100"
+                withBgColor
+              />
+            </div>
           </>
         )}
       </>

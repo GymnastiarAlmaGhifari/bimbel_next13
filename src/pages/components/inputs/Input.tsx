@@ -33,7 +33,7 @@ const Input: React.FC<InputProps> = ({
     className,
 }) => {
     return (
-        <div className="w-full relative">
+        <div className="w-full flex flex-col gap-2">
             {formatPrice && (
                 <BiDollar
                     size={24}
@@ -45,6 +45,7 @@ const Input: React.FC<InputProps> = ({
             "
                 />
             )}
+            <label className="text-sm text-Primary-10">{label}</label>
             <input
                 id={id}
                 disabled={disabled}
@@ -54,23 +55,25 @@ const Input: React.FC<InputProps> = ({
                 inputMode={inputMode}
                 defaultValue={defaultValue}
                 className={`
+                bg-Neutral-95
             peer
+            h-10
             w-full
-            p-4
-            pt-6 
+            px-4
+            py-2
             font-light 
-            bg-white 
-            border-2
-            rounded-md
+            rounded-full
             outline-none
             transition
+            box-border
             disabled:opacity-70
             disabled:cursor-not-allowed
+            focus:border-[2px] focus:border-Primary-50 focus:bg-Primary-99
             ${formatPrice ? 'pl-9' : 'pl-4'}
 
           ` + className}
             />
-            <label
+            {/* <label
                 className={`
             absolute 
             text-md
@@ -89,7 +92,7 @@ const Input: React.FC<InputProps> = ({
           `}
             >
                 {label}
-            </label>
+            </label> */}
         </div>
     );
 }
