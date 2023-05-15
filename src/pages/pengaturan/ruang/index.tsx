@@ -103,7 +103,7 @@ const Ruang: FC<Props> = () => {
             </Link>
             {
                 selectedRuang && (
-                    <ModalDetail
+                    <ModalDetail titleModal='Edit Ruang'
                         onOpen={true}
                         onClose={onClose}
                     >

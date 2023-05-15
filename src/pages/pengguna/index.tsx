@@ -26,11 +26,11 @@ interface User {
   alamat: string;
   createdAt: Date;
   updatedAt: Date;
-  img: string;
+  image: string;
 }
 
 const User: FC<User> = () => {
-  const { data: users, error } = useSWR<User[]>("/api/user", fetcher);
+  const { data: users, error } = useSWR<User[]>("/api/user", fetcher, {});
   const [selected, setSelected] = useState<User | null>(null);
 
   useEffect(() => {
@@ -66,7 +66,7 @@ const User: FC<User> = () => {
         <Navbar />
         <div className="h-full p-10 bg-Neutral-95 ">
           <div className="flex flex-col h-full bg-Neutral-100 py-4 gap-4 rounded-lg">
-            <HeadTable />
+            <HeadTable role />
             <div className="flex flex-col rounded-bl-lg rounded-br-lg p-4 gap-4 overflow-y-auto scrollbar-thin scrollbar-track-Neutral-100 scrollbar-thumb-Primary-40 scrollbar-rounded-lg">
               {users ? (
                 <>
@@ -79,9 +79,15 @@ const User: FC<User> = () => {
                         nama_user={user.name}
                         universitas={user.universitas}
                         nama_mapel={user.mapel?.nama_mapel}
-                        gambar={user.img}
+
+                        gambar={user.image}
                         role={user.role}
-                        onClick={() => setSelected(user)}
+                        onClick={
+                          // selected user dan console log user.img
+                          () => {
+                            setSelected(user);
+                          }
+                        }
                       />
                     ))
                   )}
@@ -90,12 +96,15 @@ const User: FC<User> = () => {
                 <p>Loading...</p>
               )}
             </div>
-          </div>{" "}
+          </div>
         </div>
-
       </div>
       {selected && (
-        <ModalDetail onOpen={true} onClose={backPengguna}>
+        <ModalDetail
+          titleModal="Edit Pengguna"
+          onOpen={true}
+          onClose={backPengguna}
+        >
           <UserEdit
             userId={selected.id}
             onClose={backPengguna}
@@ -109,7 +118,11 @@ const User: FC<User> = () => {
 
       {/* buat modal dari getname  */}
       {showSuccess && (
-        <ModalDetail onOpen={true} onClose={() => setShowSuccess(false)}>
+        <ModalDetail
+          titleModal="Edit Pengguna"
+          onOpen={true}
+          onClose={() => setShowSuccess(false)}
+        >
           <div className="flex flex-col items-center justify-center">
             <h1 className="text-2xl font-bold text-green-500">Berhasil</h1>
             <p className="text-sm text-gray-500">
@@ -121,7 +134,11 @@ const User: FC<User> = () => {
 
       {/* modal create */}
       {showCreate && (
-        <ModalDetail onOpen={true} onClose={() => setShowCreate(false)}>
+        <ModalDetail
+          titleModal="Edit Pengguna"
+          onOpen={true}
+          onClose={() => setShowCreate(false)}
+        >
           <Create
             onClose={() => setShowCreate(false)}
             onSucsess={() => {

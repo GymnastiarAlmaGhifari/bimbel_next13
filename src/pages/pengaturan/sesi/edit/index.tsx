@@ -5,6 +5,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import Input from "@/pages/components/inputs/Input";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import Button from "@/pages/components/buttons/Button";
 
 interface SesiEditProps {
   sesiId: string;
@@ -56,7 +57,7 @@ const SesiEdit: FC<SesiEditProps> = ({ sesiId, onClose, data }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5">
       <>
         {isLoading && <div className="loader">Loading...</div>}
 
@@ -85,10 +86,26 @@ const SesiEdit: FC<SesiEditProps> = ({ sesiId, onClose, data }) => {
                 defaultValue={data?.jam_selesai ?? ""}
               />
             </div>
-            <div className="form-group">
-              <button type="submit" className="btn btn-primary btn-block">
+            <div className="flex flex-row justify-between">
+            <Button
+                bgColor="bg-Error-50"
+                brColor=""
+                label="Hapus Pengguna"
+                textColor="text-Neutral-100"
+                type="button"
+                withBgColor
+              />
+              <Button
+                bgColor="bg-Tertiary-50"
+                brColor=""
+                label="Konfirmasi"
+                textColor="text-Neutral-100"
+                type="submit"
+                withBgColor
+              />
+              {/* <button type="submit" className="btn btn-primary btn-block">
                 Simpan
-              </button>
+              </button> */}
             </div>
           </>
         )}

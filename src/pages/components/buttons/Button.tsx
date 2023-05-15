@@ -4,44 +4,52 @@ import { IconType } from "react-icons";
 import { Link as RouterLink } from "react-router-dom";
 import { Link as ScrollLink } from "react-scroll";
 import { IoLogoWhatsapp } from "react-icons/io";
+import { ButtonHTMLAttributes, HtmlHTMLAttributes } from "react";
 
 interface ButtonProps {
+  type: any;
   label: string;
   bgColor: string;
+  textColor: string;
+  brColor: string;
   onClick?: () => void;
   isActive?: boolean;
   disabled?: boolean;
   outlined?: boolean;
-
+  withBgColor?: boolean;
   icon?: IconType;
+  widthAuto?: boolean;
 }
 
 const Button: React.FC<ButtonProps> = ({
   label,
   onClick,
-  bgColor,
   disabled,
   isActive,
   outlined,
+  textColor,
+  brColor,
+  bgColor,
+  type,
+  widthAuto,
+  withBgColor,
+  // widthButton,
   icon: Icon,
 }) => {
-  const baseStyles =
-    "px-4 py-2 rounded-full font-semibold flex gap-2 text-sm text-Tertiary-50 items-center ";
-  const activeStyle = "text-Primary-10 bg-Primary-50";
-  const inactiveStyle =
-    "text-Primary-20 hover:bg-Neutral-100/[.2] hover:backdrop-opacity-10";
-
-  const buttonStyle = `${
-    isActive ? `${baseStyles} ${activeStyle}` : `${baseStyles} ${inactiveStyle}`
-  }`;
+  const baseButtonStyle =
+    "px-4 py-2 rounded-full font-bold flex gap-2 text-sm items-center h-10 ";
   return (
     <button
+      type={type}
       onClick={onClick}
-      className={`${buttonStyle} ${bgColor}         ${
-        outlined ? "bg-white" : "bg-rose-500"
+      className={`${baseButtonStyle} ${
+        outlined
+          ? `${bgColor} bg-opacity-0 border-[2px] ${brColor} ${textColor} font-bold text-sm hover:bg-opacity-20`
+          : `${bgColor} bg-opacity-0 hover:bg-opacity-20 border-none ${textColor}`
+      } ${withBgColor ? "bg-opacity-90 hover:bg-opacity-100" : ""} ${
+        widthAuto ? "w-auto" : "w-max"
       }
-    ${outlined ? "border-black" : "border-rose-500"}
-    ${outlined ? "text-black" : "text-white"}`}
+      `}
     >
       {Icon && (
         <Icon
