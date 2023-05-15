@@ -53,19 +53,19 @@ const UserEdit: FC<UserEditProps> = ({ userId, onClose, onSucsess, data }) => {
         formData.append("image", data.image[0]);
 
         try {
-            await axios.put(`/api/user/${userId}`, {
-                name,
-                email,
-                role,
-                nomor_telepon,
-                alamat,
-            });
             await axios.post("/api/userimg", formData, {
                 headers: {
                     "Content-Type": "multipart/form-data",
                     // from : formData . image
                     from: userId,
                 },
+            });
+            await axios.put(`/api/user/${userId}`, {
+                name,
+                email,
+                role,
+                nomor_telepon,
+                alamat,
             });
 
             mutate("/api/user");
@@ -117,7 +117,7 @@ const UserEdit: FC<UserEditProps> = ({ userId, onClose, onSucsess, data }) => {
                         <div>
                             <label htmlFor="role">Role</label>
                             <select id="role" {...register("role")} defaultValue={data?.role}>
-                                <option value="SUPER ADMIN">SUPER ADMIN</option>
+                                <option value="SUPER">SUPER ADMIN</option>
                                 <option value="ADMIN">ADMIN</option>
                                 <option value="TENTOR">TENTOR</option>
                             </select>
