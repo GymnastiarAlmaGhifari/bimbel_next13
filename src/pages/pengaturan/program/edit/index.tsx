@@ -64,7 +64,7 @@ const ProgramEdit: FC<ProgramEditProps> = ({ programId, onClose, data }) => {
                             <Input
                                 id="nama_program"
                                 label="Nama Program"
-                                defaultValue={data.nama_program}
+                                defaultValue={data?.nama_program ?? ""}
                                 errors={errors}
                                 register={{ ...register("nama_program") }}
                             />
