@@ -14,6 +14,7 @@ interface ButtonProps {
   brColor: string;
   onClick?: () => void;
   isActive?: boolean;
+  rightIcon?: boolean;
   disabled?: boolean;
   outlined?: boolean;
   withBgColor?: boolean;
@@ -33,6 +34,7 @@ const Button: React.FC<ButtonProps> = ({
   type,
   widthAuto,
   withBgColor,
+  rightIcon,
   // widthButton,
   icon: Icon,
 }) => {

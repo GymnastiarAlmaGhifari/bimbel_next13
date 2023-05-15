@@ -7,7 +7,7 @@ import UserEdit from "./edit";
 import Navbar from "../components/Navbar";
 import Create from "./create";
 import HeadTable from "../components/HeadTable";
-import UserCard from "../components/card/CardUser";
+import UserCard from "../components/card/CardPengguna";
 
 interface User {
   id: string;
