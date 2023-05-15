@@ -31,7 +31,7 @@ const Kelompok: React.FC<Props> = ({ kelompok }) => {
         <Navbar />
         <div className="h-full p-10 bg-Neutral-95">
           <div className="flex flex-col h-full bg-Neutral-100 py-4 gap-4 rounded-lg">
-            <HeadTable />
+            <HeadTable label="Kelompok" />
             <div className="flex flex-col rounded-bl-lg rounded-br-lg p-4 gap-4 overflow-y-auto scrollbar-thin scrollbar-track-Neutral-100 scrollbar-thumb-Primary-40 scrollbar-rounded-lg">
               <CardKelompok nama="Agimul Karim" nama_kelompok="6A" nama_program="Private"/>
                   {kelompok.map((item) => (

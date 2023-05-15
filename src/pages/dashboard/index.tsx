@@ -42,7 +42,7 @@ const Dashboard: React.FC<Props> = ({ books }) => {
         <Navbar />
         <div className="h-full p-10 bg-Neutral-95 ">
           <div className="flex flex-col h-full bg-Neutral-100 py-4 gap-4 rounded-lg">
-            <HeadTable />
+            <HeadTable label="Overview Jadwal" />
             <div className="flex flex-col rounded-bl-lg rounded-br-lg p-4 gap-4 overflow-y-auto scrollbar-thin scrollbar-track-Neutral-100 scrollbar-thumb-Primary-40 scrollbar-rounded-lg"></div>
           </div>{" "}
         </div>
