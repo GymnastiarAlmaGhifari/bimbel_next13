@@ -25,9 +25,14 @@ const schema = yup.object().shape({
   alamat: yup.string().required(),
 });
 
-type FormData = yup.InferType<typeof schema>;
+
+
+type FormData = yup.InferType<typeof schema> & {
+    image: FileList;
+};
 
 const UserEdit: FC<UserEditProps> = ({ userId, onClose, onSucsess, data }) => {
+
   const [isLoading, setIsLoading] = useState(false);
 
   const {
@@ -160,6 +165,7 @@ const UserEdit: FC<UserEditProps> = ({ userId, onClose, onSucsess, data }) => {
       </>
     </form>
   );
+
 };
 
 export default UserEdit;
