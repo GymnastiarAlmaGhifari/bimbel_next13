@@ -8,13 +8,14 @@ import { FC } from "react";
 interface HeadTableProps {
   role?: boolean;
   onClick?: () => void;
+  label: string;
 }
 
-const HeadTable: FC<HeadTableProps> = ({ role, onClick }) => {
+const HeadTable: FC<HeadTableProps> = ({ role, onClick, label }) => {
   return (
     <div className="bg-Neutral-100 flex flex-row items-center h-[72px] px-5">
       <div className="flex flex-row items-center gap-14 w-full">
-        <h2 className="text-xl font-semibold text-Primary-10">Label</h2>
+        <h2 className="text-xl font-semibold text-Primary-10">{label}</h2>
         <div className="flex flex-row items-center gap-4 ">
           <Search />
           <button className="flex gap-1">
