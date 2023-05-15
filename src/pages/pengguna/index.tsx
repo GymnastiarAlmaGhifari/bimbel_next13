@@ -30,7 +30,7 @@ interface User {
 }
 
 const User: FC<User> = () => {
-  const { data: users, error } = useSWR<User[]>("/api/user", fetcher);
+  const { data: users, error } = useSWR<User[]>("/api/user", fetcher, {});
   const [selected, setSelected] = useState<User | null>(null);
 
   useEffect(() => {
