@@ -31,7 +31,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const filenameWithoutExt = userId;
 
     let filePath;
-    fs.readdir(directory)
+    fs.promises.readdir(directory)
       .then((files) => {
         console.log("Filenames in directory:", files); // log the filenames
         const foundFile = files.find((file) => path.parse(file).name === filenameWithoutExt);
