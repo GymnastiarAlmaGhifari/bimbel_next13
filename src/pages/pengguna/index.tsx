@@ -68,26 +68,27 @@ const User: FC<User> = () => {
           <div className="flex flex-col h-full bg-Neutral-100 py-4 gap-4 rounded-lg">
             <HeadTable />
             <div className="flex flex-col rounded-bl-lg rounded-br-lg p-4 gap-4 overflow-y-auto scrollbar-thin scrollbar-track-Neutral-100 scrollbar-thumb-Primary-40 scrollbar-rounded-lg">
-            {users ? (
-  <>
-    {users.length === 0 ? (
-      <p>No program found.</p>
-    ) : (
-      users.map((user) => (
-        <UserCard
-          key={user.id}
-          nama_user={user.name}
-          universitas={user.universitas}
-          nama_mapel={user.mapel?.nama_mapel}
-          role={user.role}
-          onClick={() => setSelected(user)}
-        />
-      ))
-    )}
-  </>
-) : (
-  <p>Loading...</p>
-)}
+              {users ? (
+                <>
+                  {users.length === 0 ? (
+                    <p>No program found.</p>
+                  ) : (
+                    users.map((user) => (
+                      <UserCard
+                        key={user.id}
+                        nama_user={user.name}
+                        universitas={user.universitas}
+                        nama_mapel={user.mapel?.nama_mapel}
+                        gambar={user.img}
+                        role={user.role}
+                        onClick={() => setSelected(user)}
+                      />
+                    ))
+                  )}
+                </>
+              ) : (
+                <p>Loading...</p>
+              )}
             </div>
           </div>{" "}
         </div>
