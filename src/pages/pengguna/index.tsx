@@ -26,7 +26,7 @@ interface User {
   alamat: string;
   createdAt: Date;
   updatedAt: Date;
-  img: string;
+  image: string;
 }
 
 const User: FC<User> = () => {
@@ -79,9 +79,15 @@ const User: FC<User> = () => {
                         nama_user={user.name}
                         universitas={user.universitas}
                         nama_mapel={user.mapel?.nama_mapel}
-                        gambar={user.img}
+                        gambar={user.image}
                         role={user.role}
-                        onClick={() => setSelected(user)}
+                        onClick={
+                          // selected user dan console log user.img
+                          () => {
+                            setSelected(user);
+                            console.log(user.image);
+                          }
+                        }
                       />
                     ))
                   )}

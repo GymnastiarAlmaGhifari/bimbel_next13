@@ -51,7 +51,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
 
     const { name, email, password, role, nomor_telepon, alamat, universitas, mapel_id } = req.body;
-    const image = "img/user/" + filePath;
+    const image = "/img/user/" + filePath;
     try {
       const user = await prisma.user.update({
         where: { id: userId },

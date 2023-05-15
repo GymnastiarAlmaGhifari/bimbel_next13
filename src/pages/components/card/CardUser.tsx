@@ -7,7 +7,7 @@ interface UserCard {
   universitas: string;
   nama_mapel: string;
   onClick: () => void;
-  gambar?: string;
+  gambar?: any;
   role: string;
 }
 
@@ -25,7 +25,7 @@ const UserCard: FC<UserCard> = ({
         <div className="flex items-center h-auto w-auto gap-3">
           <div className="w-10 h-10">
             <Image
-              src={gambar || "https://img.jakpost.net/c/2017/02/15/2017_02_15_21637_1487139254._large.jpg"}
+              src={gambar}
               alt="Megachan"
               width={100}
               height={100}
