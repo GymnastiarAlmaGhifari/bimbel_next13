@@ -6,6 +6,7 @@ import Input from "@/pages/components/inputs/Input";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import Button from "@/pages/components/buttons/Button";
+import Image from "next/image";
 
 interface UserEditProps {
     userId: string;
@@ -21,7 +22,8 @@ const schema = yup.object().shape({
         .min(3, "judul minimal 3 karakter"),
     email: yup.string().required(),
     role: yup.string().required(),
-    nomor_telepon: yup.string().required(),
+    nomor_telepon: yup.string().required().max(13, "maksimal 13 karakter").min(12, "minimal 12 karakter"),
+    lulusan: yup.string().required(),
     alamat: yup.string().required(),
 });
 
@@ -73,7 +75,7 @@ const UserEdit: FC<UserEditProps> = ({ userId, onClose, onSucsess, data }) => {
         } catch (error) {
             console.error(error);
         } finally {
-            setIsLoading(false); // Set loading state to false
+            setIsLoading(false);
             onClose();
             onSucsess();
         }
@@ -107,21 +109,6 @@ const UserEdit: FC<UserEditProps> = ({ userId, onClose, onSucsess, data }) => {
                                 errors={errors}
                                 defaultValue={data?.email}
                             />
-
-                            {/* buat selected berisi SUPER ADMIN dan TENTOR*/}
-                            {/* <div className="flex flex-col ">
-                <label htmlFor="role">Role</label>
-                <select
-                  id="role"
-                  {...register("role")}
-                  defaultValue={data?.role}
-                  className="bg-Neutral-95 rounded-full py-2 px-4 outline-none appearance-none"
-                >
-                  <option value="SUPER ADMIN">SUPER ADMIN</option>
-                  <option value="ADMIN">ADMIN</option>
-                  <option value="TENTOR">TENTOR</option>
-                </select>
-              </div> */}
                             <div className="flex flex-col">
                                 <label htmlFor="role">Role</label>
                                 <select
@@ -143,6 +130,14 @@ const UserEdit: FC<UserEditProps> = ({ userId, onClose, onSucsess, data }) => {
                                 register={{ ...register("nomor_telepon") }}
                                 errors={errors}
                                 defaultValue={data?.nomor_telepon}
+                            />
+                            <Input
+                                id="lulusan"
+                                label="Lulusan"
+                                type="text"
+                                register={{ ...register("lulusan") }}
+                                errors={errors}
+                                defaultValue={data?.universitas}
                             />
                             <Input
                                 id="alamat"
@@ -183,6 +178,18 @@ const UserEdit: FC<UserEditProps> = ({ userId, onClose, onSucsess, data }) => {
                                 <p className="text-red-500">{errors.image.message}</p>
                             )}
                         </div>
+                        {data?.image && (
+                            <div>
+                                <label>Gambar:</label>
+                                <Image
+                                    src={data.image}
+                                    alt="Gambar"
+                                    width={200}
+                                    height={200}
+                                    loader={({ src }) => `${src}?cache-control=no-store`}
+                                />
+                            </div>
+                        )}
                         <div className="flex flex-row justify-between ">
                             <Button
                                 bgColor="bg-Error-50"

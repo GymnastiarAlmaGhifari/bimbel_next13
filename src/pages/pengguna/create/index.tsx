@@ -8,6 +8,7 @@ import {
 import Input from "@/pages/components/inputs/Input";
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup";
+import Button from "@/pages/components/buttons/Button";
 
 interface UserCreateProps {
     onClose: () => void;
@@ -15,12 +16,15 @@ interface UserCreateProps {
 }
 
 const schema = yup.object().shape({
-    name: yup.string().required("tidak boleh kosong").min(3, "judul minimal 3 karakter"),
-    email: yup.string().required(),
+    name: yup
+        .string()
+        .required("tidak boleh kosong")
+        .min(3, "judul minimal 3 karakter"),
     password: yup.string().required(),
+    email: yup.string().required(),
     role: yup.string().required(),
-    // nomor_telepon: harus bertipe number
-    nomor_telepon: yup.string().required(),
+    nomor_telepon: yup.string().required().max(13, "maksimal 13 karakter").min(12, "minimal 12 karakter"),
+    lulusan: yup.string().required(),
     alamat: yup.string().required(),
 });
 
@@ -95,11 +99,8 @@ const Create: FC<UserCreateProps> = ({ onClose, onSucsess }) => {
         }
     };
 
-
-
-
     return (
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5" >
             {/* Error message */}
             {error && <p className="text-red-500">{error}</p>}
             <Input
@@ -129,6 +130,21 @@ const Create: FC<UserCreateProps> = ({ onClose, onSucsess }) => {
             />
             {errors.password && <p className="text-red-500">{errors.password.message}</p>}
 
+            <div className="flex flex-col">
+                <label htmlFor="role">Role</label>
+                <select
+                    id="role"
+                    {...register("role")}
+                    defaultValue={"SUPER"}
+                    className="bg-Neutral-95 rounded-full py-2 px-4 outline-none appearance-none"
+                >
+                    <option value="SUPER">SUPER ADMIN</option>
+                    <option value="ADMIN">ADMIN</option>
+                    <option value="TENTOR">TENTOR</option>
+                </select>
+            </div>
+
+
             <Input
                 id="nomor_telepon"
                 label="Nomor Telepon"
@@ -137,6 +153,18 @@ const Create: FC<UserCreateProps> = ({ onClose, onSucsess }) => {
                 errors={errors}
             />
             {errors.nomor_telepon && <p className="text-red-500">{errors.nomor_telepon.message}</p>}
+
+            <Input
+                id="lulusan"
+                label="Lulusan"
+                type="text"
+                register={{ ...register("lulusan") }}
+                errors={errors}
+            />
+            {
+                errors.lulusan && <p className="text-red-500">{errors.lulusan.message}</p>
+            }
+
 
             <Input
                 id="alamat"
@@ -148,20 +176,16 @@ const Create: FC<UserCreateProps> = ({ onClose, onSucsess }) => {
             {errors.alamat && <p className="text-red-500">{errors.alamat.message}</p>}
 
             {/* Buat selected berisi SUPER ADMIN dan TENTOR */}
-            <div>
-                <label htmlFor="role">Role</label>
-                <select id="role" {...register("role")}
-                    defaultValue="SUPER ADMIN"
-                >
-                    <option value="SUPER ADMIN">SUPER ADMIN</option>
-                    <option value="ADMIN">ADMIN</option>
-                    <option value="TENTOR">TENTOR</option>
-                </select>
+            <div className="flex flex-row justify-end">
+                <Button
+                    type="submit"
+                    bgColor="bg-Tertiary-50"
+                    brColor=""
+                    label="Konfirmasi"
+                    textColor="text-Neutral-100"
+                    withBgColor
+                />
             </div>
-
-            <button type="submit" disabled={isLoading}>
-                {isLoading ? "Loading..." : "Create"}
-            </button>
         </form>
     );
 };
