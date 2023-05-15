@@ -2,6 +2,7 @@ import { NextApiHandler, NextApiRequest } from "next";
 import formidable from "formidable";
 import path from "path";
 import fs from "fs/promises";
+import prisma from "@/libs/prismadb";
 
 export const config = {
   api: {
@@ -14,7 +15,7 @@ const readFile = (req: NextApiRequest, saveLocally?: boolean): Promise<{ fields:
   if (saveLocally) {
     options.uploadDir = path.join(process.cwd(), "/public/img/user");
     options.filename = (name, ext, path, form) => {
-      const extention = path.originalFilename?.split(".").pop();
+        const extention = path.originalFilename?.split(".").pop();
       return req.headers.from + "." + extention;
     };
   }
@@ -37,5 +38,6 @@ const handler: NextApiHandler = async (req, res) => {
   await readFile(req, true);
   res.json({ done: "ok" });
 };
+
 
 export default handler;
