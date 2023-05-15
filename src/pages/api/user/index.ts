@@ -2,10 +2,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 import prisma from "@/libs/prismadb";
 import bcrypt from "bcrypt";
 
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === "GET") {
     try {
       const users = await prisma.user.findMany({
@@ -19,8 +16,7 @@ export default async function handler(
       res.status(500).json({ message: "Error loading users." });
     }
   } else if (req.method === "POST") {
-    const { name, email, password, role, nomor_telepon, alamat, image } =
-      req.body;
+    const { name, email, password, role, nomor_telepon, alamat, image } = req.body;
 
     //check if email already exists
     const user = await prisma.user.findUnique({
