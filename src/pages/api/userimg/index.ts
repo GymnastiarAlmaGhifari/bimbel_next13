@@ -10,10 +10,7 @@ export const config = {
   },
 };
 
-const readFile = (
-  req: NextApiRequest,
-  saveLocally?: boolean
-): Promise<{ fields: formidable.Fields; files: formidable.Files }> => {
+const readFile = (req: NextApiRequest, saveLocally?: boolean): Promise<{ fields: formidable.Fields; files: formidable.Files }> => {
   const options: formidable.Options = {};
   if (saveLocally) {
     options.uploadDir = path.join(process.cwd(), "/public/img/user");

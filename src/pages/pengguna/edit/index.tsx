@@ -25,7 +25,11 @@ const schema = yup.object().shape({
     alamat: yup.string().required(),
 });
 
-type FormData = yup.InferType<typeof schema>;
+
+
+type FormData = yup.InferType<typeof schema> & {
+    image: FileList;
+};
 
 
 
@@ -45,6 +49,9 @@ const UserEdit: FC<UserEditProps> = ({ userId, onClose, onSucsess, data }) => {
 
         setIsLoading(true); // Set loading state to true
 
+        const formData = new FormData();
+        formData.append("image", data.image[0]);
+
         try {
             await axios.put(`/api/user/${userId}`, {
                 name,
@@ -52,6 +59,13 @@ const UserEdit: FC<UserEditProps> = ({ userId, onClose, onSucsess, data }) => {
                 role,
                 nomor_telepon,
                 alamat,
+            });
+            await axios.post("/api/userimg", formData, {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                    // from : formData . image
+                    from: userId,
+                },
             });
 
             mutate("/api/user");
@@ -63,7 +77,9 @@ const UserEdit: FC<UserEditProps> = ({ userId, onClose, onSucsess, data }) => {
             onClose();
             onSucsess();
         }
+
     };
+
 
 
 
@@ -124,6 +140,35 @@ const UserEdit: FC<UserEditProps> = ({ userId, onClose, onSucsess, data }) => {
                             errors={errors}
                             defaultValue={data?.alamat}
                         />
+                        <div>
+                            <label htmlFor="image">Pilih Gambar:</label>
+                            <input
+                                type="file"
+                                id="image"
+                                {...register('image', {
+                                    required: 'Gambar wajib diunggah',
+                                    validate: {
+                                        fileSize: (value) => {
+                                            const fileSize = value[0]?.size || 0;
+                                            if (fileSize > 2 * 1024 * 1024) {
+                                                return 'Ukuran file maksimum adalah 2MB';
+                                            }
+                                            return true;
+                                        },
+                                        fileType: (value) => {
+                                            const fileType = value[0]?.type || '';
+                                            if (!['image/jpeg', 'image/png'].includes(fileType)) {
+                                                return 'Hanya mendukung format JPEG atau PNG';
+                                            }
+                                            return true;
+                                        },
+                                    },
+                                })}
+                            />
+                            {errors.image && (
+                                <p className="text-red-500">{errors.image.message}</p>
+                            )}
+                        </div>
                         <button type="submit">Submit</button>
                     </>
                 )}
