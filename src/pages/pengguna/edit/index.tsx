@@ -177,6 +177,7 @@ const UserEdit: FC<UserEditProps> = ({ userId, onClose, onSucsess, data }) => {
                                         },
                                     },
                                 })}
+                                accept="image/jpeg, image/png , image/jpg"
                             />
                             {errors.image && (
                                 <p className="text-red-500">{errors.image.message}</p>
