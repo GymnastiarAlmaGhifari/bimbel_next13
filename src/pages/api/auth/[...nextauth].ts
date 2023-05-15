@@ -14,6 +14,8 @@ declare module "next-auth" {
       email: string;
 
       role: "TENTOR" | "ADMIN" | "SUPER";
+
+      image: string | null;
       // ...other properties
       // role: UserRole;
     };
@@ -67,6 +69,7 @@ export const authOptions: AuthOptions = {
       if (user) {
         token.id = user.id;
         token.role = user.role;
+        token.image = user.image;
       }
       return Promise.resolve(token);
     },
@@ -76,6 +79,8 @@ export const authOptions: AuthOptions = {
         id: token.id,
         // @ts-ignore
         role: token.role,
+        // @ts-ignore
+        image: token.image,
       };
       return Promise.resolve(session);
     },

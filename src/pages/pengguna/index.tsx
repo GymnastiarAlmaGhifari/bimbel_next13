@@ -44,7 +44,6 @@ const User: FC<User> = () => {
   const [showSuccess, setShowSuccess] = useState(false);
 
   useEffect(() => {
-    // set a timeout to clear the name state variable after 1 second
     const timeoutId = setTimeout(() => {
       setShowSuccess(false);
     }, 1000);
@@ -67,8 +66,10 @@ const User: FC<User> = () => {
               role
               onClick={() => {
                 setShowCreate(true);
-              }}
-            />
+
+              }
+            } />
+            
             <div className="flex flex-col rounded-bl-lg rounded-br-lg p-4 gap-4 overflow-y-auto scrollbar-thin scrollbar-track-Neutral-100 scrollbar-thumb-Primary-40 scrollbar-rounded-lg">
               {users ? (
                 <>
@@ -84,7 +85,6 @@ const User: FC<User> = () => {
                         gambar={user?.image}
                         role={user.role}
                         onClick={
-                          // selected user dan console log user.img
                           () => {
                             setSelected(user);
                           }

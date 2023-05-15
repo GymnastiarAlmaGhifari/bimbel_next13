@@ -7,9 +7,15 @@ import { MdArrowBack, MdOutlineKey, MdOutlineLogout } from "react-icons/md";
 import Button from "./buttons/Button";
 import Link from "next/link";
 import { BsPersonFill } from "react-icons/bs";
+import { useSession } from "next-auth/react";
+import { signOut } from "next-auth/react";
+
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+
+  const { data: session, status } = useSession();
+
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
@@ -23,7 +29,7 @@ const Navbar = () => {
       <div className="relative">
         <div className="flex items-center inline-block gap-4">
           <div className="inline-block">
-            <p className="font-bold">Agimul Karim</p>
+            <p className="font-bold">{session?.user.image}</p>
             <p className="font-semibold text-sm">Super Admin</p>
           </div>
           <div className="w-10 h-10 rounded-full overflow-clip scale-100 bg-red-400">
@@ -76,6 +82,7 @@ const Navbar = () => {
                 widthAuto
                 type="button"
                 icon={MdOutlineLogout}
+                onClick={() => signOut()}
               />
             ) : (
               ""
