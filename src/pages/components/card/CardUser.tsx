@@ -32,6 +32,7 @@ const UserCard: FC<UserCard> = ({
               width={100}
               height={100}
               className="rounded-full w-full h-full object-cover"
+              loader={({ src }) => `${src}?cache-control=no-store`}
             />
           </div>
           <div className="flex flex-col gap-2">
