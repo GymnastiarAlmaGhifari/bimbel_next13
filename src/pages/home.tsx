@@ -18,7 +18,7 @@ export default function Home({ images }: HomeProps): ReactElement {
                 <div className="grid grid-cols-3 gap-4">
                     {images.map((image, index) => (
                         <div key={index}>
-                            <img src={`/img/${image}`} alt={`Gambar ${index + 1}`} className="w-full h-auto" />
+                            <img src={`public/img/user/${image}`} alt={`Gambar ${index + 1}`} className="w-full h-auto" />
                         </div>
                     ))}
                 </div>
@@ -28,7 +28,7 @@ export default function Home({ images }: HomeProps): ReactElement {
 }
 
 export async function getStaticProps(): Promise<{ props: HomeProps }> {
-    const imagesDirectory = path.join(process.cwd(), 'public/img');
+    const imagesDirectory = path.join(process.cwd(), 'public/img/user');
     const imageFileNames = fs.readdirSync(imagesDirectory);
 
     return {
