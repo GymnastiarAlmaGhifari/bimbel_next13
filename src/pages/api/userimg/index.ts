@@ -9,15 +9,13 @@ export const config = {
   },
 };
 
-const readFile = (
-  req: NextApiRequest,
-  saveLocally?: boolean
-): Promise<{ fields: formidable.Fields; files: formidable.Files }> => {
+const readFile = (req: NextApiRequest, saveLocally?: boolean): Promise<{ fields: formidable.Fields; files: formidable.Files }> => {
   const options: formidable.Options = {};
   if (saveLocally) {
     options.uploadDir = path.join(process.cwd(), "/public/img/user");
     options.filename = (name, ext, path, form) => {
-      return Date.now().toString() + "_" + path.originalFilename;
+      const extention = path.originalFilename?.split(".").pop();
+      return req.headers.from + "." + extention;
     };
   }
   options.maxFileSize = 4000 * 1024 * 1024;

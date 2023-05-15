@@ -1,8 +1,10 @@
 import axios from 'axios';
 import { useForm, SubmitHandler } from 'react-hook-form';
 
+
 type FormData = {
     image: FileList;
+    userId: string;
 };
 
 export default function ImageUploadForm() {
@@ -18,7 +20,15 @@ export default function ImageUploadForm() {
 
         // kirim ke folder public/img
         try {
-            axios.post('/api/userimg', data)
+            // axois dengan header dan body method post
+            axios.post('/api/userimg', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                    // from : formData . image
+                    from: data.userId,
+                },
+            });
+
         } catch (error) {
             console.error(error);
         }
@@ -57,6 +67,17 @@ export default function ImageUploadForm() {
                 {errors.image && (
                     <p className="text-red-500">{errors.image.message}</p>
                 )}
+            </div>
+            <div className="">
+                <label htmlFor="userId">User ID:</label>
+                <input
+                    type="text"
+                    id="userId"
+                    {...register('userId', {
+                        required: 'User ID wajib diisi',
+                    })}
+                />
+
             </div>
             <div>
                 <button type="submit">Unggah</button>

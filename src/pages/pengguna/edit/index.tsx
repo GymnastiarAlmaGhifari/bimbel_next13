@@ -45,10 +45,12 @@ const UserEdit: FC<UserEditProps> = ({ userId, onClose, onSucsess, data }) => {
     });
 
     const onSubmit: SubmitHandler<FormData> = async (data) => {
-        const { name, email, role, nomor_telepon, alamat, image } = data;
+        const { name, email, role, nomor_telepon, alamat } = data;
 
         setIsLoading(true); // Set loading state to true
 
+        const formData = new FormData();
+        formData.append("image", data.image[0]);
 
         try {
             await axios.put(`/api/user/${userId}`, {
@@ -57,6 +59,13 @@ const UserEdit: FC<UserEditProps> = ({ userId, onClose, onSucsess, data }) => {
                 role,
                 nomor_telepon,
                 alamat,
+            });
+            await axios.post("/api/userimg", formData, {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                    // from : formData . image
+                    from: userId,
+                },
             });
 
             mutate("/api/user");
@@ -70,6 +79,7 @@ const UserEdit: FC<UserEditProps> = ({ userId, onClose, onSucsess, data }) => {
         }
 
     };
+
 
 
 
