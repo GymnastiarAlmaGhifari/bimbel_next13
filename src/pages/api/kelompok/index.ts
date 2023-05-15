@@ -18,6 +18,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   } else if (req.method === "GET") {
     try {
       const result = await prisma.kelompok.findMany({
+        include: {
+          program: true,
+        },
         orderBy: {
           nama_kelompok: "asc",
         },

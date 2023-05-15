@@ -134,6 +134,7 @@ model program {
   nama_program String
   level Level
   tipe Tipe
+  Deskripsi String?
   kelas kelas @relation(fields: [kelas_id], references: [id])
   kelas_id String
   createdAt DateTime @default(now())
