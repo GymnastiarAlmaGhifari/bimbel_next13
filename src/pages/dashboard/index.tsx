@@ -3,7 +3,6 @@ import prisma from "@/libs/prismadb";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import HeadTable from "../components/HeadTable";
-import CardExample from "@/pages/components/cardExample";
 
 import { useEffect, useState } from "react";
 import useSWR from "swr";
@@ -14,6 +13,8 @@ import { ModalDetail } from "@/pages/components/Modal";
 import BookEdit from "./edit/index";
 import fetcher from "@/libs/fetcher";
 import UserCard from "../components/card/CardPengguna";
+import InfoDashboard from "../components/InfoDashboard";
+import CardDashboard from "../components/card/CardDashboard";
 
 interface Book {
   id: string;
@@ -35,15 +36,20 @@ const Dashboard: React.FC<Props> = ({ books }) => {
     router.push("/dashboard");
   };
   return (
-    <div className="flex flex-row h-screen">
+    <div className="flex flex-row h-full w-full">
       <Sidebar />
 
-      <div className="w-full flex flex-col ">
+      <div className="w-full h-screen flex flex-col ">
         <Navbar />
-        <div className="h-full p-10 bg-Neutral-95 ">
-          <div className="flex flex-col h-full bg-Neutral-100 py-4 gap-4 rounded-lg">
-            <HeadTable />
-            <div className="flex flex-col rounded-bl-lg rounded-br-lg p-4 gap-4 overflow-y-auto scrollbar-thin scrollbar-track-Neutral-100 scrollbar-thumb-Primary-40 scrollbar-rounded-lg"></div>
+        <div className="flex flex-col gap-2 h-full p-10 bg-Neutral-95 overflow-auto">
+          <InfoDashboard />
+          <div className="flex flex-col h-full bg-Neutral-100 py-4 gap-4 rounded-lg overflow-auto">
+            <HeadTable label="Overview Jadwal" />
+            <div className="flex flex-col rounded-bl-lg rounded-br-lg p-4 gap-4 overflow-y-auto scrollbar h-full ">
+              <CardDashboard />
+              <CardDashboard />
+              <CardDashboard />
+            </div>
           </div>{" "}
         </div>
       </div>

@@ -25,7 +25,7 @@ const Navbar = () => {
   };
 
   return (
-    <div className="bg-Neutral-100 h-14 flex items-center justify-end px-24 py-2 z-40">
+    <div className="bg-Neutral-100 h-14 flex items-center justify-end px-4 py-2 z-40">
       <div className="relative">
         <div className="flex items-center inline-block gap-4">
           <div className="inline-block">
@@ -46,7 +46,7 @@ const Navbar = () => {
           </button>
         </div>
         {isOpen ? (
-          <div className="absolute mt-1 flex flex-col bg-Neutral-100 py-2 px-4 rounded-lg border-[1px] border-Neutral-90 gap-2">
+          <div className="absolute mt-1 flex flex-col bg-Neutral-100 py-2 px-4 rounded-lg border-[1px] translate-x-[-25px] border-Neutral-90 gap-2">
             {isOpen ? (
               <Button
                 bgColor="bg-Primary-50"
