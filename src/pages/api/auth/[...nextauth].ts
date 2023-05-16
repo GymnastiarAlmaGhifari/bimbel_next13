@@ -70,6 +70,7 @@ export const authOptions: AuthOptions = {
         token.id = user.id;
         token.role = user.role;
         token.image = user.image;
+        token.name = user.name;
       }
       return Promise.resolve(token);
     },
@@ -81,6 +82,8 @@ export const authOptions: AuthOptions = {
         role: token.role,
         // @ts-ignore
         image: token.image,
+        // @ts-ignore
+        name: token.name,
       };
       return Promise.resolve(session);
     },
