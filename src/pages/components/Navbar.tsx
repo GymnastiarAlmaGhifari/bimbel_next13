@@ -10,7 +10,6 @@ import { BsPersonFill } from "react-icons/bs";
 import { useSession } from "next-auth/react";
 import { signOut } from "next-auth/react";
 
-
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -29,16 +28,19 @@ const Navbar = () => {
       <div className="relative">
         <div className="flex items-center inline-block gap-4">
           <div className="inline-block">
-            <p className="font-bold">{session?.user.image}</p>
-            <p className="font-semibold text-sm">Super Admin</p>
+            <p className="font-bold">{session?.user.name}</p>
+
+            <p className="font-semibold text-sm">{session?.user.role}</p>
+
           </div>
           <div className="w-10 h-10 rounded-full overflow-clip scale-100 bg-red-400">
             <Image
-              src="https://img.jakpost.net/c/2017/02/15/2017_02_15_21637_1487139254._large.jpg"
-              alt="Profile"
+              src={session?.user?.image ? session.user.image : "/img/user/default.png"}
+              alt="Megachan"
               width={100}
               height={100}
               className="rounded-full w-full h-full object-cover"
+              loader={({ src }) => `${src}?cache-control=no-store`}
             />
           </div>
           <button onClick={toggleMenu}>
@@ -82,7 +84,16 @@ const Navbar = () => {
                 widthAuto
                 type="button"
                 icon={MdOutlineLogout}
-                onClick={() => signOut()}
+                onClick={
+                  // callback ke / 
+                  () => signOut(
+                    {
+                      callbackUrl: "/",
+                    }
+
+                  )
+                }
+
               />
             ) : (
               ""

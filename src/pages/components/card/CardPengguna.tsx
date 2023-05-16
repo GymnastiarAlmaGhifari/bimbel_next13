@@ -27,7 +27,7 @@ const UserCard: FC<UserCard> = ({
         <div className="flex items-center h-max w-auto gap-3">
           <div className="h-20 w-20">
             <Image
-              src={gambar ? gambar : "https://img.jakpost.net/c/2019/08/09/2019_08_09_77763_1565315121._large.jpg"}
+              src={gambar ? gambar : "/img/user/default.png"}
               alt="Megachan"
               width={100}
               height={100}

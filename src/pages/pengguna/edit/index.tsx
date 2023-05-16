@@ -22,8 +22,8 @@ const schema = yup.object().shape({
         .min(3, "judul minimal 3 karakter"),
     email: yup.string().required(),
     role: yup.string().required(),
-    nomor_telepon: yup.string().required().max(13, "maksimal 13 karakter").min(12, "minimal 12 karakter"),
-    lulusan: yup.string().required(),
+    nomor_telepon: yup.string().required().max(13, "maksimal 13 karakter"),
+    lulusan: yup.string().max(13, "maksimal 13 karakter"),
     alamat: yup.string().required(),
 });
 
@@ -36,8 +36,6 @@ type FormData = yup.InferType<typeof schema> & {
 const UserEdit: FC<UserEditProps> = ({ userId, onClose, onSucsess, data }) => {
 
     const [isLoading, setIsLoading] = useState(false);
-
-
 
     const {
         register,
@@ -71,7 +69,7 @@ const UserEdit: FC<UserEditProps> = ({ userId, onClose, onSucsess, data }) => {
             });
             mutate("/api/user");
             mutate(`/api/userimg`);
-            mutate(`/api/delimg`);
+            mutate(`/api/user/getadmin`);
         } catch (error) {
             console.error(error);
         } finally {
