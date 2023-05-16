@@ -22,8 +22,8 @@ const schema = yup.object().shape({
         .min(3, "judul minimal 3 karakter"),
     email: yup.string().required(),
     role: yup.string().required(),
-    nomor_telepon: yup.string().required().max(13, "maksimal 13 karakter").min(12, "minimal 12 karakter"),
-    lulusan: yup.string().max(13, "maksimal 13 karakter").min(12, "minimal 12 karakter"),
+    nomor_telepon: yup.string().required().max(13, "maksimal 13 karakter"),
+    lulusan: yup.string().max(13, "maksimal 13 karakter"),
     alamat: yup.string().required(),
 });
 
