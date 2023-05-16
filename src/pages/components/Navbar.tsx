@@ -10,7 +10,6 @@ import { BsPersonFill } from "react-icons/bs";
 import { useSession } from "next-auth/react";
 import { signOut } from "next-auth/react";
 
-
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -30,7 +29,9 @@ const Navbar = () => {
         <div className="flex items-center inline-block gap-4">
           <div className="inline-block">
             <p className="font-bold">{session?.user.name}</p>
+
             <p className="font-semibold text-sm">{session?.user.role}</p>
+
           </div>
           <div className="w-10 h-10 rounded-full overflow-clip scale-100 bg-red-400">
             <Image
