@@ -26,7 +26,7 @@ model User {
   updatedAt         DateTime @updatedAt 
   jadwal_details    jadwal_detail[]
   gaji              gaji[]
-  tagihan_details   tagihan_detail[]
+  tagihans          tagihan[]
 }
 
 model lokasi {
@@ -123,6 +123,8 @@ model gaji{
   user_id String
   jumlah_gaji Int
   tanggal_gaji DateTime @db.Date
+  Bulan Bulan?
+  Tahun Int?
   tipe_pembayaran TipePembayaran
   status_pembayaran StatusPembayaran
   createdAt DateTime @default(now())
@@ -198,26 +200,33 @@ model presensi {
 
 model tagihan {
   id String @id @default(cuid())
-  siswa_id String?
   siswa siswa? @relation(fields: [siswa_id], references: [id])
+  siswa_id String?
   jumlah_tagihan Int
   tanggal_tagihan DateTime @db.Date
+  tanggal_jatuh_tempo DateTime @db.Date
+  tanggal_bayar DateTime? @db.Date
+  tanggal_approve DateTime? @db.Date
+  Bulan Bulan?
+  Tahun Int?
   status Status
-  nota String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  tagihan_details tagihan_detail?
-}
-
-model tagihan_detail {
-  tagihan_id String @unique
-  tagihan tagihan? @relation(fields: [tagihan_id], references: [id])
-  user_id String?
+  nota String?
   user User? @relation(fields: [user_id], references: [id])
+  user_id String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
+  // tagihan_details tagihan_detail?
 }
+
+// model tagihan_detail {
+//   tagihan tagihan? @relation(fields: [tagihan_id], references: [id])
+//   tagihan_id String @unique
+//   user_id String?
+//   user User? @relation(fields: [user_id], references: [id])
+//   createdAt DateTime @default(now())
+//   updatedAt DateTime @updatedAt
+
+// }
 
 enum UserRole {
   TENTOR
@@ -270,5 +279,20 @@ enum StatusPresensi {
   SAKIT
   IZIN
   ALPHA
+}
+
+enum Bulan {
+  JANUARI
+  FEBRUARI
+  MARET
+  APRIL
+  MEI
+  JUNI
+  JULI
+  AGUSTUS
+  SEPTEMBER
+  OKTOBER
+  NOVEMBER
+  DESEMBER
 }
 
