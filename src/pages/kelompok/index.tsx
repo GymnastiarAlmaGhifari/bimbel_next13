@@ -7,6 +7,7 @@ import HeadTable from "../components/HeadTable";
 import CardKelompok from "../components/card/CardKelompok";
 import { ModalDetail } from "../components/Modal";
 import KelompokEdit from "./edit";
+import CreateKelompok from "./create";
 
 interface Kelompok {
   program: any;
@@ -60,7 +61,11 @@ const Kelompok: FC<Kelompok> = () => {
         <Navbar />
         <div className="h-full p-10 bg-Neutral-95 overflow-auto">
           <div className="flex flex-col h-full bg-Neutral-100 py-4 gap-4 rounded-lg overflow-auto">
-            <HeadTable label="Kelompok" />
+            <HeadTable label="Kelompok" onClick={
+              () => {
+                setShowCreate(true);
+              }
+            } />
             <div className="flex flex-col rounded-bl-lg rounded-br-lg p-4 gap-4 overflow-y-auto scrollbar-thin scrollbar-track-Neutral-100 scrollbar-thumb-Primary-40 scrollbar-rounded-lg">
               {kelompoks ? (
                 <>
@@ -117,6 +122,23 @@ const Kelompok: FC<Kelompok> = () => {
               {selected?.nama_kelompok}Data berhasil diubah
             </p>
           </div>
+        </ModalDetail>
+      )}
+
+      {/* modal create */}
+      {showCreate && (
+        <ModalDetail
+          titleModal="Tambah Pengguna"
+          onOpen={true}
+          onClose={() => setShowCreate(false)}
+        >
+          <CreateKelompok
+            onClose={() => setShowCreate(false)}
+            onSucsess={() => {
+              setShowSuccess(true);
+            }}
+
+          />
         </ModalDetail>
       )}
     </div>

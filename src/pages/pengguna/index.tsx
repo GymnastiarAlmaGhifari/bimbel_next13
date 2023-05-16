@@ -27,12 +27,11 @@ interface User {
 }
 
 const User: FC<User> = () => {
-
   const { data: session, status } = useSession();
 
-  const role = session?.user?.role;
+  const { data: users, error } = useSWR<User[]>("/api/user", fetcher, {});
 
-  const { data: users, error } = useSWR<User[]>("/api/user", (url) => fetcher(url, { role: role }), {});
+  const { data: admin, error: erroradmin } = useSWR<User[]>("/api/user/getadmin", fetcher, {});
 
 
   const [selected, setSelected] = useState<User | null>(null);
@@ -46,9 +45,7 @@ const User: FC<User> = () => {
     setSelected(null);
   };
 
-  // open modal create
   const [showCreate, setShowCreate] = useState(false);
-
   const [showSuccess, setShowSuccess] = useState(false);
 
   useEffect(() => {
@@ -79,30 +76,62 @@ const User: FC<User> = () => {
 
             <div className="flex flex-col rounded-bl-lg rounded-br-lg p-4 gap-4 overflow-y-auto scrollbar">
 
-
-              {users ? (
+              {session?.user.role === "SUPER" && (
                 <>
-                  {users.length === 0 ? (
-                    <p>No program found.</p>
+                  {users ? (
+                    <>
+                      {users.length === 0 ? (
+                        <p>No program found.</p>
+                      ) : (
+                        users.map((user) => (
+                          <UserCard
+                            key={user.id}
+                            nama_user={user.name}
+                            universitas={user.universitas}
+                            nama_mapel={user.mapel?.nama_mapel}
+                            gambar={user?.image}
+                            role={user.role}
+                            onClick={() => {
+                              setSelected(user);
+                            }}
+                          />
+                        ))
+                      )}
+                    </>
                   ) : (
-                    users.map((user) => (
-                      <UserCard
-                        key={user.id}
-                        nama_user={user.name}
-                        universitas={user.universitas}
-                        nama_mapel={user.mapel?.nama_mapel}
-                        gambar={user?.image}
-                        role={user.role}
-                        onClick={() => {
-                          setSelected(user);
-                        }}
-                      />
-                    ))
+                    <p>Loading...</p>
                   )}
                 </>
-              ) : (
-                <p>Loading...</p>
               )}
+
+              {session?.user.role === "ADMIN" && (
+                <>
+                  {admin ? (
+                    <>
+                      {admin.length === 0 ? (
+                        <p>No program found.</p>
+                      ) : (
+                        admin.map((admin) => (
+                          <UserCard
+                            key={admin.id}
+                            nama_user={admin.name}
+                            universitas={admin.universitas}
+                            nama_mapel={admin.mapel?.nama_mapel}
+                            gambar={admin?.image}
+                            role={admin.role}
+                            onClick={() => {
+                              setSelected(admin);
+                            }}
+                          />
+                        ))
+                      )}
+                    </>
+                  ) : (
+                    <p>Loading...</p>
+                  )}
+                </>
+              )}
+
             </div>
           </div>
         </div>
