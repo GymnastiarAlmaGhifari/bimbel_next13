@@ -8,6 +8,7 @@ import Navbar from "../components/Navbar";
 import Create from "./create";
 import HeadTable from "../components/HeadTable";
 import UserCard from "../components/card/CardPengguna";
+import { useSession } from "next-auth/react";
 
 interface User {
   id: string;
@@ -26,7 +27,14 @@ interface User {
 }
 
 const User: FC<User> = () => {
-  const { data: users, error } = useSWR<User[]>("/api/user", fetcher, {});
+
+  const { data: session, status } = useSession();
+
+  const role = session?.user?.role;
+
+  const { data: users, error } = useSWR<User[]>("/api/user", (url) => fetcher(url, { role: role }), {});
+
+
   const [selected, setSelected] = useState<User | null>(null);
 
   useEffect(() => {
@@ -53,24 +61,25 @@ const User: FC<User> = () => {
     };
   }, [showSuccess]);
 
+
   return (
     <div className="flex flex-row h-screen">
       <Sidebar />
-
       <div className="w-full flex flex-col ">
         <Navbar />
-        <div className="h-full p-10 bg-Neutral-95 ">
-          <div className="flex flex-col h-full bg-Neutral-100 py-4 gap-4 rounded-lg">
+        <div className="h-full p-10 bg-Neutral-95 overflow-auto ">
+          <div className="flex flex-col h-full bg-Neutral-100 py-4 gap-4 rounded-lg overflow-auto">
             <HeadTable
               label="Pengguna"
               role
               onClick={() => {
                 setShowCreate(true);
+              }}
+            />
 
-              }
-            } />
-            
-            <div className="flex flex-col rounded-bl-lg rounded-br-lg p-4 gap-4 overflow-y-auto scrollbar-thin scrollbar-track-Neutral-100 scrollbar-thumb-Primary-40 scrollbar-rounded-lg">
+            <div className="flex flex-col rounded-bl-lg rounded-br-lg p-4 gap-4 overflow-y-auto scrollbar">
+
+
               {users ? (
                 <>
                   {users.length === 0 ? (
@@ -84,11 +93,9 @@ const User: FC<User> = () => {
                         nama_mapel={user.mapel?.nama_mapel}
                         gambar={user?.image}
                         role={user.role}
-                        onClick={
-                          () => {
-                            setSelected(user);
-                          }
-                        }
+                        onClick={() => {
+                          setSelected(user);
+                        }}
                       />
                     ))
                   )}
