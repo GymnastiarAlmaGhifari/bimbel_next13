@@ -1,6 +1,8 @@
-"use client"
+import React, { FC } from "react";
 
-export default function CardExample() {
+type CardDashboardProps = {};
+
+const CardDashboard: FC<CardDashboardProps> = ({}) => {
   return (
     <div className="flex flex-col bg-Neutral-100 border rounded-lg py-5 px-4 gap-3">
       <div className="flex justify-between">
@@ -31,4 +33,6 @@ export default function CardExample() {
       <h2 className="font-bold text-Primary-30">00:00 - 00:00</h2>
     </div>
   );
-}
+};
+
+export default CardDashboard;
