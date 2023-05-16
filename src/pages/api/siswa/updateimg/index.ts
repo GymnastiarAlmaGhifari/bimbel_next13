@@ -3,7 +3,6 @@ import formidable from "formidable";
 import path from "path";
 import fs from "fs/promises";
 import prisma from "@/libs/prismadb";
-import Siswa from "@/pages/siswa";
 
 export const config = {
   api: {
