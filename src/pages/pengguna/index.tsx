@@ -8,6 +8,7 @@ import Navbar from "../components/Navbar";
 import Create from "./create";
 import HeadTable from "../components/HeadTable";
 import UserCard from "../components/card/CardPengguna";
+import { useSession } from "next-auth/react";
 
 interface User {
   id: string;
@@ -26,7 +27,14 @@ interface User {
 }
 
 const User: FC<User> = () => {
-  const { data: users, error } = useSWR<User[]>("/api/user", fetcher, {});
+
+  const { data: session, status } = useSession();
+
+  const role = session?.user?.role;
+
+  const { data: users, error } = useSWR<User[]>("/api/user", (url) => fetcher(url, { role: role }), {});
+
+
   const [selected, setSelected] = useState<User | null>(null);
 
   useEffect(() => {
@@ -53,10 +61,10 @@ const User: FC<User> = () => {
     };
   }, [showSuccess]);
 
+
   return (
     <div className="flex flex-row h-screen">
       <Sidebar />
-
       <div className="w-full flex flex-col ">
         <Navbar />
         <div className="h-full p-10 bg-Neutral-95 overflow-auto ">
@@ -70,6 +78,8 @@ const User: FC<User> = () => {
             />
 
             <div className="flex flex-col rounded-bl-lg rounded-br-lg p-4 gap-4 overflow-y-auto scrollbar">
+
+
               {users ? (
                 <>
                   {users.length === 0 ? (
