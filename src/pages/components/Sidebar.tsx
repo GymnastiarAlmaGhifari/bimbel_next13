@@ -206,7 +206,7 @@ const Sidebar = () => {
 
   return (
     <>
-      <div className={`${isOpen ? "w-64" : "w-32"} "h-full z-50 relative"`}>
+      <div className={`${isOpen ? "w-64" : "w-32"} h-full z-50 relative`}>
         <div className="h-14 py-2 flex justify-between items-center gap-6 pl-7">
           <div className="w-full">
             <Image

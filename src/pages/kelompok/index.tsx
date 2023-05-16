@@ -22,7 +22,11 @@ interface Kelompok {
 }
 
 const Kelompok: FC<Kelompok> = () => {
-  const { data: kelompoks, error } = useSWR<Kelompok[]>("/api/kelompok", fetcher, {});
+  const { data: kelompoks, error } = useSWR<Kelompok[]>(
+    "/api/kelompok",
+    fetcher,
+    {}
+  );
   const [selected, setSelected] = useState<Kelompok | null>(null);
 
   useEffect(() => {
@@ -54,8 +58,8 @@ const Kelompok: FC<Kelompok> = () => {
       <Sidebar />
       <div className="w-full flex flex-col">
         <Navbar />
-        <div className="h-full p-10 bg-Neutral-95">
-          <div className="flex flex-col h-full bg-Neutral-100 py-4 gap-4 rounded-lg">
+        <div className="h-full p-10 bg-Neutral-95 overflow-auto">
+          <div className="flex flex-col h-full bg-Neutral-100 py-4 gap-4 rounded-lg overflow-auto">
             <HeadTable label="Kelompok" />
             <div className="flex flex-col rounded-bl-lg rounded-br-lg p-4 gap-4 overflow-y-auto scrollbar-thin scrollbar-track-Neutral-100 scrollbar-thumb-Primary-40 scrollbar-rounded-lg">
               {kelompoks ? (
@@ -66,7 +70,9 @@ const Kelompok: FC<Kelompok> = () => {
                     kelompoks.map((kelompok) => (
                       <CardKelompok
                         key={kelompok.id}
-                        nama_kelompok={kelompok.nama_kelompok} level={kelompok.program.level} tipe={kelompok.program.tipe}
+                        nama_kelompok={kelompok.nama_kelompok}
+                        level={kelompok.program.level}
+                        tipe={kelompok.program.tipe}
                         onClick={() => {
                           setSelected(kelompok);
                         }}
@@ -77,7 +83,6 @@ const Kelompok: FC<Kelompok> = () => {
               ) : (
                 <p>Loading...</p>
               )}
-
             </div>
           </div>
         </div>
