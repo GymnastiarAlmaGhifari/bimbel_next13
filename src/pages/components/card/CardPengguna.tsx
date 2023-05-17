@@ -67,7 +67,7 @@ const UserCard: FC<UserCard> = ({
             bgColor="bg-Error-50"
             brColor=""
             label="Hapus Pengguna"
-            textColor="text-Error-40"
+            textColor="text-Error-50"
             icon={MdDelete}
             onClick={onClick}
           />
@@ -78,28 +78,11 @@ const UserCard: FC<UserCard> = ({
             label="Edit Pengguna"
             textColor="text-Tertiary-50"
             icon={MdModeEdit}
-            onClick={onClick}
+            onClick={editGambar}
           />
         </div>
 
-        <Button
-          type="button"
-          bgColor="bg-Tertiary-50"
-          brColor=""
-          label="Edit Pengguna"
-          textColor="text-Tertiary-50"
-          icon={MdModeEdit}
-          onClick={onClick}
-        />
-        <Button
-          type="button"
-          bgColor="bg-Tertiary-50"
-          brColor=""
-          label="Edit Gambar"
-          textColor="text-Tertiary-50"
-          icon={MdModeEdit}
-          onClick={editGambar}
-        />
+
 
       </div>
     </div>
