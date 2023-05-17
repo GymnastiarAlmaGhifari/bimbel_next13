@@ -84,7 +84,6 @@ const Siswa: FC<Siswa> = () => {
                         {siswa.map((siswa) => (
                           <CardSiswa
                             key={siswa.id}
-
                             tipe={siswa.kelompok.program.tipe}
                             kelas={siswa.kelompok.program.kelas.nama_kelas}
                             level={siswa.kelompok.program.level}
