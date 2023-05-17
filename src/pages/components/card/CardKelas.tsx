@@ -4,9 +4,10 @@ import { MdModeEdit } from "react-icons/md";
 
 type CardKelasProps = {
   nama_kelas: string;
+  onClick?: () => void;
 };
 
-const CardKelas: FC<CardKelasProps> = ({ nama_kelas }) => {
+const CardKelas: FC<CardKelasProps> = ({ nama_kelas, onClick }) => {
   return (
     <div className="flex flex-col bg-Neutral-100 border rounded-lg py-5 px-4 gap-3">
       <div className="flex justify-between">
@@ -26,7 +27,7 @@ const CardKelas: FC<CardKelasProps> = ({ nama_kelas }) => {
           label="Edit Kelas"
           textColor="text-Tertiary-50"
           icon={MdModeEdit}
-          // onClick={onClick}
+          onClick={onClick}
         />
       </div>
     </div>
