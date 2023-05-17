@@ -11,6 +11,7 @@ interface UserCard {
   onClick: () => void;
   gambar?: any;
   role: string;
+  editGambar?: () => void;
 }
 
 const UserCard: FC<UserCard> = ({
@@ -20,6 +21,7 @@ const UserCard: FC<UserCard> = ({
   nama_user,
   gambar,
   role,
+  editGambar,
 }) => {
   return (
     <div className="flex flex-col bg-Neutral-100 border rounded-lg py-5 px-4 gap-3">
@@ -66,6 +68,15 @@ const UserCard: FC<UserCard> = ({
           textColor="text-Tertiary-50"
           icon={MdModeEdit}
           onClick={onClick}
+        />
+        <Button
+          type="button"
+          bgColor="bg-Tertiary-50"
+          brColor=""
+          label="Edit Gambar"
+          textColor="text-Tertiary-50"
+          icon={MdModeEdit}
+          onClick={editGambar}
         />
       </div>
     </div>
