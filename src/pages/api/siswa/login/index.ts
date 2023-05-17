@@ -46,7 +46,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             expiresIn: "7d",
         });
         //update token to database
-        await prisma.siswa.update({
+        const updatetoken = await prisma.siswa.update({
             where: { id: siswa.id },
             data: { token },
         });
@@ -56,7 +56,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             message: "Login success",
             data: {
             // email: siswa.email,
-            token: siswa.token,
+            token: token,
             // nomor: siswa.nomor_telepon,
             // alamat: siswa.alamat,
             // sekolah: siswa.sekolah,
