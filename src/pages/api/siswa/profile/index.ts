@@ -51,7 +51,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 });
                 const response = {
                     status: 200,
-                    message: "Login success",
+                    message: "Get profile success",
                     data: {
                         id: siswa.id,
                         name: siswa.nama,
@@ -67,7 +67,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             else {
                 const response = {
                     status: 200,
-                    message: "Login success",
+                    message: "Get profile success",
                     data: {
                         id: siswa.id,
                         name: siswa.nama,
