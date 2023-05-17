@@ -82,7 +82,6 @@ const Mapel: FC<Mapel> = () => {
           {selectedMapel && (
             <ModalDetail
               titleModal="Edit Mapel"
-              onOpen={true}
               onClose={onClose}
             >
               <MapelEdit
@@ -96,7 +95,6 @@ const Mapel: FC<Mapel> = () => {
           {showSuccess && (
             <ModalDetail
               titleModal="SUCSSES"
-              onOpen={true}
               onClose={() => setShowSuccess(false)}
             >
               <div className="flex flex-col items-center justify-center">
@@ -112,7 +110,6 @@ const Mapel: FC<Mapel> = () => {
           {showCreate && (
             <ModalDetail
               titleModal="Tambah Mapel"
-              onOpen={true}
               onClose={() => setShowCreate(false)}
             >
               <CreateMapel
