@@ -11,8 +11,8 @@ export const config = {
 };
 let randomString: string;
 function generateRandomString(length: number): string {
-  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-  let result = '';
+  const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  let result = "";
   const charactersLength = characters.length;
 
   for (let i = 0; i < length; i++) {
@@ -26,7 +26,6 @@ function generateRandomString(length: number): string {
 randomString = generateRandomString(6);
 console.log(randomString);
 
-
 // export { modifiedTimefromApiimg };
 
 const readFile = (req: NextApiRequest, saveLocally?: boolean): Promise<{ fields: formidable.Fields; files: formidable.Files }> => {
@@ -38,7 +37,7 @@ const readFile = (req: NextApiRequest, saveLocally?: boolean): Promise<{ fields:
       return req.headers.from + "-" + randomString + "." + extention;
     };
   }
-  options.maxFileSize = 4000 * 1024 * 1024;
+  options.maxFileSize = 2 * 1024 * 1024;
   const form = formidable(options);
   return new Promise((resolve, reject) => {
     form.parse(req, (err, fields, files) => {
@@ -59,7 +58,6 @@ const handler: NextApiHandler = async (req, res) => {
           random: randomString,
         },
       });
-
     } catch (error) {
       console.error(error);
       res.status(500).json({ message: "Error updating user" });

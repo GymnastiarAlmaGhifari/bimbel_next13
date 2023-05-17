@@ -12,7 +12,6 @@ import { signOut } from "next-auth/react";
 import useSWR, { mutate } from "swr";
 import fetcher from "@/libs/fetcher";
 
-
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -35,13 +34,12 @@ const Navbar = () => {
 
   return (
     <div className="bg-Neutral-100 h-14 flex items-center justify-end px-4 py-2 z-40">
-      <div className="relative">
-        <div className="flex items-center inline-block gap-4">
-          <div className="inline-block">
-            <p className="font-bold">{users?.name}</p>
+      <button onClick={toggleMenu} className="relative">
+        <div className="flex items-center inline-block gap-2">
+          <div className="inline-block pr-2 flex flex-col">
+            <p className="font-bold text-left">{users?.name}</p>
 
-            <p className="font-semibold text-sm">{users?.role}</p>
-
+            <p className="font-semibold text-sm text-left">{users?.role}</p>
           </div>
           <div className="w-10 h-10 rounded-full overflow-clip scale-100 bg-red-400">
             <Image
@@ -53,12 +51,10 @@ const Navbar = () => {
               loader={({ src }) => `${src}?cache-control=no-store`}
             />
           </div>
-          <button onClick={toggleMenu}>
-            {isOpen ? <IoIosArrowUp /> : <IoIosArrowDown />}
-          </button>
+          {isOpen ? <IoIosArrowUp /> : <IoIosArrowDown />}
         </div>
         {isOpen ? (
-          <div className="absolute mt-1 flex flex-col bg-Neutral-100 py-2 px-4 rounded-lg border-[1px] translate-x-[-25px] border-Neutral-90 gap-2">
+          <div className="absolute right-0 mt-1 flex flex-col bg-Neutral-100 py-2 px-4 rounded-lg border-[1px] border-Neutral-90 gap-2">
             {isOpen ? (
               <Button
                 bgColor="bg-Primary-50"
@@ -95,15 +91,12 @@ const Navbar = () => {
                 type="button"
                 icon={MdOutlineLogout}
                 onClick={
-                  // callback ke / 
-                  () => signOut(
-                    {
+                  // callback ke /
+                  () =>
+                    signOut({
                       callbackUrl: "/",
-                    }
-
-                  )
+                    })
                 }
-
               />
             ) : (
               ""
@@ -112,7 +105,7 @@ const Navbar = () => {
         ) : (
           ""
         )}
-      </div>
+      </button>
     </div>
   );
 };

@@ -2,6 +2,7 @@ import React from "react";
 import Sidebar from "../components/Sidebar";
 import Navbar from "../components/Navbar";
 import Button from "../components/buttons/Button";
+import ItemJadwal from "../components/ItemJadwal";
 
 const Jadwal = () => {
   return (
@@ -51,113 +52,21 @@ const Jadwal = () => {
             </div>
             <div className="grid grid-cols-8 grid-rows-4 auto-rows-max grid-flow-row gap-4 h-full">
               <div className="row-span-4 flex flex-col gap-4">
-                <div className="flex justify-center items-center py-2 px-4 bg-Primary-20 border-2  rounded h-full text-Primary-90 font-bold">
+                <div className="flex justify-center items-center py-2 px-4 bg-Primary-20  rounded h-full text-Primary-90 font-bold">
                   Sesi 0
                 </div>
-                <div className=" flex justify-center items-center py-2 px-4 bg-Primary-20 border-2  rounded h-full text-Primary-90 font-bold">
+                <div className=" flex justify-center items-center py-2 px-4 bg-Primary-20  rounded h-full text-Primary-90 font-bold">
                   Sesi 1
                 </div>
-                <div className="flex justify-center items-center py-2 px-4 bg-Primary-20 border-2  rounded h-full text-Primary-90 font-bold">
+                <div className="flex justify-center items-center py-2 px-4 bg-Primary-20  rounded h-full text-Primary-90 font-bold">
                   Sesi 2
                 </div>
-                <div className="flex justify-center items-center py-2 px-4 bg-Primary-20 border-2  rounded h-full text-Primary-90 font-bold">
+                <div className="flex justify-center items-center py-2 px-4 bg-Primary-20  rounded h-full text-Primary-90 font-bold">
                   Sesi 3
                 </div>
               </div>
               <div className="col-span-7 row-span-4 grid grid-cols-7 grid-rows-4 gap-4">
-                <div className="bg-Tertiary-50 rounded p-2">
-                  <h2 className="text-Tertiary-90 text-lg font-bold">A6</h2>
-                  <p className="text-Tertiary-90 font-semibold">Agimul Karim</p>
-                </div>
-                <div className=""></div>
-
-                <div className="bg-Tertiary-50 rounded p-2">
-                  <h2 className="text-Tertiary-90 text-lg font-bold">A6</h2>
-                  <p className="text-Tertiary-90 font-semibold">Agimul Karim</p>
-                </div>
-                <div className="bg-Tertiary-50 rounded p-2">
-                  <h2 className="text-Tertiary-90 text-lg font-bold">A6</h2>
-                  <p className="text-Tertiary-90 font-semibold">Agimul Karim</p>
-                </div>
-                <div className=""></div>
-
-                <div className="bg-Tertiary-50 rounded p-2">
-                  <h2 className="text-Tertiary-90 text-lg font-bold">A6</h2>
-                  <p className="text-Tertiary-90 font-semibold">Agimul Karim</p>
-                </div>
-                <div className="bg-Tertiary-50 rounded p-2">
-                  <h2 className="text-Tertiary-90 text-lg font-bold">A6</h2>
-                  <p className="text-Tertiary-90 font-semibold">Agimul Karim</p>
-                </div>
-                <div className="bg-Tertiary-50 rounded p-2">
-                  <h2 className="text-Tertiary-90 text-lg font-bold">A6</h2>
-                  <p className="text-Tertiary-90 font-semibold">Agimul Karim</p>
-                </div>
-                <div className=""></div>
-
-                <div className="bg-Tertiary-50 rounded p-2">
-                  <h2 className="text-Tertiary-90 text-lg font-bold">A6</h2>
-                  <p className="text-Tertiary-90 font-semibold">Agimul Karim</p>
-                </div>
-                <div className=""></div>
-
-                <div className="bg-Tertiary-50 rounded p-2">
-                  <h2 className="text-Tertiary-90 text-lg font-bold">A6</h2>
-                  <p className="text-Tertiary-90 font-semibold">Agimul Karim</p>
-                </div>
-                <div className="bg-Tertiary-50 rounded p-2">
-                  <h2 className="text-Tertiary-90 text-lg font-bold">A6</h2>
-                  <p className="text-Tertiary-90 font-semibold">Agimul Karim</p>
-                </div>
-                <div className=""></div>
-
-                <div className="bg-Tertiary-50 rounded p-2">
-                  <h2 className="text-Tertiary-90 text-lg font-bold">A6</h2>
-                  <p className="text-Tertiary-90 font-semibold">Agimul Karim</p>
-                </div>
-                <div className="bg-Tertiary-50 rounded p-2">
-                  <h2 className="text-Tertiary-90 text-lg font-bold">A6</h2>
-                  <p className="text-Tertiary-90 font-semibold">Agimul Karim</p>
-                </div>
-                <div className="bg-Tertiary-50 rounded p-2">
-                  <h2 className="text-Tertiary-90 text-lg font-bold">A6</h2>
-                  <p className="text-Tertiary-90 font-semibold">Agimul Karim</p>
-                </div>
-                <div className=""></div>
-
-                <div className="bg-Tertiary-50 rounded p-2">
-                  <h2 className="text-Tertiary-90 text-lg font-bold">A6</h2>
-                  <p className="text-Tertiary-90 font-semibold">Agimul Karim</p>
-                </div>
-                <div className="bg-Tertiary-50 rounded p-2">
-                  <h2 className="text-Tertiary-90 text-lg font-bold">A6</h2>
-                  <p className="text-Tertiary-90 font-semibold">Agimul Karim</p>
-                </div>
-                <div className="bg-Tertiary-50 rounded p-2">
-                  <h2 className="text-Tertiary-90 text-lg font-bold">A6</h2>
-                  <p className="text-Tertiary-90 font-semibold">Agimul Karim</p>
-                </div>
-                <div className=""></div>
-
-                <div className="bg-Tertiary-50 rounded p-2">
-                  <h2 className="text-Tertiary-90 text-lg font-bold">A6</h2>
-                  <p className="text-Tertiary-90 font-semibold">Agimul Karim</p>
-                </div>
-                <div className="bg-Tertiary-50 rounded p-2">
-                  <h2 className="text-Tertiary-90 text-lg font-bold">A6</h2>
-                  <p className="text-Tertiary-90 font-semibold">Agimul Karim</p>
-                </div>
-                <div className="bg-Tertiary-50 rounded p-2">
-                  <h2 className="text-Tertiary-90 text-lg font-bold">A6</h2>
-                  <p className="text-Tertiary-90 font-semibold">Agimul Karim</p>
-                </div>
-                <div className=""></div>
-                <div className="bg-Tertiary-50 rounded p-2">
-                  <h2 className="text-Tertiary-90 text-lg font-bold">A6</h2>
-                  <p className="text-Tertiary-90 font-semibold">Agimul Karim</p>
-                </div>
-
-                <div className=""></div>
+                <ItemJadwal kelompok="A6" nama_tentor="Agimul Karim"/>
               </div>
             </div>
           </div>
