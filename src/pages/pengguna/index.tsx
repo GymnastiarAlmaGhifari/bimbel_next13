@@ -2,7 +2,7 @@ import useSWR from "swr";
 import fetcher from "@/libs/fetcher";
 import React, { FC, useEffect, useState } from "react";
 import Sidebar from "../components/Sidebar";
-import { ModalDetail } from "@/pages/components/Modal";
+import { ModalDetail } from "@/pages/components/modal/Modal";
 import UserEdit from "./edit";
 import Navbar from "../components/Navbar";
 import Create from "./create";
@@ -32,8 +32,11 @@ const User: FC<User> = () => {
 
   const { data: users, error } = useSWR<User[]>("/api/user", fetcher, {});
 
-  const { data: admin, error: erroradmin } = useSWR<User[]>("/api/user/getadmin", fetcher, {});
-
+  const { data: admin, error: erroradmin } = useSWR<User[]>(
+    "/api/user/getadmin",
+    fetcher,
+    {}
+  );
 
   const [selected, setSelected] = useState<User | null>(null);
 
@@ -62,7 +65,6 @@ const User: FC<User> = () => {
     };
   }, [showSuccess]);
 
-
   return (
     <div className="flex flex-row h-screen">
       <Sidebar />
@@ -79,7 +81,6 @@ const User: FC<User> = () => {
             />
 
             <div className="flex flex-col rounded-bl-lg rounded-br-lg p-4 gap-4 overflow-y-auto scrollbar">
-
               {session?.user.role === "SUPER" && (
                 <>
                   {users ? (
@@ -140,7 +141,6 @@ const User: FC<User> = () => {
                   )}
                 </>
               )}
-
             </div>
           </div>
         </div>

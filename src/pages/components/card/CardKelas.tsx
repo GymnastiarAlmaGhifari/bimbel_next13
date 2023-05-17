@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 import Button from "../buttons/Button";
-import { MdModeEdit } from "react-icons/md";
+import { MdModeEdit, MdDelete } from "react-icons/md";
 
 type CardKelasProps = {
   nama_kelas: string;
@@ -10,7 +10,6 @@ type CardKelasProps = {
 };
 
 const CardKelas: FC<CardKelasProps> = ({ nama_kelas, onEdit, onDelete }) => {
-
   return (
     <div className="flex flex-col bg-Neutral-100 border rounded-lg py-5 px-4 gap-3">
       <div className="flex justify-between">
@@ -35,13 +34,12 @@ const CardKelas: FC<CardKelasProps> = ({ nama_kelas, onEdit, onDelete }) => {
             bgColor="bg-Error-50"
             brColor=""
             label="Hapus Kelas"
-            textColor="text-Neutral-100"
+            textColor="text-Error-40"
             type="button"
-            withBgColor
+            icon={MdDelete}
             onClick={onDelete}
           />
         </div>
-
       </div>
     </div>
   );

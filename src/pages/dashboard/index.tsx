@@ -9,7 +9,7 @@ import useSWR from "swr";
 import { signOut } from "next-auth/react";
 import Sidebar from "../components/Sidebar";
 import Navbar from "../components/Navbar";
-import { ModalDetail } from "@/pages/components/Modal";
+import { ModalDetail } from "@/pages/components/modal/Modal";
 import BookEdit from "./edit/index";
 import fetcher from "@/libs/fetcher";
 import UserCard from "../components/card/CardPengguna";

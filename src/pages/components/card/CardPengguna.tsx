@@ -2,7 +2,7 @@ import Image from "next/image";
 import { FC } from "react";
 import ButtonEdit from "../buttons/ButtonEdit";
 import Button from "../buttons/Button";
-import { MdModeEdit } from "react-icons/md";
+import { MdModeEdit, MdDelete } from "react-icons/md";
 
 interface UserCard {
   nama_user: string;
@@ -60,6 +60,28 @@ const UserCard: FC<UserCard> = ({
       <div className="w-full h-[1px] bg-Neutral-30"></div>
       <div className="flex justify-between">
         <h2 className="font-semibold text-Primary-10">{role}</h2>
+
+        <div className="flex gap-4">
+          <Button
+            type="button"
+            bgColor="bg-Error-50"
+            brColor=""
+            label="Hapus Pengguna"
+            textColor="text-Error-40"
+            icon={MdDelete}
+            onClick={onClick}
+          />
+          <Button
+            type="button"
+            bgColor="bg-Tertiary-50"
+            brColor=""
+            label="Edit Pengguna"
+            textColor="text-Tertiary-50"
+            icon={MdModeEdit}
+            onClick={onClick}
+          />
+        </div>
+
         <Button
           type="button"
           bgColor="bg-Tertiary-50"
@@ -78,6 +100,7 @@ const UserCard: FC<UserCard> = ({
           icon={MdModeEdit}
           onClick={editGambar}
         />
+
       </div>
     </div>
   );

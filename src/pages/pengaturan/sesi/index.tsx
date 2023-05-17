@@ -3,14 +3,13 @@ import React, { FC } from "react";
 import { useEffect, useState } from "react";
 import useSWR from "swr";
 import fetcher from "@/libs/fetcher";
-import { ModalDetail } from "@/pages/components/Modal";
+import { ModalDetail } from "@/pages/components/modal/Modal";
 import SesiEdit from "./edit";
 import CardSesi from "@/pages/components/card/CardSesi";
 import HeadTable from "@/pages/components/HeadTable";
-import { format, parseISO } from 'date-fns';
-import moment from 'moment';
-import momentTimezone from 'moment-timezone';
-
+import { format, parseISO } from "date-fns";
+import moment from "moment";
+import momentTimezone from "moment-timezone";
 
 interface Sesi {
   id: string;
@@ -39,7 +38,6 @@ const Sesi: FC<Props> = () => {
     setSelectedSesi(null);
   };
 
-
   // const date now
   if (error) {
     return <p>Error loading sesi.</p>;
@@ -66,8 +64,7 @@ const Sesi: FC<Props> = () => {
                     }}
                   />
                 ))
-              )
-              }
+              )}
             </>
           ) : (
             <p>Loading...</p>
