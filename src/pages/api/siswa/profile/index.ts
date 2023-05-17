@@ -57,7 +57,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                         name: siswa.nama,
                         email: siswa.email,
                         kelompok: kelompok?.nama_kelompok,
-                        Tipe: program?.nama_program,
+                        tipe: program?.nama_program,
                     },
                 };
                 // console.log("token", decodedToken, tokenExpirationDate);
@@ -73,7 +73,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                         name: siswa.nama,
                         email: siswa.email,
                         kelompok: null,
-                        Tipe: null,
+                        tipe: null,
                     },
                 };
                 return res.status(200).json(response);
