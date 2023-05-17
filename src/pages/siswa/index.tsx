@@ -81,9 +81,9 @@ const Siswa: FC<Siswa> = () => {
                         {siswa.map((siswa) => (
                           <CardSiswa
                             key={siswa.id}
-                            tipe={siswa.program.tipe}
-                            kelas={siswa.kelas.nama_kelas}
-                            kelompok={siswa.program.level}
+                            tipe={siswa.tipe}
+                            kelas={siswa.nama_kelas}
+                            kelompok={siswa.level}
                             nama_siswa={siswa.nama}
                             status="Aktif"
                             onEdit={() => setSelectedEdit(siswa)}

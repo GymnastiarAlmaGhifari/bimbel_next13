@@ -4,7 +4,8 @@ import ButtonEdit from "../buttons/ButtonEdit";
 import Button from "../buttons/Button";
 import Kelas from "@/pages/pengaturan/kelas";
 import { string } from "yup";
-import { IoIosArrowForward } from "react-icons/io";
+
+import { IoIosArrowForward, IoLogoWhatsapp } from "react-icons/io";
 
 interface CardSiswaProps {
   nama_siswa: string;
@@ -29,6 +30,9 @@ const CardSiswa: FC<CardSiswaProps> = ({
 }) => {
   const detailProfile = () => {
     window.location.href = "/detailProfileSiswa";
+  };
+  const openWhatsapp = () => {
+    window.open("https://wa.me/+6281234812036");
   };
   return (
     <div className="flex flex-col bg-Neutral-100 border rounded-lg py-5 px-4 gap-3">
@@ -67,7 +71,15 @@ const CardSiswa: FC<CardSiswaProps> = ({
 
       <div className="w-full h-[1px] bg-Neutral-30"></div>
       <div className="flex justify-between items-center">
-        <h2 className="font-semibold text-Primary-30">{status}</h2>
+        <Button
+          bgColor="bg-Primary-50"
+          brColor=""
+          label="Whatsapp Siswa"
+          textColor="text-Primary-20"
+          type="button"
+          icon={IoLogoWhatsapp}
+          onClick={openWhatsapp}
+        />
         <Button
           type="button"
           bgColor="bg-Primary-50"
