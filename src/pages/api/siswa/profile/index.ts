@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import prisma from "@/libs/prismadb";
 import jwt, { JwtPayload } from "jsonwebtoken";
-import Program from "@/pages/pengaturan/program";
+
 
 //if token match then return login success and the email
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -59,7 +59,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                         Tipe: program?.nama_program,
                     },
                 };
-                console.log("token", decodedToken, tokenExpirationDate);
+                // console.log("token", decodedToken, tokenExpirationDate);
                 return res.status(200).json(response);
             }
             //if siswa has no kelompok id then respon without kelompok

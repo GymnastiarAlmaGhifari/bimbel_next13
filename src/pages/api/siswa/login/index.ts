@@ -41,7 +41,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           };
         const token = jwt.sign(payload, secret, {
             //expires in 1 minute
-            expiresIn: "1d",
+            expiresIn: "7d",
         });
         //update token to database
         await prisma.siswa.update({
