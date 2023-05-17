@@ -41,7 +41,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             if (!siswakelompok) {
                 return res.status(404).json({ 
                     status: 404,
-                    message: "User not found",
+                    message: "Pengguna tidak ditemukan",
                     data: {},
                  });
             } else {
@@ -116,7 +116,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                     console.error(error);
                     res.status(500).json({
                         status: 500,
-                         message: "Error loading jadwal",
+                         message: "Error memuat jadwal",
                          data: {},
                          });
                 }
@@ -125,7 +125,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             if (error instanceof jwt.TokenExpiredError) {
                 const response = {
                   status: 401,
-                  message: "Token expired",
+                  message: "Token kedaluwarsa",
                   data: {},
                 };
                 return res.status(401).json(response);
@@ -133,7 +133,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             console.error(error);
             res.status(500).json({ 
                 status: 500,
-                message: "Error loading jadwal",
+                message: "Error memuat jadwal",
                 data: {},
              });
         }

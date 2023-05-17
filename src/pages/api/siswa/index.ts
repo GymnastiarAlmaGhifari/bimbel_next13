@@ -5,7 +5,19 @@ import bcrypt from "bcrypt";
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === "GET") {
     try {
-      const siswas = await prisma.siswa.findMany();
+      const siswas = await prisma.siswa.findMany({
+        include: {
+          kelompok: {
+            include: {
+              program: {
+                include: {
+                  kelas: true,
+              }
+            },
+          }
+        },
+      },
+      });
       res.status(200).json(siswas);
     } catch (error) {
       console.error(error);
