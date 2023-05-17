@@ -9,11 +9,21 @@ import Link from "next/link";
 import { BsPersonFill } from "react-icons/bs";
 import { useSession } from "next-auth/react";
 import { signOut } from "next-auth/react";
+import useSWR, { mutate } from "swr";
+import fetcher from "@/libs/fetcher";
+
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   const { data: session, status } = useSession();
+
+  //simpan ke variable session id to use in fetcher
+  const sessionId = session?.user.id;
+
+  const { data: users, error } = useSWR(`/api/user/${sessionId}`, fetcher, {});
+
+  mutate(`/api/user/${sessionId}`);
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
@@ -28,14 +38,14 @@ const Navbar = () => {
       <div className="relative">
         <div className="flex items-center inline-block gap-4">
           <div className="inline-block">
-            <p className="font-bold">{session?.user.name}</p>
+            <p className="font-bold">{users?.name}</p>
 
-            <p className="font-semibold text-sm">{session?.user.role}</p>
+            <p className="font-semibold text-sm">{users?.role}</p>
 
           </div>
           <div className="w-10 h-10 rounded-full overflow-clip scale-100 bg-red-400">
             <Image
-              src={session?.user?.image ? session.user.image : "/img/user/default.png"}
+              src={users?.image ? users.image : "/img/user/default.png"}
               alt="Megachan"
               width={100}
               height={100}

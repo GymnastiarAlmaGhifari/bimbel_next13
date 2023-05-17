@@ -7,6 +7,7 @@ type CardProgramProps = {
   level: string;
   tipe: string;
   kelas: string;
+  onEdit: () => void;
 };
 
 const CardProgram: FC<CardProgramProps> = ({
@@ -14,6 +15,7 @@ const CardProgram: FC<CardProgramProps> = ({
   kelas,
   level,
   tipe,
+  onEdit,
 }) => {
   return (
     <div className="flex flex-col bg-Neutral-100 border rounded-lg py-5 px-4 gap-3">
@@ -42,7 +44,7 @@ const CardProgram: FC<CardProgramProps> = ({
           label="Edit Program"
           textColor="text-Tertiary-50"
           icon={MdModeEdit}
-          // onClick={onClick}
+          onClick={onEdit}
         />
       </div>
     </div>

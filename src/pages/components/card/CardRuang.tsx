@@ -5,9 +5,10 @@ import { MdModeEdit } from "react-icons/md";
 type CardRuangProps = {
   nama_ruang: string;
   tipe_ruang: string;
+  onClick?: () => void;
 };
 
-const CardRuang: FC<CardRuangProps> = ({ nama_ruang, tipe_ruang }) => {
+const CardRuang: FC<CardRuangProps> = ({ nama_ruang, tipe_ruang, onClick }) => {
   return (
     <div className="flex flex-col bg-Neutral-100 border rounded-lg py-5 px-4 gap-3">
       <div className="flex justify-between">
@@ -33,7 +34,7 @@ const CardRuang: FC<CardRuangProps> = ({ nama_ruang, tipe_ruang }) => {
           label="Edit Ruang"
           textColor="text-Tertiary-50"
           icon={MdModeEdit}
-          // onClick={onClick}
+          onClick={onClick}
         />
       </div>
     </div>

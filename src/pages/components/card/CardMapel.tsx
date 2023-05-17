@@ -5,9 +5,10 @@ import { MdModeEdit } from "react-icons/md";
 type CardMapelProps = {
   nama_kelas: string;
   nama_mapel: string;
+  onClick?: () => void;
 };
 
-const CardMapel: FC<CardMapelProps> = ({ nama_kelas, nama_mapel }) => {
+const CardMapel: FC<CardMapelProps> = ({ nama_kelas, nama_mapel, onClick }) => {
   return (
     <div className="flex flex-col bg-Neutral-100 border rounded-lg py-5 px-4 gap-3">
       <div className="flex justify-between">
@@ -33,7 +34,7 @@ const CardMapel: FC<CardMapelProps> = ({ nama_kelas, nama_mapel }) => {
           label="Edit Mata Pelajaran"
           textColor="text-Tertiary-50"
           icon={MdModeEdit}
-          // onClick={onClick}
+          onClick={onClick}
         />
       </div>
     </div>

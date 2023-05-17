@@ -6,12 +6,14 @@ type CardSesiProps = {
   nama_sesi: string;
   mulai_sesi: string;
   selesai_sesi: string;
+  onClick: () => void;
 };
 
 const CardSesi: FC<CardSesiProps> = ({
   nama_sesi,
   mulai_sesi,
   selesai_sesi,
+  onClick,
 }) => {
   return (
     <div className="flex flex-col bg-Neutral-100 border rounded-lg py-5 px-4 gap-3">
@@ -36,7 +38,7 @@ const CardSesi: FC<CardSesiProps> = ({
           label="Edit Sesi"
           textColor="text-Tertiary-50"
           icon={MdModeEdit}
-          // onClick={onClick}
+          onClick={onClick}
         />
       </div>
     </div>
