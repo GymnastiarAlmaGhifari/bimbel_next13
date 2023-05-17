@@ -148,7 +148,6 @@ const User: FC<User> = () => {
       {selected && (
         <ModalDetail
           titleModal="Edit Pengguna"
-          onOpen={true}
           onClose={backPengguna}
         >
           <UserEdit
@@ -166,7 +165,6 @@ const User: FC<User> = () => {
       {showSuccess && (
         <ModalDetail
           titleModal="Modal Pengguna"
-          onOpen={true}
           onClose={() => setShowSuccess(false)}
         >
           <div className="flex flex-col items-center justify-center">
@@ -182,7 +180,6 @@ const User: FC<User> = () => {
       {showCreate && (
         <ModalDetail
           titleModal="Tambah Pengguna"
-          onOpen={true}
           onClose={() => setShowCreate(false)}
         >
           <Create
@@ -198,7 +195,6 @@ const User: FC<User> = () => {
       {selectedGambar && (
         <ModalDetail
           titleModal="Edit Gambar"
-          onOpen={true}
           onClose={() => setSelectedGambar(null)}
         >
           <UserEditGambar

@@ -16,7 +16,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         if (!siswa) {
             const response = {
                 status: 404,
-                message: "User not found",
+                message: "Pengguna tidak ditemukan",
                 data: {},
                 };
                 return res.status(404).json(response);
@@ -26,7 +26,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         if (!isValid) {
             const response = {
                 status: 401,
-                message: "Invalid password",
+                message: "Password salah",
                 data: {},
             };
             return res.status(401).json(response);
@@ -53,7 +53,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
         const response = {
             status: 200,
-            message: "Login success",
+            message: "Login berhasil",
             data: {
             // email: siswa.email,
             token: token,
@@ -69,7 +69,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         console.error(error);
         const response = {
             status: 500,
-            message: "Internal server error",
+            message: "Error login",
             data: {},
         };
         res.status(500).json(response);
