@@ -17,6 +17,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             const response = {
                 status: 404,
                 message: "User not found",
+                data: {},
                 };
                 return res.status(404).json(response);
         }
@@ -26,6 +27,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             const response = {
                 status: 401,
                 message: "Invalid password",
+                data: {},
             };
             return res.status(401).json(response);
         }
@@ -68,7 +70,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         const response = {
             status: 500,
             message: "Internal server error",
-            error: error
+            data: {},
         };
         res.status(500).json(response);
         }
