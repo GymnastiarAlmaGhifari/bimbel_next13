@@ -40,7 +40,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             name: siswa.nama,
           };
         const token = jwt.sign(payload, secret, {
-            expiresIn: "7d",
+            //expires in 1 minute
+            expiresIn: "1d",
         });
         //update token to database
         await prisma.siswa.update({
