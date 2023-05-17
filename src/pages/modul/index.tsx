@@ -1,10 +1,12 @@
 import React from "react";
 import Sidebar from "../components/Sidebar";
-import HeadTable from "../components/HeadTable";
 import Navbar from "../components/Navbar";
-import CardPembayaran from "../components/card/CardPembayaran";
+import HeadTable from "../components/HeadTable";
+import CardSiswa from "../components/card/CardSiswa";
+import CardKelompok from "../components/card/CardKelompok";
+import CardModul from "../components/card/CardModul";
 
-const Pembayaran = () => {
+const Siswa = () => {
   return (
     <div className="flex flex-row h-screen">
       <Sidebar />
@@ -12,10 +14,12 @@ const Pembayaran = () => {
         <Navbar />
         <div className="h-full p-10 bg-Neutral-95 overflow-auto ">
           <div className="flex flex-col h-full bg-Neutral-100 py-4 gap-4 rounded-lg overflow-auto">
-            <HeadTable label="Pembayaran" />
+            <HeadTable label="Siswa" />
             <div className="flex flex-col rounded-bl-lg rounded-br-lg p-4 gap-4 overflow-y-auto scrollbar">
-              <CardPembayaran bulan="Mei" jumlah_tagihan="Rp. 1000000" kelas="3 SMP" nama_siswa="Agimul Karim" status="Belum Dibayar" tahun="2023" tanggal_approve="" tanggal_bayar="" tanggal_jatuh_tempo="1 Juni 2023" tanggal_tagihan="1 Juni 2023" tipe="Reguler" />
-            </div> 
+              <CardModul
+              kelompok="Reguler" mapel="Matematika" nama_modul="Teori Alajabar" nama_penyusun="Agimul Karim" tanggal_upload="30 Februari 2023" thumbnail="" tipe="Private" url="" tingkatan="3 SMP"
+              />
+            </div>
           </div>
         </div>
       </div>
@@ -23,4 +27,4 @@ const Pembayaran = () => {
   );
 };
 
-export default Pembayaran;
+export default Siswa;
