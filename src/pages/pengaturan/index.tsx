@@ -38,7 +38,7 @@ const Pengaturan = () => {
           </Link>
         </div>
         <select className=" bg-Primary-40 px-4 py-2 rounded text-Neutral-100">
-          <option value="" className="hover:bg-Primary-80">
+          <option value="" className="hover:bg-Primary-80 focus:bg-Primary-40 checked:bg-Primary-40">
             Ruang
           </option>
           <option value="">Sesi</option>
