@@ -25,6 +25,7 @@ const schema = yup.object().shape({
     nomor_telepon: yup.string().required().max(13, "maksimal 13 karakter"),
     lulusan: yup.string().max(13, "maksimal 13 karakter"),
     alamat: yup.string().required(),
+    image: yup.mixed().required(),
 });
 
 
@@ -36,6 +37,7 @@ type FormData = yup.InferType<typeof schema> & {
 const UserEdit: FC<UserEditProps> = ({ userId, onClose, onSucsess, data }) => {
 
     const [isLoading, setIsLoading] = useState(false);
+    const [previewImage, setPreviewImage] = useState<string | null>(null);
 
     const {
         register,
@@ -45,21 +47,34 @@ const UserEdit: FC<UserEditProps> = ({ userId, onClose, onSucsess, data }) => {
         resolver: yupResolver(schema),
     });
 
-    const onSubmit: SubmitHandler<FormData> = async (data) => {
-        const { name, email, role, nomor_telepon, alamat } = data;
+    const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const file = event.target.files?.[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setPreviewImage(reader.result as string);
+            };
+            reader.readAsDataURL(file);
+        } else {
+            setPreviewImage(null);
+        }
+    };
 
+    const onSubmit: SubmitHandler<FormData> = async (data) => {
+        const { name, email, role, nomor_telepon, alamat, image } = data;
+
+        // jika tidak ada gambar dan tidak ada perubahan
+        if (!image || image.length === 0) {
+            // Menampilkan pesan error bahwa file harus dipilih
+            alert("File harus dipilih");
+
+            return;
+        }
 
         setIsLoading(true); // Set loading state to true
         const formData = new FormData();
         formData.append("image", data.image[0]);
         try {
-            await axios.post("/api/userimg", formData, {
-                headers: {
-                    "Content-Type": "multipart/form-data",
-                    // from : formData . image
-                    from: userId,
-                },
-            });
             await axios.put(`/api/user/${userId}`, {
                 name,
                 email,
@@ -77,13 +92,13 @@ const UserEdit: FC<UserEditProps> = ({ userId, onClose, onSucsess, data }) => {
             onClose();
             onSucsess();
         }
+
     };
 
     return (
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5">
             <>
                 {isLoading && <div className="loader">Loading...</div>}
-
                 {!isLoading && (
                     <>
                         <div className="flex flex-col gap-4 w-full">
@@ -146,48 +161,8 @@ const UserEdit: FC<UserEditProps> = ({ userId, onClose, onSucsess, data }) => {
                                 defaultValue={data?.alamat}
                             />
                         </div>
-                        <div>
-                            <label htmlFor="image">Pilih Gambar:</label>
-                            <input
-                                type="file"
-                                id="image"
-                                {...register('image', {
-                                    required: 'Gambar wajib diunggah',
-                                    validate: {
-                                        fileSize: (value) => {
-                                            const fileSize = value[0]?.size || 0;
-                                            if (fileSize > 2 * 1024 * 1024) {
-                                                return 'Ukuran file maksimum adalah 2MB';
-                                            }
-                                            return true;
-                                        },
-                                        fileType: (value) => {
-                                            const fileType = value[0]?.type || '';
-                                            if (!['image/jpeg', 'image/png'].includes(fileType)) {
-                                                return 'Hanya mendukung format JPEG atau PNG';
-                                            }
-                                            return true;
-                                        },
-                                    },
-                                })}
-                                accept="image/jpeg, image/png , image/jpg"
-                            />
-                            {errors.image && (
-                                <p className="text-red-500">{errors.image.message}</p>
-                            )}
-                        </div>
-                        {data?.image && (
-                            <div>
-                                <label>Gambar:</label>
-                                <Image
-                                    src={data.image}
-                                    alt="Gambar"
-                                    width={200}
-                                    height={200}
-                                    loader={({ src }) => `${src}?cache-control=no-store`}
-                                />
-                            </div>
-                        )}
+
+
                         <div className="flex flex-row justify-between ">
                             <Button
                                 bgColor="bg-Error-50"
@@ -216,3 +191,66 @@ const UserEdit: FC<UserEditProps> = ({ userId, onClose, onSucsess, data }) => {
 };
 
 export default UserEdit;
+
+{/* <div>
+<label
+    htmlFor="image">
+
+
+</label>
+<input
+    type="file"
+    id="image"
+    {...register("image", {
+        required: "Gambar wajib diunggah",
+        validate: {
+            fileSize: (value) => {
+                const fileSize = value[0]?.size || 0;
+                if (fileSize > 2 * 1024 * 1024) {
+                    return "Ukuran file maksimum adalah 2MB";
+                }
+                return true;
+            },
+            fileType: (value) => {
+                const fileType = value[0]?.type || "";
+                if (!["image/jpeg", "image/png"].includes(fileType)) {
+                    return "Hanya mendukung format JPEG atau PNG";
+                }
+                return true;
+            },
+        },
+    })}
+    accept="image/jpeg, image/png, image/jpg"
+    onChange={handleImageChange}
+/>
+{/* <Image  src={data?.image} alt="Gambar" width={200} height={200} /> */}
+// {
+//     errors.image && (
+//         <p className="text-red-500">{errors.image.message}</p>
+//     )
+// }
+// </div >
+// {
+//     previewImage?(
+// <div>
+//     <label>Gambar:</label>
+//     <Image
+//         src={previewImage}
+//         alt="Gambar"
+//         width={200}
+//         height={200}
+//         loader={({ src }) => `${src}?cache-control=no-store`}
+//     />
+// </div >
+// ) : (
+//     <div>
+//         <label>Gambar:</label>
+//         <Image
+//             src={data?.image}
+//             alt="Gambar"
+//             width={200}
+//             height={200}
+//             loader={({ src }) => `${src}?cache-control=no-store`}
+//         />
+//     </div>
+// )} * /}
