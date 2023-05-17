@@ -88,7 +88,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                             const formattedselesai = new Date(selesai).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false, timeZone: "UTC" });
 
                             const schedule = {
-                                jadwal_id: jadwal[i].jadwal_id,
+                                jadwal_id: jadwal[i].id,
                                 mapel: jadwal[i].mapel?.nama_mapel,
                                 ruang: jadwal[i].ruang?.nama,
                                 tentor: jadwal[i].user?.name,
