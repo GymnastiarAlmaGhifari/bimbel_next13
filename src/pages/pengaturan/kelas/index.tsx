@@ -79,7 +79,6 @@ const Kelas: FC<Kelas> = () => {
           {selectedKelas && (
             <ModalDetail
               titleModal="Edit Kelas"
-              onOpen={true}
               onClose={onClose}
             >
               <KelasEdit
@@ -92,7 +91,7 @@ const Kelas: FC<Kelas> = () => {
           {showSuccess && (
             <ModalDetail
               titleModal="Edit Kelompok"
-              onOpen={true}
+
               onClose={() => setShowSuccess(false)}
             >
               <div className="flex flex-col items-center justify-center">
@@ -108,7 +107,7 @@ const Kelas: FC<Kelas> = () => {
           {showCreate && (
             <ModalDetail
               titleModal="Tambah Pengguna"
-              onOpen={true}
+
               onClose={() => setShowCreate(false)}
             >
               <CreateKelas
@@ -121,7 +120,7 @@ const Kelas: FC<Kelas> = () => {
           )}
           {showDelete && (
             <ModalHapus
-              onOpen={true}
+
               onClose={() => setShowDelete(null)}
             >
               <DeleteKelas

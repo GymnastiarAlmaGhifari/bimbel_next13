@@ -13,6 +13,7 @@ import Button from "@/pages/components/buttons/Button";
 interface RuangCreateProps {
     onClose: () => void;
     onSucsess: () => void;
+    button?: React.ReactNode;
 }
 
 const schema = yup.object().shape({
@@ -24,7 +25,7 @@ const schema = yup.object().shape({
 
 type FormData = yup.InferType<typeof schema>;
 
-const CreateKelas: FC<RuangCreateProps> = ({ onClose, onSucsess }) => {
+const CreateKelas: FC<RuangCreateProps> = ({ onClose, onSucsess, button }) => {
 
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
@@ -110,6 +111,7 @@ const CreateKelas: FC<RuangCreateProps> = ({ onClose, onSucsess }) => {
                     textColor="text-Neutral-100"
                     withBgColor
                 />
+                {button}
             </div>
         </form>
     );

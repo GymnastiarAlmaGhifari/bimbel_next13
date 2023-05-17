@@ -5,7 +5,7 @@ import HeadTable from "../components/HeadTable";
 import CardSiswa from "../components/card/CardSiswa";
 import useSWR from "swr";
 import fetcher from "@/libs/fetcher";
-import { ModalDetail } from "@/pages/components/Modal";
+import { ModalDetail } from "@/pages/components/modal/Modal";
 import { useSession } from "next-auth/react";
 
 
@@ -81,9 +81,9 @@ const Siswa: FC<Siswa> = () => {
                         {siswa.map((siswa) => (
                           <CardSiswa
                             key={siswa.id}
-                            tipe={siswa.tipe}
+                            tipe={siswa.program.tipe}
                             kelas={siswa.kelas.nama_kelas}
-                            kelompok={siswa.level}
+                            kelompok={siswa.program.level}
                             nama_siswa={siswa.nama}
                             status="Aktif"
                             onEdit={() => setSelectedEdit(siswa)}

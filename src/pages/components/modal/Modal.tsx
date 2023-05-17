@@ -8,7 +8,6 @@ import { IoIosClose } from "react-icons/io";
 interface ModalDetailProps {
   children: React.ReactNode;
   onClose: () => void;
-  onOpen: boolean;
   titleModal: string;
 }
 interface ModalProps {
@@ -20,7 +19,6 @@ interface ModalProps {
 
 interface ModalHapusProps {
   // children: React.ReactNode
-  onOpen: boolean;
   onClose: () => void;
   children: React.ReactNode;
 }
@@ -61,12 +59,10 @@ export default Modal;
 export const ModalHapus: FC<ModalHapusProps> = ({
   children,
   onClose,
-  onOpen,
 }) => {
   return (
-    <Dialog open={onOpen} onClose={() => {}} className="relative z-50">
+    <Dialog open={true} onClose={() => { }} className="relative z-50">
       <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
-
       <div className="fixed inset-0 flex items-center justify-center">
         <Dialog.Panel className="h-auto bg-Neutral-100 py-4 px-6 rounded-xl flex flex-col gap-4 w-1/4">
           <div className="flex flex-col"></div>
@@ -79,11 +75,10 @@ export const ModalHapus: FC<ModalHapusProps> = ({
 export const ModalDetail: FC<ModalDetailProps> = ({
   children,
   onClose,
-  onOpen,
   titleModal,
 }) => {
   return (
-    <Dialog open={onOpen} onClose={() => {}} className="relative z-50">
+    <Dialog open={true} onClose={() => { }} className="relative z-50">
       <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
 
       <div className="fixed inset-0 flex items-center justify-center">
@@ -93,15 +88,24 @@ export const ModalDetail: FC<ModalDetailProps> = ({
               <h1 className="text-xl font-bold text-Primary-10">
                 {titleModal}
               </h1>
-              {/* <button
-                onClick={onClose}
-                className="text-Neutral-20 rounded-full inline-block p-1 hover:bg-Neutral-95"
-              >
-                <IoIosClose size={24} />
-              </button> */}
             </div>
           </div>
           <div>{children}</div>
+
+          <div className="flex justify-end">
+            {/* <Button
+              type="button"
+              bgColor="bg-Primary-10"
+              brColor="border-Primary-10"
+              label="Tutup"
+              textColor="text-white"
+
+              onClick={onClose}
+            >
+              Tutup
+            </Button> */}
+          </div>
+
         </Dialog.Panel>
       </div>
     </Dialog>
