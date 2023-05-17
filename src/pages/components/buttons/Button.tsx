@@ -18,6 +18,7 @@ interface ButtonProps {
   disabled?: boolean;
   outlined?: boolean;
   withBgColor?: boolean;
+  center?: boolean;
   icon?: IconType;
   widthAuto?: boolean;
 }
@@ -34,6 +35,7 @@ const Button: React.FC<ButtonProps> = ({
   type,
   widthAuto,
   withBgColor,
+  center,
   rightIcon,
   // widthButton,
   icon: Icon,
@@ -49,8 +51,8 @@ const Button: React.FC<ButtonProps> = ({
           ? `${bgColor} bg-opacity-0 border-[2px] ${brColor} ${textColor} font-bold text-sm hover:bg-opacity-20`
           : `${bgColor} bg-opacity-0 hover:bg-opacity-20 border-none ${textColor}`
       } ${withBgColor ? "bg-opacity-90 hover:bg-opacity-100" : ""} ${
-        widthAuto ? "w-auto" : "w-max"
-      }
+        widthAuto ? "w-full" : "w-max"
+      } ${center ? "justify-center" : ""}
       `}
     >
       {Icon && (

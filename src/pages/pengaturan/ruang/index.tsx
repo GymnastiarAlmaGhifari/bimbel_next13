@@ -3,7 +3,7 @@ import React, { FC } from "react";
 import { useEffect, useState } from "react";
 import useSWR from "swr";
 import fetcher from "@/libs/fetcher";
-import { ModalDetail } from "@/pages/components/Modal";
+import { ModalDetail } from "@/pages/components/modal/Modal";
 import RuangEdit from "./edit";
 import HeadTable from "@/pages/components/HeadTable";
 import CardRuang from "@/pages/components/card/CardRuang";
@@ -52,17 +52,14 @@ const Ruang: FC<Props> = () => {
     return <p>Error loading ruang.</p>;
   }
 
-
-
   return (
     <div className="h-full p-10 bg-Neutral-95">
       <div className="flex flex-col h-full bg-Neutral-100 py-4 gap-4 rounded-lg">
-        <HeadTable label="Ruang"
-          onClick={
-            () => {
-              setShowCreate(true);
-            }
-          }
+        <HeadTable
+          label="Ruang"
+          onClick={() => {
+            setShowCreate(true);
+          }}
         />
         <div className="flex flex-col rounded-bl-lg rounded-br-lg p-4 gap-4 overflow-y-auto scrollbar-thin scrollbar-track-Neutral-100 scrollbar-thumb-Primary-40 scrollbar-rounded-lg">
           {ruang ? (
@@ -73,7 +70,8 @@ const Ruang: FC<Props> = () => {
                 ruang.map((ruang) => (
                   <CardRuang
                     key={ruang.id}
-                    nama_ruang={ruang.nama} tipe_ruang={ruang.tipe}
+                    nama_ruang={ruang.nama}
+                    tipe_ruang={ruang.tipe}
                     onClick={() => {
                       setSelectedRuang(ruang);
                     }}

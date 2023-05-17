@@ -5,7 +5,7 @@ import Sidebar from "../components/Sidebar";
 import Navbar from "../components/Navbar";
 import HeadTable from "../components/HeadTable";
 import CardKelompok from "../components/card/CardKelompok";
-import { ModalDetail } from "../components/Modal";
+import { ModalDetail } from "../components/modal/Modal";
 import KelompokEdit from "./edit";
 import CreateKelompok from "./create";
 
@@ -61,11 +61,12 @@ const Kelompok: FC<Kelompok> = () => {
         <Navbar />
         <div className="h-full p-10 bg-Neutral-95 overflow-auto">
           <div className="flex flex-col h-full bg-Neutral-100 py-4 gap-4 rounded-lg overflow-auto">
-            <HeadTable label="Kelompok" onClick={
-              () => {
+            <HeadTable
+              label="Kelompok"
+              onClick={() => {
                 setShowCreate(true);
-              }
-            } />
+              }}
+            />
             <div className="flex flex-col rounded-bl-lg rounded-br-lg p-4 gap-4 overflow-y-auto scrollbar-thin scrollbar-track-Neutral-100 scrollbar-thumb-Primary-40 scrollbar-rounded-lg">
               {kelompoks ? (
                 <>
@@ -137,7 +138,6 @@ const Kelompok: FC<Kelompok> = () => {
             onSucsess={() => {
               setShowSuccess(true);
             }}
-
           />
         </ModalDetail>
       )}
