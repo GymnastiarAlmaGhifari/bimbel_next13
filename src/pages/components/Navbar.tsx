@@ -25,17 +25,19 @@ const Navbar = () => {
 
   return (
     <div className="bg-Neutral-100 h-14 flex items-center justify-end px-4 py-2 z-40">
-      <div className="relative">
+      <button onClick={toggleMenu} className="relative">
         <div className="flex items-center inline-block gap-4">
-          <div className="inline-block">
+          <div className="inline-block flex flex-col items-start">
             <p className="font-bold">{session?.user.name}</p>
-
             <p className="font-semibold text-sm">{session?.user.role}</p>
-
           </div>
           <div className="w-10 h-10 rounded-full overflow-clip scale-100 bg-red-400">
             <Image
-              src={session?.user?.image ? session.user.image : "/img/user/default.png"}
+              src={
+                session?.user?.image
+                  ? session.user.image
+                  : "/img/user/default.png"
+              }
               alt="Megachan"
               width={100}
               height={100}
@@ -48,7 +50,7 @@ const Navbar = () => {
           </button>
         </div>
         {isOpen ? (
-          <div className="absolute mt-1 flex flex-col bg-Neutral-100 py-2 px-4 rounded-lg border-[1px] translate-x-[-25px] border-Neutral-90 gap-2">
+          <div className="absolute mt-1 flex flex-col bg-Neutral-100 py-2 px-4 rounded-lg border-[1px] translate-x-[-2px] border-Neutral-90 gap-2">
             {isOpen ? (
               <Button
                 bgColor="bg-Primary-50"
@@ -85,15 +87,12 @@ const Navbar = () => {
                 type="button"
                 icon={MdOutlineLogout}
                 onClick={
-                  // callback ke / 
-                  () => signOut(
-                    {
+                  // callback ke /
+                  () =>
+                    signOut({
                       callbackUrl: "/",
-                    }
-
-                  )
+                    })
                 }
-
               />
             ) : (
               ""
@@ -102,7 +101,7 @@ const Navbar = () => {
         ) : (
           ""
         )}
-      </div>
+      </button>
     </div>
   );
 };
