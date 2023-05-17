@@ -6,6 +6,7 @@ import Input from "@/pages/components/inputs/Input";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import Button from "@/pages/components/buttons/Button";
+// import { format } from 'date-fns';
 
 interface SesiEditProps {
   sesiId: string;
@@ -87,7 +88,7 @@ const SesiEdit: FC<SesiEditProps> = ({ sesiId, onClose, data }) => {
               />
             </div>
             <div className="flex flex-row justify-between">
-            <Button
+              <Button
                 bgColor="bg-Error-50"
                 brColor=""
                 label="Hapus Pengguna"

@@ -89,16 +89,7 @@ const RuangEdit: FC<RuangEditProps> = ({ ruangId, onClose, data }) => {
                 <p className="text-red-500">{errors.tipe.message}</p>
               )}
             </div>
-
-            <div className="flex flex-row justify-between ">
-              <Button
-                bgColor="bg-Error-50"
-                brColor=""
-                label="Hapus Pengguna"
-                textColor="text-Neutral-100"
-                type="button"
-                withBgColor
-              />
+            <div className="flex flex-row justify-end ">
               <Button
                 bgColor="bg-Tertiary-50"
                 brColor=""
@@ -107,13 +98,8 @@ const RuangEdit: FC<RuangEditProps> = ({ ruangId, onClose, data }) => {
                 type="submit"
                 withBgColor
               />
-              {/* <button
-                                type="submit"
-                                className="btn btn-primary btn-block"
-                            >
-                                Simpan
-                            </button> */}
             </div>
+
           </>
         )}
       </>

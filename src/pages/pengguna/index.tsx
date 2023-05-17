@@ -156,7 +156,7 @@ const User: FC<User> = () => {
       {/* buat modal dari getname  */}
       {showSuccess && (
         <ModalDetail
-          titleModal="Edit Pengguna"
+          titleModal="Modal Pengguna"
           onOpen={true}
           onClose={() => setShowSuccess(false)}
         >
