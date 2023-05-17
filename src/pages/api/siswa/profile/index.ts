@@ -6,7 +6,7 @@ import jwt, { JwtPayload } from "jsonwebtoken";
 //if token match then return login success and the email
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     const token = req.headers.authorization;
-    if (req.method === "POST") {
+    if (req.method === "GET") {
         try {
 
             if (!process.env.JWT_SECRET) {
@@ -37,6 +37,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 const response = {
                     status: 404,
                     message: "User not found",
+                    data: {},
                 };
                 return res.status(404).json(response);
             }
@@ -50,13 +51,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 });
                 const response = {
                     status: 200,
-                    message: "Login success",
+                    message: "Get profile success",
                     data: {
                         id: siswa.id,
                         name: siswa.nama,
                         email: siswa.email,
                         kelompok: kelompok?.nama_kelompok,
-                        Tipe: program?.nama_program,
+                        tipe: program?.nama_program,
                     },
                 };
                 // console.log("token", decodedToken, tokenExpirationDate);
@@ -66,13 +67,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             else {
                 const response = {
                     status: 200,
-                    message: "Login success",
+                    message: "Get profile success",
                     data: {
                         id: siswa.id,
                         name: siswa.nama,
                         email: siswa.email,
                         kelompok: null,
-                        Tipe: null,
+                        tipe: null,
                     },
                 };
                 return res.status(200).json(response);
@@ -84,6 +85,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 const response = {
                   status: 401,
                   message: "Token expired",
+                  data: {},
                 };
                 return res.status(401).json(response);
               }
@@ -91,6 +93,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             const response = {
                 status: 500,
                 message: "Internal server error",
+                data: {},
             };
             res.status(500).json(response);
         }

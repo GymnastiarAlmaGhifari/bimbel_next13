@@ -16,6 +16,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 const response = {
                     status: 404,
                     message: "User not found",
+                    data: {},
                 };
                 return res.status(404).json(response);
             }

@@ -17,6 +17,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             const response = {
                 status: 404,
                 message: "User not found",
+                data: {},
                 };
                 return res.status(404).json(response);
         }
@@ -26,6 +27,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             const response = {
                 status: 401,
                 message: "Invalid password",
+                data: {},
             };
             return res.status(401).json(response);
         }
@@ -44,7 +46,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             expiresIn: "7d",
         });
         //update token to database
-        await prisma.siswa.update({
+        const updatetoken = await prisma.siswa.update({
             where: { id: siswa.id },
             data: { token },
         });
@@ -54,7 +56,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             message: "Login success",
             data: {
             // email: siswa.email,
-            token: siswa.token,
+            token: token,
             // nomor: siswa.nomor_telepon,
             // alamat: siswa.alamat,
             // sekolah: siswa.sekolah,
@@ -68,7 +70,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         const response = {
             status: 500,
             message: "Internal server error",
-            error: error
+            data: {},
         };
         res.status(500).json(response);
         }

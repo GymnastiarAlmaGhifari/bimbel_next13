@@ -25,7 +25,11 @@ const schema = yup.object().shape({
     .string()
     .required("tidak boleh kosong")
     .min(3, "nama mapel minimal 3 karakter"),
-  kelas_id: yup.string().required("tidak boleh kosong"),
+  kelas_id: yup.string().test({
+    name: "Pilih program",
+    message: "Pilih program dahulu",
+    test: (value) => value !== "" && value !== "Pilih program",
+  }),
 });
 
 type FormData = yup.InferType<typeof schema>;
@@ -104,10 +108,13 @@ const MapelEdit: FC<MapelEditProps> = ({ mapelId, onClose, data }) => {
                     </option>
                   ))}
                 </select>
+                {errors.kelas_id && (
+                  <p className="text-Error-40">{errors.kelas_id.message}</p>
+                )}
               </div>
             </div>
             <div className="flex flex-row justify-between">
-            <Button
+              <Button
                 bgColor="bg-Error-50"
                 brColor=""
                 label="Hapus Pengguna"

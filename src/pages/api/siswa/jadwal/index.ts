@@ -41,13 +41,17 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             if (!siswakelompok) {
                 return res.status(404).json({ 
                     status: 404,
-                    message: "User not found" });
+                    message: "User not found",
+                    data: {},
+                 });
             } else {
                 const kelompok = siswakelompok.kelompok;
                 if (!kelompok) {
                     return res.status(404).json({
                         status: 404, 
-                        message: "Kelompok tidak ditemukan" });
+                        message: "Kelompok tidak ditemukan",
+                        data: {},
+                     });
                 }
                 try {
                     const jadwal = await prisma.jadwal_detail.findMany({
@@ -67,7 +71,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                     if (!jadwal) {
                         return res.status(404).json({ 
                             status: 404,
-                            message: "Jadwal tidak ditemukan" });
+                            message: "Jadwal tidak ditemukan",
+                            data: {},
+                         });
                     } else {
                         const scheduleArray: {
                             jadwal_id: string;
@@ -88,7 +94,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                             const formattedselesai = new Date(selesai).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false, timeZone: "UTC" });
 
                             const schedule = {
-                                jadwal_id: jadwal[i].jadwal_id,
+                                jadwal_id: jadwal[i].id,
                                 mapel: jadwal[i].mapel?.nama_mapel,
                                 ruang: jadwal[i].ruang?.nama,
                                 tentor: jadwal[i].user?.name,
@@ -110,7 +116,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                     console.error(error);
                     res.status(500).json({
                         status: 500,
-                         message: "Error loading jadwal" });
+                         message: "Error loading jadwal",
+                         data: {},
+                         });
                 }
             }
         } catch (error) {
@@ -118,13 +126,16 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 const response = {
                   status: 401,
                   message: "Token expired",
+                  data: {},
                 };
                 return res.status(401).json(response);
               }
             console.error(error);
             res.status(500).json({ 
                 status: 500,
-                message: "Error loading jadwal" });
+                message: "Error loading jadwal",
+                data: {},
+             });
         }
     }
 }

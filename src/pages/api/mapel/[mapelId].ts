@@ -38,5 +38,17 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             console.error(error);
             res.status(500).json({ message: "Error updating mapel" });
         }
+    }  else if (req.method === "DELETE") {
+        try {
+            const mapel = await prisma.mapel.delete({
+                where: { id: mapelId },
+            });
+
+            res.status(200).json(mapel);
+        }
+        catch (error) {
+            console.error(error);
+            res.status(500).json({ message: "Error deleting mapel" });
+        }
     }
 }

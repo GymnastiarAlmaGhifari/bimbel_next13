@@ -69,15 +69,7 @@ const KelasEdit: FC<KelasEditProps> = ({ kelasId, onClose, data }) => {
             {errors.nama_kelas && (
               <p className="text-red-500">{errors.nama_kelas.message}</p>
             )}
-            <div className="flex flex-row justify-between ">
-              <Button
-                bgColor="bg-Error-50"
-                brColor=""
-                label="Hapus Kelas"
-                textColor="text-Neutral-100"
-                type="button"
-                withBgColor
-              />
+            <div className="flex flex-row justify-end">
               <Button
                 type="submit"
                 bgColor="bg-Tertiary-50"
