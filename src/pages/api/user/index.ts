@@ -3,14 +3,9 @@ import prisma from "@/libs/prismadb";
 import bcrypt from "bcrypt";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  let role = req.body.role;
-
   if (req.method === "GET") {
     try {
       const users = await prisma.user.findMany({
-        where: {
-          role: role,
-        },
         include: {
           mapel: true,
         },

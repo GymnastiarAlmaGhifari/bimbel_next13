@@ -16,7 +16,7 @@ RUN npm run build
 
 EXPOSE 3000
 
-VOLUME ["/linear/public/img"]
+VOLUME ["/linear/public"]
 
 # CMD npm run dev
 # run for production

@@ -58,7 +58,7 @@ export const ModalDetail: FC<ModalDetailProps> = ({
   titleModal,
 }) => {
   return (
-    <Dialog open={onOpen} onClose={onClose} className="relative z-50">
+    <Dialog open={onOpen} onClose={() => { }} className="relative z-50">
       <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
 
       <div className="fixed inset-0 flex items-center justify-center">
@@ -68,7 +68,9 @@ export const ModalDetail: FC<ModalDetailProps> = ({
               <h1 className="text-xl font-bold text-Primary-10">
                 {titleModal}
               </h1>
-              <button className="text-Neutral-20 rounded-full inline-block p-1 hover:bg-Neutral-95">
+              <button
+                onClick={onClose}
+                className="text-Neutral-20 rounded-full inline-block p-1 hover:bg-Neutral-95">
                 <IoIosClose size={24} />
               </button>
             </div>

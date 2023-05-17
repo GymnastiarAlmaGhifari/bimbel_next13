@@ -22,6 +22,7 @@ model User {
   mapel             mapel? @relation(fields: [mapel_id], references: [id])
   mapel_id          String?
   image             String?
+  random            String?
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt 
   jadwal_details    jadwal_detail[]

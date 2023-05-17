@@ -2,8 +2,12 @@ import { NextApiRequest, NextApiResponse } from "next";
 import prisma from "@/libs/prismadb";
 import fs from "fs";
 import path from "path";
+// import randomString from "@/pages/api/userimg/randomstring";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+
+
+
   let userId = req.query.userId;
 
   if (Array.isArray(userId)) {
@@ -27,33 +31,31 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
   } else if (req.method === "PUT") {
 
-    const directory = path.join(process.cwd(), "public", "img", "user");
-    const filenameWithoutExt = userId;
+    // const directory = path.join(process.cwd(), "public", "img", "user");
+    // const filenameWithoutExt = userId;
 
-    let filePath;
-    fs.promises.readdir(directory)
-      .then((files) => {
-        console.log("Filenames in directory:", files); // log the filenames
-        const foundFile = files.find((file) => path.parse(file).name === filenameWithoutExt);
-        if (foundFile) {
-          filePath = path.join(foundFile);
-          console.log("Found file:", filePath);
-          return filePath.toString();
-        } else {
-          const foundFileWithExt = files.find((file) => file.startsWith(filenameWithoutExt + "."));
-          if (foundFileWithExt) {
-            filePath = path.join(foundFileWithExt);
-            console.log("Found file:", filePath);
-            return filePath.toString();
-          } else {
-            console.log("File not found");
-          }
-        }
-      })
-      .catch((err) => console.error(err));
+    // let filePath;
+    // fs.promises.readdir(directory)
+    //   .then((files) => {
+    //     console.log("Filenames in directory:", files); // log the filenames
+    //     const foundFile = files.find((file) => path.parse(file).name === filenameWithoutExt);
+    //     if (foundFile) {
+    //       filePath = path.join(foundFile);
+    //       console.log("Found file:", filePath);
+    //       return filePath.toString();
+    //     } else {
+    //       const foundFileWithExt = files.find((file) => file.startsWith(filenameWithoutExt + "."));
+    //       if (foundFileWithExt) {
+    //         filePath = path.join(foundFileWithExt);
+    //         console.log("Found file:", filePath);
+    //         return filePath.toString();
+    //       } else {
+    //         console.log("File not found");
+    //       }
+    //     }
+    //   })
+    //   .catch((err) => console.error(err));
 
-      const { name, email, role, password, nomor_telepon, alamat, image, universitas, mapel_id } = req.body;
-      
     try {
       const users = await prisma.user.findUnique({
         where: { id: userId },
@@ -79,15 +81,17 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           const currentTime = new Date().toLocaleTimeString([], {
             hour: "2-digit",
             minute: "2-digit",
-            second: "2-digit",
+            // second: "2-digit",
             hour12: false,
           });
 
           const modifiedTime = currentTime.replaceAll(":", "");
 
+
           const directory = path.join(process.cwd(), "public", "img", "user");
-          const filenameWithoutExt = userId + "-" + modifiedTime;
+          const filenameWithoutExt = userId + "-" + users.random;
           console.log("Filename without extension:", filenameWithoutExt);
+
 
           let filePath;
           try {
@@ -139,14 +143,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           const currentTime = new Date().toLocaleTimeString([], {
             hour: "2-digit",
             minute: "2-digit",
-            second: "2-digit",
+            // second: "2-digit",
             hour12: false,
           });
 
           const modifiedTime = currentTime.replaceAll(":", "");
 
           const directory = path.join(process.cwd(), "public", "img", "user");
-          const filenameWithoutExt = userId + "-" + modifiedTime;
+          const filenameWithoutExt = userId + "-" + users.random;
           console.log("Filename without extension:", filenameWithoutExt);
 
           let filePath;

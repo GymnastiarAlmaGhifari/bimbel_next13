@@ -23,6 +23,7 @@ const schema = yup.object().shape({
         .required("tidak boleh kosong")
         .min(3, "judul minimal 3 karakter"),
     program_id: yup.string().required(),
+    jadwal_id: yup.string().required(),
 });
 
 type FormData = yup.InferType<typeof schema> & {
@@ -31,6 +32,8 @@ type FormData = yup.InferType<typeof schema> & {
 
 const KelompokEdit: FC<UserEditProps> = ({ kelompokId, onClose, onSucsess, data }) => {
     const { data: program, error } = useSWR<any[]>("/api/program", fetcher);
+
+    const { data: jadwal, error: errorJadwal } = useSWR<any[]>("/api/jadwal", fetcher);
 
     const [isLoading, setIsLoading] = useState(false);
 
@@ -43,13 +46,14 @@ const KelompokEdit: FC<UserEditProps> = ({ kelompokId, onClose, onSucsess, data 
     });
 
     const onSubmit: SubmitHandler<FormData> = async (data) => {
-        const { nama_kelompok, program_id } = data;
+        const { nama_kelompok, program_id, jadwal_id } = data;
 
         setIsLoading(true); // Set loading state to true
         try {
             await axios.put(`/api/kelompok/${kelompokId}`, {
                 nama_kelompok,
                 program_id,
+                jadwal_id,
             });
             mutate("/api/kelompok");
         } catch (error) {
@@ -98,6 +102,27 @@ const KelompokEdit: FC<UserEditProps> = ({ kelompokId, onClose, onSucsess, data 
                                     {program?.map((program) => (
                                         <option key={program.id} value={program.id}>
                                             {program.nama_program}
+                                        </option>
+                                    ))}
+                                </select>
+                            </div>
+                            <div className="">
+                                <label
+                                    htmlFor="jadwal_id"
+                                    className="block text-sm font-medium text-gray-700"
+                                >
+                                    Jadwal
+                                </label>
+                                <select
+                                    id="jadwal_id"
+                                    autoComplete="jadwal_id"
+                                    {...register("jadwal_id")}
+                                    defaultValue={data?.jadwal_id ?? ""}
+                                    className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                                >
+                                    {jadwal?.map((jadwal) => (
+                                        <option key={jadwal.id} value={jadwal.id}>
+                                            {jadwal.nama}
                                         </option>
                                     ))}
                                 </select>

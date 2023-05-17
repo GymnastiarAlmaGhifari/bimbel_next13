@@ -23,8 +23,8 @@ const schema = yup.object().shape({
     password: yup.string().required(),
     email: yup.string().required(),
     role: yup.string().required(),
-    nomor_telepon: yup.string().required().max(13, "maksimal 13 karakter").min(12, "minimal 12 karakter"),
-    lulusan: yup.string().required(),
+    nomor_telepon: yup.string().required().max(13, "maksimal 13 karakter"),
+    lulusan: yup.string(),
     alamat: yup.string().required(),
 });
 
@@ -62,6 +62,8 @@ const Create: FC<UserCreateProps> = ({ onClose, onSucsess }) => {
             });
 
             mutate("/api/user");
+            mutate(`/api/userimg`);
+            mutate(`/api/user/getadmin`);
             onClose(); // Set loading state to false
 
         } catch (error: any) {
