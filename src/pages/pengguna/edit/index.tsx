@@ -64,7 +64,7 @@ const UserEdit: FC<UserEditProps> = ({ userId, onClose, onSucsess, data }) => {
     };
 
     const onSubmit: SubmitHandler<FormData> = async (data) => {
-        const { name, email, role, nomor_telepon, alamat, image } = data;
+        const { name, email, role, lulusan, nomor_telepon, alamat, image } = data;
 
 
         if (!image || image.length === 0) {
@@ -79,6 +79,7 @@ const UserEdit: FC<UserEditProps> = ({ userId, onClose, onSucsess, data }) => {
                     email,
                     role,
                     nomor_telepon,
+                    universitas: lulusan,
                     alamat,
                 });
                 mutate(`/api/user/noimg/${userId}`);
@@ -112,6 +113,7 @@ const UserEdit: FC<UserEditProps> = ({ userId, onClose, onSucsess, data }) => {
                     email,
                     role,
                     nomor_telepon,
+                    universitas: lulusan,
                     alamat,
                 });
                 mutate("/api/user");
@@ -256,12 +258,14 @@ const UserEdit: FC<UserEditProps> = ({ userId, onClose, onSucsess, data }) => {
                         </div>
                         <div className="flex flex-row justify-between ">
                             <Button
-                                bgColor="bg-Error-50"
+                                center
+                                bgColor="bg-Neutral-70"
                                 brColor=""
-                                label="Hapus Pengguna"
-                                textColor="text-Neutral-100"
+                                label="Batal"
+                                textColor="text-Neutral-30"
                                 type="button"
-                                withBgColor
+                                onClick={onClose}
+                                widthAuto
                             />
                             <Button
                                 type="submit"

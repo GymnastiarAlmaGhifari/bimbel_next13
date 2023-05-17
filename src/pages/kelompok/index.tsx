@@ -96,7 +96,6 @@ const Kelompok: FC<Kelompok> = () => {
       {selected && (
         <ModalDetail
           titleModal="Edit Kelompok"
-          onOpen={true}
           onClose={backKelompok}
         >
           <KelompokEdit
@@ -114,7 +113,6 @@ const Kelompok: FC<Kelompok> = () => {
       {showSuccess && (
         <ModalDetail
           titleModal="Edit Kelompok"
-          onOpen={true}
           onClose={() => setShowSuccess(false)}
         >
           <div className="flex flex-col items-center justify-center">
@@ -130,7 +128,6 @@ const Kelompok: FC<Kelompok> = () => {
       {showCreate && (
         <ModalDetail
           titleModal="Tambah Pengguna"
-          onOpen={true}
           onClose={() => setShowCreate(false)}
         >
           <CreateKelompok

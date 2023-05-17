@@ -3,25 +3,28 @@ import { FC } from "react";
 import ButtonEdit from "../buttons/ButtonEdit";
 import Button from "../buttons/Button";
 import { MdModeEdit, MdDelete } from "react-icons/md";
+import EditSiswa from "@/pages/siswa/edit";
 
 interface UserCard {
   nama_user: string;
   universitas: string;
   nama_mapel: string;
-  onClick: () => void;
+  onEdit: () => void;
+  onHapus?: () => void;
   gambar?: any;
   role: string;
-  editGambar?: () => void;
+  // editGambar?: () => void;
 }
 
 const UserCard: FC<UserCard> = ({
   nama_mapel,
   universitas,
-  onClick,
+  onEdit,
   nama_user,
   gambar,
   role,
-  editGambar,
+  onHapus,
+  // editGambar,
 }) => {
   return (
     <div className="flex flex-col bg-Neutral-100 border rounded-lg py-5 px-4 gap-3">
@@ -69,7 +72,7 @@ const UserCard: FC<UserCard> = ({
             label="Hapus Pengguna"
             textColor="text-Error-50"
             icon={MdDelete}
-            onClick={onClick}
+            onClick={onHapus}
           />
           <Button
             type="button"
@@ -78,12 +81,9 @@ const UserCard: FC<UserCard> = ({
             label="Edit Pengguna"
             textColor="text-Tertiary-50"
             icon={MdModeEdit}
-            onClick={editGambar}
+            onClick={onEdit}
           />
         </div>
-
-
-
       </div>
     </div>
   );

@@ -94,7 +94,6 @@ const Program: FC<Props> = () => {
           {selectedProgram && (
             <ModalDetail
               titleModal="Edit Program"
-              onOpen={true}
               onClose={onClose}
             >
               <ProgramEdit
@@ -107,7 +106,6 @@ const Program: FC<Props> = () => {
           {showSuccess && (
             <ModalDetail
               titleModal="SUCSSES"
-              onOpen={true}
               onClose={() => setShowSuccess(false)}
             >
               <div className="flex flex-col items-center justify-center">
@@ -123,7 +121,6 @@ const Program: FC<Props> = () => {
           {showCreate && (
             <ModalDetail
               titleModal="Tambah Program"
-              onOpen={true}
               onClose={() => setShowCreate(false)}
             >
               <CreateProgram
