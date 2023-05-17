@@ -7,6 +7,7 @@ import { ModalDetail } from "@/pages/components/Modal";
 import MapelEdit from "./edit";
 import CardMapel from "@/pages/components/card/CardMapel";
 import HeadTable from "@/pages/components/HeadTable";
+import CreateMapel from "./create";
 
 interface Mapel {
   kelas: any;
@@ -22,6 +23,21 @@ const Mapel: FC<Mapel> = () => {
 
   const [selectedMapel, setSelectedMapel] = useState<Mapel | null>(null);
 
+  // open modal create
+  const [showCreate, setShowCreate] = useState(false);
+
+  const [showSuccess, setShowSuccess] = useState(false);
+
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      setShowSuccess(false);
+    }, 1000);
+
+    return () => {
+      clearTimeout(timeoutId);
+    };
+  }, [showSuccess]);
+
   useEffect(() => {
     if (error) {
     }
@@ -31,6 +47,8 @@ const Mapel: FC<Mapel> = () => {
     setSelectedMapel(null);
   };
 
+
+
   if (error) {
     return <p>Error loading mapel.</p>;
   }
@@ -38,45 +56,23 @@ const Mapel: FC<Mapel> = () => {
   return (
     <div className="h-full p-10 bg-Neutral-95">
       <div className="flex flex-col h-full bg-Neutral-100 py-4 gap-4 rounded-lg">
-        <HeadTable label="Mata Pelajaran" />
+        <HeadTable label="Mata Pelajaran" onClick={
+          () => setShowCreate(true)
+        } />
         <div className="flex flex-col rounded-bl-lg rounded-br-lg p-4 gap-4 overflow-y-auto scrollbar-thin scrollbar-track-Neutral-100 scrollbar-thumb-Primary-40 scrollbar-rounded-lg">
-          <CardMapel nama_kelas="SMP" nama_mapel="Bahasa Indonesia" />
+
           {mapel ? (
             <>
               {mapel.length === 0 ? (
                 <p>No mapel found.</p>
               ) : (
-                <table>
-                  <thead>
-                    <tr>
-                      <th>ID</th>
-                      <th>Nama Mapel</th>
-                      <th>Nama Kelas</th>
-                      <th>Created At</th>
-                      <th>Updated At</th>
-                      <th>Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {mapel.map((item) => (
-                      <tr key={item.id}>
-                        <td>{item.id}</td>
-                        <td>{item.nama_mapel}</td>
-                        <td>{item.kelas?.nama_kelas}</td>
-                        <td>{item.createdAt.toString()}</td>
-                        <td>{item.updatedAt.toString()}</td>
-                        <td>
-                          <button
-                            onClick={() => setSelectedMapel(item)}
-                            className="rounded-full bg-white/10 px-10 py-3 font-semibold text-black no-underline transition hover:bg-white/20"
-                          >
-                            Edit
-                          </button>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
+                mapel.map((item) => (
+                  <CardMapel
+                    key={item.id}
+                    nama_kelas={item.kelas?.nama_kelas} nama_mapel={item.nama_mapel}
+                    onClick={() => setSelectedMapel(item)}
+                  />
+                ))
               )}
             </>
           ) : (
@@ -97,6 +93,38 @@ const Mapel: FC<Mapel> = () => {
                 data={selectedMapel}
                 onClose={onClose}
                 mapelId={selectedMapel.id}
+              />
+            </ModalDetail>
+          )}
+          {/* buat modal dari getname  */}
+          {showSuccess && (
+            <ModalDetail
+              titleModal="SUCSSES"
+              onOpen={true}
+              onClose={() => setShowSuccess(false)}
+            >
+              <div className="flex flex-col items-center justify-center">
+                <h1 className="text-2xl font-bold text-green-500">Berhasil</h1>
+                <p className="text-sm text-gray-500">
+                  {selectedMapel?.nama_mapel}Data berhasil diubah
+                </p>
+              </div>
+            </ModalDetail>
+          )}
+
+          {/* modal create */}
+          {showCreate && (
+            <ModalDetail
+              titleModal="Tambah Mapel"
+              onOpen={true}
+              onClose={() => setShowCreate(false)}
+            >
+              <CreateMapel
+                onClose={() => setShowCreate(false)}
+                onSucsess={() => {
+                  setShowSuccess(true);
+                }}
+
               />
             </ModalDetail>
           )}

@@ -7,6 +7,10 @@ import { ModalDetail } from "@/pages/components/Modal";
 import SesiEdit from "./edit";
 import CardSesi from "@/pages/components/card/CardSesi";
 import HeadTable from "@/pages/components/HeadTable";
+import { format, parseISO } from 'date-fns';
+import moment from 'moment';
+import momentTimezone from 'moment-timezone';
+
 
 interface Sesi {
   id: string;
@@ -35,6 +39,8 @@ const Sesi: FC<Props> = () => {
     setSelectedSesi(null);
   };
 
+
+  // const date now
   if (error) {
     return <p>Error loading sesi.</p>;
   }
@@ -44,46 +50,24 @@ const Sesi: FC<Props> = () => {
       <div className="flex flex-col h-full bg-Neutral-100 py-4 gap-4 rounded-lg">
         <HeadTable label="Sesi" />
         <div className="flex flex-col rounded-bl-lg rounded-br-lg p-4 gap-4 overflow-y-auto scrollbar-thin scrollbar-track-Neutral-100 scrollbar-thumb-Primary-40 scrollbar-rounded-lg">
-          <CardSesi nama_sesi="1" mulai_sesi="19:00" selesai_sesi="21:00" />
           {sesi ? (
             <>
               {sesi.length === 0 ? (
                 <p>No sesi found.</p>
               ) : (
-                <table>
-                  <thead>
-                    <tr>
-                      <th>ID</th>
-                      <th>Nama Sesi</th>
-                      <th>Mulai Sesi</th>
-                      <th>Selesai Sesi</th>
-                      <th>Created At</th>
-                      <th>Updated At</th>
-                      <th>Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {sesi.map((sesi) => (
-                      <tr key={sesi.id}>
-                        <td>{sesi.id}</td>
-                        <td>{sesi.nama_sesi}</td>
-                        <td>{sesi.jam_mulai}</td>
-                        <td>{sesi.jam_selesai}</td>
-                        <td>{sesi.createdAt.toString()}</td>
-                        <td>{sesi.updatedAt.toString()}</td>
-                        <td>
-                          <button
-                            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                            onClick={() => setSelectedSesi(sesi)}
-                          >
-                            Edit
-                          </button>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              )}
+                sesi.map((sesi) => (
+                  <CardSesi
+                    nama_sesi={sesi.nama_sesi}
+                    mulai_sesi={sesi.jam_mulai}
+                    selesai_sesi={sesi.jam_selesai}
+                    key={sesi.id}
+                    onClick={() => {
+                      setSelectedSesi(sesi);
+                    }}
+                  />
+                ))
+              )
+              }
             </>
           ) : (
             <p>Loading...</p>
