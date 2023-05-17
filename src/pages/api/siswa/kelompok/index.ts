@@ -17,7 +17,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             if (!siswakelompok) {
                 return res.status(404).json({ 
                     status: 404,
-                    message: "User not found",
+                    message: "Pengguna tidak ditemukan",
                     data: {},
                  });
             } else {
@@ -81,7 +81,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 console.error(error);
                 const response = {
                     status: 500,
-                    message: "Error loading kelompok",
+                    message: "Error memuat kelompok",
                     data: {},
                 };
                 return res.status(500).json(response);
@@ -91,7 +91,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         console.error(error);
         const response = {
             status: 500,
-            message: "Error loading siswa",
+            message: "Error memuat siswa",
             data: {},
         };
         return res.status(500).json(response);

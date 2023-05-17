@@ -36,7 +36,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             if (!siswa) {
                 const response = {
                     status: 404,
-                    message: "User not found",
+                    message: "Pengguna tidak ditemukan",
                     data: {},
                 };
                 return res.status(404).json(response);
@@ -51,7 +51,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 });
                 const response = {
                     status: 200,
-                    message: "Get profile success",
+                    message: "Profile berhasil didapatkan",
                     data: {
                         id: siswa.id,
                         name: siswa.nama,
@@ -67,7 +67,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             else {
                 const response = {
                     status: 200,
-                    message: "Get profile success",
+                    message: "Profile berhasil didapatkan",
                     data: {
                         id: siswa.id,
                         name: siswa.nama,
@@ -84,7 +84,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             if (error instanceof jwt.TokenExpiredError) {
                 const response = {
                   status: 401,
-                  message: "Token expired",
+                  message: "Token kadaluarsa",
                   data: {},
                 };
                 return res.status(401).json(response);
@@ -92,7 +92,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             console.error(error);
             const response = {
                 status: 500,
-                message: "Internal server error",
+                message: "Error profile",
                 data: {},
                 // token: token,
             };
