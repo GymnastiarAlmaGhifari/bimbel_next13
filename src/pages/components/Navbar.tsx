@@ -45,9 +45,7 @@ const Navbar = () => {
               loader={({ src }) => `${src}?cache-control=no-store`}
             />
           </div>
-          <button onClick={toggleMenu}>
             {isOpen ? <IoIosArrowUp /> : <IoIosArrowDown />}
-          </button>
         </div>
         {isOpen ? (
           <div className="absolute mt-1 flex flex-col bg-Neutral-100 py-2 px-4 rounded-lg border-[1px] translate-x-[-2px] border-Neutral-90 gap-2">
