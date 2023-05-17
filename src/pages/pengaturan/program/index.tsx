@@ -3,7 +3,7 @@ import React, { FC } from "react";
 import { useEffect, useState } from "react";
 import useSWR from "swr";
 import fetcher from "@/libs/fetcher";
-import { ModalDetail } from "@/pages/components/Modal";
+import { ModalDetail } from "@/pages/components/modal/Modal";
 import ProgramEdit from "./edit";
 import HeadTable from "@/pages/components/HeadTable";
 import CardProgram from "@/pages/components/card/CardProgram";
@@ -63,11 +63,7 @@ const Program: FC<Props> = () => {
   return (
     <div className="h-full p-10 bg-Neutral-95">
       <div className="flex flex-col h-full bg-Neutral-100 py-4 gap-4 rounded-lg">
-        <HeadTable label="Program"
-          onClick={
-            () => setShowCreate(true)
-          }
-        />
+        <HeadTable label="Program" onClick={() => setShowCreate(true)} />
         <div className="flex flex-col rounded-bl-lg rounded-br-lg p-4 gap-4 overflow-y-auto scrollbar-thin scrollbar-track-Neutral-100 scrollbar-thumb-Primary-40 scrollbar-rounded-lg">
           {program ? (
             <>
@@ -75,7 +71,8 @@ const Program: FC<Props> = () => {
                 <p>No program found.</p>
               ) : (
                 program.map((item) => (
-                  <CardProgram key={item.id}
+                  <CardProgram
+                    key={item.id}
                     nama_program={item.nama_program}
                     tipe={item.tipe}
                     level={item.level}
@@ -134,11 +131,9 @@ const Program: FC<Props> = () => {
                 onSucsess={() => {
                   setShowSuccess(true);
                 }}
-
               />
             </ModalDetail>
           )}
-
         </div>
       </div>
     </div>

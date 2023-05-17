@@ -3,7 +3,7 @@ import React, { FC } from "react";
 import { useEffect, useState } from "react";
 import useSWR from "swr";
 import fetcher from "@/libs/fetcher";
-import { ModalDetail } from "@/pages/components/Modal";
+import { ModalDetail, ModalHapus } from "@/pages/components/modal/Modal";
 import KelasEdit from "./edit";
 import CardKelas from "@/pages/components/card/CardKelas";
 import HeadTable from "@/pages/components/HeadTable";
@@ -16,8 +16,6 @@ interface Kelas {
   createdAt: Date;
   updatedAt: Date;
 }
-
-
 
 const Kelas: FC<Kelas> = () => {
   const { data: kelas, error } = useSWR<Kelas[]>("/api/kelas", fetcher, {});
@@ -46,7 +44,6 @@ const Kelas: FC<Kelas> = () => {
     }
   }, [error]);
 
-
   const onClose = () => {
     setSelectedKelas(null);
   };
@@ -54,11 +51,7 @@ const Kelas: FC<Kelas> = () => {
   return (
     <div className="h-full p-10 bg-Neutral-95">
       <div className="flex flex-col h-full bg-Neutral-100 py-4 gap-4 rounded-lg">
-        <HeadTable label="Kelas"
-          onClick={
-            () => setShowCreate(true)
-          }
-        />
+        <HeadTable label="Kelas" onClick={() => setShowCreate(true)} />
         <div className="flex flex-col rounded-bl-lg rounded-br-lg p-4 gap-4 overflow-y-auto scrollbar-thin scrollbar-track-Neutral-100 scrollbar-thumb-Primary-40 scrollbar-rounded-lg">
           {kelas ? (
             <>
@@ -66,7 +59,9 @@ const Kelas: FC<Kelas> = () => {
                 <p>No kelas found.</p>
               ) : (
                 kelas.map((kelas) => (
-                  <CardKelas key={kelas.id} nama_kelas={kelas.nama_kelas}
+                  <CardKelas
+                    key={kelas.id}
+                    nama_kelas={kelas.nama_kelas}
                     onEdit={() => setSelectedKelas(kelas)}
                     onDelete={() => setShowDelete(kelas)}
                   />
@@ -121,30 +116,24 @@ const Kelas: FC<Kelas> = () => {
                 onSucsess={() => {
                   setShowSuccess(true);
                 }}
-
               />
             </ModalDetail>
           )}
-          {
-            showDelete && (
-              <ModalDetail
-                titleModal="Hapus Kelas"
-                onOpen={true}
+          {showDelete && (
+            <ModalHapus
+              onOpen={true}
+              onClose={() => setShowDelete(null)}
+            >
+              <DeleteKelas
+                data={showDelete}
                 onClose={() => setShowDelete(null)}
-              >
-                <DeleteKelas
-                  data={showDelete}
-                  onClose={() => setShowDelete(null)}
-                  onSucsess={() => {
-                    setShowSuccess(true);
-                  }}
-                  kelasId={showDelete.id}
-                />
-              </ModalDetail>
-            )
-          }
-
-
+                onSucsess={() => {
+                  setShowSuccess(true);
+                }}
+                kelasId={showDelete.id}
+              />
+            </ModalHapus>
+          )}
         </div>
       </div>
     </div>
