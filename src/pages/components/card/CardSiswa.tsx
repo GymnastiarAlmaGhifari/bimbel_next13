@@ -11,13 +11,15 @@ interface CardSiswaProps {
   status: string;
   kelompok: string;
   kelas: string;
-  onClick?: () => void;
+  onEdit?: () => void;
+  onDelete?: () => void;
   tipe: string;
   gambar?: any;
 }
 
 const CardSiswa: FC<CardSiswaProps> = ({
-  onClick,
+  onEdit,
+  onDelete,
   tipe,
   gambar,
   kelas,
