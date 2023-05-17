@@ -229,7 +229,7 @@ const Sidebar = () => {
         </div>
 
         <nav className={`${isOpen ? "" : ""}  px-4 pt-6`}>
-          <ul className="flex flex-col gap-3">
+          <ul className="flex flex-col gap-4">
             {session?.user.role === "SUPER" && (
               <>
                 <li>
