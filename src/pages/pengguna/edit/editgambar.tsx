@@ -20,7 +20,6 @@ const schema = yup.object().shape({
 });
 
 
-
 type FormData = yup.InferType<typeof schema> & {
     image: FileList;
 };
