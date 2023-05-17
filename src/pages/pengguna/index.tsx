@@ -9,6 +9,7 @@ import Create from "./create";
 import HeadTable from "../components/HeadTable";
 import UserCard from "../components/card/CardPengguna";
 import { useSession } from "next-auth/react";
+import UserEditGambar from "./edit/editgambar";
 
 interface User {
   id: string;
@@ -38,6 +39,9 @@ const User: FC<User> = () => {
   );
 
   const [selected, setSelected] = useState<User | null>(null);
+
+  // select gambar open modal edit gambar
+  const [selectedGambar, setSelectedGambar] = useState<User | null>(null);
 
   useEffect(() => {
     if (error) {
@@ -95,6 +99,11 @@ const User: FC<User> = () => {
                             onClick={() => {
                               setSelected(user);
                             }}
+                            editGambar={
+                              () => {
+                                setSelectedGambar(user);
+                              }
+                            }
                           />
                         ))
                       )}
@@ -181,6 +190,24 @@ const User: FC<User> = () => {
             onSucsess={() => {
               setShowSuccess(true);
             }}
+          />
+        </ModalDetail>
+      )}
+
+      {/* modal edit gambar */}
+      {selectedGambar && (
+        <ModalDetail
+          titleModal="Edit Gambar"
+          onOpen={true}
+          onClose={() => setSelectedGambar(null)}
+        >
+          <UserEditGambar
+            userId={selectedGambar.id}
+            onClose={() => setSelectedGambar(null)}
+            onSucsess={() => {
+              setShowSuccess(true);
+            }}
+            data={selectedGambar}
           />
         </ModalDetail>
       )}
