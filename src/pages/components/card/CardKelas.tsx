@@ -4,11 +4,13 @@ import { MdModeEdit } from "react-icons/md";
 
 type CardKelasProps = {
   nama_kelas: string;
+
   onEdit?: () => void;
   onDelete?: () => void;
 };
 
 const CardKelas: FC<CardKelasProps> = ({ nama_kelas, onEdit, onDelete }) => {
+
   return (
     <div className="flex flex-col bg-Neutral-100 border rounded-lg py-5 px-4 gap-3">
       <div className="flex justify-between">
@@ -18,6 +20,7 @@ const CardKelas: FC<CardKelasProps> = ({ nama_kelas, onEdit, onDelete }) => {
             {nama_kelas}
           </span>
         </div>
+
         <div className="flex flex-row gap-3">
           <Button
             type="button"
