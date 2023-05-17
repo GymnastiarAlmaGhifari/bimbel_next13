@@ -6,7 +6,6 @@ import jwt, { JwtPayload } from "jsonwebtoken";
 //if token match then return login success and the email
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     const token = req.headers.authorization;
-    console.log("token", token);
     if (req.method === "GET") {
         try {
 
