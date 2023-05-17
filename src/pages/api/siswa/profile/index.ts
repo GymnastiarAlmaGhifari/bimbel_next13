@@ -94,6 +94,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 status: 500,
                 message: "Internal server error",
                 data: {},
+                // token: token,
             };
             res.status(500).json(response);
         }
