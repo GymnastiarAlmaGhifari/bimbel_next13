@@ -7,6 +7,7 @@ import useSWR from "swr";
 import fetcher from "@/libs/fetcher";
 import { ModalDetail } from "@/pages/components/modal/Modal";
 import { useSession } from "next-auth/react";
+import EditSiswa from "./edit";
 
 
 interface Siswa {
@@ -25,6 +26,8 @@ interface Siswa {
   kelas: any;
   kelas_id: string;
   nama_kelas: string;
+  kelompok: any;
+  kelompok_id: string;
 }
 
 const Siswa: FC<Siswa> = () => {
@@ -34,9 +37,9 @@ const Siswa: FC<Siswa> = () => {
 
   // selectedit dan select delete
 
-  const [selectedEdit, setSelectedDelete] = useState<Siswa | null>(null);
+  const [selectedEdit, setSelectedEdit] = useState<Siswa | null>(null);
 
-  const [selectedDelete, setSelectedEdit] = useState<Siswa | null>(null);
+  const [selectedDelete, setSelectedDelete] = useState<Siswa | null>(null);
 
   const [showCreate, setShowCreate] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
@@ -81,12 +84,16 @@ const Siswa: FC<Siswa> = () => {
                         {siswa.map((siswa) => (
                           <CardSiswa
                             key={siswa.id}
-                            tipe={siswa.tipe}
-                            kelas={siswa.nama_kelas}
-                            kelompok={siswa.level}
+
+                            tipe={siswa.kelompok.program.tipe}
+                            kelas={siswa.kelompok.program.kelas.nama_kelas}
+                            level={siswa.kelompok.program.level}
                             nama_siswa={siswa.nama}
-                            status="Aktif"
-                            onEdit={() => setSelectedEdit(siswa)}
+                            nama_kelompok={siswa.kelompok.nama_kelompok}
+                            hp={siswa.nomor_telepon}
+                            onEdit={
+                              () => setSelectedEdit(siswa)
+                            }
                             onDelete={() => setSelectedDelete(siswa)}
                           />
                         ))}
@@ -114,6 +121,25 @@ const Siswa: FC<Siswa> = () => {
           </div>
         </div>
       </div>
+      {
+        selectedEdit && (
+          <ModalDetail
+            titleModal="Edit Siswa"
+            onClose={backSiswa}
+
+          >
+            <EditSiswa
+              data={selectedEdit}
+              onClose={backSiswa}
+              onSucsess={() => setShowSuccess(true)}
+              siswaId={selectedEdit.id}
+            />
+          </ModalDetail>
+        )
+
+      }
+
+
     </div>
   );
 };

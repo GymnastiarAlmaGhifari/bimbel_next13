@@ -76,7 +76,7 @@ const Sesi: FC<Props> = () => {
           </Link>
 
           {selectedSesi && (
-            <ModalDetail titleModal="Edit Sesi" onOpen={true} onClose={onClose}>
+            <ModalDetail titleModal="Edit Sesi" onClose={onClose}>
               <SesiEdit
                 data={selectedSesi}
                 onClose={onClose}

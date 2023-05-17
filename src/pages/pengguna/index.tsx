@@ -96,14 +96,14 @@ const User: FC<User> = () => {
                             nama_mapel={user.mapel?.nama_mapel}
                             gambar={user?.image}
                             role={user.role}
-                            onClick={() => {
+                            onEdit={() => {
                               setSelected(user);
                             }}
-                            editGambar={
-                              () => {
-                                setSelectedGambar(user);
-                              }
-                            }
+                          // editGambar={
+                          //   () => {
+                          //     setSelectedGambar(user);
+                          //   }
+                          // }
                           />
                         ))
                       )}
@@ -129,7 +129,7 @@ const User: FC<User> = () => {
                             nama_mapel={admin.mapel?.nama_mapel}
                             gambar={admin?.image}
                             role={admin.role}
-                            onClick={() => {
+                            onEdit={() => {
                               setSelected(admin);
                             }}
                           />
@@ -192,7 +192,7 @@ const User: FC<User> = () => {
       )}
 
       {/* modal edit gambar */}
-      {selectedGambar && (
+      {/* {selectedGambar && (
         <ModalDetail
           titleModal="Edit Gambar"
           onClose={() => setSelectedGambar(null)}
@@ -206,7 +206,7 @@ const User: FC<User> = () => {
             data={selectedGambar}
           />
         </ModalDetail>
-      )}
+      )} */}
     </div>
   );
 };

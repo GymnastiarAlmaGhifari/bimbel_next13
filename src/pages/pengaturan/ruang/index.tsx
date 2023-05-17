@@ -91,7 +91,6 @@ const Ruang: FC<Props> = () => {
           {selectedRuang && (
             <ModalDetail
               titleModal="Edit Ruang"
-              onOpen={true}
               onClose={onClose}
             >
               <RuangEdit
@@ -104,7 +103,6 @@ const Ruang: FC<Props> = () => {
           {showSuccess && (
             <ModalDetail
               titleModal="Modal Ruang"
-              onOpen={true}
               onClose={() => setShowSuccess(false)}
             >
               <div className="flex flex-col items-center justify-center">
@@ -120,7 +118,6 @@ const Ruang: FC<Props> = () => {
           {showCreate && (
             <ModalDetail
               titleModal="Tambah Ruang"
-              onOpen={true}
               onClose={() => setShowCreate(false)}
             >
               <Create
