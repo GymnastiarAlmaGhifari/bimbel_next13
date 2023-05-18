@@ -114,7 +114,6 @@ const Siswa: FC<Siswa> = () => {
                         <p className="text-2xl font-bold text-Neutral-600">Loading...</p>
                       </div>
                     )
-
                     }
                   </>
                 )
