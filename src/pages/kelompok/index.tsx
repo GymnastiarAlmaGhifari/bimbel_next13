@@ -59,7 +59,7 @@ const Kelompok: FC<Kelompok> = () => {
       <Sidebar />
       <div className="w-full flex flex-col">
         <Navbar />
-        <div className="h-full p-10 bg-Neutral-95 overflow-auto">
+        <div className="h-full p-5 bg-Neutral-95 overflow-auto">
           <div className="flex flex-col h-full bg-Neutral-100 py-4 gap-4 rounded-lg overflow-auto">
             <HeadTable
               label="Kelompok"
@@ -94,10 +94,7 @@ const Kelompok: FC<Kelompok> = () => {
         </div>
       </div>
       {selected && (
-        <ModalDetail
-          titleModal="Edit Kelompok"
-          onClose={backKelompok}
-        >
+        <ModalDetail titleModal="Edit Kelompok" onClose={backKelompok}>
           <KelompokEdit
             kelompokId={selected.id}
             onClose={backKelompok}

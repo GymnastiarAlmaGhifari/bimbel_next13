@@ -70,7 +70,7 @@ const User: FC<User> = () => {
       <Sidebar />
       <div className="w-full flex flex-col ">
         <Navbar />
-        <div className="h-full p-10 bg-Neutral-95 overflow-auto ">
+        <div className="h-full p-5 bg-Neutral-95 overflow-auto ">
           <div className="flex flex-col h-full bg-Neutral-100 py-4 gap-4 rounded-lg overflow-auto">
             <HeadTable
               label="Pengguna"
@@ -99,11 +99,11 @@ const User: FC<User> = () => {
                             onEdit={() => {
                               setSelected(user);
                             }}
-                          // editGambar={
-                          //   () => {
-                          //     setSelectedGambar(user);
-                          //   }
-                          // }
+                            // editGambar={
+                            //   () => {
+                            //     setSelectedGambar(user);
+                            //   }
+                            // }
                           />
                         ))
                       )}
@@ -146,10 +146,7 @@ const User: FC<User> = () => {
         </div>
       </div>
       {selected && (
-        <ModalDetail
-          titleModal="Edit Pengguna"
-          onClose={backPengguna}
-        >
+        <ModalDetail titleModal="Edit Pengguna" onClose={backPengguna}>
           <UserEdit
             userId={selected.id}
             onClose={backPengguna}

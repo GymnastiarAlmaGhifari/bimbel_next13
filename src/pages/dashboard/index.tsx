@@ -41,7 +41,7 @@ const Dashboard: React.FC<Props> = ({ books }) => {
 
       <div className="w-full h-screen flex flex-col ">
         <Navbar />
-        <div className="flex flex-col gap-2 h-full p-10 bg-Neutral-95 overflow-auto">
+        <div className="flex flex-col gap-2 h-full p-5 bg-Neutral-95 overflow-auto">
           <InfoDashboard />
           <div className="flex flex-col h-full bg-Neutral-100 py-4 gap-4 rounded-lg overflow-auto">
             <HeadTable label="Overview Jadwal" />
