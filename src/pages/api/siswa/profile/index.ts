@@ -18,6 +18,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
             // Verify the token
             const decodedToken = jwt.verify(token, process.env.JWT_SECRET) as JwtPayload;
+            
 
             // Check if the token is expired
             const tokenExpirationDate = new Date(decodedToken.exp! * 1000);

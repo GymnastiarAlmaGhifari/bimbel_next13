@@ -2,6 +2,8 @@ import { NextApiRequest, NextApiResponse } from "next";
 import prisma from "@/libs/prismadb";
 import fs from "fs";
 import path from "path";
+import Image from "next/image";
+
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     const token = req.headers.authorization;
@@ -36,6 +38,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                     res.end(data);
 
                 }
+
+
             }
         }
         catch (error) {
