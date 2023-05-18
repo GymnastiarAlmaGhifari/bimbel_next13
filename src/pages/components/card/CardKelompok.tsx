@@ -23,9 +23,9 @@ const CardKelompok: FC<CardKelompokProps> = ({
       <div className="flex justify-between">
         <div className="flex items-center gap-3">
           <h1 className="text-xl text-Neutral-10 font-bold">{nama_kelompok}</h1>
-          <span className="text-Neutral-30">{level}</span>
+          <span className="text-Neutral-30">{tipe}</span>
         </div>
-        <h3 className="text-sm text-Neutral-30 font-bold">{tipe}</h3>
+        <h3 className="text-sm text-Neutral-30 font-bold">{level}</h3>
       </div>
       <div className="w-full h-[1px] bg-Neutral-30"></div>
       <div className="flex justify-between">
