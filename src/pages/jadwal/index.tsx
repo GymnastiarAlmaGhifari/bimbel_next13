@@ -10,7 +10,7 @@ const Jadwal = () => {
       <Sidebar />
       <div className="w-full flex flex-col ">
         <Navbar />
-        <div className="h-full p-10 bg-Neutral-95 overflow-auto">
+        <div className="h-full p-5 bg-Neutral-95 overflow-auto">
           <div className="flex flex-col h-full p-4 gap-4 bg-Neutral-100 rounded-lg">
             <div className="flex justify-between">
               <h1 className="text-lg font-bold">Jadwal</h1>

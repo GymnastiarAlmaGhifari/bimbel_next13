@@ -10,7 +10,7 @@ const Pembayaran = () => {
       <Sidebar />
       <div className="w-full flex flex-col ">
         <Navbar />
-        <div className="h-full p-10 bg-Neutral-95 overflow-auto ">
+        <div className="h-full p-5 bg-Neutral-95 overflow-auto ">
           <div className="flex flex-col h-full bg-Neutral-100 py-4 gap-4 rounded-lg overflow-auto">
             <HeadTable label="Pembayaran" />
             <div className="flex flex-col rounded-bl-lg rounded-br-lg p-4 gap-4 overflow-y-auto scrollbar">
