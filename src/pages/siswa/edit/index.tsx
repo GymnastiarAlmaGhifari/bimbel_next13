@@ -122,18 +122,6 @@ const EditSiswa: FC<UserEditProps> = ({
                 <p className="text-red-500">{errors.nomor_telepon.message}</p>
               )}
 
-              <Input
-                id="hp_ortu"
-                label="Nomor Telepon Orang Tua"
-                type="number"
-                register={{ ...register("hp_ortu") }}
-                errors={errors}
-                defaultValue={data?.hp_ortu}
-              />
-
-              {errors.hp_ortu && (
-                <p className="text-red-500">{errors.hp_ortu.message}</p>
-              )}
 
               <Input
                 id="sekolah"
@@ -145,6 +133,18 @@ const EditSiswa: FC<UserEditProps> = ({
               />
               {errors.sekolah && (
                 <p className="text-red-500">{errors.sekolah.message}</p>
+              )}
+              <Input
+                id="hp_ortu"
+                label="Nomor Telepon Orang Tua"
+                type="number"
+                register={{ ...register("hp_ortu") }}
+                errors={errors}
+                defaultValue={data?.hp_ortu}
+              />
+
+              {errors.hp_ortu && (
+                <p className="text-red-500">{errors.hp_ortu.message}</p>
               )}
               <Input
                 id="alamat"

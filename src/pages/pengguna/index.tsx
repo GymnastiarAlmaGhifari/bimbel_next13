@@ -99,11 +99,11 @@ const User: FC<User> = () => {
                             onEdit={() => {
                               setSelected(user);
                             }}
-                            // editGambar={
-                            //   () => {
-                            //     setSelectedGambar(user);
-                            //   }
-                            // }
+                          // editGambar={
+                          //   () => {
+                          //     setSelectedGambar(user);
+                          //   }
+                          // }
                           />
                         ))
                       )}

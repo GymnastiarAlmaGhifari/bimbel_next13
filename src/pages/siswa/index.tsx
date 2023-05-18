@@ -8,6 +8,7 @@ import fetcher from "@/libs/fetcher";
 import { ModalDetail } from "@/pages/components/modal/Modal";
 import { useSession } from "next-auth/react";
 import EditSiswa from "./edit";
+import CreateSiswa from "./create";
 
 
 interface Siswa {
@@ -68,7 +69,9 @@ const Siswa: FC<Siswa> = () => {
         <Navbar />
         <div className="h-full p-5 bg-Neutral-95 overflow-auto ">
           <div className="flex flex-col h-full bg-Neutral-100 py-4 gap-4 rounded-lg overflow-auto">
-            <HeadTable label="Siswa" />
+            <HeadTable label="Siswa" onClick={
+              () => setShowCreate(true)
+            } />
             <div className="flex flex-col rounded-bl-lg rounded-br-lg p-4 gap-4 overflow-y-auto scrollbar">
 
               {
@@ -84,11 +87,11 @@ const Siswa: FC<Siswa> = () => {
                         {siswa.map((siswa) => (
                           <CardSiswa
                             key={siswa.id}
-                            tipe={siswa.tipe}
-                            kelas={siswa.nama_kelas}
-                            level={siswa.level}
+                            tipe={siswa.kelompok?.program.tipe}
+                            kelas={siswa.kelompok?.program.kelas.nama_kelas}
+                            level={siswa.kelompok?.program.level}
                             nama_siswa={siswa.nama}
-                            nama_kelompok={siswa.kelompok_id}
+                            nama_kelompok={siswa.kelompok?.nama_kelompok}
                             hp={siswa.nomor_telepon}
                             onEdit={
                               () => setSelectedEdit(siswa)
@@ -135,8 +138,31 @@ const Siswa: FC<Siswa> = () => {
             />
           </ModalDetail>
         )
-
       }
+      {/* {
+        selectedDelete && (
+          <ModalDetail
+            titleModal="Hapus Siswa"
+            onClose={backSiswa}
+          > */}
+
+
+      {/* create */}
+
+      {
+        showCreate && (
+          <ModalDetail
+            titleModal="Tambah Siswa"
+            onClose={() => setShowCreate(false)}
+          >
+            <CreateSiswa
+              onClose={() => setShowCreate(false)}
+              onSucsess={() => setShowSuccess(true)}
+            />
+          </ModalDetail>
+        )
+      }
+
 
 
     </div>
