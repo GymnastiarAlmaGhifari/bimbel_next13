@@ -11,12 +11,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       res.status(500).json({ message: "Error loading ruangs." });
     }
   } else if (req.method === "POST") {
-    const { nama, tipe } = req.body;
+    const { nama_ruang, tipe } = req.body;
 
     try {
       const ruang = await prisma.ruang.create({
         data: {
-          nama,
+          nama_ruang,
           tipe,
         },
       });

@@ -11,7 +11,7 @@ import Create from "./create";
 
 interface Ruang {
   id: string;
-  nama: string;
+  nama_ruang: string;
   tipe: string;
   createdAt: Date;
   updatedAt: Date;
@@ -70,7 +70,7 @@ const Ruang: FC<Props> = () => {
                 ruang.map((ruang) => (
                   <CardRuang
                     key={ruang.id}
-                    nama_ruang={ruang.nama}
+                    nama_ruang={ruang.nama_ruang}
                     tipe_ruang={ruang.tipe}
                     onClick={() => {
                       setSelectedRuang(ruang);
@@ -108,7 +108,7 @@ const Ruang: FC<Props> = () => {
               <div className="flex flex-col items-center justify-center">
                 <h1 className="text-2xl font-bold text-green-500">Berhasil</h1>
                 <p className="text-sm text-gray-500">
-                  {selectedRuang?.nama} berhasil diupdate
+                  {selectedRuang?.nama_ruang} berhasil diupdate
                 </p>
               </div>
             </ModalDetail>

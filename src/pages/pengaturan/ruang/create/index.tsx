@@ -16,7 +16,7 @@ interface RuangCreateProps {
 }
 
 const schema = yup.object().shape({
-    nama: yup
+    nama_ruang: yup
         .string()
         .required("tidak boleh kosong")
         .min(3, "nama ruang minimal 3 karakter"),
@@ -41,14 +41,14 @@ const Create: FC<RuangCreateProps> = ({ onClose, onSucsess }) => {
     });
 
     const onSubmit: SubmitHandler<FormData> = async (data) => {
-        const { nama, tipe } = data;
+        const { nama_ruang, tipe } = data;
 
         setIsLoading(true); // Set loading state to true
         setError(null);
 
         try {
             await axios.post(`/api/ruang`, {
-                nama,
+                nama_ruang,
                 tipe,
             });
 
@@ -95,13 +95,13 @@ const Create: FC<RuangCreateProps> = ({ onClose, onSucsess }) => {
             {/* Error message */}
             {error && <p className="text-red-500">{error}</p>}
             <Input
-                id="nama"
+                id="nama_ruang"
                 label="Nama Ruang"
                 type="text"
-                register={{ ...register("nama") }}
+                register={{ ...register("nama_ruang") }}
                 errors={errors}
             />
-            {errors.nama && <p className="text-red-500">{errors.nama.message}</p>}
+            {errors.nama_ruang && <p className="text-red-500">{errors.nama_ruang.message}</p>}
 
             <div className="">
                 <label className="form-label">Tipe Ruang</label>

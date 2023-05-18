@@ -11,6 +11,7 @@ interface HeadTableProps {
   onClick?: () => void;
   label: string;
   onChange?: (value: string) => void;
+  nama_kelompok?: string;
 }
 
 const HeadTable: React.FC<HeadTableProps> = ({
@@ -18,13 +19,15 @@ const HeadTable: React.FC<HeadTableProps> = ({
   onClick,
   label,
   onChange,
+  riwayat,
+  nama_kelompok,
+
 }) => {
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (onChange) {
       onChange(event.target.value);
     }
   };
-
 
   return (
     <div className="bg-Neutral-100 flex flex-row items-center h-[72px] px-5">
@@ -37,6 +40,10 @@ const HeadTable: React.FC<HeadTableProps> = ({
             <MdOutlineSort size={24} />
             <span className="text-sm font-bold text-Neutral-20">Filter</span>
           </button>
+
+          <h1>
+            Kelompok {nama_kelompok}
+          </h1>
         </div>
       </div>
       <div className="flex gap-4">
@@ -78,6 +85,7 @@ const HeadTable: React.FC<HeadTableProps> = ({
         )}
       </div>
     </div>
+
   );
 };
 
