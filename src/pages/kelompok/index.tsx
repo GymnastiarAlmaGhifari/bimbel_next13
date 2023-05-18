@@ -77,8 +77,8 @@ const Kelompok: FC<Kelompok> = () => {
                       <CardKelompok
                         key={kelompok.id}
                         nama_kelompok={kelompok.nama_kelompok}
-                        level={kelompok.program.level}
-                        tipe={kelompok.program.tipe}
+                        level={kelompok.level}
+                        tipe={kelompok.tipe}
                         onClick={() => {
                           setSelected(kelompok);
                         }}
