@@ -9,15 +9,28 @@ interface HeadTableProps {
   role?: boolean;
   onClick?: () => void;
   label: string;
+  onChange?: (value: string) => void;
 }
 
-const HeadTable: FC<HeadTableProps> = ({ role, onClick, label }) => {
+const HeadTable: React.FC<HeadTableProps> = ({
+  role,
+  onClick,
+  label,
+  onChange,
+}) => {
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (onChange) {
+      onChange(event.target.value);
+    }
+  };
+
   return (
     <div className="bg-Neutral-100 flex flex-row items-center h-[72px] px-5">
       <div className="flex flex-row items-center gap-14 w-full">
         <h2 className="text-xl font-semibold text-Primary-10">{label}</h2>
-        <div className="flex flex-row items-center gap-4 ">
-          <Search />
+        <div className="flex flex-row items-center gap-4">
+          <Search onChange={handleInputChange} />
+
           <button className="flex gap-1">
             <MdOutlineSort size={24} />
             <span className="text-sm font-bold text-Neutral-20">Filter</span>
