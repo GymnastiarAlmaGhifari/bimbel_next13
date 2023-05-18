@@ -12,11 +12,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
               program: {
                 include: {
                   kelas: true,
-              }
+                },
+              },
             },
-          }
+          },
         },
-      },
       });
       res.status(200).json(siswas);
     } catch (error) {
@@ -24,7 +24,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       res.status(500).json({ message: "Error loading siswas." });
     }
   } else if (req.method === "POST") {
-    const { nama, email, password, nomor_telepon,} = req.body;
+    const { nama, email, password, nomor_telepon, hp_ortu, alamat, sekolah } = req.body;
 
     try {
       const siswa = await prisma.siswa.create({
@@ -33,6 +33,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           email,
           password: await bcrypt.hash(password, 10),
           nomor_telepon,
+          hp_ortu,
+          alamat,
+          sekolah,
         },
       });
       res.status(201).json(siswa);
