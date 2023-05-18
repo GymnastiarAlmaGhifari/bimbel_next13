@@ -60,6 +60,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                         const anggota = {
                             siswa_id: kelompoksiswa[i].id,
                             nama: kelompoksiswa[i].nama,
+                            status: "anggota",
                         };
 
                         anggotaArray.push(anggota);
@@ -67,7 +68,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
                     const response = {
                         status: 200,
-                        message: "Success",
+                        message: "Kelompok ditemukan",
                         data: {
                             kelompok_id: datakelompok?.id,
                             kelompok: datakelompok?.nama_kelompok,
