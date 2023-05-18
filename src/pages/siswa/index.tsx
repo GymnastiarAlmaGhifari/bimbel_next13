@@ -84,11 +84,11 @@ const Siswa: FC<Siswa> = () => {
                         {siswa.map((siswa) => (
                           <CardSiswa
                             key={siswa.id}
-                            tipe={siswa.kelompok.program.tipe}
-                            kelas={siswa.kelompok.program.kelas.nama_kelas}
-                            level={siswa.kelompok.program.level}
+                            tipe={siswa.tipe}
+                            kelas={siswa.nama_kelas}
+                            level={siswa.level}
                             nama_siswa={siswa.nama}
-                            nama_kelompok={siswa.kelompok.nama_kelompok}
+                            nama_kelompok={siswa.kelompok_id}
                             hp={siswa.nomor_telepon}
                             onEdit={
                               () => setSelectedEdit(siswa)

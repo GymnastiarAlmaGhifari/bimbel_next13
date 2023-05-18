@@ -18,6 +18,12 @@ const CardKelompok: FC<CardKelompokProps> = ({
   level,
   onClick,
 }) => {
+  const openDetailAnggota = () => {
+    window.location.href = "/kelompok/detailAnggota ";
+  };
+  const openLihatJadwal = () => {
+    window.location.href = "/kelompok/lihatJadwal ";
+  };
   return (
     <div className="flex flex-col bg-Neutral-100 border rounded-lg py-5 px-4 gap-3">
       <div className="flex justify-between">
@@ -36,6 +42,7 @@ const CardKelompok: FC<CardKelompokProps> = ({
             label="Detail Anggota"
             textColor="text-Primary-20"
             type="button"
+            onClick={openDetailAnggota}
             icon={IoIosArrowForward}
           />
           <Button
@@ -44,6 +51,7 @@ const CardKelompok: FC<CardKelompokProps> = ({
             label="Lihat Jadwal"
             textColor="text-Primary-20"
             type="button"
+            onClick={openLihatJadwal}
             icon={IoIosArrowForward}
           />
         </div>
