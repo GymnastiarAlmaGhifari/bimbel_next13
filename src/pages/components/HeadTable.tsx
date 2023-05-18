@@ -1,5 +1,5 @@
 "use client";
-import { MdOutlineSort, MdModeEdit } from "react-icons/md";
+import { MdOutlineSort, MdModeEdit, MdHistory } from "react-icons/md";
 import Search from "./Search";
 import Button from "./buttons/Button";
 import { IoIosAdd } from "react-icons/io";
@@ -7,6 +7,7 @@ import { FC } from "react";
 
 interface HeadTableProps {
   role?: boolean;
+  riwayat?: boolean;
   onClick?: () => void;
   label: string;
   onChange?: (value: string) => void;
@@ -24,6 +25,7 @@ const HeadTable: React.FC<HeadTableProps> = ({
     }
   };
 
+
   return (
     <div className="bg-Neutral-100 flex flex-row items-center h-[72px] px-5">
       <div className="flex flex-row items-center gap-14 w-full">
@@ -38,6 +40,20 @@ const HeadTable: React.FC<HeadTableProps> = ({
         </div>
       </div>
       <div className="flex gap-4">
+        {riwayat ? (
+          <Button
+            type="button"
+            brColor="border-Tertiary-50"
+            textColor="text-Tertiary-50"
+            bgColor="bg-Tertiary-50"
+            label="Riwayat Pembayaran"
+            icon={MdHistory}
+            onClick={onClick}
+            outlined
+          />
+        ) : (
+          ""
+        )}
         <Button
           type="button"
           brColor="border-Tertiary-50"
