@@ -1,11 +1,19 @@
 import { Inter } from "next/font/google";
-import Image from 'next/image'
+import Image from "next/image";
+import Link from "next/link";
+import { IoIosArrowForward } from "react-icons/io";
 
 export default function ItemProgram() {
   return (
-    <div className="bg-white rounded pb-3 h-auto overflow-hidden w-full">
+    <div className="bg-white rounded-lg pb-3 h-auto overflow-hidden w-full ">
       <div className="relative">
-        <Image className="w-full" src="imgProgram.svg" alt="gambar program" width={500} height={500}/>
+        <Image
+          className="w-full"
+          src="imgProgram.svg"
+          alt="gambar program"
+          width={500}
+          height={500}
+        />
         <span className="text-3xl font-bold text-Primary-10 absolute top-2 left-2">
           Tingkatan
         </span>
@@ -16,10 +24,16 @@ export default function ItemProgram() {
           molestiae esse quisquam illum excepturi nulla, minima libero iste
           quis!
         </p>
-        <div className="text-right">
-          <a href="" className="text-xs">
+        <div className="flex justify-end">
+          <Link
+            href={"/landingPage/DetailProgram"}
+            className="text-xs flex items-center"
+          >
+            Lihat Detail <IoIosArrowForward />
+          </Link>
+          {/* <a href="" className="text-xs">
             Lihat Detail
-          </a>
+          </a> */}
         </div>
       </div>
     </div>

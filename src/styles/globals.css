@@ -12,7 +12,8 @@
 
 @layer utilities {
   .scrollbar::-webkit-scrollbar {
-    width: 8px;
+    width: 6px;
+    border-radius: 100px;
   }
   .scrollbar::-webkit-scrollbar-track {
     border-radius: 100vh;
@@ -28,3 +29,4 @@
     background: #4c8b85;
   }
 }
+

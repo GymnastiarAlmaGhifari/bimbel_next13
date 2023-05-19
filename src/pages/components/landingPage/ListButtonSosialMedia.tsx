@@ -4,7 +4,7 @@ import ButtonInAbout from "@/pages/components/buttons/ButtonInAbout";
 
 export default function listButtonSosialMedia() {
   return (
-    <ul className="flex gap-5">
+    <ul className="flex gap-4">
       <li>
         <ButtonInAbout
           fileLogo="instagram.svg"

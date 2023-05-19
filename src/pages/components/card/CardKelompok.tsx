@@ -6,6 +6,7 @@ import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import Link from "next/link";
 import useSWR from "swr";
 import fetcher from "@/libs/fetcher";
+import Image from "next/image";
 
 interface CardKelompokProps {
   id?: string;
@@ -22,6 +23,7 @@ interface Jadwal {
   jadwal_id: string;
   sesi_id: string;
   mapel_id: string;
+  image: string;
   user_id: string;
   ruang_id: string;
   createdAt: string;
@@ -128,6 +130,8 @@ const CardKelompok: FC<CardKelompokProps> = ({
     }
   }, [isExpandedDetails, isExpandedJadwal, fetchSiswaData, fetchJadwalData]);
 
+
+
   return (
     <div className={`flex flex-col bg-Neutral-100 border rounded-lg py-5 px-4 gap-3 ${isExpandedDetails || isExpandedJadwal ? 'h-[250px]' : 'h-[150px]'}`}>
       <div className="flex justify-between">
@@ -177,9 +181,17 @@ const CardKelompok: FC<CardKelompokProps> = ({
                 <div key={student.id} className="flex items-center mb-2">
                   <p className="mr-2 text-sm text-Neutral-50">{index + 1}.</p>
                   <div>
+                    <Image
+                      src={`/img/siswa/${student.image}`}
+                      alt="profile"
+                      width={30}
+                      height={30}
+                      className="rounded-full"
+                      loader={({ src }) => `${src}?cache-control=no-store`}
+                    />
                     <p className="font-bold">{student.nama}</p>
                     <p className="text-sm text-Neutral-70">{student.nomor_telepon}</p>
-                    {/* Render other student information */}
+                    <p className="text-sm text-Neutral-70">{student.hp_ortu}</p>
                   </div>
                 </div>
               ))
@@ -194,9 +206,16 @@ const CardKelompok: FC<CardKelompokProps> = ({
                 <p>Daftar Jadwal:</p>
                 {jadwal.map((item: any) => (
                   <div key={item.id} className="flex flex-col gap-2">
+                    <p>Hari: {item.hari}</p>
                     <p>Nama Sesi: {item.sesi?.nama_sesi}</p>
                     <p>Nama Mapel: {item.mapel?.nama_mapel}</p>
-                    <p>Nama Ruang: {item.ruang?.nama_ruang}</p>
+                    {/* jam mulai */}
+                    <p>Jam Mulai: {item.sesi.jam_mulai}</p>
+                    {/* jam selesai */}
+                    <p>Jam Selesai: {item.sesi.jam_selesai}</p>
+                    {/* nama user */}
+                    <p>Nama User: {item.user.name}</p>
+
                   </div>
                 ))}
               </div>
