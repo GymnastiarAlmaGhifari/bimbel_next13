@@ -21,9 +21,27 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           user: true,
         },
       });
-      res.status(200).json(rabu);
-    } catch (error) {
-      res.status(400).json({ message: "Data gagal ditemukan", error });
+
+            const rabuWithKelompok = await Promise.all(
+                rabu.map(async (item) => {
+                    const kelompok = await prisma.kelompok.findUnique({
+                        where: {
+                            jadwal_id: item.jadwal_id,
+                        },
+                    });
+
+                    console.log(kelompok);
+                    return {
+                        ...item,
+                        kelompok: kelompok,
+                    };
+                })
+            );
+
+            res.status(200).json(rabuWithKelompok);
+        } catch (error) {
+            res.status(400).json({ message: "Data gagal ditemukan", error });
+        }
     }
   }
 }
