@@ -16,9 +16,26 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                     mapel: true,
                     user: true
                 },
-
             });
-            res.status(200).json(minggu);
+
+
+            const mingguWithKelompok = await Promise.all(
+                minggu.map(async (item) => {
+                    const kelompok = await prisma.kelompok.findUnique({
+                        where: {
+                            jadwal_id: item.jadwal_id,
+                        },
+                    });
+
+                    console.log(kelompok);
+                    return {
+                        ...item,
+                        kelompok: kelompok,
+                    };
+                })
+            );
+            
+            res.status(200).json(mingguWithKelompok);
         } catch (error) {
             res.status(400).json({ message: "Data gagal ditemukan", error });
         }

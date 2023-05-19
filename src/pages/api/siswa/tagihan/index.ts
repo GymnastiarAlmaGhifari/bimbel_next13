@@ -44,7 +44,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                     tahun: number | null;
                     jumlah: number;
                     status: string;
-                    jatuh_tempo: string | null;
+                    nama_rekening: string | null;
+                    nomor_rekening: string | null;
+                    tanggal_bayar: Date | null;
+                    jatuh_tempo: Date;
+                    tanggal_approve: Date | null;
                 }[] = [];
 
                 const count = tagihan.length;
@@ -69,12 +73,16 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                       const formattedjatuhtempo = `${jatuh_tempo.getDate()} ${monthNames[jatuh_tempo.getMonth()]} ${jatuh_tempo.getFullYear()}`;
 
                     const tagihans = {
-                        id: tagihan[i].id,
-                        bulan: tagihan[i].Bulan,
-                        tahun: tagihan[i].Tahun,
-                        jumlah: tagihan[i].jumlah_tagihan,
-                        status: tagihan[i].status,
-                        jatuh_tempo: formattedjatuhtempo,
+                    id: tagihan[i].id,
+                    bulan: tagihan[i].Bulan,
+                    tahun: tagihan[i].Tahun,
+                    jumlah: tagihan[i].jumlah_tagihan,
+                    status: tagihan[i].status,
+                    nama_rekening: tagihan[i].nama_rekening,
+                    nomor_rekening: tagihan[i].nomor_rekening,
+                    tanggal_bayar: tagihan[i].tanggal_bayar,
+                    jatuh_tempo: tagihan[i].tanggal_jatuh_tempo,
+                    tanggal_approve: tagihan[i].tanggal_approve,
                     };
 
                     tagihansArray.push(tagihans);
