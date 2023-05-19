@@ -155,7 +155,7 @@ const CardKelompok: FC<CardKelompokProps> = ({
           <Button
             bgColor="bg-Primary-50"
             brColor=""
-            label={isExpandedDetails ? "Hide Details" : "Show Details"}
+            label={isExpandedDetails ? "Tutup Anggota" : "Lihat Anggota"}
             textColor="text-Primary-20"
             type="button"
             onClick={handleShowDetails}
@@ -164,7 +164,7 @@ const CardKelompok: FC<CardKelompokProps> = ({
           <Button
             bgColor="bg-Primary-50"
             brColor=""
-            label="Lihat Jadwal"
+            label={isExpandedJadwal ? "Tutup Jadwal" : "Lihat Jadwal"}
             textColor="text-Primary-20"
             type="button"
             icon={isExpandedJadwal ? IoIosArrowBack : IoIosArrowForward}
