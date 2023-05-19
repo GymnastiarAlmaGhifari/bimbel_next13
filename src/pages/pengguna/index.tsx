@@ -91,7 +91,7 @@ const User: FC<User> = () => {
   };
 
   return (
-    <div className="flex flex-row h-screen overflow-hidden">
+    <div className="flex flex-row h-screen w-screen absolute overflow-hidden">
       <Sidebar />
       <div className="w-full flex flex-col ">
         <Navbar />
