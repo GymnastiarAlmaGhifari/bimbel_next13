@@ -3,7 +3,6 @@ import Sidebar from "../components/Sidebar";
 import Link from "next/link";
 import Navbar from "../components/Navbar";
 import TimePicker from "../components/TimePicker";
-
 const Pengaturan = () => {
   const handleTimeChange = (hour: number, minute: number) => {
     console.log(`Selected time: ${hour}:${minute}`);
@@ -17,7 +16,6 @@ const Pengaturan = () => {
       <div className="ml-10 w-full">
         <Navbar />
         <div className="ml-80">
-          <TimePicker onTimeChange={handleTimeChange} />
           <Link href="/pengaturan/ruang">
             <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
               ruang
@@ -44,15 +42,7 @@ const Pengaturan = () => {
             </button>
           </Link>
         </div>
-        <select className=" bg-Primary-40 px-4 py-2 rounded text-Neutral-100">
-          <option value="" className="hover:bg-Primary-80 focus:bg-Primary-40 checked:bg-Primary-40">
-            Ruang
-          </option>
-          <option value="">Sesi</option>
-          <option value="">Mapel</option>
-          <option value="">Kelas</option>
-          <option value="">Program</option>
-        </select>
+        <TimePicker onTimeChange={handleTimeChange} />
       </div>
     </div>
   );

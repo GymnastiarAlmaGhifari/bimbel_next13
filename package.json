@@ -41,6 +41,7 @@
     "react-router-dom": "^6.11.1",
     "react-scroll": "^1.8.9",
     "react-time-picker": "^6.0.4",
+    "react-timeit": "^1.2.12",
     "sharp": "^0.32.1",
     "swr": "^2.1.5",
     "tailwind-scrollbar": "^3.0.1",
