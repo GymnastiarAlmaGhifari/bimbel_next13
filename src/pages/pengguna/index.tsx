@@ -2,7 +2,7 @@ import useSWR from "swr";
 import fetcher from "@/libs/fetcher";
 import React, { FC, useEffect, useState } from "react";
 import Sidebar from "../components/Sidebar";
-import { ModalDetail } from "@/pages/components/modal/Modal";
+import { ModalDetail, ModalSucces } from "@/pages/components/modal/Modal";
 import UserEdit from "./edit";
 import Navbar from "../components/Navbar";
 import Create from "./create";
@@ -31,20 +31,22 @@ interface User {
 const User: FC<User> = () => {
   const { data: session, status } = useSession();
 
-  const [inputValue, setInputValue] = useState<string>("")
-  const [debouncedValue, setDebouncedValue] = useState<string>("")
+  const [inputValue, setInputValue] = useState<string>("");
+  const [debouncedValue, setDebouncedValue] = useState<string>("");
 
   useEffect(() => {
     const timer = setTimeout(() => {
       setDebouncedValue(inputValue);
-    }, 500);
+    }, 1000);
 
     return () => {
       clearTimeout(timer);
     };
   }, [inputValue]);
 
+
   const { data: users, error } = useSWR<User[]>(`/api/user`, fetcher, {});
+
 
   let filteredUsers = users;
 
@@ -53,7 +55,6 @@ const User: FC<User> = () => {
       user.name.toLowerCase().includes(debouncedValue.toLowerCase())
     );
   }
-
 
   const { data: admin, error: erroradmin } = useSWR<User[]>(
     "/api/user/getadmin",
@@ -78,7 +79,7 @@ const User: FC<User> = () => {
   useEffect(() => {
     const timeoutId = setTimeout(() => {
       setShowSuccess(false);
-    }, 1000);
+    }, 2500);
 
     return () => {
       clearTimeout(timeoutId);
@@ -90,7 +91,7 @@ const User: FC<User> = () => {
   };
 
   return (
-    <div className="flex flex-row h-screen">
+    <div className="flex flex-row h-screen overflow-hidden">
       <Sidebar />
       <div className="w-full flex flex-col ">
         <Navbar />
@@ -107,7 +108,6 @@ const User: FC<User> = () => {
             />
 
             <div className="flex flex-col rounded-bl-lg rounded-br-lg p-4 gap-4 overflow-y-auto scrollbar">
-
               {session?.user.role === "SUPER" && (
                 <>
                   {filteredUsers ? (
@@ -182,17 +182,14 @@ const User: FC<User> = () => {
 
       {/* buat modal dari getname  */}
       {showSuccess && (
-        <ModalDetail
-          titleModal="Modal Pengguna"
-          onClose={() => setShowSuccess(false)}
-        >
-          <div className="flex flex-col items-center justify-center">
-            <h1 className="text-2xl font-bold text-green-500">Berhasil</h1>
+        <ModalSucces label="POOP" onClose={() => setShowSuccess(false)}>
+          {/* <div className="flex flex-col items-center justify-center">
+            <h1 className=" font-bold text-green-500">Berhasil</h1>
             <p className="text-sm text-gray-500">
               {selected?.name}Data berhasil diubah
             </p>
-          </div>
-        </ModalDetail>
+          </div> */}
+        </ModalSucces>
       )}
 
       {/* modal create */}

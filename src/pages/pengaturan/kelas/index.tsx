@@ -9,6 +9,9 @@ import CardKelas from "@/pages/components/card/CardKelas";
 import HeadTable from "@/pages/components/HeadTable";
 import CreateKelas from "./create";
 import DeleteKelas from "./delete";
+import Sidebar from "@/pages/components/Sidebar";
+import Navbar from "@/pages/components/Navbar";
+import NavbarPengaturan from "@/pages/components/NavbarPengaturan";
 
 interface Kelas {
   id: string;
@@ -49,90 +52,90 @@ const Kelas: FC<Kelas> = () => {
   };
 
   return (
-    <div className="h-full p-10 bg-Neutral-95">
-      <div className="flex flex-col h-full bg-Neutral-100 py-4 gap-4 rounded-lg">
-        <HeadTable label="Kelas" onClick={() => setShowCreate(true)} />
-        <div className="flex flex-col rounded-bl-lg rounded-br-lg p-4 gap-4 overflow-y-auto scrollbar-thin scrollbar-track-Neutral-100 scrollbar-thumb-Primary-40 scrollbar-rounded-lg">
-          {kelas ? (
-            <>
-              {kelas.length === 0 ? (
-                <p>No kelas found.</p>
-              ) : (
-                kelas.map((kelas) => (
-                  <CardKelas
-                    key={kelas.id}
-                    nama_kelas={kelas.nama_kelas}
-                    onEdit={() => setSelectedKelas(kelas)}
-                    onDelete={() => setShowDelete(kelas)}
-                  />
-                ))
-              )}
-            </>
-          ) : (
-            <p>Loading...</p>
-          )}
-          <Link href="/pengaturan">
-            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-              kembali
-            </button>
-          </Link>
-          {selectedKelas && (
-            <ModalDetail
-              titleModal="Edit Kelas"
-              onClose={onClose}
-            >
-              <KelasEdit
-                kelasId={selectedKelas.id}
-                data={selectedKelas}
-                onClose={onClose}
-              />
-            </ModalDetail>
-          )}
-          {showSuccess && (
-            <ModalDetail
-              titleModal="Edit Kelompok"
+    <div className="flex flex-row h-screen">
+      <Sidebar />
 
-              onClose={() => setShowSuccess(false)}
-            >
-              <div className="flex flex-col items-center justify-center">
-                <h1 className="text-2xl font-bold text-green-500">Berhasil</h1>
-                <p className="text-sm text-gray-500">
-                  {selectedKelas?.nama_kelas}Data berhasil diubah
-                </p>
+      <div className="w-full flex flex-col">
+        <Navbar />
+        <div className="h-full p-5 bg-Neutral-95 overflow-auto">
+          <div className="flex flex-col h-full p-4 gap-4 bg-Neutral-100 rounded-lg overflow-auto">
+            <NavbarPengaturan />
+            <div className="flex flex-col h-full bg-Neutral-100 py-4 gap-4 rounded-lg overflow-auto">
+              <HeadTable label="Kelas" onClick={() => setShowCreate(true)} />
+              <div className="flex flex-col rounded-bl-lg rounded-br-lg p-4 gap-4 overflow-y-auto scrollbar-thin scrollbar-track-Neutral-100 scrollbar-thumb-Primary-40 scrollbar-rounded-lg">
+                {kelas ? (
+                  <>
+                    {kelas.length === 0 ? (
+                      <p>No kelas found.</p>
+                    ) : (
+                      kelas.map((kelas) => (
+                        <CardKelas
+                          key={kelas.id}
+                          nama_kelas={kelas.nama_kelas}
+                          onEdit={() => setSelectedKelas(kelas)}
+                          onDelete={() => setShowDelete(kelas)}
+                        />
+                      ))
+                    )}
+                  </>
+                ) : (
+                  <p>Loading...</p>
+                )}
+
+                {selectedKelas && (
+                  <ModalDetail titleModal="Edit Kelas" onClose={onClose}>
+                    <KelasEdit
+                      kelasId={selectedKelas.id}
+                      data={selectedKelas}
+                      onClose={onClose}
+                    />
+                  </ModalDetail>
+                )}
+                {showSuccess && (
+                  <ModalDetail
+                    titleModal="Edit Kelompok"
+                    onClose={() => setShowSuccess(false)}
+                  >
+                    <div className="flex flex-col items-center justify-center">
+                      <h1 className="text-2xl font-bold text-green-500">
+                        Berhasil
+                      </h1>
+                      <p className="text-sm text-gray-500">
+                        {selectedKelas?.nama_kelas}Data berhasil diubah
+                      </p>
+                    </div>
+                  </ModalDetail>
+                )}
+
+                {/* modal create */}
+                {showCreate && (
+                  <ModalDetail
+                    titleModal="Tambah Pengguna"
+                    onClose={() => setShowCreate(false)}
+                  >
+                    <CreateKelas
+                      onClose={() => setShowCreate(false)}
+                      onSucsess={() => {
+                        setShowSuccess(true);
+                      }}
+                    />
+                  </ModalDetail>
+                )}
+                {showDelete && (
+                  <ModalHapus onClose={() => setShowDelete(null)}>
+                    <DeleteKelas
+                      data={showDelete}
+                      onClose={() => setShowDelete(null)}
+                      onSucsess={() => {
+                        setShowSuccess(true);
+                      }}
+                      kelasId={showDelete.id}
+                    />
+                  </ModalHapus>
+                )}
               </div>
-            </ModalDetail>
-          )}
-
-          {/* modal create */}
-          {showCreate && (
-            <ModalDetail
-              titleModal="Tambah Pengguna"
-
-              onClose={() => setShowCreate(false)}
-            >
-              <CreateKelas
-                onClose={() => setShowCreate(false)}
-                onSucsess={() => {
-                  setShowSuccess(true);
-                }}
-              />
-            </ModalDetail>
-          )}
-          {showDelete && (
-            <ModalHapus
-
-              onClose={() => setShowDelete(null)}
-            >
-              <DeleteKelas
-                data={showDelete}
-                onClose={() => setShowDelete(null)}
-                onSucsess={() => {
-                  setShowSuccess(true);
-                }}
-                kelasId={showDelete.id}
-              />
-            </ModalHapus>
-          )}
+            </div>
+          </div>
         </div>
       </div>
     </div>
