@@ -1,7 +1,7 @@
 import { FC, useCallback, useEffect, useState } from "react";
 import ButtonEdit from "../buttons/ButtonEdit";
 import Button from "../buttons/Button";
-import { MdModeEdit } from "react-icons/md";
+import { MdModeEdit, MdDelete, MdOutlineInfo } from "react-icons/md";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import Link from "next/link";
 import useSWR from "swr";
@@ -84,10 +84,16 @@ const CardKelompok: FC<CardKelompokProps> = ({
 
   const handleDetailsClick = () => {
     setIsExpandedDetails(!isExpandedDetails);
+    if (isExpandedJadwal == true) {
+      setIsExpandedJadwal(false);
+    }
   };
 
   const handleJadwalClick = () => {
     setIsExpandedJadwal(!isExpandedJadwal);
+    if (isExpandedDetails == true) {
+      setIsExpandedDetails(false);
+    }
   };
 
   const handleShowDetails = () => {
@@ -130,10 +136,12 @@ const CardKelompok: FC<CardKelompokProps> = ({
     }
   }, [isExpandedDetails, isExpandedJadwal, fetchSiswaData, fetchJadwalData]);
 
-
-
   return (
-    <div className={`flex flex-col bg-Neutral-100 border rounded-lg py-5 px-4 gap-3 ${isExpandedDetails || isExpandedJadwal ? 'h-[250px]' : 'h-[150px]'}`}>
+    <div
+      className={`flex flex-col bg-Neutral-100 border rounded-lg py-5 px-4 gap-3 ${
+        isExpandedDetails || isExpandedJadwal ? "h-max" : ""
+      }`}
+    >
       <div className="flex justify-between">
         <div className="flex items-center gap-3">
           <h1 className="text-xl text-Neutral-10 font-bold">{nama_kelompok}</h1>
@@ -147,7 +155,7 @@ const CardKelompok: FC<CardKelompokProps> = ({
           <Button
             bgColor="bg-Primary-50"
             brColor=""
-            label={isExpandedDetails ? "Hide Details" : "Show Details"}
+            label={isExpandedDetails ? "Tutup Anggota" : "Lihat Anggota"}
             textColor="text-Primary-20"
             type="button"
             onClick={handleShowDetails}
@@ -156,7 +164,7 @@ const CardKelompok: FC<CardKelompokProps> = ({
           <Button
             bgColor="bg-Primary-50"
             brColor=""
-            label="Lihat Jadwal"
+            label={isExpandedJadwal ? "Tutup Jadwal" : "Lihat Jadwal"}
             textColor="text-Primary-20"
             type="button"
             icon={isExpandedJadwal ? IoIosArrowBack : IoIosArrowForward}
@@ -173,49 +181,117 @@ const CardKelompok: FC<CardKelompokProps> = ({
           onClick={onClick}
         />
       </div>
-      <div className="flex">
+      <div className="">
         {isExpandedDetails && (
-          <div className="mt-4">
-            {siswa && (
+          <div className="grid grid-cols-2 gap-4 w-full">
+            {siswa &&
               siswa.map((student: any, index: number) => (
-                <div key={student.id} className="flex items-center mb-2">
-                  <p className="mr-2 text-sm text-Neutral-50">{index + 1}.</p>
-                  <div>
-                    <Image
-                      src={`/img/siswa/${student.image}`}
-                      alt="profile"
-                      width={30}
-                      height={30}
-                      className="rounded-full"
-                      loader={({ src }) => `${src}?cache-control=no-store`}
-                    />
-                    <p className="font-bold">{student.nama}</p>
-                    <p className="text-sm text-Neutral-70">{student.nomor_telepon}</p>
-                    <p className="text-sm text-Neutral-70">{student.hp_ortu}</p>
+                <div
+                  key={student.id}
+                  className="flex p-4 bg-gradient-to-br from-Tertiary-60 to-Primary-50 w-full rounded-lg "
+                >
+                  <div className="flex justify-between items-center w-full">
+                    <div className="flex gap-2 items-center">
+                      <div className="w-10 h-10 rounded-full overflow-clip scale-100">
+                        <Image
+                          src={`/img/siswa/${student.image}`}
+                          alt="profile"
+                          width={30}
+                          height={30}
+                          className="rounded-full w-full h-full object-cover"
+                          loader={({ src }) => `${src}?cache-control=no-store`}
+                        />
+                      </div>
+                      <div className="">
+                        <p className="font-bold text-Neutral-100">
+                          {student.nama}
+                        </p>
+                        <p className="text-sm text-Neutral-100">
+                          {student.nomor_telepon}
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="flex gap-2">
+                      <Button
+                        bgColor="bg-Neutral-100"
+                        brColor=""
+                        withBgColor
+                        label="Info"
+                        textColor="text-Tertiary-50"
+                        type="button"
+                        icon={MdOutlineInfo}
+                      />
+                      <Button
+                        bgColor="bg-Neutral-100"
+                        withBgColor
+                        brColor=""
+                        label="Hapus"
+                        textColor="text-Error-50"
+                        type="button"
+                        icon={MdDelete}
+                      />
+                    </div>
                   </div>
                 </div>
-              ))
-            )}
+              ))}
           </div>
         )}
 
         {isExpandedJadwal && (
-          <div className="mt-4">
+          <div className="">
             {jadwal && (
-              <div>
-                <p>Daftar Jadwal:</p>
+              <div className="grid grid-cols-2 gap-4 w-full">
                 {jadwal.map((item: any) => (
-                  <div key={item.id} className="flex flex-col gap-2">
-                    <p>Hari: {item.hari}</p>
-                    <p>Nama Sesi: {item.sesi?.nama_sesi}</p>
-                    <p>Nama Mapel: {item.mapel?.nama_mapel}</p>
-                    {/* jam mulai */}
-                    <p>Jam Mulai: {item.sesi.jam_mulai}</p>
-                    {/* jam selesai */}
-                    <p>Jam Selesai: {item.sesi.jam_selesai}</p>
-                    {/* nama user */}
-                    <p>Nama User: {item.user.name}</p>
-
+                  <div
+                    key={item.id}
+                    className="flex flex-col gap-5  bg-gradient-to-br from-Tertiary-60 to-Primary-50 p-4 rounded-lg"
+                  >
+                    <div className="flex flex-col gap-3">
+                      <div className="flex w-full items-center justify-between">
+                        <div className="">
+                          <h1 className="font-bold text-Neutral-100">
+                            {item?.hari}
+                          </h1>
+                          <span className="font-bold text-sm text-Neutral-100">
+                            {item.sesi?.nama_sesi}
+                          </span>
+                        </div>
+                        <div className="flex flex-col gap-1 items-end">
+                          <h3 className="text-sm text-Neutral-100">Jam</h3>
+                          <span className="font-bold text-sm text-Neutral-100">
+                            {item.sesi.jam_mulai} - {item.sesi.jam_selesai}
+                          </span>
+                        </div>
+                      </div>
+                      <div className="flex w-full justify-between">
+                        <div className="flex flex-col gap-1">
+                          <h3 className="text-sm text-Neutral-100">
+                            Mata Pelajaran
+                          </h3>
+                          <span className="font-bold text-sm text-Neutral-100">
+                            {item.mapel?.nama_mapel}
+                          </span>
+                        </div>
+                        <div className="flex flex-col gap-1 items-end">
+                          <h3 className="text-sm text-Neutral-100">User</h3>
+                          <span className="font-bold text-sm text-Neutral-100">
+                            {item?.user.name}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="flex justify-end">
+                      <Button
+                        bgColor="bg-Neutral-100"
+                        withBgColor
+                        brColor=""
+                        label="Hapus"
+                        textColor="text-Error-50"
+                        type="button"
+                        icon={MdDelete}
+                      />
+                    </div>
                   </div>
                 ))}
               </div>
