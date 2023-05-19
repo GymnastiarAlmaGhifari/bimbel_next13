@@ -34,7 +34,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           nama: "asc",
         },
         include: {
-          jadwal_detail: true,
+          jadwal_detail: {
+            include: {
+              sesi: true,
+              mapel: true,
+              user: true,
+            },
+          },
         },
       });
       res.status(200).json(result);

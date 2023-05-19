@@ -20,11 +20,7 @@ interface Sesi {
   updatedAt: Date;
 }
 
-interface Props {
-  sesi: Sesi[];
-}
-
-const Sesi: FC<Props> = () => {
+const Sesi: FC<Sesi> = () => {
   const { data: sesi, error } = useSWR<Sesi[]>("/api/sesi", fetcher, {});
 
   const [selectedSesi, setSelectedSesi] = useState<Sesi | null>(null);

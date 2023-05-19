@@ -1,10 +1,37 @@
-import React from "react";
+import React, { FC } from "react";
 import Sidebar from "../components/Sidebar";
 import Navbar from "../components/Navbar";
 import Button from "../components/buttons/Button";
 import ItemJadwal from "../components/ItemJadwal";
+import useSWR from "swr";
+import fetcher from "@/libs/fetcher";
 
-const Jadwal = () => {
+interface Jadwal {
+  id: string;
+  name: string;
+  jadwal_detail: any;
+  hari: string;
+  jadwal_id: string;
+  sesi_id: string;
+}
+
+interface Sesi {
+  id: string;
+  nama_sesi: string;
+  jam_mulai: string;
+  jam_selesai: string;
+}
+
+
+
+const Jadwal: FC<Jadwal> = () => {
+
+  const { data: sesi, error: errorsesi } = useSWR<Sesi[]>(
+    "/api/sesi",
+    fetcher,
+    {}
+  );
+
   return (
     <div className="flex flex-row h-screen">
       <Sidebar />
@@ -52,21 +79,24 @@ const Jadwal = () => {
             </div>
             <div className="grid grid-cols-8 grid-rows-4 auto-rows-max grid-flow-row gap-4 h-full">
               <div className="row-span-4 flex flex-col gap-4">
-                <div className="flex justify-center items-center py-2 px-4 bg-Primary-20  rounded h-full text-Primary-90 font-bold">
-                  Sesi 0
-                </div>
-                <div className=" flex justify-center items-center py-2 px-4 bg-Primary-20  rounded h-full text-Primary-90 font-bold">
-                  Sesi 1
-                </div>
-                <div className="flex justify-center items-center py-2 px-4 bg-Primary-20  rounded h-full text-Primary-90 font-bold">
-                  Sesi 2
-                </div>
-                <div className="flex justify-center items-center py-2 px-4 bg-Primary-20  rounded h-full text-Primary-90 font-bold">
-                  Sesi 3
-                </div>
+                {sesi?.map((item) => (
+                  <div
+                    key={item.id}
+                    className="flex justify-center items-center py-2 px-4 bg-Primary-20 rounded h-full text-Primary-90 font-bold"
+                  >
+                    <div className="flex flex-col justify-center items-center">
+
+                      {item.nama_sesi}
+                      <div className="">
+
+                        {item.jam_mulai} - {item.jam_selesai}
+                      </div>
+                    </div>
+                  </div>
+                ))}
               </div>
               <div className="col-span-7 row-span-4 grid grid-cols-7 grid-rows-4 gap-4">
-                <ItemJadwal kelompok="A6" nama_tentor="Agimul Karim"/>
+                <ItemJadwal kelompok="A6" nama_tentor="Agimul Karim" />
               </div>
             </div>
           </div>
