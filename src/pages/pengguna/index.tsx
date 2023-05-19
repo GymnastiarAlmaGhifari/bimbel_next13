@@ -44,7 +44,7 @@ const User: FC<User> = () => {
     };
   }, [inputValue]);
 
-  const { data: users, error } = useSWR<User[]>(`/api/user?name=${debouncedValue}`, fetcher, {});
+  const { data: users, error } = useSWR<User[]>(`/api/user`, fetcher, {});
 
   let filteredUsers = users;
 

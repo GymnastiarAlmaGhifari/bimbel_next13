@@ -2,16 +2,18 @@ import React, { FC } from "react";
 import { MdModeEdit } from "react-icons/md";
 
 type ItemJadwalProps = {
+  hari: string;
   kelompok: string;
   nama_tentor: string;
   onClick?: () => void;
 
 };
 
-const ItemJadwal: FC<ItemJadwalProps> = ({ kelompok, nama_tentor, onClick }) => {
+const ItemJadwal: FC<ItemJadwalProps> = ({ kelompok, nama_tentor, onClick, hari }) => {
   return (
     <div className="flex flex-col bg-Tertiary-50 rounded p-2">
       <div className="h-full">
+        <p className="text-Tertiary-90 font-bold">{hari}</p>
         <p className="text-Tertiary-90 font-bold">{kelompok}</p>
         <p className="text-Tertiary-90">{nama_tentor}</p>
       </div>
