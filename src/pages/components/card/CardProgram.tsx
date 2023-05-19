@@ -5,6 +5,7 @@ import { MdModeEdit } from "react-icons/md";
 type CardProgramProps = {
   nama_program: string;
   level: string;
+  deskripsi: string;
   tipe: string;
   kelas: string;
   onEdit: () => void;
@@ -14,6 +15,7 @@ const CardProgram: FC<CardProgramProps> = ({
   nama_program,
   kelas,
   level,
+  deskripsi,
   tipe,
   onEdit,
 }) => {
