@@ -81,7 +81,7 @@ const UserEdit: FC<UserEditProps> = ({ userId, onClose, onSucsess, data }) => {
         });
         mutate(`/api/user/noimg/${userId}`);
         mutate(`/api/user`);
-        // mutate(`/api/user/getadmin`);
+        mutate(`/api/user/getadmin`);
       } catch (error) {
         console.error(error);
       } finally {
@@ -111,6 +111,14 @@ const UserEdit: FC<UserEditProps> = ({ userId, onClose, onSucsess, data }) => {
           nomor_telepon,
           universitas: lulusan,
           alamat,
+        });
+        await axios.put(`/api/user/userimg/${userId}`, {
+          // name,
+          // email,
+          // role,
+          // nomor_telepon,
+          // universitas: lulusan,
+          // alamat,
         });
         mutate("/api/user");
         mutate(`/api/userimg`);
@@ -155,19 +163,11 @@ const UserEdit: FC<UserEditProps> = ({ userId, onClose, onSucsess, data }) => {
                 </div>
               )}
               <div>
-                <label htmlFor="image">
-                  <Button
-                    bgColor="bg-Primary-20"
-                    brColor=""
-                    withBgColor
-                    label="Pilih Gambar"
-                    textColor="text-Primary-90"
-                    type="button"
-                    icon={IoMdCloudUpload}
-                  />
+                <label htmlFor="image" className="bg-gray-500 text-white px-4 py-2 rounded cursor-pointer flex items-center space-x-2">
+                  <IoMdCloudUpload className="w-5 h-5" />
+                  <span>Choose File</span>
                 </label>
                 <input
-                  className="hidden"
                   type="file"
                   id="image"
                   {...register("image", {
@@ -190,6 +190,7 @@ const UserEdit: FC<UserEditProps> = ({ userId, onClose, onSucsess, data }) => {
                     },
                   })}
                   accept="image/jpeg, image/png, image/jpg"
+                  className="absolute w-0 h-0"
                   onChange={handleImageChange}
                 />
                 {/* <Image  src={data?.image} alt="Gambar" width={200} height={200} /> */}

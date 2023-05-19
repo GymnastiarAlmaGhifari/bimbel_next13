@@ -77,33 +77,18 @@ const Jadwal: FC<Jadwal> = () => {
 
   const { data: ruang, error: errorruang } = useSWR<Ruang[]>("/api/ruang", fetcher, {});
   const [selectedRuang, setSelectedRuang] = useState("");
+  const [defaultRuang, setDefaultRuang] = useState("");
+
+  useEffect(() => {
+    if (ruang && ruang.length > 0) {
+      setDefaultRuang(ruang[0].id);
+      setSelectedRuang(ruang[0].id);
+    }
+  }, [ruang]);
 
   const handleRuangChange = async (event: React.ChangeEvent<HTMLSelectElement>) => {
     const ruangId = event.target.value;
     setSelectedRuang(ruangId);
-    console.log("Selected Ruang:", ruangId);
-    // try {
-
-    //   await axios.get("/api/jadwal/senin",
-    //     {
-    //       headers: {
-    //         "Content-Type": "multipart/form-data",
-    //         // from : formData . image
-    //         From: ruangId,
-    //       },
-    //     }
-    //   );
-
-    //   mutate("/api/ruang");
-
-    // } catch (error) {
-    //   if (axios.isAxiosError(error)) {
-    //     const axiosError = error as AxiosError;
-    //     console.error(axiosError.response?.data);
-    //   } else {
-    //     console.error(error);
-    //   }
-    // }
   };
 
   const { data: kamis, error: errorkamis } = useSWR<Jadwal[]>(
@@ -138,7 +123,6 @@ const Jadwal: FC<Jadwal> = () => {
                   onChange={handleRuangChange}
                   name="nama_ruang"
                 >
-                  <option value="">pilih</option>
                   {ruang?.map((ruang) => (
                     <option key={ruang.id} value={ruang.id}>
                       {ruang.nama_ruang}
