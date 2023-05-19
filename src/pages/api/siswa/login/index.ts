@@ -48,7 +48,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         //update token to database
         const updatetoken = await prisma.siswa.update({
             where: { id: siswa.id },
-            data: { token },
+            data: { token,
+             },
         });
 
         const response = {
