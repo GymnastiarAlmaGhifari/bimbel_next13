@@ -10,6 +10,9 @@ import HeadTable from "@/pages/components/HeadTable";
 import { format, parseISO } from "date-fns";
 import moment from "moment";
 import momentTimezone from "moment-timezone";
+import Sidebar from "@/pages/components/Sidebar";
+import Navbar from "@/pages/components/Navbar";
+import NavbarPengaturan from "@/pages/components/NavbarPengaturan";
 
 interface Sesi {
   id: string;
@@ -40,46 +43,51 @@ const Sesi: FC<Sesi> = () => {
   }
 
   return (
-    <div className="h-full p-10 bg-Neutral-95">
-      <div className="flex flex-col h-full bg-Neutral-100 py-4 gap-4 rounded-lg">
-        <HeadTable label="Sesi" />
-        <div className="flex flex-col rounded-bl-lg rounded-br-lg p-4 gap-4 overflow-y-auto scrollbar-thin scrollbar-track-Neutral-100 scrollbar-thumb-Primary-40 scrollbar-rounded-lg">
-          {sesi ? (
-            <>
-              {sesi.length === 0 ? (
-                <p>No sesi found.</p>
-              ) : (
-                sesi.map((sesi) => (
-                  <CardSesi
-                    nama_sesi={sesi.nama_sesi}
-                    mulai_sesi={sesi.jam_mulai}
-                    selesai_sesi={sesi.jam_selesai}
-                    key={sesi.id}
-                    onClick={() => {
-                      setSelectedSesi(sesi);
-                    }}
-                  />
-                ))
-              )}
-            </>
-          ) : (
-            <p>Loading...</p>
-          )}
-          <Link href="/pengaturan">
-            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-              kembali
-            </button>
-          </Link>
+    <div className="flex flex-row h-screen">
+      <Sidebar />
 
-          {selectedSesi && (
-            <ModalDetail titleModal="Edit Sesi" onClose={onClose}>
-              <SesiEdit
-                data={selectedSesi}
-                onClose={onClose}
-                sesiId={selectedSesi.id}
-              />
-            </ModalDetail>
-          )}
+      <div className="w-full flex flex-col">
+        <Navbar />
+        <div className="h-full p-5 bg-Neutral-95 overflow-auto">
+          <div className="flex flex-col h-full p-4 gap-4 bg-Neutral-100 rounded-lg overflow-auto">
+            <NavbarPengaturan />
+            <div className="flex flex-col h-full bg-Neutral-100 py-4 gap-4 rounded-lg overflow-auto">
+              <HeadTable label="Sesi" />
+              <div className="flex flex-col rounded-bl-lg rounded-br-lg p-4 gap-4 overflow-y-auto scrollbar-thin scrollbar-track-Neutral-100 scrollbar-thumb-Primary-40 scrollbar-rounded-lg scrollbar ">
+                {sesi ? (
+                  <>
+                    {sesi.length === 0 ? (
+                      <p>No sesi found.</p>
+                    ) : (
+                      sesi.map((sesi) => (
+                        <CardSesi
+                          nama_sesi={sesi.nama_sesi}
+                          mulai_sesi={sesi.jam_mulai}
+                          selesai_sesi={sesi.jam_selesai}
+                          key={sesi.id}
+                          onClick={() => {
+                            setSelectedSesi(sesi);
+                          }}
+                        />
+                      ))
+                    )}
+                  </>
+                ) : (
+                  <p>Loading...</p>
+                )}
+
+                {selectedSesi && (
+                  <ModalDetail titleModal="Edit Sesi" onClose={onClose}>
+                    <SesiEdit
+                      data={selectedSesi}
+                      onClose={onClose}
+                      sesiId={selectedSesi.id}
+                    />
+                  </ModalDetail>
+                )}
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

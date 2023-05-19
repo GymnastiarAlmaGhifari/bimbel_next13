@@ -20,6 +20,7 @@ interface ButtonProps {
   withBgColor?: boolean;
   center?: boolean;
   icon?: IconType;
+  noLabel?: boolean;
   widthAuto?: boolean;
 }
 
@@ -33,6 +34,7 @@ const Button: React.FC<ButtonProps> = ({
   brColor,
   bgColor,
   type,
+  noLabel,
   widthAuto,
   withBgColor,
   center,
@@ -62,7 +64,7 @@ const Button: React.FC<ButtonProps> = ({
           "
         />
       )}
-      <span>{label}</span>
+      {noLabel ? "" : <span>{label}</span>}
     </button>
   );
 };

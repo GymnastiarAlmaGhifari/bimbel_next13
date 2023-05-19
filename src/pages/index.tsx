@@ -22,7 +22,6 @@ export default function Home() {
       <Program />
       <Benefit />
       <Diskon />
-      <DetailProgram />
       <Login />
     </div>
   );

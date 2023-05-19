@@ -1,8 +1,21 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ["./src/pages/**/*.{js,ts,jsx,tsx,mdx}", "./src/components/**/*.{js,ts,jsx,tsx,mdx}", "./src/app/**/*.{js,ts,jsx,tsx,mdx}"],
+  content: [
+    "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
+  ],
   theme: {
     extend: {
+      keyframes: {
+        succesmodalanimation: {
+          "0%, 100%": { transform: "translateX(calc(100% + 20px))" },
+          "30%,70%": {
+            transform: "translateX(0)",
+          },
+        },
+      },
+
       colors: {
         "Primary-10": "#192e2c",
         "Primary-20": "#325d58",
@@ -79,26 +92,46 @@ module.exports = {
       },
 
       boxShadow: {
-        "Elevation Light 1": "0px 1px 3px 1px rgba(0,0,0,0.15), 0px 1px 2px 0px rgba(0,0,0,0.3)",
-        "Elevation Light 2": "0px 2px 6px 2px rgba(0,0,0,0.15), 0px 1px 2px 0px rgba(0,0,0,0.3)",
-        "Elevation Light 3": "0px 1px 3px 0px rgba(0,0,0,0.3), 0px 4px 8px 3px rgba(0,0,0,0.15)",
-        "Elevation Light 4": "0px 2px 3px 0px rgba(0,0,0,0.3), 0px 6px 10px 4px rgba(0,0,0,0.15)",
-        "Elevation Light 5": "0px 4px 4px 0px rgba(0,0,0,0.3), 0px 8px 12px 6px rgba(0,0,0,0.15)",
-        "Elevation Dark 1": "0px 1px 2px 0px rgba(0,0,0,0.3), 0px 1px 3px 1px rgba(0,0,0,0.15)",
-        "Elevation Dark 2": "0px 1px 2px 0px rgba(0,0,0,0.3), 0px 2px 6px 2px rgba(0,0,0,0.15)",
-        "Elevation Dark 3": "0px 1px 3px 0px rgba(0,0,0,0.3), 0px 4px 8px 3px rgba(0,0,0,0.15)",
-        "Elevation Dark 4": "0px 2px 3px 0px rgba(0,0,0,0.3), 0px 6px 10px 4px rgba(0,0,0,0.15)",
-        "Elevation Dark 5": "0px 4px 4px 0px rgba(0,0,0,0.3), 0px 8px 12px 6px rgba(0,0,0,0.15)",
-        "Elevation Light Upside Down 1": "0px -1px 3px 1px rgba(0,0,0,0.15), 0px -1px 2px 0px rgba(0,0,0,0.3)",
-        "Elevation Light Upside Down 2": "0px -2px 6px 2px rgba(0,0,0,0.15), 0px -1px 2px 0px rgba(0,0,0,0.3)",
-        "Elevation Light Upside Down 3": "0px -1px 3px 0px rgba(0,0,0,0.3), 0px -4px 8px 3px rgba(0,0,0,0.15)",
-        "Elevation Light Upside Down 4": "0px -2px 3px 0px rgba(0,0,0,0.3), 0px -6px 10px 4px rgba(0,0,0,0.15)",
-        "Elevation Light Upside Down 5": "0px -4px 4px 0px rgba(0,0,0,0.3), 0px -8px 12px 6px rgba(0,0,0,0.15)",
-        "Elevation Dark Upside Down 1": "0px -1px 2px 0px rgba(0,0,0,0.3), 0px -1px 3px 1px rgba(0,0,0,0.15)",
-        "Elevation Dark Upside Down 2": "0px -1px 2px 0px rgba(0,0,0,0.3), 0px -2px 6px 2px rgba(0,0,0,0.15)",
-        "Elevation Dark Upside Down 3": "0px -1px 3px 0px rgba(0,0,0,0.3), 0px -4px 8px 3px rgba(0,0,0,0.15)",
-        "Elevation Dark Upside Down 4": "0px -2px 3px 0px rgba(0,0,0,0.3), 0px -6px 10px 4px rgba(0,0,0,0.15)",
-        "Elevation Dark Upside Down 5": "0px -4px 4px 0px rgba(0,0,0,0.3), 0px -8px 12px 6px rgba(0,0,0,0.15)",
+        "Elevation Light 1":
+          "0px 1px 3px 1px rgba(0,0,0,0.15), 0px 1px 2px 0px rgba(0,0,0,0.3)",
+        "Elevation Light 2":
+          "0px 2px 6px 2px rgba(0,0,0,0.15), 0px 1px 2px 0px rgba(0,0,0,0.3)",
+        "Elevation Light 3":
+          "0px 1px 3px 0px rgba(0,0,0,0.3), 0px 4px 8px 3px rgba(0,0,0,0.15)",
+        "Elevation Light 4":
+          "0px 2px 3px 0px rgba(0,0,0,0.3), 0px 6px 10px 4px rgba(0,0,0,0.15)",
+        "Elevation Light 5":
+          "0px 4px 4px 0px rgba(0,0,0,0.3), 0px 8px 12px 6px rgba(0,0,0,0.15)",
+        "Elevation Dark 1":
+          "0px 1px 2px 0px rgba(0,0,0,0.3), 0px 1px 3px 1px rgba(0,0,0,0.15)",
+        "Elevation Dark 2":
+          "0px 1px 2px 0px rgba(0,0,0,0.3), 0px 2px 6px 2px rgba(0,0,0,0.15)",
+        "Elevation Dark 3":
+          "0px 1px 3px 0px rgba(0,0,0,0.3), 0px 4px 8px 3px rgba(0,0,0,0.15)",
+        "Elevation Dark 4":
+          "0px 2px 3px 0px rgba(0,0,0,0.3), 0px 6px 10px 4px rgba(0,0,0,0.15)",
+        "Elevation Dark 5":
+          "0px 4px 4px 0px rgba(0,0,0,0.3), 0px 8px 12px 6px rgba(0,0,0,0.15)",
+        "Elevation Light Upside Down 1":
+          "0px -1px 3px 1px rgba(0,0,0,0.15), 0px -1px 2px 0px rgba(0,0,0,0.3)",
+        "Elevation Light Upside Down 2":
+          "0px -2px 6px 2px rgba(0,0,0,0.15), 0px -1px 2px 0px rgba(0,0,0,0.3)",
+        "Elevation Light Upside Down 3":
+          "0px -1px 3px 0px rgba(0,0,0,0.3), 0px -4px 8px 3px rgba(0,0,0,0.15)",
+        "Elevation Light Upside Down 4":
+          "0px -2px 3px 0px rgba(0,0,0,0.3), 0px -6px 10px 4px rgba(0,0,0,0.15)",
+        "Elevation Light Upside Down 5":
+          "0px -4px 4px 0px rgba(0,0,0,0.3), 0px -8px 12px 6px rgba(0,0,0,0.15)",
+        "Elevation Dark Upside Down 1":
+          "0px -1px 2px 0px rgba(0,0,0,0.3), 0px -1px 3px 1px rgba(0,0,0,0.15)",
+        "Elevation Dark Upside Down 2":
+          "0px -1px 2px 0px rgba(0,0,0,0.3), 0px -2px 6px 2px rgba(0,0,0,0.15)",
+        "Elevation Dark Upside Down 3":
+          "0px -1px 3px 0px rgba(0,0,0,0.3), 0px -4px 8px 3px rgba(0,0,0,0.15)",
+        "Elevation Dark Upside Down 4":
+          "0px -2px 3px 0px rgba(0,0,0,0.3), 0px -6px 10px 4px rgba(0,0,0,0.15)",
+        "Elevation Dark Upside Down 5":
+          "0px -4px 4px 0px rgba(0,0,0,0.3), 0px -8px 12px 6px rgba(0,0,0,0.15)",
       },
       borderRadius: {
         none: "0",

@@ -92,12 +92,12 @@ const TimePicker: React.FC<TimePickerProps> = ({ onTimeChange, label }) => {
     setopen(!open);
   }
 
-  const handleChangeHour = () => {
+  const handleChangeHour = (event: any) => {
     const valueInt = parseInt(event?.target.value);
     setjambreak(valueInt);
     console.log(setjambreak);
   };
-  const handleChangeMinute = () => {
+  const handleChangeMinute = (event: any) => {
     setmenitbreak(event?.target.value);
   };
 

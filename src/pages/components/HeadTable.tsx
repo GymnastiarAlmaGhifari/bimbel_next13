@@ -10,6 +10,9 @@ interface HeadTableProps {
   role?: boolean;
   riwayat?: boolean;
   onClick?: () => void;
+  noLabel?: boolean;
+  noSearch?: boolean;
+  noFilter?: boolean;
   label: string;
   onChange?: (value: string) => void;
   nama_kelompok?: string;
@@ -20,9 +23,11 @@ const HeadTable: React.FC<HeadTableProps> = ({
   onClick,
   label,
   onChange,
+  noFilter,
+  noSearch,
   riwayat,
   nama_kelompok,
-
+  noLabel,
 }) => {
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (onChange) {
@@ -33,22 +38,30 @@ const HeadTable: React.FC<HeadTableProps> = ({
   return (
     <div className="bg-Neutral-100 flex flex-row items-center h-[72px] px-5">
       <div className="flex flex-row items-center gap-14 w-full">
-        <h2 className="text-xl font-semibold text-Primary-10">{label}</h2>
+        {noLabel ? (
+          ""
+        ) : (
+          <h2 className="text-xl font-semibold text-Primary-10">{label}</h2>
+        )}
+
         <div className="flex flex-row items-center gap-4">
-          <Search onChange={handleInputChange} />
+          {noSearch ? "" : <Search onChange={handleInputChange} />}
+          {noFilter ? (
+            ""
+          ) : (
+            <button className="flex gap-1">
+              <MdOutlineSort size={24} />
+              <span className="text-sm font-bold text-Neutral-20">Filter</span>
+            </button>
+          )}
 
-          <button className="flex gap-1">
-            <MdOutlineSort size={24} />
-            <span className="text-sm font-bold text-Neutral-20">Filter</span>
-          </button>
-
-          <h1>
+          {/* <h1>
             Kelompok {nama_kelompok}
-          </h1>
+          </h1> */}
         </div>
       </div>
       <div className="flex gap-4">
-        {riwayat() ? (
+        {riwayat ? (
           <Button
             type="button"
             brColor="border-Tertiary-50"
@@ -86,7 +99,6 @@ const HeadTable: React.FC<HeadTableProps> = ({
         )}
       </div>
     </div>
-
   );
 };
 
