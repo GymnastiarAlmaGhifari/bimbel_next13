@@ -7,9 +7,7 @@ import { ModalDetail } from "@/pages/components/modal/Modal";
 import SesiEdit from "./edit";
 import CardSesi from "@/pages/components/card/CardSesi";
 import HeadTable from "@/pages/components/HeadTable";
-import { format, parseISO } from "date-fns";
-import moment from "moment";
-import momentTimezone from "moment-timezone";
+
 
 interface Sesi {
   id: string;
