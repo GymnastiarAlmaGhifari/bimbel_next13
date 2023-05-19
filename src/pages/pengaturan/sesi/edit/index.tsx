@@ -79,11 +79,11 @@ const SesiEdit: FC<SesiEditProps> = ({ sesiId, onClose, data }) => {
                 defaultValue={data?.nama_sesi ?? ""}
               />
               <div className="flex gap-4">
-                <TimePicker label="Jam Mulai" onTimeChange={handleTimeChange} />
+                {/* <TimePicker label="Jam Mulai" onTimeChange={handleTimeChange} />
                 <TimePicker
                   label="Jam Selesai"
                   onTimeChange={handleTimeChange}
-                />
+                /> */}
               </div>
               {/* <Input
                 id="jam_mulai"

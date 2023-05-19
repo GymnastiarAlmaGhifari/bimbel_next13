@@ -5,7 +5,7 @@ import { string } from "yup";
 
 interface TimePickerProps {
   label: string;
-  onTimeChange: (hour: string, minute: string) => void;
+  onTimeChange?: (hour: string, minute: string) => void;
 }
 
 const TimePicker: React.FC<TimePickerProps> = ({ onTimeChange, label }) => {
@@ -18,13 +18,13 @@ const TimePicker: React.FC<TimePickerProps> = ({ onTimeChange, label }) => {
   const handleHourChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedHour = event.target.value;
     setHour(selectedHour);
-    onTimeChange(selectedHour, minute);
+    // onTimeChange(selectedHour, minute);
   };
 
   const handleMinuteChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedMinute = event.target.value;
     setMinute(selectedMinute);
-    onTimeChange(hour, selectedMinute);
+    // onTimeChange(hour, selectedMinute);
   };
 
   const formatNumber = (num: string) => {
@@ -56,7 +56,7 @@ const TimePicker: React.FC<TimePickerProps> = ({ onTimeChange, label }) => {
   const handleTimeChange = (hour: string, minute: string) => {
     // const formattedTime = formatTime(hour, minute);
     // console.log(`Selected time: ${formattedTime}`);
-    onTimeChange(hour, minute);
+    // onTimeChange(hour, minute);
   };
 
   function click() {
@@ -92,14 +92,14 @@ const TimePicker: React.FC<TimePickerProps> = ({ onTimeChange, label }) => {
     setopen(!open);
   }
 
-  const handleChangeHour = () => {
-    const valueInt = parseInt(event?.target.value);
-    setjambreak(valueInt);
-    console.log(setjambreak);
-  };
-  const handleChangeMinute = () => {
-    setmenitbreak(event?.target.value);
-  };
+  // const handleChangeHour = () => {
+  //   // const valueInt = parseInt(event?.target.value);
+  //   setjambreak(event?.target.value);
+  //   console.log(setjambreak);
+  // };
+  // const handleChangeMinute = () => {
+  //   setmenitbreak(event?.target.value);
+  // };
 
   return (
     // <div className="flex py-2 space-x-1 px-4  rounded-full w-max font-semibold ">
@@ -123,11 +123,10 @@ const TimePicker: React.FC<TimePickerProps> = ({ onTimeChange, label }) => {
       <label className="text-sm text-Primary-10">{label}</label>
       <div className=" flex flex-col gap-2">
         <div
-          className={`px-4 py-2 w-full h-10 text-Primary-30  rounded-full ${
-            open
-              ? "border border-[2px] border-Primary-50 bg-Primary-95"
-              : " bg-Neutral-95"
-          } flex items-center space-x-1 cursor-pointer`}
+          className={`px-4 py-2 w-full h-10 text-Primary-30  rounded-full ${open
+            ? "border border-[2px] border-Primary-50 bg-Primary-95"
+            : " bg-Neutral-95"
+            } flex items-center space-x-1 cursor-pointer`}
           onClick={click}
         >
           <p className="inline-block">{hour}</p>
@@ -152,7 +151,7 @@ const TimePicker: React.FC<TimePickerProps> = ({ onTimeChange, label }) => {
                       name=""
                       id=""
                       value={jambreak}
-                      onChange={handleChangeHour}
+                      // onChange={handleChangeHour}
                       defaultValue={hour}
                     />
                     <button
@@ -179,7 +178,7 @@ const TimePicker: React.FC<TimePickerProps> = ({ onTimeChange, label }) => {
                       id=""
                       value={menitbreak}
                       defaultValue={minute}
-                      onChange={handleChangeMinute}
+                    // onChange={handleChangeMinute}
                     />
                     <button
                       className="text-Neutral-100 text-Primary-30"

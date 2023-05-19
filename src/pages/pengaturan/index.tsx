@@ -42,7 +42,10 @@ const Pengaturan = () => {
             </button>
           </Link>
         </div>
-        <TimePicker onTimeChange={handleTimeChange} />
+        {/* <TimePicker
+        //  onTimeChange={handleTimeChange}
+
+        /> */}
       </div>
     </div>
   );
