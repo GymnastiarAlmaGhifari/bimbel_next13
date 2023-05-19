@@ -48,7 +48,7 @@ const HeadTable: React.FC<HeadTableProps> = ({
         </div>
       </div>
       <div className="flex gap-4">
-        {riwayat() ? (
+        {riwayat ? (
           <Button
             type="button"
             brColor="border-Tertiary-50"

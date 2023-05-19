@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useCallback, useEffect, useState } from "react";
 import ButtonEdit from "../buttons/ButtonEdit";
 import Button from "../buttons/Button";
 import { MdModeEdit } from "react-icons/md";
@@ -98,7 +98,7 @@ const CardKelompok: FC<CardKelompokProps> = ({
     handleJadwalClick();
   };
 
-  const fetchSiswaData = async () => {
+  const fetchSiswaData = useCallback(async () => {
     try {
       const response = await fetch(`/api/kelompok/siswa/${idKelompok}`);
       const data = await response.json();
@@ -106,9 +106,9 @@ const CardKelompok: FC<CardKelompokProps> = ({
     } catch (error) {
       console.error("Error fetching siswa data:", error);
     }
-  };
+  }, [idKelompok]);
 
-  const fetchJadwalData = async () => {
+  const fetchJadwalData = useCallback(async () => {
     try {
       const response = await fetch(`/api/kelompok/jadwal/${idJadwal}`);
       const data = await response.json();
@@ -116,7 +116,7 @@ const CardKelompok: FC<CardKelompokProps> = ({
     } catch (error) {
       console.error("Error fetching jadwal data:", error);
     }
-  };
+  }, [idJadwal]);
 
   useEffect(() => {
     if (isExpandedDetails) {
@@ -126,7 +126,7 @@ const CardKelompok: FC<CardKelompokProps> = ({
     if (isExpandedJadwal) {
       fetchJadwalData();
     }
-  }, [isExpandedDetails, isExpandedJadwal]);
+  }, [isExpandedDetails, isExpandedJadwal, fetchSiswaData, fetchJadwalData]);
 
   return (
     <div className={`flex flex-col bg-Neutral-100 border rounded-lg py-5 px-4 gap-3 ${isExpandedDetails || isExpandedJadwal ? 'h-[250px]' : 'h-[150px]'}`}>
@@ -146,10 +146,7 @@ const CardKelompok: FC<CardKelompokProps> = ({
             label={isExpandedDetails ? "Hide Details" : "Show Details"}
             textColor="text-Primary-20"
             type="button"
-            onClick={() => {
-              setIdKelompok(id || "");
-              handleDetailsClick();
-            }}
+            onClick={handleShowDetails}
             icon={isExpandedDetails ? IoIosArrowBack : IoIosArrowForward}
           />
           <Button
@@ -159,12 +156,7 @@ const CardKelompok: FC<CardKelompokProps> = ({
             textColor="text-Primary-20"
             type="button"
             icon={isExpandedJadwal ? IoIosArrowBack : IoIosArrowForward}
-            onClick={() => {
-              setIdJadwal(jadwal_id)
-              handleJadwalClick();
-              console.log(idJadwal);
-            }
-            }
+            onClick={handleLihatJadwal}
           />
         </div>
         <Button
