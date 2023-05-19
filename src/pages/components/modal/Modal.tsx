@@ -116,7 +116,8 @@ export const ModalSucces: FC<ModalSuccesProps> = ({
   label,
 }) => {
   return (
-    <div className="flex gap-4 py-2 px-4 absolute bg-Neutral-100 z-50 right-2 w-96 items-center top-2 rounded-lg shadow-[0px_4px_10px_0px_rgba(101,186,177,0.3)] succesmodalanimation animate-[succesmodalanimation_5s_ease-in-out]">
+    // <div className="h-max w-96 overflow-hidden bg-red-500 right-8 p-4 absolute z-50">
+    <div className="flex gap-4 py-2 px-4 absolute bg-Neutral-100 z-50 right-2 w-96 items-center top-2 rounded-lg shadow-[0px_4px_10px_0px_rgba(101,186,177,0.3)] succesmodalanimation animate-[succesmodalanimation_ease-in-out] duration-10000">
       <div className="p-2 bg-Primary-40 rounded-full text-Neutral-100">
         <HiOutlineCheck size={30} />
       </div>
@@ -124,5 +125,6 @@ export const ModalSucces: FC<ModalSuccesProps> = ({
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Officiis, rem.
       </div>
     </div>
+    // </div>
   );
 };

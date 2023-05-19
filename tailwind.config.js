@@ -9,8 +9,8 @@ module.exports = {
     extend: {
       keyframes: {
         succesmodalanimation: {
-          "0%, 100%": { transform: "translateX(calc(100% + 20px))" },
-          "30%,70%": {
+          "0%, 80%": { transform: "translateX(calc(100% + 20px))" },
+          "20%,60%": {
             transform: "translateX(0)",
           },
         },
