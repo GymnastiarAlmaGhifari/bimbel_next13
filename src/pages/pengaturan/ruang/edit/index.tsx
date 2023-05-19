@@ -14,7 +14,7 @@ interface RuangEditProps {
 }
 
 const schema = yup.object().shape({
-  nama: yup
+  nama_ruang: yup
     .string()
     .required("tidak boleh kosong")
     .min(3, "nama ruang minimal 3 karakter"),
@@ -35,13 +35,13 @@ const RuangEdit: FC<RuangEditProps> = ({ ruangId, onClose, data }) => {
   });
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
-    const { nama, tipe } = data;
+    const { nama_ruang, tipe } = data;
 
     setIsLoading(true); // Set loading state to true
 
     try {
       await axios.put(`/api/ruang/${ruangId}`, {
-        nama,
+        nama_ruang,
         tipe,
       });
 
@@ -63,14 +63,14 @@ const RuangEdit: FC<RuangEditProps> = ({ ruangId, onClose, data }) => {
           <>
             <div className="form-group">
               <Input
-                id="nama"
+                id="nama_ruang"
                 label="Nama Ruang"
                 errors={errors}
-                register={{ ...register("nama") }}
-                defaultValue={data?.nama ?? ""}
+                register={{ ...register("nama_ruang") }}
+                defaultValue={data?.nama_ruang ?? ""}
               />
-              {errors.nama && (
-                <p className="text-red-500">{errors.nama.message}</p>
+              {errors.nama_ruang && (
+                <p className="text-red-500">{errors.nama_ruang.message}</p>
               )}{" "}
             </div>
 

@@ -6,6 +6,7 @@ import Input from "@/pages/components/inputs/Input";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import Button from "@/pages/components/buttons/Button";
+import TimePicker from "@/pages/components/TimePicker";
 // import { format } from 'date-fns';
 
 interface SesiEditProps {
@@ -57,6 +58,11 @@ const SesiEdit: FC<SesiEditProps> = ({ sesiId, onClose, data }) => {
     }
   };
 
+  const handleTimeChange = (hour: number, minute: number) => {
+    console.log(`Selected time: ${hour}:${minute}`);
+    // Lakukan apa pun dengan nilai jam dan menit yang dipilih
+  };
+
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5">
       <>
@@ -64,7 +70,7 @@ const SesiEdit: FC<SesiEditProps> = ({ sesiId, onClose, data }) => {
 
         {!isLoading && (
           <>
-            <div className="form-group">
+            <div className="form-group flex flex-col gap-4">
               <Input
                 id="nama_sesi"
                 label="Nama Sesi"
@@ -72,20 +78,27 @@ const SesiEdit: FC<SesiEditProps> = ({ sesiId, onClose, data }) => {
                 register={{ ...register("nama_sesi") }}
                 defaultValue={data?.nama_sesi ?? ""}
               />
-              <Input
+              <div className="flex gap-4">
+                {/* <TimePicker label="Jam Mulai" onTimeChange={handleTimeChange} />
+                <TimePicker
+                  label="Jam Selesai"
+                  onTimeChange={handleTimeChange}
+                /> */}
+              </div>
+              {/* <Input
                 id="jam_mulai"
                 label="Jam Mulai"
                 errors={errors}
                 register={{ ...register("jam_mulai") }}
                 defaultValue={data?.jam_mulai ?? ""}
-              />
-              <Input
+              /> */}
+              {/* <Input
                 id="jam_selesai"
                 label="Jam Selesai"
                 errors={errors}
                 register={{ ...register("jam_selesai") }}
                 defaultValue={data?.jam_selesai ?? ""}
-              />
+              /> */}
             </div>
             <div className="flex flex-row justify-between">
               <Button
