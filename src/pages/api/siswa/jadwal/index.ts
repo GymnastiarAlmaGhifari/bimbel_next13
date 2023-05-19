@@ -78,6 +78,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                         const scheduleArray: {
                             jadwal_id: string;
                             mapel: string | undefined;
+                            hari: string | undefined;
                             ruang: string | undefined;
                             tentor: string | null | undefined;
                             sesi: string | undefined;
@@ -96,6 +97,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                             const schedule = {
                                 jadwal_id: jadwal[i].id,
                                 mapel: jadwal[i].mapel?.nama_mapel,
+                                hari: jadwal[i].hari,
                                 ruang: jadwal[i].ruang?.nama_ruang,
                                 tentor: jadwal[i].user?.name,
                                 sesi: jadwal[i].sesi?.nama_sesi,

@@ -203,6 +203,8 @@ model tagihan {
   id String @id @default(cuid())
   siswa siswa? @relation(fields: [siswa_id], references: [id])
   siswa_id String?
+  nama_rekening String?
+  nomor_rekening String?
   jumlah_tagihan Int
   tanggal_tagihan DateTime @db.Date
   tanggal_jatuh_tempo DateTime @db.Date
@@ -273,7 +275,7 @@ enum Status {
   LUNAS
   JATUH_TEMPO
   PENDING
-  BELUM_LUNAS
+  MENUNGGU_KONFIRMASI
 }
 enum StatusPresensi {
   HADIR
