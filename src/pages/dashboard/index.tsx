@@ -45,7 +45,7 @@ const Dashboard: React.FC<Props> = ({ books }) => {
           <InfoDashboard />
           <div className="flex flex-col h-full bg-Neutral-100 py-4 gap-4 rounded-lg overflow-auto">
             <HeadTable label="Overview Jadwal" />
-            <div className="flex flex-col rounded-bl-lg rounded-br-lg p-4 gap-4 overflow-y-auto scrollbar h-full ">
+            <div className="flex flex-col scrollbar rounded-bl-lg rounded-br-lg p-4 gap-4 overflow-y-auto scrollbar h-full ">
               <CardDashboard />
               <CardDashboard />
               <CardDashboard />

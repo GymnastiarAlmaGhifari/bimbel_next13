@@ -75,10 +75,10 @@ const RuangEdit: FC<RuangEditProps> = ({ ruangId, onClose, data }) => {
             </div>
 
             {/* selected ruang */}
-            <div className="">
-              <label className="form-label">Tipe Ruang</label>
+            <div className="flex flex-col gap-2">
+              <label className="text-sm text-Primary-10">Tipe Ruang</label>
               <select
-                className="form-select"
+                className="h-10 outline-none"
                 {...register("tipe")}
                 defaultValue={data?.tipe ?? "KELAS"}
               >
@@ -99,7 +99,6 @@ const RuangEdit: FC<RuangEditProps> = ({ ruangId, onClose, data }) => {
                 withBgColor
               />
             </div>
-
           </>
         )}
       </>

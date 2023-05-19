@@ -92,16 +92,13 @@ const Login = () => {
           >
             Forgot Password?
           </a>
-            <button
-              className="bg-Primary-40 hover:bg-Primary-60 text-Neutral-100 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-              type="submit"
-            >
-              Sign In
-            </button>
+          <button
+            className="bg-Primary-40 hover:bg-Primary-60 text-Neutral-100 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+            type="submit"
+          >
+            Sign In
+          </button>
         </form>
-        <p className="text-center text-gray-500 text-xs">
-          &copy;2021 Acme Corp. All rights reserved.
-        </p>
       </div>
     </div>
   );

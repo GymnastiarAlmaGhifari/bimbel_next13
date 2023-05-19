@@ -4,6 +4,7 @@ import { useRef, FC } from "react";
 import { Dialog } from "@headlessui/react";
 import Button from "../buttons/Button";
 import { IoIosClose } from "react-icons/io";
+import { HiOutlineCheck } from "react-icons/hi";
 
 interface ModalDetailProps {
   children: React.ReactNode;
@@ -19,6 +20,11 @@ interface ModalProps {
 
 interface ModalHapusProps {
   // children: React.ReactNode
+  onClose: () => void;
+  children: React.ReactNode;
+}
+interface ModalSuccesProps {
+  label: string;
   onClose: () => void;
   children: React.ReactNode;
 }
@@ -56,12 +62,9 @@ const Modal: FC<ModalProps> = ({ isVisible, onClose, children }) => {
 
 export default Modal;
 
-export const ModalHapus: FC<ModalHapusProps> = ({
-  children,
-  onClose,
-}) => {
+export const ModalHapus: FC<ModalHapusProps> = ({ children, onClose }) => {
   return (
-    <Dialog open={true} onClose={() => { }} className="relative z-50">
+    <Dialog open={true} onClose={() => {}} className="relative z-50">
       <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
       <div className="fixed inset-0 flex items-center justify-center">
         <Dialog.Panel className="h-auto bg-Neutral-100 py-4 px-6 rounded-xl flex flex-col gap-4 w-1/4">
@@ -78,9 +81,8 @@ export const ModalDetail: FC<ModalDetailProps> = ({
   titleModal,
 }) => {
   return (
-    <Dialog open={true} onClose={() => { }} className="relative z-50">
+    <Dialog open={true} onClose={() => {}} className="relative z-50">
       <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
-
       <div className="fixed inset-0 flex items-center justify-center">
         <Dialog.Panel className="h-auto bg-Neutral-100 py-4 px-6 rounded-xl flex flex-col gap-4 w-1/2">
           <div className="flex flex-col">
@@ -88,26 +90,39 @@ export const ModalDetail: FC<ModalDetailProps> = ({
               <h1 className="text-xl font-bold text-Primary-10">
                 {titleModal}
               </h1>
+              <Button
+                type="button"
+                bgColor="bg-Neutral-90"
+                brColor=""
+                label=""
+                icon={IoIosClose}
+                noLabel
+                textColor="text-Neutral-30"
+                onClick={onClose}
+              />
             </div>
           </div>
           <div>{children}</div>
 
-          <div className="flex justify-end">
-            {/* <Button
-              type="button"
-              bgColor="bg-Primary-10"
-              brColor="border-Primary-10"
-              label="Tutup"
-              textColor="text-white"
-
-              onClick={onClose}
-            >
-              Tutup
-            </Button> */}
-          </div>
-
+          <div className="flex justify-end"></div>
         </Dialog.Panel>
       </div>
     </Dialog>
+  );
+};
+
+export const ModalSucces: FC<ModalSuccesProps> = ({
+  // children,
+  label,
+}) => {
+  return (
+    <div className="flex gap-4 py-2 px-4 absolute bg-Neutral-100 z-50 right-2 w-96 items-center top-2 rounded-lg shadow-[0px_4px_10px_0px_rgba(101,186,177,0.3)] succesmodalanimation animate-[succesmodalanimation_5s_ease-in-out]">
+      <div className="p-2 bg-Primary-40 rounded-full text-Neutral-100">
+        <HiOutlineCheck size={30} />
+      </div>
+      <div className="">
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Officiis, rem.
+      </div>
+    </div>
   );
 };

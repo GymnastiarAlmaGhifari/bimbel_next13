@@ -40,7 +40,6 @@ const schema = yup.object().shape({
     message: "Pilih kelas dahulu",
     test: (value) => value !== "" && value !== "Pilih kelas",
   }),
-
 });
 
 type FormData = yup.InferType<typeof schema>;
@@ -174,16 +173,15 @@ const ProgramEdit: FC<ProgramEditProps> = ({ programId, onClose, data }) => {
               )}
             </div>
 
-
-
-            <div className="flex flex-row justify-between">
+            <div className="flex flex-row gap-4 justify-end">
               <Button
-                bgColor="bg-Error-50"
+                center
+                bgColor="bg-Neutral-70"
                 brColor=""
-                label="Hapus Pengguna"
-                textColor="text-Neutral-100"
+                label="Batal"
+                textColor="text-Neutral-30"
                 type="button"
-                withBgColor
+                onClick={onClose}
               />
               <Button
                 bgColor="bg-Tertiary-50"

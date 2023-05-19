@@ -226,12 +226,37 @@ const UserEdit: FC<UserEditProps> = ({ userId, onClose, onSucsess, data }) => {
                     id="role"
                     {...register("role")}
                     defaultValue={data?.role}
-                    className="bg-Neutral-95 rounded-full py-2 px-4 outline-none appearance-none"
+                    className="bg-Neutral-95 rounded-full py-2 px-4 outline-none appearance-none focus:bg-Primary-95 focus:ring-1 focus:ring-Primary-50 hover:bg-none "
+                  >
+                    <option
+                      value="SUPER"
+                      className="text-Primary-50 hover:text-Primary-10 hover:bg-Primary-10"
+                    >
+                      SUPER ADMIN
+                    </option>
+                    <option
+                      value="ADMIN"
+                      className="text-Primary-500 hover:text-Primary-700"
+                    >
+                      ADMIN
+                    </option>
+                    <option
+                      value="TENTOR"
+                      className="text-Primary-500 hover:text-Primary-700"
+                    >
+                      TENTOR
+                    </option>
+                  </select>
+                  {/* <select
+                    id="role"
+                    {...register("role")}
+                    defaultValue={data?.role}
+                    className="bg-Neutral-95 rounded-full py-2 px-4 outline-none appearance-none focus:bg-Primary-95 focus:ring-1 focus:ring-Primary-50 "
                   >
                     <option value="SUPER">SUPER ADMIN</option>
                     <option value="ADMIN">ADMIN</option>
                     <option value="TENTOR">TENTOR</option>
-                  </select>
+                  </select> */}
                 </div>
 
                 <Input

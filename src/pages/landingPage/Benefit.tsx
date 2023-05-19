@@ -8,7 +8,7 @@ export default function Benefit() {
       <p className="text-center mb-9">
         Apa yang teman-teman dapatkan ketika bergabung dengan kami?
       </p>
-      <div className="grid grid-cols-2 self-center gap-4 h-auto w-auto pb-24">
+      <div className="grid grid-cols-2 self-center gap-20 h-auto w-auto pb-24">
         <ItemBenefit />
         <ItemBenefit />
         <ItemBenefit />
