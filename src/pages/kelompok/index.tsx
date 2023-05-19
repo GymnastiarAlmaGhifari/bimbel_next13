@@ -82,6 +82,8 @@ const Kelompok: FC<Kelompok> = () => {
                         onClick={() => {
                           setSelected(kelompok);
                         }}
+                        id={kelompok.id}
+                        jadwal_id={kelompok.jadwal_id}
                       />
                     ))
                   )}

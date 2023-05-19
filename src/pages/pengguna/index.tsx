@@ -10,6 +10,7 @@ import HeadTable from "../components/HeadTable";
 import UserCard from "../components/card/CardPengguna";
 import { useSession } from "next-auth/react";
 import UserEditGambar from "./edit/editgambar";
+import Search from "../components/Search";
 
 interface User {
   id: string;
@@ -30,7 +31,29 @@ interface User {
 const User: FC<User> = () => {
   const { data: session, status } = useSession();
 
-  const { data: users, error } = useSWR<User[]>("/api/user", fetcher, {});
+  const [inputValue, setInputValue] = useState<string>("")
+  const [debouncedValue, setDebouncedValue] = useState<string>("")
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedValue(inputValue);
+    }, 500);
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [inputValue]);
+
+  const { data: users, error } = useSWR<User[]>(`/api/user?name=${debouncedValue}`, fetcher, {});
+
+  let filteredUsers = users;
+
+  if (debouncedValue) {
+    filteredUsers = users?.filter((user) =>
+      user.name.toLowerCase().includes(debouncedValue.toLowerCase())
+    );
+  }
+
 
   const { data: admin, error: erroradmin } = useSWR<User[]>(
     "/api/user/getadmin",
@@ -39,9 +62,6 @@ const User: FC<User> = () => {
   );
 
   const [selected, setSelected] = useState<User | null>(null);
-
-  // select gambar open modal edit gambar
-  const [selectedGambar, setSelectedGambar] = useState<User | null>(null);
 
   useEffect(() => {
     if (error) {
@@ -65,6 +85,10 @@ const User: FC<User> = () => {
     };
   }, [showSuccess]);
 
+  const handleInputChange = (value: string) => {
+    setInputValue(value);
+  };
+
   return (
     <div className="flex flex-row h-screen">
       <Sidebar />
@@ -78,17 +102,20 @@ const User: FC<User> = () => {
               onClick={() => {
                 setShowCreate(true);
               }}
+              // buat onchange onChange={(value) => setInputValue(value)}
+              onChange={handleInputChange}
             />
 
             <div className="flex flex-col rounded-bl-lg rounded-br-lg p-4 gap-4 overflow-y-auto scrollbar">
+
               {session?.user.role === "SUPER" && (
                 <>
-                  {users ? (
+                  {filteredUsers ? (
                     <>
-                      {users.length === 0 ? (
-                        <p>No program found.</p>
+                      {filteredUsers.length === 0 ? (
+                        <p>Tidak ditemukan pengguna.</p>
                       ) : (
-                        users.map((user) => (
+                        filteredUsers.map((user) => (
                           <UserCard
                             key={user.id}
                             nama_user={user.name}
@@ -99,11 +126,6 @@ const User: FC<User> = () => {
                             onEdit={() => {
                               setSelected(user);
                             }}
-                          // editGambar={
-                          //   () => {
-                          //     setSelectedGambar(user);
-                          //   }
-                          // }
                           />
                         ))
                       )}

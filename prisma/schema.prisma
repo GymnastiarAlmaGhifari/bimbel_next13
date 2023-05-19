@@ -79,7 +79,7 @@ model jadwal_detail{
 
 model ruang {
   id String @id @default(cuid())
-  nama String
+  nama_ruang String
   tipe TipeRuang
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

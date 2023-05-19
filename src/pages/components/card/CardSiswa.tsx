@@ -6,6 +6,7 @@ import Kelas from "@/pages/pengaturan/kelas";
 import { string } from "yup";
 import { IoIosArrowForward, IoLogoWhatsapp } from "react-icons/io";
 import { MdDelete, MdModeEdit } from "react-icons/md";
+import Link from "next/link";
 
 interface CardSiswaProps {
   nama_siswa: string;
@@ -30,10 +31,6 @@ const CardSiswa: FC<CardSiswaProps> = ({
   nama_siswa,
   hp,
 }) => {
-  const detailProfile = () => {
-    window.location.href = "/detailProfileSiswa";
-  };
-
   const noHP = hp;
   const whatsapp = "https://wa.me/62" + noHP + "?text=Hello";
   const openWhatsApp = () => {
@@ -113,15 +110,18 @@ const CardSiswa: FC<CardSiswaProps> = ({
             onClick={openWhatsApp}
             icon={IoLogoWhatsapp}
           />
-          <Button
-            type="button"
-            bgColor="bg-Primary-50"
-            brColor=""
-            label="Detail Data"
-            textColor="text-Primary-20"
-            icon={IoIosArrowForward}
-            onClick={detailProfile}
-          />
+          <Link
+            href={"/detailProfileSiswa"}
+          >
+            <Button
+              type="button"
+              bgColor="bg-Primary-50"
+              brColor=""
+              label="Detail Data"
+              textColor="text-Primary-20"
+              icon={IoIosArrowForward}
+            />
+          </Link>
         </div>
         <div className="flex flex-row gap-3">
           <Button

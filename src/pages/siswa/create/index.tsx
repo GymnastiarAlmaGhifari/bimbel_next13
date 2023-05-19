@@ -25,10 +25,9 @@ const schema = yup.object().shape({
         .max(13, "maksimal 13 karakter")
         .min(12, "minimal 12 karakter"),
     alamat: yup.string().required(),
-    sekolah: yup.string().required(),
+    sekolah: yup.string(),
     hp_ortu: yup
         .string()
-        .required()
         .max(13, "maksimal 13 karakter")
         .min(12, "minimal 12 karakter"),
 });
@@ -158,7 +157,7 @@ const CreateSiswa: FC<UserCreateProps> = ({ onClose, onSucsess }) => {
 
             <Input
                 id="hp_ortu"
-                label="Nomor Telepon"
+                label="Nomor Telepon Orang Tua"
                 type="number"
                 register={{ ...register("hp_ortu") }}
                 errors={errors}
