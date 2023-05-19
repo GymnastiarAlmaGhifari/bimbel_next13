@@ -40,9 +40,12 @@ const UserEdit: FC<UserEditProps> = ({ userId, onClose, onSucsess, data }) => {
 
   const [error, setError] = useState<string | null>(null);
 
+  const [isListOpen, setIsListOpen] = useState(true);
   const {
     register,
     handleSubmit,
+    watch,
+    setValue,
     formState: { errors },
   } = useForm<FormData>({
     resolver: yupResolver(schema),
@@ -59,6 +62,15 @@ const UserEdit: FC<UserEditProps> = ({ userId, onClose, onSucsess, data }) => {
     } else {
       setPreviewImage(null);
     }
+  };
+
+  const toggleList = () => {
+    setIsListOpen(!isListOpen);
+  };
+
+  const selectRole = (role: string) => {
+    setValue("role", role);
+    setIsListOpen(false);
   };
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
@@ -220,34 +232,51 @@ const UserEdit: FC<UserEditProps> = ({ userId, onClose, onSucsess, data }) => {
                   errors={errors}
                   defaultValue={data?.email}
                 />
-                <div className="flex flex-col">
-                  <label htmlFor="role">Role</label>
-                  <select
-                    id="role"
-                    {...register("role")}
-                    defaultValue={data?.role}
-                    className="bg-Neutral-95 rounded-full py-2 px-4 outline-none appearance-none focus:bg-Primary-95 focus:ring-1 focus:ring-Primary-50 hover:bg-none "
+                <div className="relative">
+                  <button
+                    type="button"
+                    className="bg-transparent border-none outline-none"
+                    onClick={toggleList}
                   >
-                    <option
-                      value="SUPER"
-                      className="text-Primary-50 hover:text-Primary-10 hover:bg-Primary-10"
-                    >
-                      SUPER ADMIN
-                    </option>
-                    <option
-                      value="ADMIN"
-                      className="text-Primary-500 hover:text-Primary-700"
-                    >
-                      ADMIN
-                    </option>
-                    <option
-                      value="TENTOR"
-                      className="text-Primary-500 hover:text-Primary-700"
-                    >
-                      TENTOR
-                    </option>
-                  </select>
-                  {/* <select
+                    {watch('role') || 'Pilih peran'}
+                  </button>
+                  {isListOpen && (
+                    <ul className="absolute left-0 right-0 z-10 bg-Neutral-95 rounded-full py-2 px-4 outline-none appearance-none focus:bg-Primary-95 focus:ring-1 focus:ring-Primary-50 hover:bg-none">
+                      <li>
+                        <button
+                          type="button"
+                          className={`${watch("role") === "SUPER" ? "text-Primary-10 bg-Primary-10" : "text-Primary-50 hover:bg-Primary-10"
+                            }`}
+                          onClick={() => selectRole("SUPER")}
+                        >
+                          SUPER ADMIN
+                        </button>
+                      </li>
+                      <li>
+                        <button
+                          type="button"
+                          className={`${watch("role") === "ADMIN" ? "text-Primary-10 bg-Primary-10" : "text-Primary-50 hover:bg-Primary-10"
+                            }`}
+                          onClick={() => selectRole("ADMIN")}
+                        >
+                          ADMIN
+                        </button>
+                      </li>
+                      <li>
+                        <button
+                          type="button"
+                          className={`${watch("role") === "TENTOR" ? "text-Primary-10 bg-Primary-10" : "text-Primary-50 hover:bg-Primary-10"
+                            }`}
+                          onClick={() => selectRole("TENTOR")}
+                        >
+                          TENTOR
+                        </button>
+                      </li>
+                    </ul>
+                  )}
+                </div>
+                {errors.role && <span className="text-red-500">{errors.role.message}</span>}
+                {/* <select
                     id="role"
                     {...register("role")}
                     defaultValue={data?.role}
@@ -257,62 +286,60 @@ const UserEdit: FC<UserEditProps> = ({ userId, onClose, onSucsess, data }) => {
                     <option value="ADMIN">ADMIN</option>
                     <option value="TENTOR">TENTOR</option>
                   </select> */}
-                </div>
-
-                <Input
-                  id="nomor_telepon"
-                  label="Nomor Telepon"
-                  type="number"
-                  register={{ ...register("nomor_telepon") }}
-                  errors={errors}
-                  defaultValue={data?.nomor_telepon}
-                />
-                <Input
-                  id="lulusan"
-                  label="Lulusan"
-                  type="text"
-                  register={{ ...register("lulusan") }}
-                  errors={errors}
-                  defaultValue={data?.universitas}
-                />
-                <Input
-                  id="alamat"
-                  label="Alamat"
-                  type="text"
-                  register={{ ...register("alamat") }}
-                  errors={errors}
-                  defaultValue={data?.alamat}
-                />
               </div>
-              {error && <p className="text-red-500">{error}</p>}
 
-              <div className="flex flex-row justify-end gap-4">
-                <Button
-                  center
-                  bgColor="bg-Neutral-70"
-                  brColor=""
-                  label="Batal"
-                  textColor="text-Neutral-30"
-                  type="button"
-                  onClick={onClose}
-                />
-                <Button
-                  center
-                  type="submit"
-                  bgColor="bg-Tertiary-50"
-                  brColor=""
-                  label="Konfirmasi"
-                  textColor="text-Neutral-100"
-                  withBgColor
-                />
-              </div>
+              <Input
+                id="nomor_telepon"
+                label="Nomor Telepon"
+                type="number"
+                register={{ ...register("nomor_telepon") }}
+                errors={errors}
+                defaultValue={data?.nomor_telepon}
+              />
+              <Input
+                id="lulusan"
+                label="Lulusan"
+                type="text"
+                register={{ ...register("lulusan") }}
+                errors={errors}
+                defaultValue={data?.universitas}
+              />
+              <Input
+                id="alamat"
+                label="Alamat"
+                type="text"
+                register={{ ...register("alamat") }}
+                errors={errors}
+                defaultValue={data?.alamat}
+              />
             </div>
-            {/* <button type="submit">Konfirmasi</button> */}
+            {error && <p className="text-red-500">{error}</p>}
+
+            <div className="flex flex-row justify-end gap-4">
+              <Button
+                center
+                bgColor="bg-Neutral-70"
+                brColor=""
+                label="Batal"
+                textColor="text-Neutral-30"
+                type="button"
+                onClick={onClose}
+              />
+              <Button
+                center
+                type="submit"
+                bgColor="bg-Tertiary-50"
+                brColor=""
+                label="Konfirmasi"
+                textColor="text-Neutral-100"
+                withBgColor
+              />
+            </div>
           </>
         )}
       </>
     </form>
   );
-};
+}
 
 export default UserEdit;
