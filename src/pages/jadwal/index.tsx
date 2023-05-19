@@ -66,16 +66,18 @@ interface Ruang {
   tipe: string;
 }
 
-
 const Jadwal: FC<Jadwal> = () => {
-
   const { data: sesi, error: errorsesi } = useSWR<Sesi[]>(
     "/api/sesi",
     fetcher,
     {}
   );
 
-  const { data: ruang, error: errorruang } = useSWR<Ruang[]>("/api/ruang", fetcher, {});
+  const { data: ruang, error: errorruang } = useSWR<Ruang[]>(
+    "/api/ruang",
+    fetcher,
+    {}
+  );
   const [selectedRuang, setSelectedRuang] = useState("");
   const [defaultRuang, setDefaultRuang] = useState("");
 
@@ -86,7 +88,9 @@ const Jadwal: FC<Jadwal> = () => {
     }
   }, [ruang]);
 
-  const handleRuangChange = async (event: React.ChangeEvent<HTMLSelectElement>) => {
+  const handleRuangChange = async (
+    event: React.ChangeEvent<HTMLSelectElement>
+  ) => {
     const ruangId = event.target.value;
     setSelectedRuang(ruangId);
   };
@@ -165,7 +169,8 @@ const Jadwal: FC<Jadwal> = () => {
                   );
 
                   const hari_selasa = selasa?.find(
-                    (hari_selasa) => hari_selasa.sesi.nama_sesi === item.nama_sesi
+                    (hari_selasa) =>
+                      hari_selasa.sesi.nama_sesi === item.nama_sesi
                   );
 
                   const hari_rabu = rabu?.find(
@@ -185,15 +190,21 @@ const Jadwal: FC<Jadwal> = () => {
                   );
 
                   const hari_minggu = minggu?.find(
-                    (hari_minggu) => hari_minggu.sesi.nama_sesi === item.nama_sesi
+                    (hari_minggu) =>
+                      hari_minggu.sesi.nama_sesi === item.nama_sesi
                   );
 
                   return (
-                    <div key={item.id} className="flex justify-center items-center">
+                    <div
+                      key={item.id}
+                      className="flex justify-center items-center"
+                    >
                       <div className="py-2 px-4 bg-Primary-20 rounded h-full text-Primary-90 font-bold mr-4">
                         <div className="flex flex-col justify-center items-center">
                           {item.nama_sesi}
-                          <div>{item.jam_mulai} - {item.jam_selesai}</div>
+                          <div>
+                            {item.jam_mulai} - {item.jam_selesai}
+                          </div>
                         </div>
                       </div>
                       {hari_senin ? (
@@ -210,38 +221,34 @@ const Jadwal: FC<Jadwal> = () => {
                           No schedule
                         </div>
                       )}
-                      {
-                        hari_selasa ? (
-                          <div className="py-2 px-4 bg-Primary-20 rounded h-full text-Primary-90 font-bold ml-4">
-                            <ItemJadwal
-                              key={hari_selasa.id}
-                              hari="sadawd"
-                              kelompok={hari_selasa.sesi.nama_sesi}
-                              nama_tentor={hari_selasa.user.name}
-                            />
-                          </div>
-                        ) : (
-                          <div className="py-2 px-4 bg-Primary-20 rounded h-full text-Primary-90 font-bold ml-4">
-                            No schedule
-                          </div>
-                        )
-                      }
-                      {
-                        hari_rabu ? (
-                          <div className="py-2 px-4 bg-Primary-20 rounded h-full text-Primary-90 font-bold ml-4">
-                            <ItemJadwal
-                              key={hari_rabu.id}
-                              hari="sadawd"
-                              kelompok={hari_rabu.sesi.nama_sesi}
-                              nama_tentor={hari_rabu.user.name}
-                            />
-                          </div>
-                        ) : (
-                          <div className="py-2 px-4 bg-Primary-20 rounded h-full text-Primary-90 font-bold ml-4">
-                            No schedule
-                          </div>
-                        )
-                      }
+                      {hari_selasa ? (
+                        <div className="py-2 px-4 bg-Primary-20 rounded h-full text-Primary-90 font-bold ml-4">
+                          <ItemJadwal
+                            key={hari_selasa.id}
+                            hari="sadawd"
+                            kelompok={hari_selasa.sesi.nama_sesi}
+                            nama_tentor={hari_selasa.user.name}
+                          />
+                        </div>
+                      ) : (
+                        <div className="py-2 px-4 bg-Primary-20 rounded h-full text-Primary-90 font-bold ml-4">
+                          No schedule
+                        </div>
+                      )}
+                      {hari_rabu ? (
+                        <div className="py-2 px-4 bg-Primary-20 rounded h-full text-Primary-90 font-bold ml-4">
+                          <ItemJadwal
+                            key={hari_rabu.id}
+                            hari="sadawd"
+                            kelompok={hari_rabu.sesi.nama_sesi}
+                            nama_tentor={hari_rabu.user.name}
+                          />
+                        </div>
+                      ) : (
+                        <div className="py-2 px-4 bg-Primary-20 rounded h-full text-Primary-90 font-bold ml-4">
+                          No schedule
+                        </div>
+                      )}
                       {hari_kamis ? (
                         <div className="py-2 px-4 bg-Primary-20 rounded h-full text-Primary-90 font-bold ml-4">
                           <ItemJadwal
@@ -301,7 +308,6 @@ const Jadwal: FC<Jadwal> = () => {
                     </div>
                   );
                 })}
-
               </div>
             </div>
           </div>
