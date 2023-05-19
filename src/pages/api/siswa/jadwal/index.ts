@@ -96,7 +96,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                             const schedule = {
                                 jadwal_id: jadwal[i].id,
                                 mapel: jadwal[i].mapel?.nama_mapel,
-                                ruang: jadwal[i].ruang?.nama,
+                                ruang: jadwal[i].ruang?.nama_ruang,
                                 tentor: jadwal[i].user?.name,
                                 sesi: jadwal[i].sesi?.nama_sesi,
                                 jam: formattedmulai + " - " + formattedselesai,

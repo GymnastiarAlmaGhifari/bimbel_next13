@@ -2,9 +2,10 @@ import { NextApiRequest, NextApiResponse } from "next";
 import prisma from "@/libs/prismadb";
 import EmailServices from "@/pages/api/service/email";
 
+let OTP_base: string = "";
+
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     const token = req.headers.authorization;
-    let OTP_base: string | undefined = undefined;
     const { OTP } = req.body;
 
     if (req.method === "GET") {
@@ -34,7 +35,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             }
 
             res.status(200).json(response);
-            return OTP_base;
         } catch (error) {
             console.error(error);
             res.status(500).json({ 
@@ -44,6 +44,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
         }
     } else if (req.method === "POST") {
+
+        console.log("hehehe", OTP_base);
 
         if (OTP === OTP_base)  {
             const response = {

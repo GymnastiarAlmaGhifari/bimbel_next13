@@ -4,6 +4,7 @@ import Search from "./Search";
 import Button from "./buttons/Button";
 import { IoIosAdd } from "react-icons/io";
 import { FC } from "react";
+import riwayat from "../riwayat";
 
 interface HeadTableProps {
   role?: boolean;
@@ -47,7 +48,7 @@ const HeadTable: React.FC<HeadTableProps> = ({
         </div>
       </div>
       <div className="flex gap-4">
-        {riwayat ? (
+        {riwayat() ? (
           <Button
             type="button"
             brColor="border-Tertiary-50"

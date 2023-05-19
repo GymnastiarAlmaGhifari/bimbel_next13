@@ -1,77 +1,118 @@
-import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
-import formidable from "formidable";
+import { NextApiRequest, NextApiResponse } from "next";
+import fs from "fs";
 import path from "path";
-import fs from "fs/promises";
 import prisma from "@/libs/prismadb";
+import { Express } from "express";
+import express from "express";
+import serveStatic from "serve-static";
+import formidable from "formidable";
 
-export const config = {
-  api: {
-    bodyParser: false,
-  },
-};
-let siswaId: string;
+const app: Express = express();
 
-async function handler(req: NextApiRequest, res: NextApiResponse) {
-    const  token  = req.headers.authorization;
-    try {
-        const siswa = await prisma.siswa.findUnique({
-            where: {token} ,
-        });
-        if (!siswa) {
-            const response = {
-                status: 404,
-                message: "User not found",
-            };
-            return res.status(404).json(response);
-        } else {
-            siswaId = siswa.id;
-        }
-    } catch (error) {
-        console.error(error);
-        const response = {
-            status: 500,
-            message: "Internal server error",
-        };
-        res.status(500).json(response);
-    }
+app.use(serveStatic(path.join(process.cwd(), "../public")));
+
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
+  const { method } = req;
+
+  switch (method) {
+    case "GET":
+      await getImage(req, res);
+      break;
+    case "POST":
+      await uploadImage(req, res);
+      break;
+    default:
+      res.setHeader("Allow", ["GET", "POST"]);
+      res.status(405).end(`Method ${method} Not Allowed`);
+  }
 }
 
-// const currentTime = new Date().toLocaleTimeString([], {
-//   hour: "2-digit",
-//   minute: "2-digit",
-//   second: "2-digit",
-//   hour12: false,
-// });
+async function getImage(req: NextApiRequest, res: NextApiResponse) {
 
-// const modifiedTime = currentTime.replaceAll(":", "");
+  const token = req.headers.authorization;
 
-const readFile = (req: NextApiRequest, saveLocally?: boolean): Promise<{ fields: formidable.Fields; files: formidable.Files }> => {
-  const options: formidable.Options = {};
-  if (saveLocally) {
-    options.uploadDir = path.join(process.cwd(), "/public/img/siswa");
-    options.filename = (name, ext, path, form) => {
-      const extention = path.originalFilename?.split(".").pop();
-      return siswaId + "-" + "." + extention;
-    };
-  }
-  options.maxFileSize = 4000 * 1024 * 1024;
-  const form = formidable(options);
-  return new Promise((resolve, reject) => {
-    form.parse(req, (err, fields, files) => {
-      if (err) reject(err);
-      resolve({ fields, files });
-    });
+
+  const siswas = await prisma.siswa.findUnique({
+    where: {
+      token: token,
+    },
   });
-};
 
-const dbhandler: NextApiHandler = async (req, res) => {
+  const filePath = path.join(process.cwd(),
+    `/public/img/siswa/${siswas?.id}`
+  );
+
+  console.log(filePath);
+
+  fs.readFile(filePath, (err, data) => {
+    if (err) {
+      return res.status(404).json({
+        status: 404,
+        message: "gambar tidak ditemukan",
+        data: {},
+    });
+    }
+
+    res.writeHead(200, {
+      "Content-Type": "image/jpeg",
+      "Content-Length": data.length,
+    });
+    res.end(data);
+  });
+}
+
+async function uploadImage(req: NextApiRequest, res: NextApiResponse) {
+  const form = new formidable.IncomingForm({});
+  const token = req.headers.authorization;
+
   try {
-    await fs.readdir(path.join(process.cwd() + "/public", "/img", "/siswa"));
-  } catch (error) {
-    await fs.mkdir(path.join(process.cwd() + "/public", "/img", "/siswa"));
-  }
-  await readFile(req, true);
-  res.json({ done: "ok" });
-};
+  form.parse(req, async (err, fields, files: any) => {
+    console.log(token);
 
-export default handler;
+    let userData: any;
+
+      const siswas = await prisma.siswa.findUnique({
+        where: {
+          token: token,
+        },
+      });
+      
+
+    const oldPath = files.file.path;
+
+    console.log(oldPath);
+    const newPath = path.join(process.cwd(),
+      `/public/img/siswa/${siswas?.id}`
+    );
+
+    fs.copyFile(oldPath, newPath, (err) => {
+      if (err) throw err;
+    });
+
+    const result = {
+      status: 200,
+      message: "Berhasil upload gambar",
+      data: {
+        id : siswas?.id,
+        name: siswas?.nama,
+        email: siswas?.email,
+        image: siswas?.image,
+      },
+    }
+
+    res.writeHead(200, { "Content-Type": "application/json" });
+    res.end(result);
+    return;
+  });
+} catch (error) {
+  console.error(error);
+  const response = {
+    status: 500,
+    message: "Error memuat siswa",
+  };
+  return res.status(500).json(response);
+}
+}
