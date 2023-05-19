@@ -122,7 +122,7 @@ const handler: NextApiHandler = async (req, res) => {
                     id: req.query.tagihanId as string,
                 },
                 data: {
-                    status: "MENUNGGU_KONFIRMASI",
+                    status: "PENDING",
                     tanggal_bayar: datenew,
                     nota: req.query.tagihanId + ".jpg",
                 },
