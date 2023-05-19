@@ -169,6 +169,7 @@ model siswa {
   sekolah String?
   hp_ortu String?
   image String?
+  login Boolean @default(false)
   kelompok kelompok? @relation(fields: [kelompok_id], references: [id])
   kelompok_id String?
   kelas kelas? @relation(fields: [kelas_id], references: [id])
@@ -275,7 +276,7 @@ enum Status {
   LUNAS
   JATUH_TEMPO
   PENDING
-  MENUNGGU_KONFIRMASI
+  BELUM_BAYAR
 }
 enum StatusPresensi {
   HADIR
