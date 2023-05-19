@@ -22,9 +22,25 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             user: true,
           },
         });
-        res.status(200).json(kamis);
-      } catch (error) {
-        res.status(400).json({ message: "Data gagal ditemukan", error });
-      }
+            const kamisWithKelompok = await Promise.all(
+                kamis.map(async (item) => {
+                    const kelompok = await prisma.kelompok.findUnique({
+                        where: {
+                            jadwal_id: item.jadwal_id,
+                        },
+                    });
+
+                    console.log(kelompok);
+                    return {
+                        ...item,
+                        kelompok: kelompok,
+                    };
+                })
+            );
+
+            res.status(200).json(kamisWithKelompok);
+        } catch (error) {
+            res.status(400).json({ message: "Data gagal ditemukan", error });
+        }
     }
 }
