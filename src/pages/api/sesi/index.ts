@@ -19,9 +19,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const jam_selesai_baru = `${dateISOString}T${jam_selesai}Z`;
   if (req.method === "GET") {
     try {
-      const sesis = await prisma.sesi.findMany();
+      const sesis = await prisma.sesi.findMany({
+        orderBy: {
+          nama_sesi: "asc",
+        },
+      });
 
-      const sesisFormatted = sesis.map((sesi) => ({
+      const sesisFormatted = sesis.map((sesi: any) => ({
         ...sesi,
         jam_mulai: moment(sesi.jam_mulai).tz("UTC").format("HH:mm:ss"),
         jam_selesai: moment(sesi.jam_selesai).tz("UTC").format("HH:mm:ss"),

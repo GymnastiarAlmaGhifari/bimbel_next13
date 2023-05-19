@@ -24,6 +24,7 @@ const Pengaturan = () => {
             <NavbarPengaturan />
           </div>
         </div>
+
       </div>
     </div>
   );

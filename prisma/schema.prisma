@@ -169,6 +169,7 @@ model siswa {
   sekolah String?
   hp_ortu String?
   image String?
+  login Boolean @default(false)
   kelompok kelompok? @relation(fields: [kelompok_id], references: [id])
   kelompok_id String?
   kelas kelas? @relation(fields: [kelas_id], references: [id])
@@ -203,6 +204,8 @@ model tagihan {
   id String @id @default(cuid())
   siswa siswa? @relation(fields: [siswa_id], references: [id])
   siswa_id String?
+  nama_rekening String?
+  nomor_rekening String?
   jumlah_tagihan Int
   tanggal_tagihan DateTime @db.Date
   tanggal_jatuh_tempo DateTime @db.Date
@@ -273,7 +276,7 @@ enum Status {
   LUNAS
   JATUH_TEMPO
   PENDING
-  BELUM_LUNAS
+  BELUM_BAYAR
 }
 enum StatusPresensi {
   HADIR
