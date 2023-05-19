@@ -2,9 +2,11 @@ import { NextApiRequest, NextApiResponse } from "next";
 import prisma from "@/libs/prismadb";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  const ruang = req.query.ruang_id;
-  console.log("kljaskajk", ruang);
+  let ruang = req.query.ruang_id;
 
+  if (Array.isArray(ruang)) {
+    ruang = ruang[0];
+  }
   if (req.method === "GET") {
     try {
       const senin = await prisma.jadwal_detail.findMany({
