@@ -262,16 +262,15 @@ const CardKelompok: FC<CardKelompokProps> = ({
                           <h1 className="font-bold text-Neutral-100">
                             {item?.hari}
                           </h1>
+
                           <span className="font-bold text-sm text-Neutral-100">
-                            {item.sesi?.nama_sesi}
+                            {item?.ruang.nama_ruang}
                           </span>
                         </div>
-                        <div className="flex flex-col gap-1 items-end">
-                          <h3 className="text-sm text-Neutral-100">Jam</h3>
-                          <span className="font-bold text-sm text-Neutral-100">
-                            {item.sesi.jam_mulai} - {item.sesi.jam_selesai}
-                          </span>
-                        </div>
+                        <h1 className="font-bold text-Neutral-100">
+                          {item.sesi?.nama_sesi}
+                        </h1>
+
                       </div>
                       <div className="flex w-full justify-between">
                         <div className="flex flex-col gap-1">
@@ -282,15 +281,22 @@ const CardKelompok: FC<CardKelompokProps> = ({
                             {item.mapel?.nama_mapel}
                           </span>
                         </div>
+
                         <div className="flex flex-col gap-1 items-end">
-                          <h3 className="text-sm text-Neutral-100">User</h3>
+                          <h3 className="text-sm text-Neutral-100">Jam</h3>
                           <span className="font-bold text-sm text-Neutral-100">
-                            {item?.user.name}
+                            {item.sesi.jam_mulai} - {item.sesi.jam_selesai}
                           </span>
                         </div>
                       </div>
                     </div>
-                    <div className="flex justify-end">
+                    <div className="flex justify-between">
+                      <div className="flex flex-col gap-1">
+                        <h3 className="text-sm text-Neutral-100">User</h3>
+                        <span className="font-bold text-sm text-Neutral-100">
+                          {item?.user.name}
+                        </span>
+                      </div>
                       <Button
                         bgColor="bg-Neutral-100"
                         withBgColor
