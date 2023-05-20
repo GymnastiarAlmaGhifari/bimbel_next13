@@ -9,10 +9,10 @@ import riwayat from "../riwayat";
 interface HeadTableProps {
   role?: boolean;
   riwayat?: boolean;
+  withfilter?: boolean;
   onClick?: () => void;
   noLabel?: boolean;
   noSearch?: boolean;
-  noFilter?: boolean;
   label: string;
   onChange?: (value: string) => void;
   nama_kelompok?: string;
@@ -20,10 +20,10 @@ interface HeadTableProps {
 
 const HeadTable: React.FC<HeadTableProps> = ({
   role,
+  withfilter,
   onClick,
   label,
   onChange,
-  noFilter,
   noSearch,
   riwayat,
   nama_kelompok,
@@ -46,13 +46,13 @@ const HeadTable: React.FC<HeadTableProps> = ({
 
         <div className="flex flex-row items-center gap-4">
           {noSearch ? "" : <Search onChange={handleInputChange} />}
-          {noFilter ? (
-            ""
-          ) : (
+          {withfilter ? (
             <button className="flex gap-1">
               <MdOutlineSort size={24} />
               <span className="text-sm font-bold text-Neutral-20">Filter</span>
             </button>
+          ) : (
+            ""
           )}
 
           {/* <h1>

@@ -42,8 +42,7 @@ const Button: React.FC<ButtonProps> = ({
   // widthButton,
   icon: Icon,
 }) => {
-  const baseButtonStyle =
-    "px-4 py-2 rounded-full font-bold flex gap-2 text-sm items-center h-10 ";
+  const baseButtonStyle = "px-4 py-2 rounded-full font-bold flex gap-2 text-sm items-center h-10 ";
   return (
     <button
       type={type}

@@ -30,19 +30,20 @@ const Sidebar = () => {
 
   return (
     <>
-      <div className={`${isOpen ? "w-64" : "w-32"} h-full z-50 relative`}>
-        <div className="h-14 py-2 flex justify-between items-center gap-6 pl-7">
-          <div className="w-full">
+      <div className={`${isOpen ? "w-64" : "w-32"} group h-full z-50 relative`}>
+        <div className="h-14 flex justify-between items-center gap-6 pl-4">
+          <div className="w-full py-2">
             <Image
               src={isOpen ? "/LogoSidebarOpen.svg" : "/LogoSidebarClose.svg"}
               alt="Logo"
-              width={50}
-              height={50}
+              width={500}
+              height={500}
+              className="bg-cover"
             />
           </div>
           <button
             onClick={toggleMenu}
-            className=" block rounded-full p-1 text-Primary-10 translate-x-4 bg-Neutral-100"
+            className="rounded-l-full p-1 text-Neutral-100 bg-gradient-to-br from-Tertiary-60 to-Primary-50"
           >
             {isOpen ? (
               <AiOutlineClose size={24} />
