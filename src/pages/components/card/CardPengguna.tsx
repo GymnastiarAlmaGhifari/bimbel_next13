@@ -62,7 +62,11 @@ const UserCard: FC<UserCard> = ({
 
       <div className="w-full h-[1px] bg-Neutral-30"></div>
       <div className="flex justify-between">
-        <h2 className="font-semibold text-Primary-10">{role}</h2>
+        <h2 className="font-semibold text-Primary-10">
+          {role === "ADMIN" && "Admin"}
+          {role === "SUPER" && "Super Admin"}
+          {role === "TENTOR" && "Tentor"}
+        </h2>
 
         <div className="flex gap-4">
           <Button

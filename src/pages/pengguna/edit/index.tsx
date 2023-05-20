@@ -51,6 +51,12 @@ const UserEdit: FC<UserEditProps> = ({ userId, onClose, onSucsess, data }) => {
     resolver: yupResolver(schema),
   });
 
+  const roleOptions = [
+    { value: 'SUPER', label: 'SUPER ADMIN' },
+    { value: 'ADMIN', label: 'ADMIN' },
+    { value: 'TENTOR', label: 'TENTOR' },
+  ];
+
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
@@ -71,6 +77,11 @@ const UserEdit: FC<UserEditProps> = ({ userId, onClose, onSucsess, data }) => {
   const selectRole = (role: string) => {
     setValue("role", role);
     setIsListOpen(false);
+  };
+
+  const getRoleLabel = (value: string) => {
+    const option = roleOptions.find(option => option.value === value);
+    return option ? option.label : '';
   };
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
@@ -238,40 +249,22 @@ const UserEdit: FC<UserEditProps> = ({ userId, onClose, onSucsess, data }) => {
                     className="bg-transparent border-none outline-none"
                     onClick={toggleList}
                   >
-                    {watch('role') || 'Pilih peran'}
+                    {getRoleLabel(watch('role')) || 'Pilih peran'}
                   </button>
                   {isListOpen && (
                     <ul className="absolute left-0 right-0 z-10 bg-Neutral-95 rounded-full py-2 px-4 outline-none appearance-none focus:bg-Primary-95 focus:ring-1 focus:ring-Primary-50 hover:bg-none">
-                      <li>
-                        <button
-                          type="button"
-                          className={`${watch("role") === "SUPER" ? "text-Primary-10 bg-Primary-10" : "text-Primary-50 hover:bg-Primary-10"
-                            }`}
-                          onClick={() => selectRole("SUPER")}
-                        >
-                          SUPER ADMIN
-                        </button>
-                      </li>
-                      <li>
-                        <button
-                          type="button"
-                          className={`${watch("role") === "ADMIN" ? "text-Primary-10 bg-Primary-10" : "text-Primary-50 hover:bg-Primary-10"
-                            }`}
-                          onClick={() => selectRole("ADMIN")}
-                        >
-                          ADMIN
-                        </button>
-                      </li>
-                      <li>
-                        <button
-                          type="button"
-                          className={`${watch("role") === "TENTOR" ? "text-Primary-10 bg-Primary-10" : "text-Primary-50 hover:bg-Primary-10"
-                            }`}
-                          onClick={() => selectRole("TENTOR")}
-                        >
-                          TENTOR
-                        </button>
-                      </li>
+                      {roleOptions.map(option => (
+                        <li key={option.value}>
+                          <button
+                            type="button"
+                            className={`${watch("role") === option.value ? "text-Primary-10 bg-Primary-10" : "text-Primary-50 hover:bg-Primary-10"
+                              }`}
+                            onClick={() => selectRole(option.value)}
+                          >
+                            {option.label}
+                          </button>
+                        </li>
+                      ))}
                     </ul>
                   )}
                 </div>
