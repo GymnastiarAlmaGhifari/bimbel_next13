@@ -22,7 +22,7 @@ const schema = yup.object().shape({
     .required("tidak boleh kosong")
     .min(3, "judul minimal 3 karakter"),
   email: yup.string().required(),
-  role: yup.string().required(),
+  role: yup.string(),
   nomor_telepon: yup.string().required().max(13, "maksimal 13 karakter"),
   lulusan: yup.string().max(13, "maksimal 13 karakter"),
   alamat: yup.string().required(),
@@ -104,7 +104,6 @@ const UserEdit: FC<UserEditProps> = ({ userId, onClose, onSucsess, data }) => {
   };
 
   const getRoleLabel = (value: string) => {
-
     const option = roleOptions.find((option) => option.value === value);
     return option ? option.label : "";
   };
@@ -180,6 +179,7 @@ const UserEdit: FC<UserEditProps> = ({ userId, onClose, onSucsess, data }) => {
       }
     }
   };
+  const roleLabel = data?.role === "SUPER" ? "SUPER ADMIN" : data?.role === "ADMIN" ? "ADMIN" : data?.role === "TENTOR" ? "TENTOR" : "Pilih peran";
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex gap-10">
@@ -280,14 +280,13 @@ const UserEdit: FC<UserEditProps> = ({ userId, onClose, onSucsess, data }) => {
                   <div className="relative flex flex-col gap-2">
                     <button
                       type="button"
-                      className={` w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${
-                        isListOpen
-                          ? "border-[2px] border-Primary-50 bg-Primary-95"
-                          : "bg-Neutral-95"
-                      }`}
+                      className={` w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${isListOpen
+                        ? "border-[2px] border-Primary-50 bg-Primary-95"
+                        : "bg-Neutral-95"
+                        }`}
                       onClick={toggleList}
                     >
-                      {getRoleLabel(watch("role")) || "Pilih peran"}
+                      {getRoleLabel(roleLabel)}
                       {isListOpen ? <IoIosArrowUp /> : <IoIosArrowDown />}
                     </button>
                     {isListOpen && (
@@ -296,11 +295,10 @@ const UserEdit: FC<UserEditProps> = ({ userId, onClose, onSucsess, data }) => {
                           <li key={option.value}>
                             <button
                               type="button"
-                              className={`w-full text-left px-2 py-1 rounded-full ${
-                                watch("role") === option.value
-                                  ? "text-Primary-90 bg-Primary-20"
-                                  : "text-Primary-20 hover:bg-Primary-95"
-                              }`}
+                              className={`w-full text-left px-2 py-1 rounded-full ${watch("role") === option.value
+                                ? "text-Primary-90 bg-Primary-20"
+                                : "text-Primary-20 hover:bg-Primary-95"
+                                }`}
                               onClick={() => selectRole(option.value)}
                             >
                               {option.label}
@@ -313,16 +311,6 @@ const UserEdit: FC<UserEditProps> = ({ userId, onClose, onSucsess, data }) => {
                   {errors.role && (
                     <span className="text-red-500">{errors.role.message}</span>
                   )}
-                  {/* <select
-                    id="role"
-                    {...register("role")}
-                    defaultValue={data?.role}
-                    className="bg-Neutral-95 rounded-full py-2 px-4 outline-none appearance-none focus:bg-Primary-95 focus:ring-1 focus:ring-Primary-50 "
-                  >
-                    <option value="SUPER">SUPER ADMIN</option>
-                    <option value="ADMIN">ADMIN</option>
-                    <option value="TENTOR">TENTOR</option>
-                  </select> */}
                 </div>
                 <Input
                   id="nomor_telepon"
