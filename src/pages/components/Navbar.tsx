@@ -39,7 +39,7 @@ const Navbar = () => {
           <div className="inline-block pr-2 flex flex-col">
             <p className="font-bold text-left">{users?.name}</p>
 
-            <p className="font-semibold text-sm text-left">{users?.role}</p>
+            <p className="font-semibold text-ms text-left">{users?.role}</p>
           </div>
           <div className="w-10 h-10 rounded-full overflow-clip scale-100 bg-red-400">
             <Image
