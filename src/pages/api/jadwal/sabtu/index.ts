@@ -26,11 +26,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         sabtu.map(async (item) => {
           const kelompok = await prisma.kelompok.findUnique({
             where: {
-              jadwal_id: item.jadwal_id,
+              jadwal_id: item.jadwal_id || undefined,
             },
           });
 
-          console.log(kelompok);
           return {
             ...item,
             kelompok: kelompok,
@@ -38,7 +37,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         })
       );
 
-      res.status(200).json(sabtuWithKelompok);
+      if (sabtuWithKelompok.length === 0) {
+        res.status(404).json({ message: "Data tidak ditemukan" });
+      } else {
+        res.status(200).json(sabtuWithKelompok);
+      }
     } catch (error) {
       res.status(400).json({ message: "Data gagal ditemukan", error });
     }
