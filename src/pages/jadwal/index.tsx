@@ -96,43 +96,43 @@ const Jadwal: FC<Jadwal> = () => {
   };
 
   const { data: senin, error: errorsenin } = useSWR<Jadwal[]>(
-    selectedRuang ? `/api/jadwal/sdjsh?ruang_id=${selectedRuang}` : null,
+    selectedRuang ? `/api/jadwal/hari?hari=SENIN&ruang_id=${selectedRuang}` : null,
     fetcher,
     {}
   );
 
   const { data: selasa, error: errorselasa } = useSWR<Jadwal[]>(
-    selectedRuang ? `/api/jadwal/selasa?ruang_id=${selectedRuang}` : null,
+    selectedRuang ? `/api/jadwal/hari?hari=SELASA&ruang_id=${selectedRuang}` : null,
     fetcher,
     {}
   );
 
   const { data: rabu, error: errorrabu } = useSWR<Jadwal[]>(
-    selectedRuang ? `/api/jadwal/rabu?ruang_id=${selectedRuang}` : null,
+    selectedRuang ? `/api/jadwal/hari?hari=RABU&ruang_id=${selectedRuang}` : null,
     fetcher,
     {}
   );
 
   const { data: kamis, error: errorkamis } = useSWR<Jadwal[]>(
-    selectedRuang ? `/api/jadwal/kamis?ruang_id=${selectedRuang}` : null,
+    selectedRuang ? `/api/jadwal/hari?hari=KAMIS&ruang_id=${selectedRuang}` : null,
     fetcher,
     {}
   );
 
   const { data: jumat, error: errorjumat } = useSWR<Jadwal[]>(
-    selectedRuang ? `/api/jadwal/jumat?ruang_id=${selectedRuang}` : null,
+    selectedRuang ? `/api/jadwal/hari?hari=JUMAT&ruang_id=${selectedRuang}` : null,
     fetcher,
     {}
   );
 
   const { data: sabtu, error: errorsabtu } = useSWR<Jadwal[]>(
-    selectedRuang ? `/api/jadwal/sabtu?ruang_id=${selectedRuang}` : null,
+    selectedRuang ? `/api/jadwal/hari?hari=SABTU&ruang_id=${selectedRuang}` : null,
     fetcher,
     {}
   );
 
   const { data: minggu, error: errorminggu } = useSWR<Jadwal[]>(
-    selectedRuang ? `/api/jadwal/minggu?ruang_id=${selectedRuang}` : null,
+    selectedRuang ? `/api/jadwal/hari?hari=MINGGU&ruang_id=${selectedRuang}` : null,
     fetcher,
     {}
   );
