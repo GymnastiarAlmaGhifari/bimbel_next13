@@ -47,7 +47,6 @@ const User: FC<User> = () => {
 
   const { data: users, error } = useSWR<User[]>(`/api/user`, fetcher, {});
 
-
   let filteredUsers = users;
 
   if (debouncedValue) {
@@ -61,6 +60,14 @@ const User: FC<User> = () => {
     fetcher,
     {}
   );
+
+  let filteredAdmin = admin;
+
+  if (debouncedValue) {
+    filteredAdmin = admin?.filter((user) =>
+      user.name.toLowerCase().includes(debouncedValue.toLowerCase())
+    );
+  }
 
   const [selected, setSelected] = useState<User | null>(null);
 
@@ -138,21 +145,21 @@ const User: FC<User> = () => {
 
               {session?.user.role === "ADMIN" && (
                 <>
-                  {admin ? (
+                  {filteredAdmin ? (
                     <>
-                      {admin.length === 0 ? (
-                        <p>No program found.</p>
+                      {filteredAdmin.length === 0 ? (
+                        <p>Tidak ditemukan pengguna.</p>
                       ) : (
-                        admin.map((admin) => (
+                        filteredAdmin.map((user) => (
                           <UserCard
-                            key={admin.id}
-                            nama_user={admin.name}
-                            universitas={admin.universitas}
-                            nama_mapel={admin.mapel?.nama_mapel}
-                            gambar={admin?.image}
-                            role={admin.role}
+                            key={user.id}
+                            nama_user={user.name}
+                            universitas={user.universitas}
+                            nama_mapel={user.mapel?.nama_mapel}
+                            gambar={user?.image}
+                            role={user.role}
                             onEdit={() => {
-                              setSelected(admin);
+                              setSelected(user);
                             }}
                           />
                         ))
