@@ -240,8 +240,8 @@ const Jadwal: FC<Jadwal> = () => {
                         />
                       </div>
                     ) : (
-                      <div className="py-2 px-4 bg-Tertiary-50 rounded-lg h-full text-Tertiary-90 font-bold w-full flex items-center justify-center">
-                        No schedule
+                      <div className="py-2 px-4 bg-Error-40 rounded-lg h-full text-Tertiary-90 font-bold w-full flex items-center justify-center">
+                        Tidak Ada Jadwal
                       </div>
                     )}
                     {hari_selasa ? (
