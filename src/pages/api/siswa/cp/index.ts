@@ -3,13 +3,13 @@ import { NextApiResponse, NextApiRequest } from 'next';
 import path from 'path';
 
 export default async function copyFile(req: NextApiRequest, res: NextApiResponse) {
-    const { name, email, password, role, nomor_telepon, alamat, image, universitas, mapel_id } = req.body;
+    const { id } = req.body;
 
     if (req.method === "POST") {
 
   const sourcePath = path.join(process.cwd(), "/public/img/siswa/default.jpg");
     const destinationPath = path.join(process.cwd(), "/public/img/siswa/default.jpg");
-    const newFileName = name + ".jpg";
+    const newFileName = id + ".jpg";
     console.log(destinationPath);
 
   try {
