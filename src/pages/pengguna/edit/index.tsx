@@ -51,6 +51,7 @@ const UserEdit: FC<UserEditProps> = ({ userId, onClose, onSucsess, data }) => {
     resolver: yupResolver(schema),
   });
 
+
   const componentRef = useRef<HTMLUListElement>(null);
 
   useEffect(() => {
@@ -77,6 +78,7 @@ const UserEdit: FC<UserEditProps> = ({ userId, onClose, onSucsess, data }) => {
     { value: "SUPER", label: "SUPER ADMIN" },
     { value: "ADMIN", label: "ADMIN" },
     { value: "TENTOR", label: "TENTOR" },
+
   ];
 
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -102,6 +104,7 @@ const UserEdit: FC<UserEditProps> = ({ userId, onClose, onSucsess, data }) => {
   };
 
   const getRoleLabel = (value: string) => {
+
     const option = roleOptions.find((option) => option.value === value);
     return option ? option.label : "";
   };
@@ -268,6 +271,7 @@ const UserEdit: FC<UserEditProps> = ({ userId, onClose, onSucsess, data }) => {
                   errors={errors}
                   defaultValue={data?.email}
                 />
+
                 <div className="flex flex-col gap-2">
                   <label htmlFor="" className="text-sm text-Primary-10">
                     Role

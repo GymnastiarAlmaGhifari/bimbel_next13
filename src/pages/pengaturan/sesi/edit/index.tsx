@@ -85,20 +85,22 @@ const SesiEdit: FC<SesiEditProps> = ({ sesiId, onClose, data }) => {
                   onTimeChange={handleTimeChange}
                 /> */}
               </div>
-              {/* <Input
+              <Input
                 id="jam_mulai"
                 label="Jam Mulai"
+                type="time"
                 errors={errors}
                 register={{ ...register("jam_mulai") }}
                 defaultValue={data?.jam_mulai ?? ""}
-              /> */}
-              {/* <Input
+              />
+              <Input
                 id="jam_selesai"
                 label="Jam Selesai"
+                type="time"
                 errors={errors}
                 register={{ ...register("jam_selesai") }}
                 defaultValue={data?.jam_selesai ?? ""}
-              /> */}
+              />
             </div>
             <div className="flex flex-row justify-between">
               <Button

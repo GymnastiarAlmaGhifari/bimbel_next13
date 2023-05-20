@@ -10,21 +10,7 @@ export const config = {
   },
 };
 let randomString: string;
-function generateRandomString(length: number): string {
-  const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-  let result = "";
-  const charactersLength = characters.length;
 
-  for (let i = 0; i < length; i++) {
-    const randomIndex = Math.floor(Math.random() * charactersLength);
-    result += characters.charAt(randomIndex);
-  }
-
-  return result;
-}
-
-randomString = generateRandomString(6);
-console.log(randomString);
 
 // export { modifiedTimefromApiimg };
 
@@ -50,6 +36,8 @@ const readFile = (req: NextApiRequest, saveLocally?: boolean): Promise<{ fields:
 const handler: NextApiHandler = async (req, res) => {
   try {
     await fs.readdir(path.join(process.cwd() + "/public", "/img", "/user"));
+
+    randomString = Math.floor(100000 + Math.random() * 900000).toString();
 
     try {
       const user = await prisma.user.update({
