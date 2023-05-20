@@ -23,16 +23,37 @@ interface Program {
   updatedAt: Date;
 }
 
-interface Props {
-  program: Program[];
-}
-
-const Program: FC<Props> = () => {
+const Program: FC<Program> = () => {
   const { data: program, error } = useSWR<Program[]>(
     "/api/program",
     fetcher,
     {}
   );
+
+  const [inputValue, setInputValue] = useState<string>("");
+  const [debouncedValue, setDebouncedValue] = useState<string>("");
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedValue(inputValue);
+    }, 1000);
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [inputValue]);
+
+  let filteredProgram = program;
+
+  if (debouncedValue) {
+    filteredProgram = program?.filter((program) =>
+      program.nama_program.toLowerCase().includes(debouncedValue.toLowerCase())
+    );
+  }
+
+  const handleInputChange = (inputValue: string) => {
+    setInputValue(inputValue);
+  };
 
   const [selectedProgram, setSelectedProgram] = useState<Program | null>(null);
 
@@ -73,29 +94,45 @@ const Program: FC<Props> = () => {
           <div className="flex flex-col h-full p-4 gap-4 bg-Neutral-100 rounded-lg overflow-auto">
             <NavbarPengaturan />
             <div className="flex flex-col h-full bg-Neutral-100 py-4 gap-4 rounded-lg overflow-auto">
-              <HeadTable label="Program" onClick={() => setShowCreate(true)} />
+              <HeadTable label="Program" onClick={() => setShowCreate(true)}
+                onChange={handleInputChange}
+              />
               <div className="flex flex-col rounded-bl-lg rounded-br-lg p-4 gap-4 overflow-y-auto scrollbar-thin scrollbar-track-Neutral-100 scrollbar-thumb-Primary-40 scrollbar-rounded-lg scrollbar">
-                {program ? (
-                  <>
-                    {program.length === 0 ? (
-                      <p>No program found.</p>
-                    ) : (
-                      program.map((item) => (
-                        <CardProgram
-                          deskripsi=""
-                          key={item.id}
-                          nama_program={item.nama_program}
-                          tipe={item.tipe}
-                          level={item.level}
-                          kelas={item.kelas.nama_kelas}
-                          onEdit={() => setSelectedProgram(item)}
-                        />
-                      ))
-                    )}
-                  </>
-                ) : (
-                  <p>Loading...</p>
-                )}
+                {
+                  filteredProgram ? (
+                    <>
+                      {
+                        filteredProgram.length === 0 ? (
+                          <div className="flex flex-col items-center justify-center">
+                            <h1 className="text-2xl font-bold text-gray-500">
+                              Program tidak ditemukan
+                            </h1>
+                            <p className="text-sm text-gray-500">
+                              Program yang anda cari tidak ditemukan
+                            </p>
+                          </div>
+                        ) : (
+                          filteredProgram.map((item) => (
+                            <CardProgram
+                              deskripsi=""
+                              key={item.id}
+                              nama_program={item.nama_program}
+                              tipe={item.tipe}
+                              level={item.level}
+                              kelas={item.kelas.nama_kelas}
+                              onEdit={() => setSelectedProgram(item)}
+                            />
+                          ))
+                        )
+
+                      }
+                    </>
+                  )
+                    : (
+                      <p>Loading...</p>
+                    )
+
+                }
 
                 {selectedProgram && (
                   <ModalDetail titleModal="Edit Program" onClose={onClose}>

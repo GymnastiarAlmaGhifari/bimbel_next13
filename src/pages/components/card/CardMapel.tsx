@@ -15,13 +15,13 @@ const CardMapel: FC<CardMapelProps> = ({ nama_kelas, nama_mapel, onClick }) => {
         <div className="flex flex-col gap-1 justify-en">
           <h3 className="text-sm text-Neutral-30">Mata Pelajaran</h3>
           <span className="font-bold text-sm text-Primary-10">
-            {nama_kelas}
+            {nama_mapel}
           </span>
         </div>
         <div className="flex flex-col items-end gap-1 justify-end">
           <h3 className="text-sm text-Neutral-30">Kelas</h3>
           <span className="font-bold text-sm text-Primary-10">
-            {nama_mapel}
+            {nama_kelas}
           </span>
         </div>
       </div>
