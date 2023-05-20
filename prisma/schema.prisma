@@ -183,8 +183,8 @@ model siswa {
 model module {
   id String @id @default(cuid())
   nama_module String
-  url String
-  thumbnail String
+  url String?
+  thumbnail String?
   mapel mapel? @relation(fields: [mapel_id], references: [id])
   mapel_id String?
   createdAt DateTime @default(now())

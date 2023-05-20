@@ -12,6 +12,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         try {
             const kelompok = await prisma.kelompok.findUnique({
                 where: { id: kelompokId },
+                include: {
+                    Siswa: true,
+                    jadwal: {
+                        include: {
+                            jadwal_detail: true,
+                        },
+                    }
+                },
             });
 
             if (!kelompok) {
