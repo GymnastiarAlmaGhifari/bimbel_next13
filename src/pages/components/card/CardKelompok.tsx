@@ -84,8 +84,8 @@ const CardKelompok: FC<CardKelompokProps> = ({
   const [isExpandedJadwal, setIsExpandedJadwal] = useState(false);
   const [idKelompok, setIdKelompok] = useState("");
   const [idJadwal, setIdJadwal] = useState("");
-  const [siswa, setSiswa] = useState([]);
-  const [jadwal, setJadwal] = useState([]);
+  // const [siswa, setSiswa] = useState([]);
+  // const [jadwal, setJadwal] = useState([]);
 
   const handleDetailsClick = () => {
     setIsExpandedDetails(!isExpandedDetails);
@@ -111,41 +111,34 @@ const CardKelompok: FC<CardKelompokProps> = ({
     handleJadwalClick();
   };
 
-  const fetchSiswaData = useCallback(async () => {
-    try {
-      const response = await fetch(`/api/kelompok/siswa/${idKelompok}`);
-      const data = await response.json();
-      setSiswa(data);
-    } catch (error) {
-      console.error("Error fetching siswa data:", error);
-    }
-  }, [idKelompok]);
+  const { data: siswa, error: siswaError, isLoading } = useSWR(`/api/kelompok/siswa/${idKelompok}`, fetcher);
 
-  const fetchJadwalData = useCallback(async () => {
-    try {
-      const response = await fetch(`/api/kelompok/jadwal/${idJadwal}`);
-      const data = await response.json();
-      setJadwal(data);
-    } catch (error) {
-      console.error("Error fetching jadwal data:", error);
-    }
-  }, [idJadwal]);
+  const { data: jadwal, error: jadwalError, isLoading: jadwalIsLoading } = useSWR(`/api/kelompok/jadwal/${idJadwal}`, fetcher);
 
-  useEffect(() => {
-    if (isExpandedDetails) {
-      fetchSiswaData();
-    }
+  // const fetchJadwalData = useCallback(async () => {
+  //   try {
+  //     const response = await fetch(`/api/kelompok/jadwal/${idJadwal}`);
+  //     const data = await response.json();
+  //     setJadwal(data);
+  //   } catch (error) {
+  //     console.error("Error fetching jadwal data:", error);
+  //   }
+  // }, [idJadwal]);
 
-    if (isExpandedJadwal) {
-      fetchJadwalData();
-    }
-  }, [isExpandedDetails, isExpandedJadwal, fetchSiswaData, fetchJadwalData]);
+  // useEffect(() => {
+  //   if (isExpandedDetails) {
+  //     fetchSiswaData();
+  //   }
+
+  //   if (isExpandedJadwal) {
+  //     fetchJadwalData();
+  //   }
+  // }, [isExpandedDetails, isExpandedJadwal, fetchSiswaData, fetchJadwalData]);
 
   return (
     <div
-      className={`flex flex-col bg-Neutral-100 border rounded-lg py-5 px-4 gap-3 ${
-        isExpandedDetails || isExpandedJadwal ? "h-max" : ""
-      }`}
+      className={`flex flex-col bg-Neutral-100 border rounded-lg py-5 px-4 gap-3 ${isExpandedDetails || isExpandedJadwal ? "h-max" : ""
+        }`}
     >
       <div className="flex justify-between">
         <div className="flex items-center gap-3">
@@ -189,7 +182,11 @@ const CardKelompok: FC<CardKelompokProps> = ({
       <div className="">
         {isExpandedDetails && (
           <div className="grid grid-cols-2 gap-4 w-full">
-            {siswa &&
+            {siswaError ? (
+              <p>Error fetching siswa data.</p>
+            ) : isLoading ? (
+              <div>Loading...</div>
+            ) : siswa && siswa.length > 0 ? (
               siswa.map((student: any, index: number) => (
                 <div
                   key={student.id}
@@ -239,13 +236,20 @@ const CardKelompok: FC<CardKelompokProps> = ({
                     </div>
                   </div>
                 </div>
-              ))}
+              ))
+            ) : (
+              <p>Tidak ada siswa yang tersedia.</p>
+            )}
           </div>
         )}
 
         {isExpandedJadwal && (
           <div className="">
-            {jadwal && (
+            {jadwalError ? (
+              <p>Error fetching jadwal data.</p>
+            ) : jadwalIsLoading ? (
+              <div>Loading...</div>
+            ) : jadwal && jadwal.length > 0 ? (
               <div className="grid grid-cols-2 gap-4 w-full">
                 {jadwal.map((item: any) => (
                   <div
@@ -300,6 +304,8 @@ const CardKelompok: FC<CardKelompokProps> = ({
                   </div>
                 ))}
               </div>
+            ) : (
+              <p>Tidak ada jadwal yang tersedia.</p>
             )}
           </div>
         )}

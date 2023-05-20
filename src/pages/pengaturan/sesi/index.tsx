@@ -14,6 +14,7 @@ import HeadTable from "@/pages/components/HeadTable";
 import Sidebar from "@/pages/components/Sidebar";
 import Navbar from "@/pages/components/Navbar";
 import NavbarPengaturan from "@/pages/components/NavbarPengaturan";
+import Create from "./create";
 
 
 interface Sesi {
@@ -29,6 +30,20 @@ const Sesi: FC<Sesi> = () => {
   const { data: sesi, error } = useSWR<Sesi[]>("/api/sesi", fetcher, {});
 
   const [selectedSesi, setSelectedSesi] = useState<Sesi | null>(null);
+
+  const [showCreate, setShowCreate] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
+
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      setShowSuccess(false);
+    }, 2500);
+
+    return () => {
+      clearTimeout(timeoutId);
+    };
+  }, [showSuccess]);
+
 
   useEffect(() => {
     if (error) {
@@ -54,7 +69,13 @@ const Sesi: FC<Sesi> = () => {
           <div className="flex flex-col h-full p-4 gap-4 bg-Neutral-100 rounded-lg overflow-auto">
             <NavbarPengaturan />
             <div className="flex flex-col h-full bg-Neutral-100 py-4 gap-4 rounded-lg overflow-auto">
-              <HeadTable label="Sesi" />
+              <HeadTable label="Sesi"
+                onClick={
+                  () => {
+                    setShowCreate(true);
+                  }
+                }
+              />
               <div className="flex flex-col rounded-bl-lg rounded-br-lg p-4 gap-4 overflow-y-auto scrollbar-thin scrollbar-track-Neutral-100 scrollbar-thumb-Primary-40 scrollbar-rounded-lg scrollbar ">
                 {sesi ? (
                   <>
@@ -84,6 +105,37 @@ const Sesi: FC<Sesi> = () => {
                       data={selectedSesi}
                       onClose={onClose}
                       sesiId={selectedSesi.id}
+                    />
+                  </ModalDetail>
+                )}
+
+                {showSuccess && (
+                  <ModalDetail
+                    titleModal="Modal Ruang"
+                    onClose={() => setShowSuccess(false)}
+                  >
+                    <div className="flex flex-col items-center justify-center">
+                      <h1 className="text-2xl font-bold text-green-500">
+                        Berhasil
+                      </h1>
+                      <p className="text-sm text-gray-500">
+                        {selectedSesi?.nama_sesi} berhasil diupdate
+                      </p>
+                    </div>
+                  </ModalDetail>
+                )}
+
+                {/* modal create */}
+                {showCreate && (
+                  <ModalDetail
+                    titleModal="Tambah Ruang"
+                    onClose={() => setShowCreate(false)}
+                  >
+                    <Create
+                      onClose={() => setShowCreate(false)}
+                      onSucsess={() => {
+                        setShowSuccess(true);
+                      }}
                     />
                   </ModalDetail>
                 )}
