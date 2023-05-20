@@ -9,8 +9,8 @@ export default function NavbarLanding() {
   const navBg = useRef<HTMLInputElement>(null);
   useEffect(() => {
     window.addEventListener("scroll", function () {
-      console.log(window.scrollY);
-      console.log(window.screenY);
+      // console.log(window.scrollY);
+      // console.log(window.screenY);
       if (window.scrollY > 100) {
         navBg.current?.classList.add(
           "backdrop-blur",

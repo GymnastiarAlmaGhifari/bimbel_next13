@@ -82,6 +82,7 @@ const Program: FC<Props> = () => {
                     ) : (
                       program.map((item) => (
                         <CardProgram
+                          deskripsi=""
                           key={item.id}
                           nama_program={item.nama_program}
                           tipe={item.tipe}
