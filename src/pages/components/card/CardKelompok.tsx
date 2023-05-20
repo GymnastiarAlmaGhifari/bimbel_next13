@@ -2,7 +2,12 @@ import { FC, useCallback, useEffect, useState } from "react";
 import ButtonEdit from "../buttons/ButtonEdit";
 import Button from "../buttons/Button";
 import { MdModeEdit, MdDelete, MdOutlineInfo } from "react-icons/md";
-import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
+import {
+  IoIosArrowBack,
+  IoIosArrowForward,
+  IoIosArrowUp,
+  IoIosArrowDown,
+} from "react-icons/io";
 import Link from "next/link";
 import useSWR from "swr";
 import fetcher from "@/libs/fetcher";
@@ -137,7 +142,7 @@ const CardKelompok: FC<CardKelompokProps> = ({
     >
       <div className="flex justify-between">
         <div className="flex items-center gap-3">
-          <h1 className="text-xl text-Neutral-10 font-bold">{nama_kelompok}</h1>
+          <h1 className="text-lg text-Neutral-10 font-bold">{nama_kelompok}</h1>
           <span className="text-Neutral-30">{tipe}</span>
         </div>
         <h3 className="text-sm text-Neutral-30 font-bold">{level}</h3>
@@ -152,7 +157,7 @@ const CardKelompok: FC<CardKelompokProps> = ({
             textColor="text-Primary-20"
             type="button"
             onClick={handleShowDetails}
-            icon={isExpandedDetails ? IoIosArrowBack : IoIosArrowForward}
+            icon={isExpandedDetails ? IoIosArrowUp : IoIosArrowDown}
           />
           <Button
             bgColor="bg-Primary-50"
@@ -160,7 +165,7 @@ const CardKelompok: FC<CardKelompokProps> = ({
             label={isExpandedJadwal ? "Tutup Jadwal" : "Lihat Jadwal"}
             textColor="text-Primary-20"
             type="button"
-            icon={isExpandedJadwal ? IoIosArrowBack : IoIosArrowForward}
+            icon={isExpandedJadwal ? IoIosArrowUp : IoIosArrowDown}
             onClick={handleLihatJadwal}
           />
         </div>

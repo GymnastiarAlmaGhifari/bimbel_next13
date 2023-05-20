@@ -63,8 +63,8 @@ model jadwal{
 model jadwal_detail{
   id String @id @default(cuid())
   hari Hari
-  jadwal jadwal @relation(fields: [jadwal_id], references: [id])
-  jadwal_id String
+  jadwal jadwal? @relation(fields: [jadwal_id], references: [id])
+  jadwal_id String?
   sesi sesi? @relation(fields: [sesi_id], references: [id])
   sesi_id String?
   mapel mapel? @relation(fields: [mapel_id], references: [id])
@@ -183,8 +183,8 @@ model siswa {
 model module {
   id String @id @default(cuid())
   nama_module String
-  url String
-  thumbnail String
+  url String?
+  thumbnail String?
   mapel mapel? @relation(fields: [mapel_id], references: [id])
   mapel_id String?
   createdAt DateTime @default(now())

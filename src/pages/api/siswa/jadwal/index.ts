@@ -89,10 +89,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                         for (let i = 0; i < count; i++) {
 
                             const mulai = jadwal[i].sesi?.jam_mulai as Date;
-                            const formattedmulai = new Date(mulai).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false, timeZone: "UTC" });
+                            const formattedmulai = new Date(mulai).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", hour12: false, timeZone: "UTC" });
 
                             const selesai = jadwal[i].sesi?.jam_selesai as Date;
-                            const formattedselesai = new Date(selesai).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false, timeZone: "UTC" });
+                            const formattedselesai = new Date(selesai).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", hour12: false, timeZone: "UTC" });
 
                             const schedule = {
                                 jadwal_id: jadwal[i].id,
