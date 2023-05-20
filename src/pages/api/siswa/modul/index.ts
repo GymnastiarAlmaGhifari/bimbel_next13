@@ -43,8 +43,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
                 const modulsArray: {
                     modul_id: string;
-                    nama_modul: any;
-                    url: string;
+                    nama_modul: string;
+                    url: string | null;
                     nama_mapel: string | undefined;
                 }[] = [];
 

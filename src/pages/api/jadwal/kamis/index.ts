@@ -22,24 +22,28 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             user: true,
           },
         });
-            const kamisWithKelompok = await Promise.all(
-                kamis.map(async (item) => {
-                    const kelompok = await prisma.kelompok.findUnique({
-                        where: {
-                            jadwal_id: item.jadwal_id,
-                        },
-                    });
+        const kamisWithKelompok = await Promise.all(
+          kamis.map(async (item) => {
+            const kelompok = await prisma.kelompok.findUnique({
+              where: {
+                jadwal_id: item.jadwal_id || undefined,
+              },
+            });
 
-                    return {
-                        ...item,
-                        kelompok: kelompok,
-                    };
-                })
-            );
+            return {
+              ...item,
+              kelompok: kelompok,
+            };
+          })
+        );
 
-            res.status(200).json(kamisWithKelompok);
-        } catch (error) {
-            res.status(400).json({ message: "Data gagal ditemukan", error });
+        if (kamisWithKelompok.length === 0) {
+          res.status(200).json({ message: "Data tidak ditemukan" });
+        } else {
+          res.status(200).json(kamisWithKelompok);
         }
+      } catch (error) {
+        res.status(400).json({ message: "Data gagal ditemukan", error });
+      }
     }
 }
