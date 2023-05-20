@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC, useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { mutate } from "swr";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -7,7 +7,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import Button from "@/pages/components/buttons/Button";
 import Image from "next/image";
-import { IoMdCloudUpload } from "react-icons/io";
+import { IoMdCloudUpload, IoIosArrowUp, IoIosArrowDown } from "react-icons/io";
 
 interface UserEditProps {
   userId: string;
@@ -40,7 +40,7 @@ const UserEdit: FC<UserEditProps> = ({ userId, onClose, onSucsess, data }) => {
 
   const [error, setError] = useState<string | null>(null);
 
-  const [isListOpen, setIsListOpen] = useState(true);
+  const [isListOpen, setIsListOpen] = useState(false);
   const {
     register,
     handleSubmit,
@@ -50,6 +50,36 @@ const UserEdit: FC<UserEditProps> = ({ userId, onClose, onSucsess, data }) => {
   } = useForm<FormData>({
     resolver: yupResolver(schema),
   });
+
+
+  const componentRef = useRef<HTMLUListElement>(null);
+
+  useEffect(() => {
+    // Menangani klik di luar komponen
+    const handleOutsideClick = (event: any) => {
+      if (
+        componentRef.current &&
+        !componentRef.current.contains(event.target)
+      ) {
+        setIsListOpen(false);
+      }
+    };
+
+    // Menambahkan event listener ketika komponen di-mount
+    document.addEventListener("mousedown", handleOutsideClick);
+
+    // Membersihkan event listener ketika komponen di-unmount
+    return () => {
+      document.removeEventListener("mousedown", handleOutsideClick);
+    };
+  }, [setIsListOpen, componentRef]);
+
+  const roleOptions = [
+    { value: "SUPER", label: "SUPER ADMIN" },
+    { value: "ADMIN", label: "ADMIN" },
+    { value: "TENTOR", label: "TENTOR" },
+
+  ];
 
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -71,6 +101,12 @@ const UserEdit: FC<UserEditProps> = ({ userId, onClose, onSucsess, data }) => {
   const selectRole = (role: string) => {
     setValue("role", role);
     setIsListOpen(false);
+  };
+
+  const getRoleLabel = (value: string) => {
+
+    const option = roleOptions.find((option) => option.value === value);
+    return option ? option.label : "";
   };
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
@@ -175,7 +211,10 @@ const UserEdit: FC<UserEditProps> = ({ userId, onClose, onSucsess, data }) => {
                 </div>
               )}
               <div>
-                <label htmlFor="image" className="bg-gray-500 text-white px-4 py-2 rounded cursor-pointer flex items-center space-x-2">
+                <label
+                  htmlFor="image"
+                  className="bg-gray-500 text-white px-4 py-2 rounded cursor-pointer flex items-center space-x-2"
+                >
                   <IoMdCloudUpload className="w-5 h-5" />
                   <span>Choose File</span>
                 </label>
@@ -232,51 +271,49 @@ const UserEdit: FC<UserEditProps> = ({ userId, onClose, onSucsess, data }) => {
                   errors={errors}
                   defaultValue={data?.email}
                 />
-                <div className="relative">
-                  <button
-                    type="button"
-                    className="bg-transparent border-none outline-none"
-                    onClick={toggleList}
-                  >
-                    {watch('role') || 'Pilih peran'}
-                  </button>
-                  {isListOpen && (
-                    <ul className="absolute left-0 right-0 z-10 bg-Neutral-95 rounded-full py-2 px-4 outline-none appearance-none focus:bg-Primary-95 focus:ring-1 focus:ring-Primary-50 hover:bg-none">
-                      <li>
-                        <button
-                          type="button"
-                          className={`${watch("role") === "SUPER" ? "text-Primary-10 bg-Primary-10" : "text-Primary-50 hover:bg-Primary-10"
-                            }`}
-                          onClick={() => selectRole("SUPER")}
-                        >
-                          SUPER ADMIN
-                        </button>
-                      </li>
-                      <li>
-                        <button
-                          type="button"
-                          className={`${watch("role") === "ADMIN" ? "text-Primary-10 bg-Primary-10" : "text-Primary-50 hover:bg-Primary-10"
-                            }`}
-                          onClick={() => selectRole("ADMIN")}
-                        >
-                          ADMIN
-                        </button>
-                      </li>
-                      <li>
-                        <button
-                          type="button"
-                          className={`${watch("role") === "TENTOR" ? "text-Primary-10 bg-Primary-10" : "text-Primary-50 hover:bg-Primary-10"
-                            }`}
-                          onClick={() => selectRole("TENTOR")}
-                        >
-                          TENTOR
-                        </button>
-                      </li>
-                    </ul>
+
+                <div className="flex flex-col gap-2">
+                  <label htmlFor="" className="text-sm text-Primary-10">
+                    Role
+                  </label>
+
+                  <div className="relative flex flex-col gap-2">
+                    <button
+                      type="button"
+                      className={` w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${
+                        isListOpen
+                          ? "border-[2px] border-Primary-50 bg-Primary-95"
+                          : "bg-Neutral-95"
+                      }`}
+                      onClick={toggleList}
+                    >
+                      {getRoleLabel(watch("role")) || "Pilih peran"}
+                      {isListOpen ? <IoIosArrowUp /> : <IoIosArrowDown />}
+                    </button>
+                    {isListOpen && (
+                      <ul className="absolute w-full top-[44px] z-10 bg-Neutral-100 border-[2px] border-Primary-50 rounded-xl py-2 px-2 outline-none appearance-none flex flex-col gap-1" ref={componentRef}>
+                        {roleOptions.map((option) => (
+                          <li key={option.value}>
+                            <button
+                              type="button"
+                              className={`w-full text-left px-2 py-1 rounded-full ${
+                                watch("role") === option.value
+                                  ? "text-Primary-90 bg-Primary-20"
+                                  : "text-Primary-20 hover:bg-Primary-95"
+                              }`}
+                              onClick={() => selectRole(option.value)}
+                            >
+                              {option.label}
+                            </button>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </div>
+                  {errors.role && (
+                    <span className="text-red-500">{errors.role.message}</span>
                   )}
-                </div>
-                {errors.role && <span className="text-red-500">{errors.role.message}</span>}
-                {/* <select
+                  {/* <select
                     id="role"
                     {...register("role")}
                     defaultValue={data?.role}
@@ -286,60 +323,60 @@ const UserEdit: FC<UserEditProps> = ({ userId, onClose, onSucsess, data }) => {
                     <option value="ADMIN">ADMIN</option>
                     <option value="TENTOR">TENTOR</option>
                   </select> */}
+                </div>
+                <Input
+                  id="nomor_telepon"
+                  label="Nomor Telepon"
+                  type="number"
+                  register={{ ...register("nomor_telepon") }}
+                  errors={errors}
+                  defaultValue={data?.nomor_telepon}
+                />
+                <Input
+                  id="lulusan"
+                  label="Lulusan"
+                  type="text"
+                  register={{ ...register("lulusan") }}
+                  errors={errors}
+                  defaultValue={data?.universitas}
+                />
+                <Input
+                  id="alamat"
+                  label="Alamat"
+                  type="text"
+                  register={{ ...register("alamat") }}
+                  errors={errors}
+                  defaultValue={data?.alamat}
+                />
               </div>
+              {error && <p className="text-red-500">{error}</p>}
 
-              <Input
-                id="nomor_telepon"
-                label="Nomor Telepon"
-                type="number"
-                register={{ ...register("nomor_telepon") }}
-                errors={errors}
-                defaultValue={data?.nomor_telepon}
-              />
-              <Input
-                id="lulusan"
-                label="Lulusan"
-                type="text"
-                register={{ ...register("lulusan") }}
-                errors={errors}
-                defaultValue={data?.universitas}
-              />
-              <Input
-                id="alamat"
-                label="Alamat"
-                type="text"
-                register={{ ...register("alamat") }}
-                errors={errors}
-                defaultValue={data?.alamat}
-              />
-            </div>
-            {error && <p className="text-red-500">{error}</p>}
-
-            <div className="flex flex-row justify-end gap-4">
-              <Button
-                center
-                bgColor="bg-Neutral-70"
-                brColor=""
-                label="Batal"
-                textColor="text-Neutral-30"
-                type="button"
-                onClick={onClose}
-              />
-              <Button
-                center
-                type="submit"
-                bgColor="bg-Tertiary-50"
-                brColor=""
-                label="Konfirmasi"
-                textColor="text-Neutral-100"
-                withBgColor
-              />
+              <div className="flex flex-row justify-end gap-4">
+                <Button
+                  center
+                  bgColor="bg-Neutral-70"
+                  brColor=""
+                  label="Batal"
+                  textColor="text-Neutral-30"
+                  type="button"
+                  onClick={onClose}
+                />
+                <Button
+                  center
+                  type="submit"
+                  bgColor="bg-Tertiary-50"
+                  brColor=""
+                  label="Konfirmasi"
+                  textColor="text-Neutral-100"
+                  withBgColor
+                />
+              </div>
             </div>
           </>
         )}
       </>
     </form>
   );
-}
+};
 
 export default UserEdit;
