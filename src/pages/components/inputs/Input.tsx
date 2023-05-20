@@ -61,7 +61,7 @@ const Input: React.FC<InputProps> = ({
             w-full
             px-4
             py-2
-            font-light 
+             
             rounded-full
             outline-none
             transition
