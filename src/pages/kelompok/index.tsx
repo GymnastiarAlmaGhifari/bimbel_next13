@@ -88,7 +88,6 @@ const Kelompok: FC<Kelompok> = () => {
                           setSelected(kelompok);
                         }}
                         id={kelompok.id}
-                        jadwal_id={kelompok.jadwal_id}
                         addAnggota={() => {
                           setSelectedAnggota(kelompok);
                         }}
@@ -155,16 +154,24 @@ const Kelompok: FC<Kelompok> = () => {
           titleModal="Tambah Anggota (Nama Kelompok)"
           onClose={() => setSelectedAnggota(null)}
         >
-          <Anggota />
+          <Anggota
+            onClose={() => setSelectedAnggota(null)}
+            onSuccess={() => {
+              setShowSuccess(true);
+            }}
+            data={selectedAnggota}
+            kelompokId={selectedAnggota.id}
+
+          />
         </ModalDetail>
       )}
 
       {/* Modal add jadwal */}
       {selectedJadwal && (
         <ModalDetail
-        titleModal="Tambah Jadwal (Nama Kelompok)"
-        onClose={() => setSelectedJadwal(null)}>
-          <Jadwal/>
+          titleModal="Tambah Jadwal (Nama Kelompok)"
+          onClose={() => setSelectedJadwal(null)}>
+          <Jadwal />
         </ModalDetail>
       )}
     </div>
