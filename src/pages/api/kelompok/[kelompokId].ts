@@ -14,19 +14,27 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 where: { id: kelompokId },
                 include: {
                     Siswa: true,
-                    jadwal: {
-                        include: {
-                            jadwal_detail: true,
-                        },
-                    }
-                },
+                    },
             });
 
+            const jadwal = await prisma.jadwal_detail.findMany({
+                where: { kelompok_id: kelompokId },
+                include: {
+                    sesi: true,
+                    mapel: true,
+                    user: true,
+                },
+            });
             if (!kelompok) {
                 return res.status(404).json({ message: "Kelompok not found" });
             }
 
-            res.status(200).json(kelompok);
+            const kelompokWithJadwal = {
+                ...kelompok,
+                jadwal,
+            };
+
+            res.status(200).json(kelompokWithJadwal);
         } catch (error) {
             console.error(error);
             res.status(500).json({ message: "Error loading kelompok" });
