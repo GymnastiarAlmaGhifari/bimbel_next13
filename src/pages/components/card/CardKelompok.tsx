@@ -18,7 +18,7 @@ import Image from "next/image";
 
 interface CardKelompokProps {
   id?: string;
-  jadwal_id: string;
+
   level: string;
   tipe: string;
   nama_kelompok: string;
@@ -30,7 +30,6 @@ interface CardKelompokProps {
 interface Jadwal {
   id: string;
   hari: string;
-  jadwal_id: string;
   sesi_id: string;
   mapel_id: string;
   image: string;
@@ -79,7 +78,6 @@ interface Jadwal {
 
 const CardKelompok: FC<CardKelompokProps> = ({
   id,
-  jadwal_id,
   nama_kelompok,
   tipe,
   level,
@@ -90,9 +88,7 @@ const CardKelompok: FC<CardKelompokProps> = ({
   const [isExpandedDetails, setIsExpandedDetails] = useState(false);
   const [isExpandedJadwal, setIsExpandedJadwal] = useState(false);
   const [idKelompok, setIdKelompok] = useState("");
-  const [idJadwal, setIdJadwal] = useState("");
-  // const [siswa, setSiswa] = useState([]);
-  // const [jadwal, setJadwal] = useState([]);
+
 
   const handleDetailsClick = () => {
     setIsExpandedDetails(!isExpandedDetails);
@@ -114,7 +110,7 @@ const CardKelompok: FC<CardKelompokProps> = ({
   };
 
   const handleLihatJadwal = () => {
-    setIdJadwal(jadwal_id);
+    setIdKelompok(id || "");
     handleJadwalClick();
   };
 
@@ -122,39 +118,20 @@ const CardKelompok: FC<CardKelompokProps> = ({
     data: siswa,
     error: siswaError,
     isLoading,
-  } = useSWR(`/api/kelompok/siswa/${idKelompok}`, fetcher);
+  } = useSWR(`/api/kelompok/siswa/${idKelompok}`, fetcher,);
 
   const {
     data: jadwal,
     error: jadwalError,
     isLoading: jadwalIsLoading,
-  } = useSWR(`/api/kelompok/jadwal/${idJadwal}`, fetcher);
-
-  // const fetchJadwalData = useCallback(async () => {
-  //   try {
-  //     const response = await fetch(`/api/kelompok/jadwal/${idJadwal}`);
-  //     const data = await response.json();
-  //     setJadwal(data);
-  //   } catch (error) {
-  //     console.error("Error fetching jadwal data:", error);
-  //   }
-  // }, [idJadwal]);
-
-  // useEffect(() => {
-  //   if (isExpandedDetails) {
-  //     fetchSiswaData();
-  //   }
-
-  //   if (isExpandedJadwal) {
-  //     fetchJadwalData();
-  //   }
-  // }, [isExpandedDetails, isExpandedJadwal, fetchSiswaData, fetchJadwalData]);
+  } = useSWR<Jadwal[]>(`/api/kelompok/jadwal/${idKelompok}`, fetcher, {
+    shouldRetryOnError: false,
+  });
 
   return (
     <div
-      className={`flex flex-col bg-Neutral-100 border rounded-lg py-5 px-4 gap-3 ${
-        isExpandedDetails || isExpandedJadwal ? "h-max" : ""
-      }`}
+      className={`flex flex-col bg-Neutral-100 border rounded-lg py-5 px-4 gap-3 ${isExpandedDetails || isExpandedJadwal ? "h-max" : ""
+        }`}
     >
       <div className="flex justify-between">
         <div className="flex items-center gap-3">

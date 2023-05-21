@@ -1,13 +1,12 @@
 import { FC, useState } from "react";
-import axios from "axios";
-import { mutate } from "swr";
-import { SubmitHandler, useForm } from "react-hook-form";
 import Input from "@/pages/components/inputs/Input";
-import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
 import Button from "@/pages/components/buttons/Button";
 import Image from "next/image";
-import useSWR from "swr";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import axios from "axios";
+import * as yup from "yup";
+import useSWR, { mutate } from "swr";
 import fetcher from "@/libs/fetcher";
 
 interface UserEditProps {
