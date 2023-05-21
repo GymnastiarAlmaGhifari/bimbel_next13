@@ -10,6 +10,7 @@ interface ModalDetailProps {
   children: React.ReactNode;
   onClose: () => void;
   titleModal: string;
+  wAuto?: boolean;
 }
 interface ModalProps {
   // children: React.ReactNode
@@ -77,6 +78,7 @@ export const ModalHapus: FC<ModalHapusProps> = ({ children, onClose }) => {
 };
 export const ModalDetail: FC<ModalDetailProps> = ({
   children,
+  wAuto,
   onClose,
   titleModal,
 }) => {
@@ -84,7 +86,11 @@ export const ModalDetail: FC<ModalDetailProps> = ({
     <Dialog open={true} onClose={() => {}} className="relative z-50">
       <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
       <div className="fixed inset-0 flex items-center justify-center">
-        <Dialog.Panel className="h-auto bg-Neutral-100 py-4 px-6 rounded-xl flex flex-col gap-4 w-1/2">
+        <Dialog.Panel
+          className={`h-auto bg-Neutral-100 py-4 px-6 rounded-xl flex flex-col gap-4 ${
+            wAuto ? "w-max" : "w-1/2"
+          }`}
+        >
           <div className="flex flex-col">
             <div className="flex justify-between">
               <h1 className="text-xl font-bold text-Primary-10">

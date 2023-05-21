@@ -8,6 +8,8 @@ import CardKelompok from "../components/card/CardKelompok";
 import { ModalDetail } from "../components/modal/Modal";
 import KelompokEdit from "./edit";
 import CreateKelompok from "./create";
+import Anggota from "./anggota";
+import Jadwal from "./jadwal";
 
 interface Kelompok {
   program: any;
@@ -29,6 +31,9 @@ const Kelompok: FC<Kelompok> = () => {
     {}
   );
   const [selected, setSelected] = useState<Kelompok | null>(null);
+
+  const [selectedAnggota, setSelectedAnggota] = useState<Kelompok | null>(null);
+  const [selectedJadwal, setSelectedJadwal] = useState<Kelompok | null>(null);
 
   useEffect(() => {
     if (error) {
@@ -84,6 +89,12 @@ const Kelompok: FC<Kelompok> = () => {
                         }}
                         id={kelompok.id}
                         jadwal_id={kelompok.jadwal_id}
+                        addAnggota={() => {
+                          setSelectedAnggota(kelompok);
+                        }}
+                        addJadwal={() => {
+                          setSelectedJadwal(kelompok);
+                        }}
                       />
                     ))
                   )}
@@ -135,6 +146,25 @@ const Kelompok: FC<Kelompok> = () => {
               setShowSuccess(true);
             }}
           />
+        </ModalDetail>
+      )}
+
+      {/* modal add anggota */}
+      {selectedAnggota && (
+        <ModalDetail wAuto
+          titleModal="Tambah Anggota (Nama Kelompok)"
+          onClose={() => setSelectedAnggota(null)}
+        >
+          <Anggota />
+        </ModalDetail>
+      )}
+
+      {/* Modal add jadwal */}
+      {selectedJadwal && (
+        <ModalDetail
+        titleModal="Tambah Jadwal (Nama Kelompok)"
+        onClose={() => setSelectedJadwal(null)}>
+          <Jadwal/>
         </ModalDetail>
       )}
     </div>

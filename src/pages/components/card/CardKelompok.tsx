@@ -2,11 +2,14 @@ import { FC, useCallback, useEffect, useState } from "react";
 import ButtonEdit from "../buttons/ButtonEdit";
 import Button from "../buttons/Button";
 import { MdModeEdit, MdDelete, MdOutlineInfo } from "react-icons/md";
+
 import {
   IoIosArrowBack,
   IoIosArrowForward,
   IoIosArrowUp,
   IoIosArrowDown,
+  IoIosAdd,
+  IoLogoWhatsapp,
 } from "react-icons/io";
 import Link from "next/link";
 import useSWR from "swr";
@@ -20,6 +23,8 @@ interface CardKelompokProps {
   tipe: string;
   nama_kelompok: string;
   onClick: () => void;
+  addAnggota: () => void;
+  addJadwal: () => void;
 }
 
 interface Jadwal {
@@ -79,6 +84,8 @@ const CardKelompok: FC<CardKelompokProps> = ({
   tipe,
   level,
   onClick,
+  addAnggota,
+  addJadwal,
 }) => {
   const [isExpandedDetails, setIsExpandedDetails] = useState(false);
   const [isExpandedJadwal, setIsExpandedJadwal] = useState(false);
@@ -111,9 +118,17 @@ const CardKelompok: FC<CardKelompokProps> = ({
     handleJadwalClick();
   };
 
-  const { data: siswa, error: siswaError, isLoading } = useSWR(`/api/kelompok/siswa/${idKelompok}`, fetcher);
+  const {
+    data: siswa,
+    error: siswaError,
+    isLoading,
+  } = useSWR(`/api/kelompok/siswa/${idKelompok}`, fetcher);
 
-  const { data: jadwal, error: jadwalError, isLoading: jadwalIsLoading } = useSWR(`/api/kelompok/jadwal/${idJadwal}`, fetcher);
+  const {
+    data: jadwal,
+    error: jadwalError,
+    isLoading: jadwalIsLoading,
+  } = useSWR(`/api/kelompok/jadwal/${idJadwal}`, fetcher);
 
   // const fetchJadwalData = useCallback(async () => {
   //   try {
@@ -137,8 +152,9 @@ const CardKelompok: FC<CardKelompokProps> = ({
 
   return (
     <div
-      className={`flex flex-col bg-Neutral-100 border rounded-lg py-5 px-4 gap-3 ${isExpandedDetails || isExpandedJadwal ? "h-max" : ""
-        }`}
+      className={`flex flex-col bg-Neutral-100 border rounded-lg py-5 px-4 gap-3 ${
+        isExpandedDetails || isExpandedJadwal ? "h-max" : ""
+      }`}
     >
       <div className="flex justify-between">
         <div className="flex items-center gap-3">
@@ -169,15 +185,44 @@ const CardKelompok: FC<CardKelompokProps> = ({
             onClick={handleLihatJadwal}
           />
         </div>
-        <Button
-          type="button"
-          bgColor="bg-Tertiary-50"
-          brColor=""
-          label="Edit Kelompok"
-          textColor="text-Tertiary-50"
-          icon={MdModeEdit}
-          onClick={onClick}
-        />
+        <div className="flex gap-4">
+          <Button
+            type="button"
+            bgColor="bg-Tertiary-50"
+            brColor=""
+            label="Tambah Anggota"
+            textColor="text-Tertiary-50"
+            icon={IoIosAdd}
+            onClick={addAnggota}
+          />
+          <Button
+            type="button"
+            bgColor="bg-Tertiary-50"
+            brColor=""
+            label="Tambah Jadwal"
+            textColor="text-Tertiary-50"
+            icon={IoIosAdd}
+            onClick={addJadwal}
+          />
+          <Button
+            type="button"
+            bgColor="bg-Tertiary-50"
+            brColor=""
+            label="Edit Kelompok"
+            textColor="text-Tertiary-50"
+            icon={MdModeEdit}
+            onClick={onClick}
+          />
+          <Button
+            type="button"
+            bgColor="bg-Error-50"
+            brColor=""
+            label="Hapus Kelompok"
+            textColor="text-Error-50"
+            icon={MdDelete}
+            onClick={onClick}
+          />
+        </div>
       </div>
       <div className="">
         {isExpandedDetails && (
@@ -209,7 +254,7 @@ const CardKelompok: FC<CardKelompokProps> = ({
                           {student.nama}
                         </p>
                         <p className="text-sm text-Neutral-100">
-                          {student.nomor_telepon}
+                          {student.sekolah}
                         </p>
                       </div>
                     </div>
@@ -219,6 +264,17 @@ const CardKelompok: FC<CardKelompokProps> = ({
                         bgColor="bg-Neutral-100"
                         brColor=""
                         withBgColor
+                        noLabel
+                        label="Info"
+                        textColor="text-Primary-40"
+                        type="button"
+                        icon={IoLogoWhatsapp}
+                      />
+                      <Button
+                        bgColor="bg-Neutral-100"
+                        brColor=""
+                        withBgColor
+                        noLabel
                         label="Info"
                         textColor="text-Tertiary-50"
                         type="button"
@@ -228,6 +284,7 @@ const CardKelompok: FC<CardKelompokProps> = ({
                         bgColor="bg-Neutral-100"
                         withBgColor
                         brColor=""
+                        noLabel
                         label="Hapus"
                         textColor="text-Error-50"
                         type="button"
@@ -262,16 +319,15 @@ const CardKelompok: FC<CardKelompokProps> = ({
                           <h1 className="font-bold text-Neutral-100">
                             {item?.hari}
                           </h1>
+
                           <span className="font-bold text-sm text-Neutral-100">
-                            {item.sesi?.nama_sesi}
+                            {item?.ruang.nama_ruang}
                           </span>
                         </div>
-                        <div className="flex flex-col gap-1 items-end">
-                          <h3 className="text-sm text-Neutral-100">Jam</h3>
-                          <span className="font-bold text-sm text-Neutral-100">
-                            {item.sesi.jam_mulai} - {item.sesi.jam_selesai}
-                          </span>
-                        </div>
+                        <h1 className="font-bold text-Neutral-100">
+                          {item.sesi?.nama_sesi}
+                        </h1>
+
                       </div>
                       <div className="flex w-full justify-between">
                         <div className="flex flex-col gap-1">
@@ -282,15 +338,22 @@ const CardKelompok: FC<CardKelompokProps> = ({
                             {item.mapel?.nama_mapel}
                           </span>
                         </div>
+
                         <div className="flex flex-col gap-1 items-end">
-                          <h3 className="text-sm text-Neutral-100">User</h3>
+                          <h3 className="text-sm text-Neutral-100">Jam</h3>
                           <span className="font-bold text-sm text-Neutral-100">
-                            {item?.user.name}
+                            {item.sesi.jam_mulai} - {item.sesi.jam_selesai}
                           </span>
                         </div>
                       </div>
                     </div>
-                    <div className="flex justify-end">
+                    <div className="flex justify-between">
+                      <div className="flex flex-col gap-1">
+                        <h3 className="text-sm text-Neutral-100">User</h3>
+                        <span className="font-bold text-sm text-Neutral-100">
+                          {item?.user.name}
+                        </span>
+                      </div>
                       <Button
                         bgColor="bg-Neutral-100"
                         withBgColor

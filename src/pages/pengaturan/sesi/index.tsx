@@ -34,6 +34,31 @@ const Sesi: FC<Sesi> = () => {
   const [showCreate, setShowCreate] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
 
+  const [inputValue, setInputValue] = useState<string>("");
+  const [debouncedValue, setDebouncedValue] = useState<string>("");
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedValue(inputValue);
+    }, 1000);
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [inputValue]);
+
+  let filteredSesi = sesi;
+
+  if (debouncedValue) {
+    filteredSesi = sesi?.filter((sesi) =>
+      sesi.nama_sesi.toLowerCase().includes(debouncedValue.toLowerCase())
+    );
+  }
+
+  const handleInputChange = (inputValue: string) => {
+    setInputValue(inputValue);
+  };
+
   useEffect(() => {
     const timeoutId = setTimeout(() => {
       setShowSuccess(false);
@@ -70,35 +95,40 @@ const Sesi: FC<Sesi> = () => {
             <NavbarPengaturan />
             <div className="flex flex-col h-full bg-Neutral-100 py-4 gap-4 rounded-lg overflow-auto">
               <HeadTable label="Sesi"
-                onClick={
-                  () => {
-                    setShowCreate(true);
-                  }
-                }
+                onClick={() => setShowCreate(true)}
+                onChange={handleInputChange}
+
               />
               <div className="flex flex-col rounded-bl-lg rounded-br-lg p-4 gap-4 overflow-y-auto scrollbar-thin scrollbar-track-Neutral-100 scrollbar-thumb-Primary-40 scrollbar-rounded-lg scrollbar ">
-                {sesi ? (
-                  <>
-                    {sesi.length === 0 ? (
-                      <p>No sesi found.</p>
-                    ) : (
-                      sesi.map((sesi) => (
-                        <CardSesi
-                          nama_sesi={sesi.nama_sesi}
-                          mulai_sesi={sesi.jam_mulai}
-                          selesai_sesi={sesi.jam_selesai}
-                          key={sesi.id}
-                          onClick={() => {
-                            setSelectedSesi(sesi);
-                          }}
-                        />
-                      ))
-                    )}
-                  </>
-                ) : (
-                  <p>Loading...</p>
-                )}
-
+                {
+                  filteredSesi ? (
+                    <>
+                      {filteredSesi.length === 0 ? (
+                        <div className="flex flex-col items-center justify-center">
+                          <h1 className="text-2xl font-bold text-gray-500">
+                            Program tidak ditemukan
+                          </h1>
+                          <p className="text-sm text-gray-500">
+                            Program yang anda cari tidak ditemukan
+                          </p>
+                        </div>
+                      ) : (
+                        filteredSesi.map((sesi) => (
+                          <CardSesi
+                            nama_sesi={sesi.nama_sesi}
+                            mulai_sesi={sesi.jam_mulai}
+                            selesai_sesi={sesi.jam_selesai}
+                            key={sesi.id}
+                            onClick={() => {
+                              setSelectedSesi(sesi);
+                            }}
+                          />
+                        ))
+                      )}
+                    </>
+                  ) : (
+                    <p>Loading...</p>
+                  )}
                 {selectedSesi && (
                   <ModalDetail titleModal="Edit Sesi" onClose={onClose}>
                     <SesiEdit

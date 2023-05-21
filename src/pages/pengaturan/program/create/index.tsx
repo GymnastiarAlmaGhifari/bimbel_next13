@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC, useEffect, useRef, useState } from "react";
 import axios, { AxiosError } from "axios";
 import { mutate } from "swr";
 import {
@@ -11,6 +11,7 @@ import * as yup from "yup";
 import Button from "@/pages/components/buttons/Button";
 import useSWR from "swr";
 import fetcher from "@/libs/fetcher";
+import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 
 interface RuangCreateProps {
     onClose: () => void;
@@ -22,21 +23,9 @@ const schema = yup.object().shape({
         .string()
         .required("tidak boleh kosong")
         .min(3, "nama program minimal 3 karakter"),
-    level: yup.string().test({
-        name: "Pilih level",
-        message: "Pilih level dahulu",
-        test: (value) => value !== "" && value !== "Pilih level",
-    }),
-    tipe: yup.string().test({
-        name: "Pilih tipe",
-        message: "Pilih tipe dahulu",
-        test: (value) => value !== "" && value !== "Pilih tipe",
-    }),
-    kelas_id: yup.string().test({
-        name: "Pilih kelas",
-        message: "Pilih kelas dahulu",
-        test: (value) => value !== "" && value !== "Pilih kelas",
-    }),
+    level: yup.string().required("Pilih Level Terlebih Dahulu"),
+    tipe: yup.string().required("Pilih Tipe Terlebih Dahulu"),
+    kelas_id: yup.string().required("Pilih Kelas Terlebih Dahulu"),
 });
 
 type FormData = yup.InferType<typeof schema>;
@@ -44,8 +33,6 @@ type FormData = yup.InferType<typeof schema>;
 
 
 const CreateProgram: FC<RuangCreateProps> = ({ onClose, onSucsess }) => {
-
-
     const { data: kelas, error: errorprogram } = useSWR<any[]>("/api/kelas", fetcher);
 
     const [isLoading, setIsLoading] = useState(false);
@@ -54,6 +41,8 @@ const CreateProgram: FC<RuangCreateProps> = ({ onClose, onSucsess }) => {
     const {
         register,
         handleSubmit,
+        watch,
+        setValue,
         formState: { errors },
     } = useForm<FormData>({
         resolver: yupResolver(schema),
@@ -112,6 +101,79 @@ const CreateProgram: FC<RuangCreateProps> = ({ onClose, onSucsess }) => {
         }
     };
 
+
+    const [isListOpenKelas, setIsListOpenKelas] = useState(false);
+    const [isListOpenLevel, setIsListOpenLevel] = useState(false);
+    const [isListOpenTipe, setIsListOpenTipe] = useState(false);
+    const componentRef = useRef<HTMLUListElement>(null);
+
+    const tipeOptions = [
+        { value: "PRIVATE", label: "PRIVATE" },
+        { value: "SEMI_PRIVATE", label: "SEMI PRIVATE" },
+        { value: "KELOMPOK", label: "KELOMPOK" },
+    ];
+
+    const levelOptions = [
+        { value: "PREMIUM", label: "PREMIUM" },
+        { value: "REGULER", label: "REGULER" },
+    ];
+    useEffect(() => {
+        // Menangani klik di luar komponen
+        const handleOutsideClick = (event: any) => {
+            if (
+                componentRef.current &&
+                !componentRef.current.contains(event.target)
+            ) {
+                setIsListOpenKelas(false);
+                setIsListOpenLevel(false);
+                setIsListOpenTipe(false);
+            }
+        };
+
+        // Menambahkan event listener ketika komponen di-mount
+        document.addEventListener("mousedown", handleOutsideClick);
+
+        // Membersihkan event listener ketika komponen di-unmount
+        return () => {
+            document.removeEventListener("mousedown", handleOutsideClick);
+        };
+    }, [setIsListOpenKelas, setIsListOpenLevel, setIsListOpenTipe, componentRef]);
+
+    const toggleListKelas = () => {
+        setIsListOpenKelas(!isListOpenKelas);
+    };
+
+    const toggleListLevel = () => {
+        setIsListOpenLevel(!isListOpenLevel);
+    };
+
+    const toggleListTipe = () => {
+        setIsListOpenTipe(!isListOpenTipe);
+    };
+
+    const selectKelas = (kelas_id: string) => {
+        setValue("kelas_id", kelas_id);
+        setIsListOpenKelas(false);
+    };
+    const selectlevel = (level: string) => {
+        setValue("level", level);
+        setIsListOpenLevel(false);
+    };
+    const selectTipe = (tipe: string) => {
+        setValue("tipe", tipe);
+        setIsListOpenTipe(false);
+    };
+
+    const getLevelLabel = (value: string) => {
+        const option = levelOptions.find((option) => option.value === value);
+        return option ? option.label : "";
+    };
+
+    const getTipeLabel = (value: string) => {
+        const option = tipeOptions.find((option) => option.value === value);
+        return option ? option.label : "";
+    };
+
     return (
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5" >
             {/* Error message */}
@@ -125,84 +187,145 @@ const CreateProgram: FC<RuangCreateProps> = ({ onClose, onSucsess }) => {
             />
             {errors.nama_program && <p className="text-red-500">{errors.nama_program.message}</p>}
 
-            <div className="">
-                <label
-                    htmlFor="level"
-                    className="block text-sm font-medium text-gray-700"
-                >
+            <div className="flex flex-col gap-2">
+                <label htmlFor="" className="text-sm text-Primary-10">
                     Level
                 </label>
-                <select
-                    id="level"
-                    autoComplete="level"
-                    {...register("level")}
-                    defaultValue=""
-                    className={`mt-1 block w-full py-2 px-3 border rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm ${errors.level ? "border-red-500" : "border-gray-300"
-                        }`}
-                >
-                    <option value="">Pilih Level</option>
-                    <option value="PREMIUM">Premium</option>
-                    <option value="REGULER">reguler</option>
-                </select>
+
+                <div className="relative flex flex-col gap-2">
+                    <button
+                        type="button"
+                        className={` w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${isListOpenLevel
+                            ? "border-[2px] border-Primary-50 bg-Primary-95"
+                            : "bg-Neutral-95"
+                            }`}
+                        onClick={toggleListLevel}
+                    >
+                        {getLevelLabel(watch("level")) || ("Pilih Level")}
+                        {isListOpenLevel ? <IoIosArrowUp /> : <IoIosArrowDown />}
+                    </button>
+                    {isListOpenLevel && (
+                        <ul className="absolute w-full top-[44px] z-10 bg-Neutral-100 border-[2px] border-Primary-50 rounded-xl py-2 px-2 outline-none appearance-none flex flex-col gap-1" ref={componentRef}>
+                            {levelOptions.map((option) => (
+                                <li key={option.value}>
+                                    <button
+                                        type="button"
+                                        className={`w-full text-left px-2 py-1 rounded-full ${watch("level") === option.value
+                                            ? "text-Primary-90 bg-Primary-20"
+                                            : "text-Primary-20 hover:bg-Primary-95"
+                                            }`}
+                                        onClick={() => selectlevel(option.value)}
+                                    >
+                                        {option.label}
+                                    </button>
+                                </li>
+                            ))}
+                        </ul>
+                    )}
+                </div>
                 {errors.level && (
-                    <p className="mt-1 text-sm text-red-500">{errors.level.message}</p>
+                    <span className="text-red-500">{errors.level.message}</span>
                 )}
             </div>
 
-            <div className="">
-                <label
-                    htmlFor="program_id"
-                    className="block text-sm font-medium text-gray-700"
-                >
+            <div className="flex flex-col gap-2">
+                <label htmlFor="" className="text-sm text-Primary-10">
                     Tipe
                 </label>
-                <select
-                    id="tipe"
-                    autoComplete="tipe"
-                    {...register("tipe")}
-                    defaultValue=""
-                    className={`mt-1 block w-full py-2 px-3 border rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm ${errors.tipe ? "border-red-500" : "border-gray-300"
-                        }`}
-                >
-                    <option value="">Pilih Tipe</option>
-                    <option value="PRIVATE">Private</option>
-                    <option value="SEMI_PRIVATE">Semi Private</option>
-                    <option value="KELOMPOK">Kelompok</option>
-                </select>
+
+                <div className="relative flex flex-col gap-2">
+                    <button
+                        type="button"
+                        className={` w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${isListOpenTipe
+                            ? "border-[2px] border-Primary-50 bg-Primary-95"
+                            : "bg-Neutral-95"
+                            }`}
+                        onClick={toggleListTipe}
+                    >
+                        {getTipeLabel(watch("tipe")) || ("Pilih Tipe")}
+                        {isListOpenTipe ? <IoIosArrowUp /> : <IoIosArrowDown />}
+                    </button>
+                    {isListOpenTipe && (
+                        <ul className="absolute w-full top-[44px] z-10 bg-Neutral-100 border-[2px] border-Primary-50 rounded-xl py-2 px-2 outline-none appearance-none flex flex-col gap-1" ref={componentRef}>
+                            {tipeOptions.map((option) => (
+                                <li key={option.value}>
+                                    <button
+                                        type="button"
+                                        className={`w-full text-left px-2 py-1 rounded-full ${watch("tipe") === option.value
+                                            ? "text-Primary-90 bg-Primary-20"
+                                            : "text-Primary-20 hover:bg-Primary-95"
+                                            }`}
+                                        onClick={() => selectTipe(option.value)}
+                                    >
+                                        {option.label}
+                                    </button>
+                                </li>
+                            ))}
+                        </ul>
+                    )}
+                </div>
                 {errors.tipe && (
-                    <p className="mt-1 text-sm text-red-500">{errors.tipe.message}</p>
+                    <span className="text-red-500">{errors.tipe.message}</span>
                 )}
             </div>
 
-            <div className="">
-                <label
-                    htmlFor="kelas_id"
-                    className="block text-sm font-medium text-gray-700"
-                >
+            <div className="flex flex-col gap-2">
+                <label htmlFor="" className="text-sm text-Primary-10">
                     Kelas
                 </label>
-                <select
-                    id="kelas_id"
-                    autoComplete="kelas_id"
-                    {...register("kelas_id")}
-                    defaultValue=""
-                    className={`mt-1 block w-full py-2 px-3 border rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm ${errors.kelas_id ? "border-red-500" : "border-gray-300"
-                        }`}
-                >
-                    <option value="">Pilih Kelas</option>
-                    {kelas?.map((kelas) => (
-                        <option key={kelas.id} value={kelas.id}>
-                            {kelas.nama_kelas}
-                        </option>
-                    ))}
-                </select>
+
+                <div className="relative flex flex-col gap-2">
+                    <button
+                        type="button"
+                        className={` w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${isListOpenKelas
+                            ? "border-[2px] border-Primary-50 bg-Primary-95"
+                            : "bg-Neutral-95"
+                            }`}
+                        onClick={toggleListKelas}
+                    >
+                        {/* buat label */}
+                        {watch("kelas_id") ? (
+                            kelas?.find((kelasItem) => kelasItem.id === watch("kelas_id"))
+                                ?.nama_kelas
+                        ) : (
+                            <span className="text-Neutral-300">Pilih Kelas</span>
+                        )}
+                        {isListOpenKelas ? <IoIosArrowUp /> : <IoIosArrowDown />}
+                    </button>
+                    {isListOpenKelas && (
+                        <ul className="absolute w-full top-[44px] z-10 bg-Neutral-100 border-[2px] border-Primary-50 rounded-xl py-2 px-2 outline-none appearance-none flex flex-col gap-1" ref={componentRef}>
+                            {error ? (
+                                <li>Error fetching data</li>
+                            ) : !kelas ? (
+                                <li>Loading...</li>
+                            ) : kelas.length === 0 ? (
+                                <li>No classes available</li>
+                            ) : (
+                                kelas.map((kelasItem) => (
+                                    <li key={kelasItem.id}>
+                                        <button
+                                            type="button"
+                                            className={`w-full text-left px-2 py-1 rounded-full ${watch("kelas_id") === kelasItem.id
+                                                ? "text-Primary-90 bg-Primary-20"
+                                                : "text-Primary-20 hover:bg-Primary-95"
+                                                }`}
+                                            onClick={() => selectKelas(kelasItem.id)}
+                                        >
+                                            {kelasItem.nama_kelas}
+                                        </button>
+                                    </li>
+                                ))
+                            )}
+                        </ul>
+                    )}
+                </div>
                 {errors.kelas_id && (
-                    <p className="mt-1 text-sm text-red-500">{errors.kelas_id.message}</p>
+                    <span className="text-red-500">{errors.kelas_id.message}</span>
                 )}
             </div>
 
             {/* Buat selected berisi SUPER ADMIN dan TENTOR */}
-            <div className="flex flex-row justify-end">
+            < div className="flex flex-row justify-end" >
                 <Button
                     type="submit"
                     bgColor="bg-Tertiary-50"
