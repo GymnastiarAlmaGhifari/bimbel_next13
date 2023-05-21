@@ -24,4 +24,4 @@ export default withAuth(
   }
 );
 
-export const config = { matcher: ["/admin", "/dashboard"] };
+export const config = { matcher: ["/dashboard", "/pembayaran", "/siswa", "/kelompok", "/pengguna", "/profile", "/pengaturan","/riwayat", ] };
