@@ -20,7 +20,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       const result = await prisma.kelompok.findMany({
         include: {
           program: true,
-          jadwal: true,
         },
         orderBy: {
           nama_kelompok: "asc",
