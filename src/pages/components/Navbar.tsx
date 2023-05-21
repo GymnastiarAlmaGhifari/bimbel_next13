@@ -41,7 +41,7 @@ const Navbar = () => {
 
             <p className="font-semibold text-ms text-left">{users?.role}</p>
           </div>
-          <div className="w-10 h-10 rounded-full overflow-clip scale-100 bg-red-400">
+          <div className="w-10 h-10 rounded-full overflow-clip scale-100 border-[1px] border-Primary-50">
             <Image
               src={users?.image ? users.image : "/img/user/default.png"}
               alt="Megachan"

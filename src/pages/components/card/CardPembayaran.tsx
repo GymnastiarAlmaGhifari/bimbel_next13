@@ -37,10 +37,10 @@ const CardPembayaran: FC<CardPembayaranprops> = ({
   gambar,
 }) => {
   return (
-    <div className="flex flex-col bg-Neutral-100 border rounded-lg py-5 px-4 gap-3">
+    <div className="flex flex-col bg-Neutral-100 shadow-[0px_2px_8px_-4px_rgba(0,0,0,.3)] rounded-lg py-5 px-4 gap-3">
       <div className="flex justify-between">
         <div className="flex items-center h-max w-auto gap-3">
-          <div className="h-20 w-20">
+          <div className="h-14 w-14">
             <Image
               src={
                 gambar
@@ -54,7 +54,7 @@ const CardPembayaran: FC<CardPembayaranprops> = ({
               loader={({ src }) => `${src}?cache-control=no-store`}
             />
           </div>
-          <div className="flex flex-col gap-2">
+          <div className="flex flex-col gap-1">
             <h1 className=" text-Neutral-10 font-bold">{nama_siswa}</h1>
             <div className="flex flex-col  gap-1">
               <h3 className="text-Neutral-30">{tipe}</h3>
@@ -63,25 +63,25 @@ const CardPembayaran: FC<CardPembayaranprops> = ({
         </div>
         <div className="flex flex-col items-end gap-1 justify-center">
           <h3 className="text-sm text-Neutral-30">Kelas</h3>
-          <span className="font-bold text-sm text-Primary-10">{kelas}</span>
+          <span className="font-bold text-Primary-10">{kelas}</span>
         </div>
       </div>
       <div className="flex justify-between">
         <div className="flex flex-col gap-1">
           <h3 className="text-sm text-Neutral-30">Tanggal Batas Pembayaran</h3>
-          <span className="font-bold text-sm text-Primary-10">
+          <span className="font-bold text-Primary-10">
             {tanggal_tagihan}
           </span>
         </div>
         <div className="flex flex-col items-center gap-1">
           <h3 className="text-sm text-Neutral-30">Periode Bulan</h3>
-          <span className="font-bold text-sm text-Primary-10">
+          <span className="font-bold text-Primary-10">
             {bulan} {tahun}
           </span>
         </div>
         <div className="flex flex-col items-end gap-1">
           <h3 className="text-sm text-Neutral-30">Tanggal Dibayar</h3>
-          <span className="font-bold text-sm text-Primary-10">
+          <span className="font-boldtext-Primary-10">
             {tanggal_bayar}
           </span>
         </div>
@@ -90,7 +90,7 @@ const CardPembayaran: FC<CardPembayaranprops> = ({
       <div className="w-full h-[1px] bg-Neutral-30"></div>
       <div className="flex justify-between">
         <h2 className="font-semibold text-Error-40">{status}</h2>
-        <h2 className="font-semibold text-lg text-Error-40">
+        <h2 className="font-semibold text-Error-40">
           {jumlah_tagihan}
         </h2>
         {/* <Button

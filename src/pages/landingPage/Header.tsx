@@ -12,7 +12,7 @@ export default function Header() {
   return (
     <div
       id="Home"
-      className="flex flex-col h-screen bg-gradient-to-b from-blue-400 to-teal-500"
+      className="flex flex-col h-[50vh] bg-gradient-to-b from-blue-400 to-teal-500"
     >
       <section id="hero" className="flex justify-between h-full w-full">
         <div className="flex flex-col justify-center w-full pl-40 gap-12">

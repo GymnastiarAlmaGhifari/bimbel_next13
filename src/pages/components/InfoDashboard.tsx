@@ -11,7 +11,7 @@ export default function InfoDashboard() {
         textColor="text-Primary-20"
       />
       <ItemInfoDashboard
-        label="kelas Aktif Hari Ini"
+        label="Jumlah Siswa"
         value="4"
         bgEnd="to-Secondary-90"
         bgStart="from-Secondary-50"

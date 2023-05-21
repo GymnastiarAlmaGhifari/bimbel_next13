@@ -25,17 +25,17 @@ const CardLihatJadwal: FC<CardLihatJadwalProps> = ({
         <h1 className="text-xl text-Neutral-10 font-bold">{hari}</h1>
         <div className="flex flex-col items-end gap-1">
           <h3 className="text-sm text-Neutral-30">Sesi</h3>
-          <span className="font-bold text-sm text-Primary-10">{sesi}</span>
+          <span className="font-bold text-Primary-10">{sesi}</span>
         </div>
       </div>
       <div className="flex justify-between">
         <div className="flex flex-col gap-1">
           <h3 className="text-sm text-Neutral-30">Ruang</h3>
-          <span className="font-bold text-sm text-Primary-10">{ruang}</span>
+          <span className="font-bold text-Primary-10">{ruang}</span>
         </div>
         <div className="flex flex-col items-end gap-1">
           <h3 className="text-sm text-Neutral-30">Tentor</h3>
-          <span className="font-bold text-sm text-Primary-10">
+          <span className="font-bold text-Primary-10">
             {nama_tentor}
           </span>
         </div>

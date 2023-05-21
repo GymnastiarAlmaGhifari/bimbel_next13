@@ -177,28 +177,28 @@ const Jadwal: FC<Jadwal> = () => {
             </div>
             <div className="h-full flex flex-col gap-4  justify-between">
               <div className="flex gap-4 w-full">
-                <div className="py-2 px-4 w-full rounded-lg bg-Primary-20 text-Primary-90 font-semibold text-center">
+                <div className="py-2 px-4 w-full rounded-lg bg-Neutral-100 text-Primary-20 shadow-[0px_0px_10px_5px_rgba(149,146,146,.25)] font-semibold text-center ">
                   Hari
                 </div>
-                <div className="py-2 px-4 w-full rounded-lg bg-Primary-20 text-Primary-90 font-semibold text-center">
+                <div className="py-2 px-4 w-full rounded-lg bg-Neutral-100 text-Primary-20 shadow-[0px_0px_10px_5px_rgba(149,146,146,.25)] font-semibold text-center ">
                   Senin
                 </div>
-                <div className="py-2 px-4 w-full rounded-lg bg-Primary-20 text-Primary-90 font-semibold text-center">
+                <div className="py-2 px-4 w-full rounded-lg bg-Neutral-100 text-Primary-20 shadow-[0px_0px_10px_5px_rgba(149,146,146,.25)] font-semibold text-center ">
                   Selasa
                 </div>
-                <div className="py-2 px-4 w-full rounded-lg bg-Primary-20 text-Primary-90 font-semibold text-center">
+                <div className="py-2 px-4 w-full rounded-lg bg-Neutral-100 text-Primary-20 shadow-[0px_0px_10px_5px_rgba(149,146,146,.25)] font-semibold text-center ">
                   rabu
                 </div>
-                <div className="py-2 px-4 w-full rounded-lg bg-Primary-20 text-Primary-90 font-semibold text-center">
+                <div className="py-2 px-4 w-full rounded-lg bg-Neutral-100 text-Primary-20 shadow-[0px_0px_10px_5px_rgba(149,146,146,.25)] font-semibold text-center ">
                   Kamis
                 </div>
-                <div className="py-2 px-4 w-full rounded-lg bg-Primary-20 text-Primary-90 font-semibold text-center">
+                <div className="py-2 px-4 w-full rounded-lg bg-Neutral-100 text-Primary-20 shadow-[0px_0px_10px_5px_rgba(149,146,146,.25)] font-semibold text-center ">
                   Jumat
                 </div>
-                <div className="py-2 px-4 w-full rounded-lg bg-Primary-20 text-Primary-90 font-semibold text-center">
+                <div className="py-2 px-4 w-full rounded-lg bg-Neutral-100 text-Primary-20 shadow-[0px_0px_10px_5px_rgba(149,146,146,.25)] font-semibold text-center ">
                   Sabtu
                 </div>
-                <div className="py-2 px-4 w-full rounded-lg bg-Primary-20 text-Primary-90 font-semibold text-center">
+                <div className="py-2 px-4 w-full rounded-lg bg-Neutral-100 text-Primary-20 shadow-[0px_0px_10px_5px_rgba(149,146,146,.25)] font-semibold text-center ">
                   Minggu
                 </div>
               </div>
@@ -236,7 +236,7 @@ const Jadwal: FC<Jadwal> = () => {
                     key={item.id}
                     className="flex justify-between h-full gap-4"
                   >
-                    <div className="py-2 px-4 bg-Primary-20 rounded-lg h-full text-Primary-90 font-bold w-full flex flex-col items-center justify-center">
+                    <div className="py-2 px-4 bg-Primary-20 rounded-lg h-full text-Primary-90 font-bold w-full flex flex-col items-center justify-center shadow-[0px_0px_10px_5px_rgba(149,146,146,.25)]">
                       <div className="flex flex-col justify-center items-center ">
                         {item.nama_sesi}
                         <div className="text-xs">
@@ -245,7 +245,7 @@ const Jadwal: FC<Jadwal> = () => {
                       </div>
                     </div>
                     {hari_senin ? (
-                      <div className="py-2 px-4 bg-Tertiary-50 rounded-lg h-full text-Tertiary-90 font-bold w-full flex items-center justify-center">
+                      <div className="py-2 px-4 bg-Tertiary-50 rounded-lg h-full text-Tertiary-90 font-bold w-full flex items-center justify-center shadow-[0px_0px_10px_5px_rgba(149,146,146,.25)]">
                         <ItemJadwal
                           key={hari_senin.id}
                           hari="sadawd"
@@ -254,12 +254,12 @@ const Jadwal: FC<Jadwal> = () => {
                         />
                       </div>
                     ) : (
-                      <div className="py-2 px-4 bg-Error-40 rounded-lg h-full text-Error-90 font-bold w-full flex items-center justify-center text-center">
+                      <div className="py-2 px-4 bg-Error-40 rounded-lg h-full text-Error-90 font-bold w-full flex items-center justify-center text-center shadow-[0px_0px_10px_5px_rgba(149,146,146,.25)]">
                         Tidak Ada Jadwal
                       </div>
                     )}
                     {hari_selasa ? (
-                      <div className="py-2 px-4 bg-Tertiary-50 rounded-lg h-full text-Tertiary-90 font-bold w-full flex items-center justify-center">
+                      <div className="py-2 px-4 bg-Tertiary-50 rounded-lg h-full text-Tertiary-90 font-bold w-full flex items-center justify-center shadow-[0px_0px_10px_5px_rgba(149,146,146,.25)]">
                         <ItemJadwal
                           key={hari_selasa.id}
                           hari="sadawd"
@@ -268,12 +268,12 @@ const Jadwal: FC<Jadwal> = () => {
                         />
                       </div>
                     ) : (
-                      <div className="py-2 px-4 bg-Error-40 rounded-lg h-full text-Error-90 font-bold w-full flex items-center justify-center text-center ">
+                      <div className="py-2 px-4 bg-Error-40 rounded-lg h-full text-Error-90 font-bold w-full flex items-center justify-center text-center shadow-[0px_0px_10px_5px_rgba(149,146,146,.25)] ">
                         Tidak Ada Jadwal
                       </div>
                     )}
                     {hari_rabu ? (
-                      <div className="py-2 px-4 bg-Tertiary-50 rounded-lg h-full text-Tertiary-90 font-bold w-full flex items-center justify-center">
+                      <div className="py-2 px-4 bg-Tertiary-50 rounded-lg h-full text-Tertiary-90 font-bold w-full flex items-center justify-center shadow-[0px_0px_10px_5px_rgba(149,146,146,.25)]">
                         <ItemJadwal
                           key={hari_rabu.id}
                           hari="sadawd"
@@ -282,12 +282,12 @@ const Jadwal: FC<Jadwal> = () => {
                         />
                       </div>
                     ) : (
-                      <div className="py-2 px-4 bg-Error-40 rounded-lg h-full text-Error-90 font-bold w-full flex items-center justify-center text-center">
+                      <div className="py-2 px-4 bg-Error-40 rounded-lg h-full text-Error-90 font-bold w-full flex items-center justify-center text-center shadow-[0px_0px_10px_5px_rgba(149,146,146,.25)]">
                         Tidak Ada Jadwal
                       </div>
                     )}
                     {hari_kamis ? (
-                      <div className="py-2 px-4 bg-Tertiary-50 rounded-lg h-full text-Tertiary-90 font-bold w-full flex items-center justify-center">
+                      <div className="py-2 px-4 bg-Tertiary-50 rounded-lg h-full text-Tertiary-90 font-bold w-full flex items-center justify-center shadow-[0px_0px_10px_5px_rgba(149,146,146,.25)]">
                         <ItemJadwal
                           key={hari_kamis.id}
                           hari="sadawd"
@@ -296,12 +296,12 @@ const Jadwal: FC<Jadwal> = () => {
                         />
                       </div>
                     ) : (
-                      <div className="py-2 px-4 bg-Error-40 rounded-lg h-full text-Error-90 font-bold w-full flex items-center justify-center text-center">
+                      <div className="py-2 px-4 bg-Error-40 rounded-lg h-full text-Error-90 font-bold w-full flex items-center justify-center text-center shadow-[0px_0px_10px_5px_rgba(149,146,146,.25)]">
                         Tidak Ada Jadwal
                       </div>
                     )}
                     {hari_jumat ? (
-                      <div className="py-2 px-4 bg-Tertiary-50 rounded-lg h-full text-Tertiary-90 font-bold w-full flex items-center justify-center">
+                      <div className="py-2 px-4 bg-Tertiary-50 rounded-lg h-full text-Tertiary-90 font-bold w-full flex items-center justify-center shadow-[0px_0px_10px_5px_rgba(149,146,146,.25)]">
                         <ItemJadwal
                           key={hari_jumat.id}
                           hari="sadawd"
@@ -310,12 +310,12 @@ const Jadwal: FC<Jadwal> = () => {
                         />
                       </div>
                     ) : (
-                      <div className="py-2 px-4 bg-Error-40 rounded-lg h-full text-Error-90 font-bold w-full flex items-center justify-center text-center">
+                      <div className="py-2 px-4 bg-Error-40 rounded-lg h-full text-Error-90 font-bold w-full flex items-center justify-center text-center shadow-[0px_0px_10px_5px_rgba(149,146,146,.25)]">
                         Tidak Ada Jadwal
                       </div>
                     )}
                     {hari_sabtu ? (
-                      <div className="py-2 px-4 bg-Tertiary-50 rounded-lg h-full text-Tertiary-90 font-bold w-full flex items-center justify-center">
+                      <div className="py-2 px-4 bg-Tertiary-50 rounded-lg h-full text-Tertiary-90 font-bold w-full flex items-center justify-center shadow-[0px_0px_10px_5px_rgba(149,146,146,.25)]">
                         <ItemJadwal
                           key={hari_sabtu.id}
                           hari="sadawd"
@@ -324,12 +324,12 @@ const Jadwal: FC<Jadwal> = () => {
                         />
                       </div>
                     ) : (
-                      <div className="py-2 px-4 bg-Error-40 rounded-lg h-full text-Error-90 font-bold w-full flex items-center justify-center text-center">
+                      <div className="py-2 px-4 bg-Error-40 rounded-lg h-full text-Error-90 font-bold w-full flex items-center justify-center text-center shadow-[0px_0px_10px_5px_rgba(149,146,146,.25)]">
                         Tidak Ada Jadwal{" "}
                       </div>
                     )}
                     {hari_minggu ? (
-                      <div className="py-2 px-4 bg-Tertiary-50 rounded-lg h-full text-Tertiary-90 font-bold w-full flex items-center justify-center">
+                      <div className="py-2 px-4 bg-Tertiary-50 rounded-lg h-full text-Tertiary-90 font-bold w-full flex items-center justify-center shadow-[0px_0px_10px_5px_rgba(149,146,146,.25)]">
                         <ItemJadwal
                           key={hari_minggu.id}
                           hari="sadawd"
@@ -338,7 +338,7 @@ const Jadwal: FC<Jadwal> = () => {
                         />
                       </div>
                     ) : (
-                      <div className="py-2 px-4 bg-Error-40 rounded-lg h-full text-Error-90 font-bold w-full flex items-center justify-center text-center">
+                      <div className="py-2 px-4 bg-Error-40 rounded-lg h-full text-Error-90 font-bold w-full flex items-center justify-center text-center shadow-[0px_0px_10px_5px_rgba(149,146,146,.25)]">
                         Tidak Ada Jadwal
                       </div>
                     )}
