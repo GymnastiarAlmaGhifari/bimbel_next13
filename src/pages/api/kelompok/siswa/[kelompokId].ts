@@ -8,6 +8,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     kelompokId = kelompokId[0];
   }
 
+  const siswaId = req.body.siswaId;
+
   if (req.method === "GET") {
     try {
       const anggota = await prisma.siswa.findMany({
@@ -18,6 +20,19 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     } catch (error) {
       console.error(error);
       res.status(500).json({ message: "Error loading anggota" });
+    }
+    
+  } else if (req.method === "PUT") {
+    try {
+      const siswa = await prisma.siswa.update({
+        where: { id: siswaId },
+        data: { kelompok_id: kelompokId },
+      });
+      res.status(200).json(siswa);
+    }
+    catch (error) {
+      console.error(error);
+      res.status(500).json({ message: "Error updating siswa" });
     }
   }
 }

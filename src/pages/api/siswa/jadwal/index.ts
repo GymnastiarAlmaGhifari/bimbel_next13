@@ -34,110 +34,90 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 where: {
                     token: token,
                 },
-                include: {
-                    kelompok: true,
-                },
             });
-            if (!siswakelompok) {
-                return res.status(404).json({ 
-                    status: 404,
-                    message: "Pengguna tidak ditemukan",
-                    data: {},
-                 });
-            } else {
-                const kelompok = siswakelompok.kelompok;
-                if (!kelompok) {
+
+            try {
+                const jadwal = await prisma.jadwal_detail.findMany({
+                    where: {
+                        kelompok_id: siswakelompok?.kelompok_id,
+                    },
+                    include: {
+                        sesi: true,
+                        mapel: true,
+                        ruang: true,
+                        user: true,
+                    },
+                });
+
+                if (!jadwal) {
                     return res.status(404).json({
-                        status: 404, 
-                        message: "Kelompok tidak ditemukan",
+                        status: 404,
+                        message: "Jadwal tidak ditemukan",
                         data: {},
-                     });
-                }
-                try {
-                    const jadwal = await prisma.jadwal_detail.findMany({
-                        where: {
-                            jadwal_id: {
-                                equals: kelompok.jadwal_id || undefined,
-                            },
-                        },
-                        include: {
-                            sesi: true,
-                            mapel: true,
-                            ruang: true,
-                            user: true,
-                        },
                     });
+                } else {
+                    const scheduleArray: {
+                        jadwal_id: string;
+                        mapel: string | undefined;
+                        hari: string | undefined;
+                        ruang: string | undefined;
+                        tentor: string | null | undefined;
+                        sesi: string | undefined;
+                        jam: string;
+                    }[] = [];
 
-                    if (!jadwal) {
-                        return res.status(404).json({ 
-                            status: 404,
-                            message: "Jadwal tidak ditemukan",
-                            data: {},
-                         });
-                    } else {
-                        const scheduleArray: {
-                            jadwal_id: string;
-                            mapel: string | undefined;
-                            hari: string | undefined;
-                            ruang: string | undefined;
-                            tentor: string | null | undefined;
-                            sesi: string | undefined;
-                            jam: string;
-                        }[] = [];
+                    const count = jadwal.length;
+                    for (let i = 0; i < count; i++) {
 
-                        const count = jadwal.length;
-                        for (let i = 0; i < count; i++) {
+                        const mulai = jadwal[i].sesi?.jam_mulai as Date;
+                        const formattedmulai = new Date(mulai).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", hour12: false, timeZone: "UTC" });
 
-                            const mulai = jadwal[i].sesi?.jam_mulai as Date;
-                            const formattedmulai = new Date(mulai).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", hour12: false, timeZone: "UTC" });
+                        const selesai = jadwal[i].sesi?.jam_selesai as Date;
+                        const formattedselesai = new Date(selesai).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", hour12: false, timeZone: "UTC" });
 
-                            const selesai = jadwal[i].sesi?.jam_selesai as Date;
-                            const formattedselesai = new Date(selesai).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", hour12: false, timeZone: "UTC" });
-
-                            const schedule = {
-                                jadwal_id: jadwal[i].id,
-                                mapel: jadwal[i].mapel?.nama_mapel,
-                                hari: jadwal[i].hari,
-                                ruang: jadwal[i].ruang?.nama_ruang,
-                                tentor: jadwal[i].user?.name,
-                                sesi: jadwal[i].sesi?.nama_sesi,
-                                jam: formattedmulai + " - " + formattedselesai,
-                            };
-
-                            scheduleArray.push(schedule);
-                        }
-
-                        const response = {
-                            status: 200,
-                            message: "Jadwal ditemukan",
-                            data: scheduleArray,
+                        const schedule = {
+                            jadwal_id: jadwal[i].id,
+                            mapel: jadwal[i].mapel?.nama_mapel,
+                            hari: jadwal[i].hari,
+                            ruang: jadwal[i].ruang?.nama_ruang,
+                            tentor: jadwal[i].user?.name,
+                            sesi: jadwal[i].sesi?.nama_sesi,
+                            jam: formattedmulai + " - " + formattedselesai,
                         };
-                        res.status(200).json(response);
+
+                        scheduleArray.push(schedule);
                     }
-                } catch (error) {
-                    console.error(error);
-                    res.status(500).json({
-                        status: 500,
-                         message: "Error memuat jadwal",
-                         data: {},
-                         });
+
+                    const response = {
+                        status: 200,
+                        message: "Jadwal ditemukan",
+                        data: scheduleArray,
+                    };
+                    res.status(200).json(response);
                 }
+            } catch (error) {
+                console.error(error);
+                res.status(500).json({
+                    status: 500,
+                    message: "Error memuat jadwal",
+                    data: {},
+                });
             }
         } catch (error) {
             if (error instanceof jwt.TokenExpiredError) {
                 const response = {
-                  status: 401,
-                  message: "Token kedaluwarsa",
-                  data: {},
+                    status: 401,
+                    message: "Token kedaluwarsa",
+                    data: {},
                 };
                 return res.status(401).json(response);
-              }
+            }
             console.error(error);
-            res.status(500).json({ 
+            res.status(500).json({
                 status: 500,
                 message: "Error memuat jadwal",
                 data: {},
-             });
+            });
         }
     }
 }

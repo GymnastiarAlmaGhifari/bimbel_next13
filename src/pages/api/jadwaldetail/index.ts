@@ -3,12 +3,12 @@ import prisma from "@/libs/prismadb";
 
 //input json jadwal id and return jadwal detail
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-    const jadwalId = req.query.jadwal_id as string;
+    const kelompokId = req.query.kelompok_id;
 
     if (req.method === "GET") {
         try {
             const jadwal = await prisma.jadwal_detail.findMany({
-                where: { jadwal_id: jadwalId },
+                where: { kelompok_id: kelompokId as string },
             });
             if (!jadwal) {
                 const response = {
