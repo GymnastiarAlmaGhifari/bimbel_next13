@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC, useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { mutate } from "swr";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -8,6 +8,7 @@ import * as yup from "yup";
 import useSWR from "swr";
 import fetcher from "@/libs/fetcher";
 import Button from "@/pages/components/buttons/Button";
+import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 
 interface MapelEditProps {
   mapelId: string;
@@ -25,11 +26,7 @@ const schema = yup.object().shape({
     .string()
     .required("tidak boleh kosong")
     .min(3, "nama mapel minimal 3 karakter"),
-  kelas_id: yup.string().test({
-    name: "Pilih program",
-    message: "Pilih program dahulu",
-    test: (value) => value !== "" && value !== "Pilih program",
-  }),
+  kelas_id: yup.string(),
 });
 
 type FormData = yup.InferType<typeof schema>;
@@ -42,6 +39,8 @@ const MapelEdit: FC<MapelEditProps> = ({ mapelId, onClose, data }) => {
   const {
     register,
     handleSubmit,
+    watch,
+    setValue,
     formState: { errors },
   } = useForm<FormData>({
     resolver: yupResolver(schema),
@@ -66,6 +65,38 @@ const MapelEdit: FC<MapelEditProps> = ({ mapelId, onClose, data }) => {
       onClose(); // Set loading state to false
     }
   };
+  const [isListOpenKelas, setIsListOpenKelas] = useState(false);
+  const componentRef = useRef<HTMLUListElement>(null);
+
+  useEffect(() => {
+    // Menangani klik di luar komponen
+    const handleOutsideClick = (event: any) => {
+      if (
+        componentRef.current &&
+        !componentRef.current.contains(event.target)
+      ) {
+        setIsListOpenKelas(false);
+
+      }
+    };
+
+    // Menambahkan event listener ketika komponen di-mount
+    document.addEventListener("mousedown", handleOutsideClick);
+
+    // Membersihkan event listener ketika komponen di-unmount
+    return () => {
+      document.removeEventListener("mousedown", handleOutsideClick);
+    };
+  }, [setIsListOpenKelas, componentRef]);
+
+  const toggleListKelas = () => {
+    setIsListOpenKelas(!isListOpenKelas);
+  };
+
+  const selectKelas = (kelas_id: string) => {
+    setValue("kelas_id", kelas_id);
+    setIsListOpenKelas(false);
+  };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5">
@@ -87,29 +118,58 @@ const MapelEdit: FC<MapelEditProps> = ({ mapelId, onClose, data }) => {
               )}
 
               {/* select kelas */}
-              <div className="">
-                <label
-                  htmlFor="kelas_id"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  Kelas
+              <div className="flex flex-col gap-2">
+                <label htmlFor="" className="text-sm text-Primary-10">
+                  kelas
                 </label>
-                <select
-                  id="kelas_id"
-                  autoComplete="kelas_id"
-                  {...register("kelas_id")}
-                  defaultValue={data?.kelas_id ?? ""}
-                  className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                >
-                  <option value="">Pilih Kelas</option>
-                  {kelas?.map((kelas) => (
-                    <option key={kelas.id} value={kelas.id}>
-                      {kelas.nama_kelas}
-                    </option>
-                  ))}
-                </select>
+
+                <div className="relative flex flex-col gap-2">
+                  <button
+                    type="button"
+                    className={` w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${isListOpenKelas
+                      ? "border-[2px] border-Primary-50 bg-Primary-95"
+                      : "bg-Neutral-95"
+                      }`}
+                    onClick={toggleListKelas}
+                  >
+                    {/* buat label */}
+                    {watch("kelas_id") ? (
+                      kelas?.find((kelasItem) => kelasItem.id === watch("kelas_id"))
+                        ?.nama_kelas
+                    ) : (
+                      <span className="text-Neutral-300">Pilih Kelas</span>
+                    )}
+                    {isListOpenKelas ? <IoIosArrowUp /> : <IoIosArrowDown />}
+                  </button>
+                  {isListOpenKelas && (
+                    <ul className="absolute w-full top-[44px] z-10 bg-Neutral-100 border-[2px] border-Primary-50 rounded-xl py-2 px-2 outline-none appearance-none flex flex-col gap-1" ref={componentRef}>
+                      {error ? (
+                        <li>Error fetching data</li>
+                      ) : !kelas ? (
+                        <li>Loading...</li>
+                      ) : kelas.length === 0 ? (
+                        <li>No classes available</li>
+                      ) : (
+                        kelas.map((kelasItem) => (
+                          <li key={kelasItem.id}>
+                            <button
+                              type="button"
+                              className={`w-full text-left px-2 py-1 rounded-full ${watch("kelas_id") === kelasItem.id
+                                ? "text-Primary-90 bg-Primary-20"
+                                : "text-Primary-20 hover:bg-Primary-95"
+                                }`}
+                              onClick={() => selectKelas(kelasItem.id)}
+                            >
+                              {kelasItem.nama_kelas}
+                            </button>
+                          </li>
+                        ))
+                      )}
+                    </ul>
+                  )}
+                </div>
                 {errors.kelas_id && (
-                  <p className="text-Error-40">{errors.kelas_id.message}</p>
+                  <span className="text-red-500">{errors.kelas_id.message}</span>
                 )}
               </div>
             </div>

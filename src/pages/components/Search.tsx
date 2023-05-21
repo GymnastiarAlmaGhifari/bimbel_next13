@@ -2,16 +2,16 @@ import React from "react";
 import { HiOutlineSearch } from "react-icons/hi";
 
 interface SearchProps {
+  noButton?: boolean;
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const Search: React.FC<SearchProps> = ({ onChange }) => {
+const Search: React.FC<SearchProps> = ({ onChange, noButton }) => {
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (onChange) {
       onChange(event);
     }
   };
-
 
   return (
     <div className="inline-block flex flex-row items-center  relative">
@@ -25,9 +25,13 @@ const Search: React.FC<SearchProps> = ({ onChange }) => {
         />
       </div>
 
-      <button className="rounded-full p-4 bg-Tertiary-50 text-Neutral-100 absolute right-0 translate-x-2 border-4 border-Neutral-100">
-        <HiOutlineSearch size={24} />
-      </button>
+      {noButton ? (
+        ""
+      ) : (
+        <button className="rounded-full p-4 bg-Tertiary-50 text-Neutral-100 absolute right-0 translate-x-2 border-4 border-Neutral-100">
+          <HiOutlineSearch size={24} />
+        </button>
+      )}
     </div>
   );
 };

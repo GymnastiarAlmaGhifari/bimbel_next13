@@ -32,6 +32,31 @@ const Ruang: FC<Props> = () => {
   const [showCreate, setShowCreate] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
 
+  const [inputValue, setInputValue] = useState<string>("");
+  const [debouncedValue, setDebouncedValue] = useState<string>("");
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedValue(inputValue);
+    }, 1000);
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [inputValue]);
+
+  let filteredRuang = ruang;
+
+  if (debouncedValue) {
+    filteredRuang = ruang?.filter((ruang) =>
+      ruang.nama_ruang.toLowerCase().includes(debouncedValue.toLowerCase())
+    );
+  }
+
+  const handleInputChange = (inputValue: string) => {
+    setInputValue(inputValue);
+  };
+
   useEffect(() => {
     const timeoutId = setTimeout(() => {
       setShowSuccess(false);
@@ -69,14 +94,23 @@ const Ruang: FC<Props> = () => {
                 onClick={() => {
                   setShowCreate(true);
                 }}
+                onChange={handleInputChange}
               />
               <div className="flex flex-col rounded-bl-lg rounded-br-lg p-4 gap-4 overflow-y-auto scrollbar-thin scrollbar-track-Neutral-100 scrollbar-thumb-Primary-40 scrollbar-rounded-lg scrollbar">
-                {ruang ? (
+
+                {filteredRuang ? (
                   <>
-                    {ruang.length === 0 ? (
-                      <p>No ruang found.</p>
+                    {filteredRuang.length === 0 ? (
+                      <div className="flex flex-col items-center justify-center">
+                        <h1 className="text-2xl font-bold text-gray-500">
+                          Ruang tidak ditemukan
+                        </h1>
+                        <p className="text-sm text-gray-500">
+                          Ruang yang anda cari tidak ditemukan
+                        </p>
+                      </div>
                     ) : (
-                      ruang.map((ruang) => (
+                      filteredRuang.map((ruang) => (
                         <CardRuang
                           key={ruang.id}
                           nama_ruang={ruang.nama_ruang}
@@ -91,7 +125,6 @@ const Ruang: FC<Props> = () => {
                 ) : (
                   <p>Loading...</p>
                 )}
-
                 {selectedRuang && (
                   <ModalDetail titleModal="Edit Ruang" onClose={onClose}>
                     <RuangEdit
