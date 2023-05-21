@@ -37,6 +37,7 @@ const Sidebar = () => {
 
   const [isOpen, setIsOpen] = useState(false);
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useLayoutEffect(() => {
     if (typeof window !== "undefined") {
       const sidebarCollapsed = localStorage.getItem("sidebarCollapsed");
