@@ -1,6 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import prisma from "@/libs/prismadb";
-import moment from "moment";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   let kelompokId = req.query.kelompokId;
@@ -12,7 +11,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   if (req.method === "GET") {
     try {
       const detailjadwal = await prisma.jadwal_detail.findMany({
-        where: { kelompok_id: kelompokId},
+        where: { kelompok_id: kelompokId },
         include: {
           sesi: true,
           mapel: true,
@@ -25,13 +24,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         ...detailjadwal,
         sesi: {
           ...detailjadwal.sesi,
-          jam_mulai: moment(detailjadwal.sesi.jam_mulai).tz("UTC").format("HH:mm:ss"),
-          jam_selesai: moment(detailjadwal.sesi.jam_selesai).tz("UTC").format("HH:mm:ss"),
+          jam_mulai: new Date(detailjadwal.sesi.jam_mulai).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", hour12: false, timeZone: "UTC" }),
+          jam_selesai: new Date(detailjadwal.sesi.jam_selesai).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", hour12: false, timeZone: "UTC" }),
         },
       }));
 
       res.status(200).json(detailjadwalformat);
-      console.log("detailjadwal ", detailjadwal);
     } catch (error) {
       console.error(error);
       res.status(500).json({ message: "Error loading detailjadwal" });
