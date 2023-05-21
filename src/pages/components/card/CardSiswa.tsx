@@ -38,10 +38,10 @@ const CardSiswa: FC<CardSiswaProps> = ({
   };
 
   return (
-    <div className="flex flex-col bg-Neutral-100 border rounded-lg py-5 px-4 gap-3">
+    <div className="flex flex-col bg-Neutral-100 shadow-[0px_2px_8px_-4px_rgba(0,0,0,.3)] rounded-lg py-5 px-4 gap-3">
       <div className="flex justify-between">
         <div className="flex items-center h-max w-auto gap-3">
-          <div className="h-20 w-20">
+          <div className="h-14 w-14">
             <Image
               src={
                 gambar
@@ -55,24 +55,23 @@ const CardSiswa: FC<CardSiswaProps> = ({
               loader={({ src }) => `${src}?cache-control=no-store`}
             />
           </div>
-          <div className="flex flex-col gap-2">
-            <h1 className=" text-Neutral-10 font-bold">{nama_siswa}</h1>
-            <div className="flex flex-col  gap-1">
+          <div className="flex flex-col gap-1">
+            <h1 className=" text-Neutral-10 font-bold capitalize">
+              {nama_siswa}
+            </h1>
+            <div className="flex flex-col gap-1">
               <h3 className="text-Neutral-30">{nama_kelompok}</h3>
             </div>
           </div>
         </div>
-        <div className="flex flex-col items-center gap-1 justify-center">
+        <div className="flex flex-col justify-center items-center gap-1 ">
           <h3 className="text-sm text-Neutral-30">Kelas</h3>
-          <span className="font-bold text-sm text-Primary-10">{kelas}</span>
+          <span className="font-bold text-Primary-10">{kelas}</span>
         </div>
-        <div className="flex flex-row gap-3 mt-">
-          <div className="flex flex-col items-start gap-1 justify-center">
-            <span className="font-bold text-sm text-Primary-10">{tipe}</span>
-          </div>
-          <div className="flex flex-col items-start gap-1 justify-center">
-            <span className="font-bold text-sm text-Primary-10">{level}</span>
-          </div>
+        <div className="flex justify-center flex-col">
+          <span className="font-bold text-Primary-10">
+            {tipe} {level}
+          </span>
         </div>
       </div>
 
@@ -110,9 +109,7 @@ const CardSiswa: FC<CardSiswaProps> = ({
             onClick={openWhatsApp}
             icon={IoLogoWhatsapp}
           />
-          <Link
-            href={"/detailProfileSiswa"}
-          >
+          <Link href={"/detailProfileSiswa"}>
             <Button
               type="button"
               bgColor="bg-Primary-50"

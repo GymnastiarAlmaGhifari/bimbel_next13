@@ -36,7 +36,7 @@ const CardModul: FC<CardModulProps> = ({
     window.location.href = "/detailProfileSiswa";
   };
   return (
-    <div className="flex flex-col bg-Neutral-100 border rounded-lg py-5 px-4 gap-3">
+    <div className="flex flex-col bg-Neutral-100 shadow-[0px_2px_8px_-4px_rgba(0,0,0,.3)] rounded-lg py-5 px-4 gap-3">
       <div className="flex gap-5">
         <div className="h-full w-40">
           <Image
@@ -54,22 +54,22 @@ const CardModul: FC<CardModulProps> = ({
         </div>
         <div className="flex flex-col w-full gap-4">
           <div className="">
-            <h1 className="text-xl font-bold text-Primary-10">{nama_modul}</h1>
+            <h1 className="text-lg font-bold text-Primary-10">{nama_modul}</h1>
           </div>
           <div className="flex justify-between">
             <div className="flex flex-col gap-1">
               <h3 className="text-sm text-Neutral-30">Mata Pelajaran</h3>
-              <span className="font-bold text-sm text-Primary-10">{mapel}</span>
+              <span className="font-bold text-Primary-10">{mapel}</span>
             </div>
             <div className="flex flex-col items-center gap-1">
               <h3 className="text-sm text-Neutral-30">Tanggal Upload</h3>
-              <span className="font-bold text-sm text-Primary-10">
+              <span className="font-bold text-Primary-10">
                 {tanggal_upload}
               </span>
             </div>
             <div className="flex flex-col items-end gap-1">
               <h3 className="text-sm text-Neutral-30">Penyusun</h3>
-              <span className="font-bold text-sm text-Primary-10">
+              <span className="font-bold  text-Primary-10">
                 {nama_penyusun}
               </span>
             </div>
@@ -77,17 +77,17 @@ const CardModul: FC<CardModulProps> = ({
           <div className="flex justify-between">
             <div className="flex flex-col gap-1">
               <h3 className="text-sm text-Neutral-30">Tingkatan</h3>
-              <span className="font-bold text-sm text-Primary-10">
+              <span className="font-bold text-Primary-10">
                 {tingkatan}
               </span>
             </div>
             <div className="flex flex-col items-center gap-1">
               <h3 className="text-sm text-Neutral-30">Tipe</h3>
-              <span className="font-bold text-sm text-Primary-10">{tipe}</span>
+              <span className="font-bold text-Primary-10">{tipe}</span>
             </div>
             <div className="flex flex-col items-end gap-1">
               <h3 className="text-sm text-Neutral-30">Kelompok</h3>
-              <span className="font-bold text-sm text-Primary-10">
+              <span className="font-bold text-Primary-10">
                 {kelompok}
               </span>
             </div>
@@ -95,7 +95,7 @@ const CardModul: FC<CardModulProps> = ({
         </div>
       </div>
 
-      <div className="w-full h-[1px] bg-Neutral-30"></div>
+      <div className="w-full h-[1px] bg-Neutral-70"></div>
       <div className="flex justify-end gap-4 items-center">
         <Button
           type="button"
