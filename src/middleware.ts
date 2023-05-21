@@ -6,11 +6,11 @@ export default withAuth(
   // `withAuth` augments your `Request` with the user's token.
   async function middleware(req) {
     // if toke is alredy exist
-    const token = await getToken({ req, secret: process.env.SECRET });
-    if (token) {
-      // Signed in
-      return NextResponse.rewrite(new URL("/dashboard", req.url));
-    }
+    // const token = await getToken({ req, secret: process.env.SECRET });
+    // if (token) {
+    //   // Signed in
+    //   return NextResponse.rewrite(new URL("/dashboard", req.url));
+    // }
 
     return NextResponse.next();
   },
