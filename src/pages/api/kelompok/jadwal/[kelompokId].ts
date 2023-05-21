@@ -3,18 +3,16 @@ import prisma from "@/libs/prismadb";
 import moment from "moment";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  let jadwalId = req.query.jadwalId;
+  let kelompokId = req.query.kelompokId;
 
-  if (Array.isArray(jadwalId)) {
-    jadwalId = jadwalId[0];
+  if (Array.isArray(kelompokId)) {
+    kelompokId = kelompokId[0];
   }
-
-  console.log("jadwalId ", jadwalId);
 
   if (req.method === "GET") {
     try {
       const detailjadwal = await prisma.jadwal_detail.findMany({
-        where: { jadwal_id: jadwalId },
+        where: { kelompok_id: kelompokId},
         include: {
           sesi: true,
           mapel: true,

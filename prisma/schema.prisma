@@ -49,22 +49,12 @@ model Books{
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 }
-  
-
-model jadwal{
-  id String @id @default(cuid())
-  nama String
-  jadwal_detail jadwal_detail[]
-  kelompok kelompok?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
 
 model jadwal_detail{
   id String @id @default(cuid())
   hari Hari
-  jadwal jadwal? @relation(fields: [jadwal_id], references: [id])
-  jadwal_id String?
+  kelompok kelompok? @relation(fields: [kelompok_id], references: [id])
+  kelompok_id String?
   sesi sesi? @relation(fields: [sesi_id], references: [id])
   sesi_id String?
   mapel mapel? @relation(fields: [mapel_id], references: [id])
@@ -151,11 +141,10 @@ model kelompok{
   ketua_kelompok_id String?
   program program @relation(fields: [program_id], references: [id])
   program_id String
-  jadwal jadwal? @relation(fields: [jadwal_id], references: [id])
-  jadwal_id String? @unique
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   Siswa siswa[]
+  detail_jadwal jadwal_detail[]
 }
 
 model siswa {
