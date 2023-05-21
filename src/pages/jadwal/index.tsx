@@ -96,43 +96,57 @@ const Jadwal: FC<Jadwal> = () => {
   };
 
   const { data: senin, error: errorsenin } = useSWR<Jadwal[]>(
-    selectedRuang ? `/api/jadwal/hari?hari=SENIN&ruang_id=${selectedRuang}` : null,
+    selectedRuang
+      ? `/api/jadwal/hari?hari=SENIN&ruang_id=${selectedRuang}`
+      : null,
     fetcher,
     {}
   );
 
   const { data: selasa, error: errorselasa } = useSWR<Jadwal[]>(
-    selectedRuang ? `/api/jadwal/hari?hari=SELASA&ruang_id=${selectedRuang}` : null,
+    selectedRuang
+      ? `/api/jadwal/hari?hari=SELASA&ruang_id=${selectedRuang}`
+      : null,
     fetcher,
     {}
   );
 
   const { data: rabu, error: errorrabu } = useSWR<Jadwal[]>(
-    selectedRuang ? `/api/jadwal/hari?hari=RABU&ruang_id=${selectedRuang}` : null,
+    selectedRuang
+      ? `/api/jadwal/hari?hari=RABU&ruang_id=${selectedRuang}`
+      : null,
     fetcher,
     {}
   );
 
   const { data: kamis, error: errorkamis } = useSWR<Jadwal[]>(
-    selectedRuang ? `/api/jadwal/hari?hari=KAMIS&ruang_id=${selectedRuang}` : null,
+    selectedRuang
+      ? `/api/jadwal/hari?hari=KAMIS&ruang_id=${selectedRuang}`
+      : null,
     fetcher,
     {}
   );
 
   const { data: jumat, error: errorjumat } = useSWR<Jadwal[]>(
-    selectedRuang ? `/api/jadwal/hari?hari=JUMAT&ruang_id=${selectedRuang}` : null,
+    selectedRuang
+      ? `/api/jadwal/hari?hari=JUMAT&ruang_id=${selectedRuang}`
+      : null,
     fetcher,
     {}
   );
 
   const { data: sabtu, error: errorsabtu } = useSWR<Jadwal[]>(
-    selectedRuang ? `/api/jadwal/hari?hari=SABTU&ruang_id=${selectedRuang}` : null,
+    selectedRuang
+      ? `/api/jadwal/hari?hari=SABTU&ruang_id=${selectedRuang}`
+      : null,
     fetcher,
     {}
   );
 
   const { data: minggu, error: errorminggu } = useSWR<Jadwal[]>(
-    selectedRuang ? `/api/jadwal/hari?hari=MINGGU&ruang_id=${selectedRuang}` : null,
+    selectedRuang
+      ? `/api/jadwal/hari?hari=MINGGU&ruang_id=${selectedRuang}`
+      : null,
     fetcher,
     {}
   );
@@ -240,7 +254,7 @@ const Jadwal: FC<Jadwal> = () => {
                         />
                       </div>
                     ) : (
-                      <div className="py-2 px-4 bg-Error-40 rounded-lg h-full text-Tertiary-90 font-bold w-full flex items-center justify-center">
+                      <div className="py-2 px-4 bg-Error-40 rounded-lg h-full text-Error-90 font-bold w-full flex items-center justify-center text-center">
                         Tidak Ada Jadwal
                       </div>
                     )}
@@ -254,8 +268,8 @@ const Jadwal: FC<Jadwal> = () => {
                         />
                       </div>
                     ) : (
-                      <div className="py-2 px-4 bg-Tertiary-50 rounded-lg h-full text-Tertiary-90 font-bold w-full flex items-center justify-center">
-                        No schedule
+                      <div className="py-2 px-4 bg-Error-40 rounded-lg h-full text-Error-90 font-bold w-full flex items-center justify-center text-center ">
+                        Tidak Ada Jadwal
                       </div>
                     )}
                     {hari_rabu ? (
@@ -268,8 +282,8 @@ const Jadwal: FC<Jadwal> = () => {
                         />
                       </div>
                     ) : (
-                      <div className="py-2 px-4 bg-Tertiary-50 rounded-lg h-full text-Tertiary-90 font-bold w-full flex items-center justify-center">
-                        No schedule
+                      <div className="py-2 px-4 bg-Error-40 rounded-lg h-full text-Error-90 font-bold w-full flex items-center justify-center text-center">
+                        Tidak Ada Jadwal
                       </div>
                     )}
                     {hari_kamis ? (
@@ -282,8 +296,8 @@ const Jadwal: FC<Jadwal> = () => {
                         />
                       </div>
                     ) : (
-                      <div className="py-2 px-4 bg-Tertiary-50 rounded-lg h-full text-Tertiary-90 font-bold w-full flex items-center justify-center">
-                        No schedule
+                      <div className="py-2 px-4 bg-Error-40 rounded-lg h-full text-Error-90 font-bold w-full flex items-center justify-center text-center">
+                        Tidak Ada Jadwal
                       </div>
                     )}
                     {hari_jumat ? (
@@ -296,8 +310,8 @@ const Jadwal: FC<Jadwal> = () => {
                         />
                       </div>
                     ) : (
-                      <div className="py-2 px-4 bg-Tertiary-50 rounded-lg h-full text-Tertiary-90 font-bold w-full flex items-center justify-center">
-                        No schedule
+                      <div className="py-2 px-4 bg-Error-40 rounded-lg h-full text-Error-90 font-bold w-full flex items-center justify-center text-center">
+                        Tidak Ada Jadwal
                       </div>
                     )}
                     {hari_sabtu ? (
@@ -310,8 +324,8 @@ const Jadwal: FC<Jadwal> = () => {
                         />
                       </div>
                     ) : (
-                      <div className="py-2 px-4 bg-Tertiary-50 rounded-lg h-full text-Tertiary-90 font-bold w-full flex items-center justify-center">
-                        No schedule
+                      <div className="py-2 px-4 bg-Error-40 rounded-lg h-full text-Error-90 font-bold w-full flex items-center justify-center text-center">
+                        Tidak Ada Jadwal{" "}
                       </div>
                     )}
                     {hari_minggu ? (
@@ -324,8 +338,8 @@ const Jadwal: FC<Jadwal> = () => {
                         />
                       </div>
                     ) : (
-                      <div className="py-2 px-4 bg-Tertiary-50 rounded-lg h-full text-Tertiary-90 font-bold w-full flex items-center justify-center">
-                        No schedule
+                      <div className="py-2 px-4 bg-Error-40 rounded-lg h-full text-Error-90 font-bold w-full flex items-center justify-center text-center">
+                        Tidak Ada Jadwal
                       </div>
                     )}
                   </div>
