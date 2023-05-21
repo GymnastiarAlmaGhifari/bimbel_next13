@@ -130,17 +130,18 @@ const CardKelompok: FC<CardKelompokProps> = ({
 
   return (
     <div
-      className={`flex flex-col bg-Neutral-100 border rounded-lg py-5 px-4 gap-3 ${isExpandedDetails || isExpandedJadwal ? "h-max" : ""
-        }`}
+      className={`flex flex-col bg-Neutral-100 shadow-[0px_2px_8px_-4px_rgba(0,0,0,.3)] rounded-lg py-5 px-4 gap-3 ${
+        isExpandedDetails || isExpandedJadwal ? "h-max" : ""
+      }`}
     >
       <div className="flex justify-between">
         <div className="flex items-center gap-3">
-          <h1 className="text-lg text-Neutral-10 font-bold">{nama_kelompok}</h1>
+          <h1 className=" text-Primary-10 font-bold capitalize">{nama_kelompok}</h1>
           <span className="text-Neutral-30">{tipe}</span>
         </div>
         <h3 className="text-sm text-Neutral-30 font-bold">{level}</h3>
       </div>
-      <div className="w-full h-[1px] bg-Neutral-20"></div>
+      <div className="w-full h-[1px] bg-Neutral-70"></div>
       <div className="flex justify-between items-center">
         <div className="flex gap-4">
           <Button

@@ -94,45 +94,41 @@ const Program: FC<Program> = () => {
           <div className="flex flex-col h-full p-4 gap-4 bg-Neutral-100 rounded-lg overflow-auto">
             <NavbarPengaturan />
             <div className="flex flex-col h-full bg-Neutral-100 py-4 gap-4 rounded-lg overflow-auto">
-              <HeadTable label="Program" onClick={() => setShowCreate(true)}
+              <HeadTable
+                label="Program"
+                onClick={() => setShowCreate(true)}
                 onChange={handleInputChange}
               />
-              <div className="flex flex-col rounded-bl-lg rounded-br-lg p-4 gap-4 overflow-y-auto scrollbar-thin scrollbar-track-Neutral-100 scrollbar-thumb-Primary-40 scrollbar-rounded-lg scrollbar">
-                {
-                  filteredProgram ? (
-                    <>
-                      {
-                        filteredProgram.length === 0 ? (
-                          <div className="flex flex-col items-center justify-center">
-                            <h1 className="text-2xl font-bold text-gray-500">
-                              Program tidak ditemukan
-                            </h1>
-                            <p className="text-sm text-gray-500">
-                              Program yang anda cari tidak ditemukan
-                            </p>
-                          </div>
-                        ) : (
-                          filteredProgram.map((item) => (
-                            <CardProgram
-                              deskripsi=""
-                              key={item.id}
-                              nama_program={item.nama_program}
-                              tipe={item.tipe}
-                              level={item.level}
-                              kelas={item.kelas.nama_kelas}
-                              onEdit={() => setSelectedProgram(item)}
-                            />
-                          ))
-                        )
-
-                      }
-                    </>
-                  )
-                    : (
-                      <p>Loading...</p>
-                    )
-
-                }
+              <div className="grid grid-cols-2 rounded-bl-lg rounded-br-lg p-4 gap-4 overflow-y-auto scrollbar-thin scrollbar-track-Neutral-100 scrollbar-thumb-Primary-40 scrollbar-rounded-lg scrollbar">
+                {filteredProgram ? (
+                  <>
+                    {filteredProgram.length === 0 ? (
+                      <div className="flex flex-col items-center justify-center">
+                        <h1 className="text-2xl font-bold text-gray-500">
+                          Program tidak ditemukan
+                        </h1>
+                        <p className="text-sm text-gray-500">
+                          Program yang anda cari tidak ditemukan
+                        </p>
+                      </div>
+                    ) : (
+                      filteredProgram.map((item) => (
+                        <CardProgram
+                          mapel_ajar="Semua Mata Pelajaran TryOut"
+                          deskripsi="Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi provident nisi recusandae omnis. Illo, mollitia cum sunt numquam incidunt dolores?"
+                          key={item.id}
+                          nama_program={item.nama_program}
+                          tipe={item.tipe}
+                          level={item.level}
+                          kelas={item.kelas.nama_kelas}
+                          onEdit={() => setSelectedProgram(item)}
+                        />
+                      ))
+                    )}
+                  </>
+                ) : (
+                  <p>Loading...</p>
+                )}
 
                 {selectedProgram && (
                   <ModalDetail titleModal="Edit Program" onClose={onClose}>
