@@ -157,7 +157,7 @@ const Jadwal: FC<Jadwal> = () => {
       <div className="w-full flex flex-col ">
         <Navbar />
         <div className="h-full p-5 bg-Neutral-95 overflow-auto">
-          <div className="flex flex-col h-full p-4 gap-4 bg-Neutral-100 rounded-lg">
+          <div className="flex flex-col h-full p-4 gap-4 bg-Neutral-100 rounded-lg w-full">
             <div>
               <div className="flex justify-between">
                 <h1 className="text-lg font-bold">Jadwal</h1>
@@ -175,7 +175,7 @@ const Jadwal: FC<Jadwal> = () => {
                 </select>
               </div>
             </div>
-            <div className="h-full flex flex-col gap-4  justify-between">
+            <div className="h-full flex flex-col gap-4 justify-between">
               <div className="flex gap-4 w-full">
                 <div className="py-2 px-4 w-full rounded-lg bg-Neutral-100 text-Primary-20 shadow-[0px_0px_10px_5px_rgba(149,146,146,.25)] font-semibold text-center ">
                   Hari

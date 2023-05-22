@@ -1,13 +1,18 @@
 import Search from "@/pages/components/Search";
 import Button from "@/pages/components/buttons/Button";
 import CardTambahJadwalKelompok from "@/pages/components/card/CardTambahJadwalKelompok";
+import { ModalDetail } from "@/pages/components/modal/Modal";
 import React, { FC } from "react";
 import { IoIosAdd } from "react-icons/io";
 
 
-interface JadwalProps {}
+interface JadwalProps {
+  onClick: () => void;
+}
 
-const Jadwal: FC<JadwalProps> = ({}) => {
+const Jadwal: FC<JadwalProps> = ({
+  onClick
+}) => {
   return (
     <div className="flex flex-col gap-4">
       <div className="grid grid-cols-3 gap-4">
@@ -29,7 +34,7 @@ const Jadwal: FC<JadwalProps> = ({}) => {
           bgColor="bg-Tertiary-50"
           label="Tambah"
           icon={IoIosAdd}
-        //   onClick={onClick}
+          onClick={onClick}
           outlined
         />
         </div>
@@ -79,6 +84,7 @@ const Jadwal: FC<JadwalProps> = ({}) => {
         </div>
       </div>
     </div>
+
   );
 };
 

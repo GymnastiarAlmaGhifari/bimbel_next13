@@ -16,6 +16,7 @@ export default function AboutUs() {
   const toDetailAboutUs = () => {
     router.push("");
   };
+
   return (
     <div id="About" className="flex h-screen  px-16 pt-14 gap-5">
       <div className="flex flex-col w-full gap-14">

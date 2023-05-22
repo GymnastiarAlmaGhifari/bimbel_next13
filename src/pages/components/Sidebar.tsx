@@ -1,6 +1,12 @@
+"use client";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React, { useCallback, useEffect, useState, useLayoutEffect } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useState,
+  useLayoutEffect,
+} from "react";
 import { HiOutlineMenuAlt4 } from "react-icons/hi";
 import { AiFillHome, AiOutlineClose } from "react-icons/ai";
 import { BsFillPersonFill, BsCalendar } from "react-icons/bs";
@@ -208,19 +214,21 @@ const Sidebar = () => {
                 <li>
                   <Link href="/pengaturan/program">
                     <button
-                      className=// buatkan ketika menyala berada di pengaturan/prgram, pengaturan/module, dan pengaturan/sesi
-                      {`${
-                        router.pathname === "/pengaturan/program" ||
-                        router.pathname === "/pengaturan/ruang" ||
-                        router.pathname === "/pengaturan/sesi" ||
-                        router.pathname === "/pengaturan/mapel" ||
-                        router.pathname === "/pengaturan/kelas" ||
-                        router.pathname === "/pengaturan/gaji"
-                          ? activeStyleButtonSideBar
-                          : "hover:bg-Primary-90"
-                      } ${baseStyleButtonSideBar} ${
-                        isOpen ? "w-full" : "w-14 justify-center"
-                      }`}
+                      className={
+                        // buatkan ketika menyala berada di pengaturan/prgram, pengaturan/module, dan pengaturan/sesi
+                        `${
+                          router.pathname === "/pengaturan/program" ||
+                          router.pathname === "/pengaturan/ruang" ||
+                          router.pathname === "/pengaturan/sesi" ||
+                          router.pathname === "/pengaturan/mapel" ||
+                          router.pathname === "/pengaturan/kelas" ||
+                          router.pathname === "/pengaturan/gaji"
+                            ? activeStyleButtonSideBar
+                            : "hover:bg-Primary-90"
+                        } ${baseStyleButtonSideBar} ${
+                          isOpen ? "w-full" : "w-14 justify-center"
+                        }`
+                      }
                     >
                       <div>
                         <IoMdSettings size={24} />

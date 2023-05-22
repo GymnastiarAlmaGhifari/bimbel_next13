@@ -2,6 +2,7 @@ import { Inter } from "next/font/google";
 import ItemProgram from "@/pages/components/landingPage/ItemProgram";
 
 export default function Program() {
+
   return (
     <div
       id="Program"

@@ -3,21 +3,25 @@ import { Inter } from "next/font/google";
 
 import Button from "@/pages/components/buttons/Button";
 import Diskon from "./Diskon";
+import path from "path";
 // import { Parallax } from 'react-parallax';
 
 export default function Header() {
   const downloadAppMobile = () => {
     alert("Download App");
   };
+  const clipPath = {
+    clipPath: "polygon(0 0, 100% 0, 100% 80%, 80% 100%, 20% 90%, 0 100%)",
+  };
   return (
     <div
       id="Home"
       className="relative flex flex-col h-[50vh] bg-gradient-to-b from-Tertiary-40 to-Primary-50"
+      style={clipPath}
     >
-      {/* <svg width={"100%"} height={"100px"} className=" absolute bottom-0 translate-y-[60px]">
-        <path d="M100,40 L150,90 L200,60 400,80 500,40 z" fill="#7fe9de" />
-        <path d="M900,40 950,0 1000,40 1200,0 1250,40 z " fill="#ffffff" />
-      </svg> */}
+      <svg width={300} height={300} className="absolute bottom-0 bg-Primary-20 z-[-1]">
+        <circle cy={50} cx={50} r={50} fill="red"/>
+      </svg>
       <section id="hero" className="flex justify-between h-full w-full">
         <div className="flex flex-col justify-center w-full pl-40 gap-12">
           <div>
