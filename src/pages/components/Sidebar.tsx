@@ -17,7 +17,6 @@ import Image from "next/image";
 
 const Sidebar = () => {
   const router = useRouter();
-
   const { data: session, status } = useSession();
   const baseStyleButtonSideBar =
     "h-14 px-3 flex flex-row gap-3 bg-Neutral-100 items-center text-Primary-10 font-bold rounded-lg";
