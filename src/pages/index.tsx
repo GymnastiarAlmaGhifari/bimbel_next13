@@ -8,6 +8,7 @@ import DetailProgram from "./landingPage/DetailProgram";
 import Diskon from "./landingPage/Diskon";
 import Login from "./landingPage/Login";
 import NavbarLanding from "./landingPage/NavbarLanding";
+import Footer from "./landingPage/Footer";
 
 export default function Home() {
   const consolLogAgim = () => {
@@ -22,7 +23,7 @@ export default function Home() {
       <Program />
       <Benefit />
       <Diskon />
-      <Login />
+      <Footer />
     </div>
   );
 }

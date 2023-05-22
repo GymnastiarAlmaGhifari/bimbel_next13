@@ -1,6 +1,12 @@
+"use client";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useCallback, useEffect, useState, useLayoutEffect } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useState,
+  useLayoutEffect,
+} from "react";
 import { HiOutlineMenuAlt4 } from "react-icons/hi";
 import { AiFillHome, AiOutlineClose } from "react-icons/ai";
 import { BsFillPersonFill, BsCalendar } from "react-icons/bs";
@@ -50,10 +56,9 @@ const Sidebar = () => {
     }
   };
 
-
   return (
     <>
-      <div className={`${isOpen ? "w-64" : "w-32"} group h-full z-50 relative`}>
+      <div className={`${isOpen ? "w-64" : "w-28"} group h-full z-50 relative`}>
         <div className="h-14 flex justify-between items-center gap-6 pl-4">
           <div className="w-full py-2">
             <Image
@@ -83,11 +88,13 @@ const Sidebar = () => {
                 <li>
                   <Link href="/dashboard">
                     <button
-                      className={`${router.pathname === "/dashboard"
-                        ? activeStyleButtonSideBar
-                        : "hover:bg-Primary-90"
-                        } ${baseStyleButtonSideBar} ${isOpen ? "w-full" : "w-14 justify-center"
-                        }`}
+                      className={`${
+                        router.pathname === "/dashboard"
+                          ? activeStyleButtonSideBar
+                          : "hover:bg-Primary-90"
+                      } ${baseStyleButtonSideBar} ${
+                        isOpen ? "w-full" : "w-14 justify-center"
+                      }`}
                     >
                       <div className="">
                         <AiFillHome size={24} />
@@ -99,11 +106,13 @@ const Sidebar = () => {
                 <li>
                   <Link href="/jadwal">
                     <button
-                      className={`${router.pathname === "/jadwal"
-                        ? activeStyleButtonSideBar
-                        : "hover:bg-Primary-90"
-                        } ${baseStyleButtonSideBar} ${isOpen ? "w-full" : "w-14 justify-center"
-                        }`}
+                      className={`${
+                        router.pathname === "/jadwal"
+                          ? activeStyleButtonSideBar
+                          : "hover:bg-Primary-90"
+                      } ${baseStyleButtonSideBar} ${
+                        isOpen ? "w-full" : "w-14 justify-center"
+                      }`}
                     >
                       <div>
                         <BsCalendar size={24} />
@@ -115,11 +124,13 @@ const Sidebar = () => {
                 <li>
                   <Link href="/pengguna">
                     <button
-                      className={`${router.pathname === "/pengguna"
-                        ? activeStyleButtonSideBar
-                        : "hover:bg-Primary-90"
-                        } ${baseStyleButtonSideBar} ${isOpen ? "w-full" : "w-14 justify-center"
-                        }`}
+                      className={`${
+                        router.pathname === "/pengguna"
+                          ? activeStyleButtonSideBar
+                          : "hover:bg-Primary-90"
+                      } ${baseStyleButtonSideBar} ${
+                        isOpen ? "w-full" : "w-14 justify-center"
+                      }`}
                     >
                       <div>
                         <BsFillPersonFill size={24} />
@@ -131,11 +142,13 @@ const Sidebar = () => {
                 <li>
                   <Link href="/pembayaran">
                     <button
-                      className={`${router.pathname === "/pembayaran"
-                        ? activeStyleButtonSideBar
-                        : "hover:bg-Primary-90"
-                        } ${baseStyleButtonSideBar} ${isOpen ? "w-full" : "w-14 justify-center"
-                        }`}
+                      className={`${
+                        router.pathname === "/pembayaran"
+                          ? activeStyleButtonSideBar
+                          : "hover:bg-Primary-90"
+                      } ${baseStyleButtonSideBar} ${
+                        isOpen ? "w-full" : "w-14 justify-center"
+                      }`}
                     >
                       <div>
                         <MdPayment size={24} />
@@ -147,11 +160,13 @@ const Sidebar = () => {
                 <li>
                   <Link href="/siswa">
                     <button
-                      className={`${router.pathname === "/siswa"
-                        ? activeStyleButtonSideBar
-                        : "hover:bg-Primary-90"
-                        } ${baseStyleButtonSideBar} ${isOpen ? "w-full" : "w-14 justify-center"
-                        }`}
+                      className={`${
+                        router.pathname === "/siswa"
+                          ? activeStyleButtonSideBar
+                          : "hover:bg-Primary-90"
+                      } ${baseStyleButtonSideBar} ${
+                        isOpen ? "w-full" : "w-14 justify-center"
+                      }`}
                     >
                       <div>
                         <IoMdSchool size={24} />
@@ -163,11 +178,13 @@ const Sidebar = () => {
                 <li>
                   <Link href="/kelompok">
                     <button
-                      className={`${router.pathname === "/kelompok"
-                        ? activeStyleButtonSideBar
-                        : "hover:bg-Primary-90"
-                        } ${baseStyleButtonSideBar} ${isOpen ? "w-full" : "w-14 justify-center"
-                        }`}
+                      className={`${
+                        router.pathname === "/kelompok"
+                          ? activeStyleButtonSideBar
+                          : "hover:bg-Primary-90"
+                      } ${baseStyleButtonSideBar} ${
+                        isOpen ? "w-full" : "w-14 justify-center"
+                      }`}
                     >
                       <div>
                         <MdPeopleAlt size={24} />
@@ -179,11 +196,13 @@ const Sidebar = () => {
                 <li>
                   <Link href="/modul">
                     <button
-                      className={`${router.pathname === "/modul"
-                        ? activeStyleButtonSideBar
-                        : "hover:bg-Primary-90"
-                        } ${baseStyleButtonSideBar} ${isOpen ? "w-full" : "w-14 justify-center"
-                        }`}
+                      className={`${
+                        router.pathname === "/modul"
+                          ? activeStyleButtonSideBar
+                          : "hover:bg-Primary-90"
+                      } ${baseStyleButtonSideBar} ${
+                        isOpen ? "w-full" : "w-14 justify-center"
+                      }`}
                     >
                       <div>
                         <MdLocalLibrary size={24} />
@@ -195,14 +214,21 @@ const Sidebar = () => {
                 <li>
                   <Link href="/pengaturan/program">
                     <button
-                      className=
-                      // buatkan ketika menyala berada di pengaturan/prgram, pengaturan/module, dan pengaturan/sesi
-                      {`${router.pathname === "/pengaturan/program" || router.pathname === "/pengaturan/ruang" || router.pathname === "/pengaturan/sesi" || router.pathname === "/pengaturan/mapel" || router.pathname === "/pengaturan/kelas" || router.pathname === "/pengaturan/gaji"
-                        ? activeStyleButtonSideBar
-                        : "hover:bg-Primary-90"
-                        } ${baseStyleButtonSideBar} ${isOpen ? "w-full" : "w-14 justify-center"
-                        }`}
-
+                      className={
+                        // buatkan ketika menyala berada di pengaturan/prgram, pengaturan/module, dan pengaturan/sesi
+                        `${
+                          router.pathname === "/pengaturan/program" ||
+                          router.pathname === "/pengaturan/ruang" ||
+                          router.pathname === "/pengaturan/sesi" ||
+                          router.pathname === "/pengaturan/mapel" ||
+                          router.pathname === "/pengaturan/kelas" ||
+                          router.pathname === "/pengaturan/gaji"
+                            ? activeStyleButtonSideBar
+                            : "hover:bg-Primary-90"
+                        } ${baseStyleButtonSideBar} ${
+                          isOpen ? "w-full" : "w-14 justify-center"
+                        }`
+                      }
                     >
                       <div>
                         <IoMdSettings size={24} />
@@ -218,11 +244,13 @@ const Sidebar = () => {
                 <li>
                   <Link href="/dashboard">
                     <button
-                      className={`${router.pathname === "/dashboard"
-                        ? activeStyleButtonSideBar
-                        : "hover:bg-Primary-90"
-                        } ${baseStyleButtonSideBar} ${isOpen ? "w-full" : "w-14 justify-center"
-                        }`}
+                      className={`${
+                        router.pathname === "/dashboard"
+                          ? activeStyleButtonSideBar
+                          : "hover:bg-Primary-90"
+                      } ${baseStyleButtonSideBar} ${
+                        isOpen ? "w-full" : "w-14 justify-center"
+                      }`}
                     >
                       <div>
                         <BsFillPersonFill size={24} />
@@ -234,11 +262,13 @@ const Sidebar = () => {
                 <li>
                   <Link href="/jadwal">
                     <button
-                      className={`${router.pathname === "/jadwal"
-                        ? activeStyleButtonSideBar
-                        : "hover:bg-Primary-90"
-                        } ${baseStyleButtonSideBar} ${isOpen ? "w-full" : "w-14 justify-center"
-                        }`}
+                      className={`${
+                        router.pathname === "/jadwal"
+                          ? activeStyleButtonSideBar
+                          : "hover:bg-Primary-90"
+                      } ${baseStyleButtonSideBar} ${
+                        isOpen ? "w-full" : "w-14 justify-center"
+                      }`}
                     >
                       <div>
                         <BsFillPersonFill size={24} />
