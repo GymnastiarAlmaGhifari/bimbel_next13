@@ -4,11 +4,12 @@ import { Inter } from "next/font/google";
 import Button from "@/pages/components/buttons/Button";
 import Tentor from "@/pages/components/landingPage/Tentor";
 import ButtonInAbout from "@/pages/components/buttons/ButtonInAbout";
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 import { IoLogoWhatsapp } from "react-icons/io";
 import { useState } from "react";
 import ListButtonSosialMedia from "../components/landingPage/ListButtonSosialMedia";
 import { useRouter } from "next/router";
+import Link from "next/link";
 
 export default function AboutUs() {
   const router = useRouter();
@@ -38,31 +39,49 @@ export default function AboutUs() {
         <h2 className="text-3xl font-bold ">Profile Tentor</h2>
         <div className="grid grid-cols-2 gap-6">
           <Tentor
+            wAuto
             nama="Agimul Karim"
             institut="UGM"
             mataPelajaran="Tura Turu"
             profile="https://th.bing.com/th/id/OIP.jUTdbKVku8FQ84w4R169wAHaGN?pid=ImgDet&rs=1"
           />
           <Tentor
+            wAuto
             nama="Agimul Karim"
             institut="UGM"
             mataPelajaran="Tura Turu"
             profile="https://th.bing.com/th/id/OIP.jUTdbKVku8FQ84w4R169wAHaGN?pid=ImgDet&rs=1"
           />
           <Tentor
+            wAuto
             nama="Agimul Karim"
             institut="UGM"
             mataPelajaran="Tura Turu"
             profile="https://th.bing.com/th/id/OIP.jUTdbKVku8FQ84w4R169wAHaGN?pid=ImgDet&rs=1"
           />
           <Tentor
+            wAuto
+            nama="Agimul Karim"
+            institut="UGM"
+            mataPelajaran="Tura Turu"
+            profile="https://th.bing.com/th/id/OIP.jUTdbKVku8FQ84w4R169wAHaGN?pid=ImgDet&rs=1"
+          />
+          <Tentor
+            wAuto
+            nama="Agimul Karim"
+            institut="UGM"
+            mataPelajaran="Tura Turu"
+            profile="https://th.bing.com/th/id/OIP.jUTdbKVku8FQ84w4R169wAHaGN?pid=ImgDet&rs=1"
+          />
+          <Tentor
+            wAuto
             nama="Agimul Karim"
             institut="UGM"
             mataPelajaran="Tura Turu"
             profile="https://th.bing.com/th/id/OIP.jUTdbKVku8FQ84w4R169wAHaGN?pid=ImgDet&rs=1"
           />
         </div>
-        <a href="/detailAboutUs">Lihat Selengkapnya</a>
+        <Link href="/landingPage/DetailAboutUs">Lihat Selengkapnya</Link>
       </div>
     </div>
   );

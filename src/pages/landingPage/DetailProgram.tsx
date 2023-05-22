@@ -2,14 +2,15 @@
 import { Inter } from "next/font/google";
 import { IoIosArrowBack } from "react-icons/io";
 import Button from "../components/buttons/Button";
+import Link from "next/link";
 
 export default function DetailProgram() {
   return (
     <div className="h-auto flex px-6 gap-4 pt-14">
       <div className=" w-64">
-        <a href="" className=" inline-block pt-2">
+        <Link href="/">
           <IoIosArrowBack size={48} />
-        </a>
+        </Link>
       </div>
       <div className="w-full pb-14">
         <p className="text-3xl">Tingkatan</p>

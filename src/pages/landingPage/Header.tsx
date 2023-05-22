@@ -12,8 +12,12 @@ export default function Header() {
   return (
     <div
       id="Home"
-      className="flex flex-col h-[50vh] bg-gradient-to-b from-blue-400 to-teal-500"
+      className="relative flex flex-col h-[50vh] bg-gradient-to-b from-Tertiary-40 to-Primary-50"
     >
+      {/* <svg width={"100%"} height={"100px"} className=" absolute bottom-0 translate-y-[60px]">
+        <path d="M100,40 L150,90 L200,60 400,80 500,40 z" fill="#7fe9de" />
+        <path d="M900,40 950,0 1000,40 1200,0 1250,40 z " fill="#ffffff" />
+      </svg> */}
       <section id="hero" className="flex justify-between h-full w-full">
         <div className="flex flex-col justify-center w-full pl-40 gap-12">
           <div>
@@ -22,8 +26,9 @@ export default function Header() {
           </div>
           <Button
             brColor=""
-            textColor="text-Primary-10"
+            textColor="text-Primary-20"
             type="button"
+            withBgColor
             bgColor="bg-Neutral-100"
             onClick={downloadAppMobile}
             label="Download Aplikasi Mobile"

@@ -6,11 +6,11 @@ export default withAuth(
   // `withAuth` augments your `Request` with the user's token.
   async function middleware(req) {
     // if toke is alredy exist
-    const token = await getToken({ req, secret: process.env.SECRET });
-    if (token) {
-      // Signed in
-      return NextResponse.rewrite(new URL("/dashboard", req.url));
-    }
+    // const token = await getToken({ req, secret: process.env.SECRET });
+    // if (token) {
+    //   // Signed in
+    //   return NextResponse.rewrite(new URL("/dashboard", req.url));
+    // }
 
     return NextResponse.next();
   },
@@ -19,9 +19,22 @@ export default withAuth(
     callbacks: {
       authorized: ({ token }) =>
         // jika ada token dan role nya SUPER atau ADMIN atau TENTOR maka akan diizinkan dan akan re
-        token?.role === "SUPER" || token?.role === "ADMIN" || token?.role === "TENTOR",
+        token?.role === "SUPER" ||
+        token?.role === "ADMIN" ||
+        token?.role === "TENTOR",
     },
   }
 );
 
-export const config = { matcher: ["/dashboard", "/pembayaran", "/siswa", "/kelompok", "/pengguna", "/profile", "/pengaturan","/riwayat", ] };
+export const config = {
+  matcher: [
+    "/dashboard",
+    "/pembayaran",
+    "/siswa",
+    "/kelompok",
+    "/pengguna",
+    "/profile",
+    "/pengaturan",
+    "/riwayat",
+  ],
+};
