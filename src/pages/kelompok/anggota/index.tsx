@@ -39,20 +39,7 @@ const Anggota: FC<AnggotaProps> = ({
 
 }) => {
 
-  const { data: anggota, error } = useSWR<any[]>(`/api/kelompok/siswa/${kelompokId}`, fetcher);
 
-  const [isLoading, setIsLoading] = useState(false);
-
-  const {
-    register,
-    handleSubmit,
-    setValue,
-    formState: { errors },
-  } = useForm<FormData>({
-    resolver: yupResolver(schema),
-  });
-
-  const checkboxesRef = useRef<string[]>([]);
 
   // useEffect(() => {
   //   // Mengatur nilai default checkbox saat data anggota tersedia
@@ -63,90 +50,121 @@ const Anggota: FC<AnggotaProps> = ({
   //   }
   // }, [anggota, setValue]);
 
-  const onSubmit: SubmitHandler<FormData> = async (data) => {
-    let { checkboxes } = data;
+  // const onSubmit: SubmitHandler<FormData> = async (data) => {
+  //   let { checkboxes } = data;
 
-    if (!Array.isArray(checkboxes)) {
-      checkboxes = [checkboxes];
-    }
+  //   if (!Array.isArray(checkboxes)) {
+  //     checkboxes = [checkboxes];
+  //   }
 
-    console.log(checkboxes);
+  //   console.log(checkboxes);
 
-    // setIsLoading(true); // Set loading state to true
+  //   // setIsLoading(true); // Set loading state to true
 
-    // try {
-    //   await axios.put(`/api/kelompok/${kelompokId}`, {
-    //     Siswa: {
-    //       connect: (checkboxes as string[]).map((item) => ({
-    //         id: item,
-    //       })),
-    //     },
-    //   });
+  //   // try {
+  //   //   await axios.put(`/api/kelompok/${kelompokId}`, {
+  //   //     Siswa: {
+  //   //       connect: (checkboxes as string[]).map((item) => ({
+  //   //         id: item,
+  //   //       })),
+  //   //     },
+  //   //   });
 
-    //   mutate(`/api/kelompok/siswa/${kelompokId}`);
-    //   mutate(`/api/kelompok/${kelompokId}`);
+  //   //   mutate(`/api/kelompok/siswa/${kelompokId}`);
+  //   //   mutate(`/api/kelompok/${kelompokId}`);
 
-    //   setIsLoading(false); // Set loading state to false
-    //   onSuccess(); // Trigger onSuccess function from parent component
-    //   onClose(); // Trigger onClose function from parent component
-    // } catch (error) {
-    //   console.log(error);
-    //   setIsLoading(false); // Set loading state to false
-    // }
-  };
-  const handleCheck = (value: string, checked: boolean) => {
-    setValue(
-      'checkboxes',
-      checkboxesRef.current.filter((item: string) => item !== value), {
-      shouldValidate: true,
-    }
-    );
-    if (checked) {
-      checkboxesRef.current.push(value);
-    } else {
-      const index = checkboxesRef.current.indexOf(value);
-      if (index !== -1) {
-        checkboxesRef.current.splice(index, 1);
-      }
-    }
-  };
-
-
-
-
-  // const [check, setcheck] = useState(false);
-
-  // const handleCheck = () => {
-  //   setcheck(!check);
+  //   //   setIsLoading(false); // Set loading state to false
+  //   //   onSuccess(); // Trigger onSuccess function from parent component
+  //   //   onClose(); // Trigger onClose function from parent component
+  //   // } catch (error) {
+  //   //   console.log(error);
+  //   //   setIsLoading(false); // Set loading state to false
+  //   // }
   // };
+  const { data: anggota, error } = useSWR<any[]>(`/api/kelompok/siswa/${kelompokId}`, fetcher, {
+    revalidateOnFocus: false // Menonaktifkan pengambilan data ulang saat komponen mendapatkan fokus
+  });
+
+  const [isLoading, setIsLoading] = useState(false);
+
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    getValues,
+    watch,
+    formState: { errors },
+  } = useForm<FormData>({
+    resolver: yupResolver(schema),
+    defaultValues: {
+      checkboxes: [],
+    },
+  });
+
+  // const checkboxesRef = useRef<string[]>([]);
+
+
+  // const handleCheck = (value: string, checked: boolean) => {
+  //   if (checked) {
+  //     checkboxesRef.current.push(value);
+  //   } else {
+  //     const index = checkboxesRef.current.indexOf(value);
+  //     if (index !== -1) {
+  //       checkboxesRef.current.splice(index, 1);
+  //     }
+  //   }
+
+  //   setValue(
+  //     'checkboxes',
+  //     checkboxesRef.current.length > 0 ? checkboxesRef.current : [],
+  //     {
+  //       shouldValidate: true,
+  //     }
+  //   );
+  // };
+
+  // useEffect(() => {
+  //   if (anggota) {
+  //     // Saat data di-load, centang semua checkbox
+  //     setValue('checkboxes', anggota.map((item) => item.id));
+  //   }
+  // }, [anggota, setValue]);
+
+  const watchCheckboxes = watch('checkboxes');
+
+
+  useEffect(() => {
+    // Saat data di-load, centang semua checkbox
+    setValue('checkboxes', anggota?.map((item) => item.id));
+
+
+  }, [anggota, setValue]);
+
+
+  const onSubmit = (data: any) => {
+    console.log(data.checkboxes);
+  };
+
+  // buat useEffect untuk mengatur nilai default checkbox saat data anggota tersedia
   return (
-    <div className="flex flex-col gap-4">
-      <div className="grid grid-cols-6 gap-4">
-        {anggota &&
-          anggota.map((item: any) => (
-            <div key={item.id}>
-              <input
-                type="checkbox"
-                {...register('checkboxes')}
-                defaultChecked={item.id}
-                value={item.id}
-                onChange={(e) => handleCheck(item.id, e.target.checked)}
-              />
-              <label>{item.name}</label>
-            </div>
-          ))}
-      </div>
-      {errors.checkboxes && (
-        <p className="text-red-500">{errors.checkboxes.message}</p>
+    <form onSubmit={handleSubmit(onSubmit)}>
+      {anggota && anggota.length > 0 ? (
+        anggota.map((item) => (
+          <div key={item.id}>
+            <input
+              type="checkbox"
+              id={`checkbox-${item.id}`}
+              value={item.id}
+              {...register('checkboxes')}
+            />
+            <label htmlFor={`checkbox-${item.id}`}>{item.nama}</label>
+          </div>
+        ))
+      ) : (
+        <div>Data tidak tersedia.</div>
       )}
-      <button
-        type="submit"
-        onClick={handleSubmit(onSubmit)}
-        disabled={isLoading}
-      >
-        {isLoading ? 'Submitting...' : 'Submit'}
-      </button>
-    </div>
+      <button type="submit">Submit</button>
+    </form>
   );
 };
 
