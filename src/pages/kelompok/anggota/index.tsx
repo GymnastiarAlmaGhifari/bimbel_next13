@@ -130,19 +130,44 @@ const Anggota: FC<AnggotaProps> = ({
   //   }
   // }, [anggota, setValue]);
 
-  const watchCheckboxes = watch('checkboxes');
+  const watchCheckboxes :any = watch('checkboxes');
 
 
   useEffect(() => {
     // Saat data di-load, centang semua checkbox
-    setValue('checkboxes', anggota?.map((item) => item.id));
+    setValue('checkboxes', anggota?.map((item: any) => item.id));
 
 
   }, [anggota, setValue]);
 
 
-  const onSubmit = (data: any) => {
-    console.log(data.checkboxes);
+  const onSubmit: SubmitHandler<FormData> = async (data) => {
+    let { checkboxes } = data;
+
+    if (!Array.isArray(checkboxes)) {
+      checkboxes = [checkboxes];
+    }
+
+    console.log(checkboxes);
+
+    setIsLoading(true); // Set loading state to true
+
+    try {
+      await axios.put(`/api/kelompok/siswa/${kelompokId}`, {
+        data: data.checkboxes,
+      });
+
+      mutate(`/api/kelompok/siswa/${kelompokId}`);
+      mutate(`/api/kelompok/${kelompokId}`);
+      mutate(`/api/kelompok/siswa`);
+
+      setIsLoading(false); // Set loading state to false
+      onSuccess(); // Trigger onSuccess function from parent component
+      onClose(); // Trigger onClose function from parent component
+    } catch (error) {
+      console.log(error);
+      setIsLoading(false); // Set loading state to false
+    }
   };
 
   // buat useEffect untuk mengatur nilai default checkbox saat data anggota tersedia
