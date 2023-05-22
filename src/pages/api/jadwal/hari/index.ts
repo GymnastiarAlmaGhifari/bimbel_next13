@@ -10,17 +10,17 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     ruang = ruang[0];
   }
 
-    if (Array.isArray(hari)) {
+  if (Array.isArray(hari)) {
     hari = hari[0];
-    }
+  }
 
   if (req.method === "GET") {
     try {
       const haris = await prisma.jadwal_detail.findMany({
         where: {
-            hari: {
-                in: [hari as Hari],
-            },
+          hari: {
+            in: [hari as Hari],
+          },
           ruang_id: ruang,
         },
         include: {
