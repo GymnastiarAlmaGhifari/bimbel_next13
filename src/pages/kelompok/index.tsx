@@ -173,7 +173,7 @@ const Kelompok: FC<Kelompok> = () => {
           titleModal="Tambah Jadwal (Nama Kelompok)"
           onClose={() => setSelectedJadwal(null)}
         >
-          <Jadwal onClick={() => { }} />
+          <Jadwal />
         </ModalDetail>
       )}
     </div>
