@@ -2,10 +2,11 @@ import { Inter } from "next/font/google";
 import ItemProgram from "@/pages/components/landingPage/ItemProgram";
 
 export default function Program() {
+
   return (
     <div
       id="Program"
-      className=" flex flex-col pt-14 content-center bg-gradient-to-b from-blue-400 to-teal-500"
+      className=" flex flex-col pt-14 content-center bg-gradient-to-b from-Tertiary-50 to-Primary-60"
     >
       <h2 className="text-center font-bold text-white text-3xl mb-9">
         Program
