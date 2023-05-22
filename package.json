@@ -58,7 +58,6 @@
     "@types/formidable": "^2.0.6",
     "@types/fs-extra": "^11.0.1",
     "@types/jsonwebtoken": "^9.0.2",
-    "@types/multer": "^1.4.7",
     "@types/node-static": "^0.7.7",
     "@types/nodemailer": "^6.4.7",
     "@types/react-pdf": "^6.2.0",

@@ -37,7 +37,7 @@ const Sidebar = () => {
   //     localStorage.setItem("sidebarCollapsed", (!isOpen).toString());
   //   }
   // };
-
+// eslint-disable-next-line react-hooks/exhaustive-deps
   const [isOpen, setIsOpen] = useState(false);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
