@@ -54,7 +54,7 @@ const Login = () => {
   };
 
   return (
-    <div className="h-screen flex  px-6 bg-gradient-to-b from-Tertiary-50 to-Primary-60">
+    <div className="h-screen flex  px-6 bg-gradient-to-b from-Tertiary-50 to-Primary-60 font-mulish">
       <div className="w-full max-w-md m-auto">
         <form
           onSubmit={handleSubmit}

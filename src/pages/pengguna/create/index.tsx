@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC, useEffect, useRef, useState } from "react";
 import axios, { AxiosError } from "axios";
 import { mutate } from "swr";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -6,6 +6,7 @@ import Input from "@/pages/components/inputs/Input";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import Button from "@/pages/components/buttons/Button";
+import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 
 interface UserCreateProps {
   onClose: () => void;
@@ -30,14 +31,57 @@ type FormData = yup.InferType<typeof schema>;
 const Create: FC<UserCreateProps> = ({ onClose, onSucsess }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [isListOpenRole, setIsListOpenRole] = useState(false);
+  const componentRef = useRef<HTMLUListElement>(null);
 
   const {
     register,
     handleSubmit,
+    watch,
+    setValue,
     formState: { errors },
   } = useForm<FormData>({
     resolver: yupResolver(schema),
   });
+
+  const selectrole = (role: string) => {
+    setValue("role", role);
+    setIsListOpenRole(false);
+  };
+  const roleOptions = [
+    { value: "SUPER", label: "Super Admin" },
+    { value: "ADMIN", label: "Admin" },
+    { value: "TENTOR", label: "Tentor" },
+  ];
+
+  useEffect(() => {
+    // Menangani klik di luar komponen
+    const handleOutsideClick = (event: any) => {
+      if (
+        componentRef.current &&
+        !componentRef.current.contains(event.target)
+      ) {
+        setIsListOpenRole(false);
+      }
+    };
+
+    // Menambahkan event listener ketika komponen di-mount
+    document.addEventListener("mousedown", handleOutsideClick);
+
+    // Membersihkan event listener ketika komponen di-unmount
+    return () => {
+      document.removeEventListener("mousedown", handleOutsideClick);
+    };
+  }, [setIsListOpenRole, componentRef]);
+
+  const toggleListRole = () => {
+    setIsListOpenRole(!isListOpenRole);
+  };
+
+  const getRoleLabel = (value: string) => {
+    const option = roleOptions.find((option) => option.value === value);
+    return option ? option.label : "";
+  };
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     const { name, email, password, role, nomor_telepon, alamat } = data;
@@ -126,19 +170,50 @@ const Create: FC<UserCreateProps> = ({ onClose, onSucsess }) => {
       {errors.password && (
         <p className="text-red-500">{errors.password.message}</p>
       )}
+      <div className="flex flex-col gap-2">
+        <label htmlFor="" className="text-sm text-Primary-10">
+          Level
+        </label>
 
-      <div className="flex flex-col">
-        <label htmlFor="role">Role</label>
-        <select
-          id="role"
-          {...register("role")}
-          defaultValue={"SUPER"}
-          className="bg-Neutral-95 rounded-full py-2 px-4 outline-none appearance-none"
-        >
-          <option value="SUPER">SUPER ADMIN</option>
-          <option value="ADMIN">ADMIN</option>
-          <option value="TENTOR">TENTOR</option>
-        </select>
+        <div className="relative flex flex-col gap-2">
+          <button
+            type="button"
+            className={` w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${
+              isListOpenRole
+                ? "border-[2px] border-Primary-50 bg-Primary-95"
+                : "bg-Neutral-95"
+            }`}
+            onClick={toggleListRole}
+          >
+            {getRoleLabel(watch("role")) || "Pilih Role"}
+            {isListOpenRole ? <IoIosArrowUp /> : <IoIosArrowDown />}
+          </button>
+          {isListOpenRole && (
+            <ul
+              className="absolute w-full top-[44px] z-10 bg-Neutral-100 border-[2px] border-Primary-50 rounded-xl py-2 px-2 outline-none appearance-none flex flex-col gap-1"
+              ref={componentRef}
+            >
+              {roleOptions.map((option) => (
+                <li key={option.value}>
+                  <button
+                    type="button"
+                    className={`w-full text-left px-2 py-1 rounded-full ${
+                      watch("role") === option.value
+                        ? "text-Primary-90 bg-Primary-20"
+                        : "text-Primary-20 hover:bg-Primary-95"
+                    }`}
+                    onClick={() => selectrole(option.value)}
+                  >
+                    {option.label}
+                  </button>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+        {errors.role && (
+          <span className="text-red-500">{errors.role.message}</span>
+        )}
       </div>
 
       <Input
