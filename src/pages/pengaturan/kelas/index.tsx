@@ -57,8 +57,6 @@ const Kelas: FC<Kelas> = () => {
     setInputValue(inputValue);
   };
 
-
-
   useEffect(() => {
     const timeoutId = setTimeout(() => {
       setShowSuccess(false);
@@ -79,7 +77,7 @@ const Kelas: FC<Kelas> = () => {
   };
 
   return (
-    <div className="flex flex-row h-screen">
+    <div className="flex flex-row h-screen font-mulish">
       <Sidebar />
 
       <div className="w-full flex flex-col">
@@ -88,38 +86,37 @@ const Kelas: FC<Kelas> = () => {
           <div className="flex flex-col h-full p-4 gap-4 bg-Neutral-100 rounded-lg overflow-auto">
             <NavbarPengaturan />
             <div className="flex flex-col h-full bg-Neutral-100 py-4 gap-4 rounded-lg overflow-auto">
-              <HeadTable label="Kelas" onClick={() => setShowCreate(true)}
+              <HeadTable
+                label="Kelas"
+                onClick={() => setShowCreate(true)}
                 onChange={handleInputChange}
               />
               <div className="flex flex-col rounded-bl-lg rounded-br-lg p-4 gap-4 overflow-y-auto scrollbar-thin scrollbar-track-Neutral-100 scrollbar-thumb-Primary-40 scrollbar-rounded-lg">
-
-                {
-                  filteredKelas ? (
-                    <>
-                      {filteredKelas.length === 0 ? (
-                        <div className="flex flex-col items-center justify-center">
-                          <h1 className="text-2xl font-bold text-gray-500">
-                            Kelas tidak ditemukan
-                          </h1>
-                          <p className="text-sm text-gray-500">
-                            Kelas yang anda cari tidak ditemukan
-                          </p>
-                        </div>
-                      ) : (
-                        filteredKelas.map((kelas) => (
-                          <CardKelas
-                            key={kelas.id}
-                            nama_kelas={kelas.nama_kelas}
-                            onEdit={() => setSelectedKelas(kelas)}
-                            onDelete={() => setShowDelete(kelas)}
-                          />
-                        ))
-                      )}
-                    </>
-                  ) : (
-                    <p>Loading...</p>
-                  )
-                }
+                {filteredKelas ? (
+                  <>
+                    {filteredKelas.length === 0 ? (
+                      <div className="flex flex-col items-center justify-center">
+                        <h1 className="text-2xl font-bold text-gray-500">
+                          Kelas tidak ditemukan
+                        </h1>
+                        <p className="text-sm text-gray-500">
+                          Kelas yang anda cari tidak ditemukan
+                        </p>
+                      </div>
+                    ) : (
+                      filteredKelas.map((kelas) => (
+                        <CardKelas
+                          key={kelas.id}
+                          nama_kelas={kelas.nama_kelas}
+                          onEdit={() => setSelectedKelas(kelas)}
+                          onDelete={() => setShowDelete(kelas)}
+                        />
+                      ))
+                    )}
+                  </>
+                ) : (
+                  <p>Loading...</p>
+                )}
 
                 {selectedKelas && (
                   <ModalDetail titleModal="Edit Kelas" onClose={onClose}>

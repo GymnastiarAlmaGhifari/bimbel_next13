@@ -10,7 +10,6 @@ import { useSession } from "next-auth/react";
 import EditSiswa from "./edit";
 import CreateSiswa from "./create";
 
-
 interface Siswa {
   id: string;
   nama: string;
@@ -83,10 +82,8 @@ const Siswa: FC<Siswa> = () => {
     setSelectedDelete(null);
   };
 
-
-
   return (
-    <div className="flex flex-row h-screen">
+    <div className="flex flex-row h-screen font-mulish">
       <Sidebar />
       <div className="w-full flex flex-col ">
         <Navbar />
@@ -147,22 +144,16 @@ const Siswa: FC<Siswa> = () => {
           </div>
         </div>
       </div>
-      {
-        selectedEdit && (
-          <ModalDetail
-            titleModal="Edit Siswa"
+      {selectedEdit && (
+        <ModalDetail titleModal="Edit Siswa" onClose={backSiswa}>
+          <EditSiswa
+            data={selectedEdit}
             onClose={backSiswa}
-
-          >
-            <EditSiswa
-              data={selectedEdit}
-              onClose={backSiswa}
-              onSucsess={() => setShowSuccess(true)}
-              siswaId={selectedEdit.id}
-            />
-          </ModalDetail>
-        )
-      }
+            onSucsess={() => setShowSuccess(true)}
+            siswaId={selectedEdit.id}
+          />
+        </ModalDetail>
+      )}
       {/* {
         selectedDelete && (
           <ModalDetail
@@ -170,25 +161,19 @@ const Siswa: FC<Siswa> = () => {
             onClose={backSiswa}
           > */}
 
-
       {/* create */}
 
-      {
-        showCreate && (
-          <ModalDetail
-            titleModal="Tambah Siswa"
+      {showCreate && (
+        <ModalDetail
+          titleModal="Tambah Siswa"
+          onClose={() => setShowCreate(false)}
+        >
+          <CreateSiswa
             onClose={() => setShowCreate(false)}
-          >
-            <CreateSiswa
-              onClose={() => setShowCreate(false)}
-              onSucsess={() => setShowSuccess(true)}
-            />
-          </ModalDetail>
-        )
-      }
-
-
-
+            onSucsess={() => setShowSuccess(true)}
+          />
+        </ModalDetail>
+      )}
     </div>
   );
 };

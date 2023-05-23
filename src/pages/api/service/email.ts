@@ -58,7 +58,7 @@ class EmailServices {
     );
   }
 
-  public async sendEmailResetPassword(email: string, token: string) {
+  public async sendEmailResetPassword(email: string, token: number) {
     this.sendEmail(
       email,
       "Reset password",
@@ -76,7 +76,7 @@ class EmailServices {
     );
   }
 
-  public async sendEmailChangePassword(email: string, token: string) {
+  public async sendEmailChangePassword(email: string, token: number) {
     this.sendEmail(
       email,
       "Change password",

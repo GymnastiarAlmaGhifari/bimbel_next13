@@ -2,7 +2,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 import prisma from "@/libs/prismadb";
 import EmailServices from "@/pages/api/service/email";
 
-let OTP_base: string = "";
+let OTP_base: number = 0;
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     const token = req.headers.authorization;
@@ -23,12 +23,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 });
             }
 
-            OTP_base = Math.floor(100000 + Math.random() * 900000).toString();
+            OTP_base = Math.floor(100000 + Math.random() * 900000);
             EmailServices.sendEmailChangePassword(siswas.email, OTP_base);
 
             const response = {
                 status: 200,
-                message: "Berhasil mengirim OTP",
+                message: "Berhasil mengirim OTP ke email",
                 data: {
                     OTP: OTP_base,
                 },

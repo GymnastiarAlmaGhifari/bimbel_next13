@@ -13,7 +13,7 @@ type GajiProps = {};
 const Gaji: FC<GajiProps> = () => {
   const [showCreate, setShowCreate] = useState(false);
   return (
-    <div className="flex flex-row h-screen">
+    <div className="flex flex-row h-screen font-mulish">
       <Sidebar />
 
       <div className="w-full flex flex-col">
