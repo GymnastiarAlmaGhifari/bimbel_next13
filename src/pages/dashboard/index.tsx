@@ -38,7 +38,7 @@ const Dashboard: React.FC<Props> = ({ books }) => {
     router.push("/dashboard");
   };
   return (
-    <div className="flex flex-row h-full w-full">
+    <div className="flex flex-row h-full w-full font-mulish">
       <Sidebar />
 
       <div className="w-full h-screen flex flex-col ">

@@ -10,7 +10,6 @@ import { useSession } from "next-auth/react";
 import EditSiswa from "./edit";
 import CreateSiswa from "./create";
 
-
 interface Siswa {
   id: string;
   nama: string;
@@ -34,9 +33,32 @@ interface Siswa {
 const Siswa: FC<Siswa> = () => {
   const { data: session, status } = useSession();
 
+  const [inputValue, setInputValue] = useState<string>("");
+  const [debouncedValue, setDebouncedValue] = useState<string>("");
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedValue(inputValue);
+    }, 1000);
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [inputValue]);
+
   const { data: siswa, error } = useSWR<Siswa[]>("/api/siswa", fetcher, {});
 
-  // selectedit dan select delete
+  let filteredSiswa = siswa;
+
+  if (debouncedValue) {
+    filteredSiswa = siswa?.filter((siswa) =>
+      siswa.nama.toLowerCase().includes(debouncedValue.toLowerCase())
+    );
+  }
+
+  const handleInputChange = (value: string) => {
+    setInputValue(value);
+  };
 
   const [selectedEdit, setSelectedEdit] = useState<Siswa | null>(null);
 
@@ -60,10 +82,8 @@ const Siswa: FC<Siswa> = () => {
     setSelectedDelete(null);
   };
 
-
-
   return (
-    <div className="flex flex-row h-screen">
+    <div className="flex flex-row h-screen font-mulish">
       <Sidebar />
       <div className="w-full flex flex-col ">
         <Navbar />
@@ -71,20 +91,22 @@ const Siswa: FC<Siswa> = () => {
           <div className="flex flex-col h-full bg-Neutral-100 py-4 gap-4 rounded-lg overflow-auto">
             <HeadTable label="Siswa" onClick={
               () => setShowCreate(true)
-            } />
+            }
+              onChange={handleInputChange}
+            />
             <div className="flex flex-col rounded-bl-lg rounded-br-lg p-4 gap-4 overflow-y-auto scrollbar">
 
               {
-                siswa ? (
+                filteredSiswa ? (
                   <>
-                    {siswa.length === 0 ? (
+                    {filteredSiswa.length === 0 ? (
                       <div className="flex flex-col justify-center items-center">
                         <p className="text-2xl font-bold text-Neutral-600">Data Kosong</p>
-                        <p className="text-Neutral-500">Silahkan tambahkan data siswa</p>
+                        <p className="text-Neutral-500">Silahkan tambahkan data Siswa</p>
                       </div>
                     ) : (
                       <>
-                        {siswa.map((siswa) => (
+                        {filteredSiswa.map((siswa) => (
                           <CardSiswa
                             key={siswa.id}
                             tipe={siswa.kelompok?.program.tipe}
@@ -122,22 +144,16 @@ const Siswa: FC<Siswa> = () => {
           </div>
         </div>
       </div>
-      {
-        selectedEdit && (
-          <ModalDetail
-            titleModal="Edit Siswa"
+      {selectedEdit && (
+        <ModalDetail titleModal="Edit Siswa" onClose={backSiswa}>
+          <EditSiswa
+            data={selectedEdit}
             onClose={backSiswa}
-
-          >
-            <EditSiswa
-              data={selectedEdit}
-              onClose={backSiswa}
-              onSucsess={() => setShowSuccess(true)}
-              siswaId={selectedEdit.id}
-            />
-          </ModalDetail>
-        )
-      }
+            onSucsess={() => setShowSuccess(true)}
+            siswaId={selectedEdit.id}
+          />
+        </ModalDetail>
+      )}
       {/* {
         selectedDelete && (
           <ModalDetail
@@ -145,25 +161,19 @@ const Siswa: FC<Siswa> = () => {
             onClose={backSiswa}
           > */}
 
-
       {/* create */}
 
-      {
-        showCreate && (
-          <ModalDetail
-            titleModal="Tambah Siswa"
+      {showCreate && (
+        <ModalDetail
+          titleModal="Tambah Siswa"
+          onClose={() => setShowCreate(false)}
+        >
+          <CreateSiswa
             onClose={() => setShowCreate(false)}
-          >
-            <CreateSiswa
-              onClose={() => setShowCreate(false)}
-              onSucsess={() => setShowSuccess(true)}
-            />
-          </ModalDetail>
-        )
-      }
-
-
-
+            onSucsess={() => setShowSuccess(true)}
+          />
+        </ModalDetail>
+      )}
     </div>
   );
 };

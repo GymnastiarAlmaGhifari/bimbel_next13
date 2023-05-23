@@ -18,7 +18,9 @@ const ItemJadwal: FC<ItemJadwalProps> = ({ kelompok, nama_tentor, onClick, hari 
         <p className="text-Tertiary-90">{nama_tentor}</p>
       </div>
       <div className="text-right">
-        <button className="font-semibold text-Tertiary-90 p-2 rounded-full hover:bg-Tertiary-90/30">
+        <button
+          onClick={onClick}
+          className="font-semibold text-Tertiary-90 p-2 rounded-full hover:bg-Tertiary-90/30">
           <MdModeEdit />
         </button>
       </div>
