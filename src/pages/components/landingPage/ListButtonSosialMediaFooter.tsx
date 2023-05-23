@@ -11,7 +11,7 @@ type Props = {};
 
 const ListButtonSosialMediaFooter = (props: Props) => {
   return (
-    <div className="flex gap-1">
+    <div className="flex gap-1 justify-center">
       <Button
         bgColor="bg-Neutral-100"
         brColor=""
