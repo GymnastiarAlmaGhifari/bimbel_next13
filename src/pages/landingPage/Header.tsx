@@ -16,12 +16,9 @@ export default function Header() {
   return (
     <div
       id="Home"
-      className="relative flex flex-col h-[50vh] bg-gradient-to-b from-Tertiary-40 to-Primary-50"
+      className="relative flex flex-col h-[50vh] bg-gradient-to-b from-Tertiary-60 to-Primary-60"
       style={clipPath}
     >
-      <svg width={300} height={300} className="absolute bottom-0 bg-Primary-20 z-[-1]">
-        <circle cy={50} cx={50} r={50} fill="red"/>
-      </svg>
       <section id="hero" className="flex justify-between h-full w-full">
         <div className="flex flex-col justify-center w-full pl-40 gap-12">
           <div>
