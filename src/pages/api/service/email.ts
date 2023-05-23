@@ -82,7 +82,7 @@ class EmailServices {
       "Change password",
       `<h2>Change password</h2>
 
-      <p>Harap inputkan kode berikut untuk change password Bimbel Linear.</p>
+      <p>Harap inputkan kode berikut untuk mengubah password Bimbel Linear.</p>
 
       </br>
       </br>

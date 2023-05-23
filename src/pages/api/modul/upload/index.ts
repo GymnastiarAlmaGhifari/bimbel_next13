@@ -1,43 +1,50 @@
-import { NextApiRequest, NextApiResponse } from 'next';
-import puppeteer from 'puppeteer';
-import { join } from 'path';
-import sharp from 'sharp';
+import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
+import formidable from "formidable";
+import path from "path";
+import fs from "fs/promises";
+import prisma from "@/libs/prismadb";
+import { format } from "date-fns";
+import axios from "axios";
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+export const config = {
+    api: {
+        bodyParser: false,
+    },
+};
 
-  const id = req.body.id;
+const readFile = (
+    req: NextApiRequest,
+    saveLocally?: boolean
+): Promise<{ fields: formidable.Fields; files: formidable.Files }> => {
 
-  if (req.method === 'POST') {
-    const browser = await puppeteer.launch({ headless: 'new' });
-    const page = await browser.newPage();
+    const options: formidable.Options = {};
+    if (saveLocally) {
+        options.uploadDir = path.join(process.cwd(), "/public/modul/");
+        options.filename = (name, ext, path, form) => {
+            return "temp.pdf";
+        };
+    }
+    options.maxFileSize = 20 * 1024 * 1024;
+    const form = formidable(options);
+    return new Promise((resolve, reject) => {
+        form.parse(req, (err, fields, files) => {
+            if (err) reject(err);
+            resolve({ fields, files });
+        });
+    });
+};
 
+const handler: NextApiHandler = async (req, res) => {
     try {
-      await page.goto('http://localhost:3000/modul/modul.pdf');
-      await page.setViewport({ width: 1080, height: 1920 });
-      await page.waitForTimeout(2000);
+        await fs.readdir(path.join(process.cwd() + "/public", "/modul"));
 
+    } catch (error) {
+        await fs.mkdir(path.join(process.cwd() + "/public", "/modul"));
+        res.status(200).json(error);
+    }
 
-      const screenshotPath = join(process.cwd(), 'public/modul/thumb', 'temporary.png');
-      console.log('Screenshot path: ', screenshotPath);
-      await page.screenshot({ path: screenshotPath });
+    await readFile(req, true);
+    res.json({ done: "ok" });
+};
 
-      const x = 310;
-    const y = 59;
-    const width = 750;
-    const height = 1080;
-
-    const outputPath = join(process.cwd(), 'public/modul/thumb', id+'.png');
-
-    await sharp(screenshotPath)
-      .extract({ left: x, top: y, width, height })
-      .toFile(outputPath);
-
-    console.log('Image cropped successfully!');
-    res.status(200).json({ success: true, message: 'Screenshot captured and cropped!' });
-  } catch (error) {
-    res.status(500).json({ success: false, message: 'Error capturing screenshot', error: error });
-  } finally {
-    await browser.close();
-  }
-}
-}
+export default handler;  

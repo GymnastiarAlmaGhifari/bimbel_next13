@@ -3,14 +3,15 @@ import prisma from "@/libs/prismadb";
 import bcrypt from "bcrypt";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+    const token = req.headers.authorization;
 
-    const { email, password } = req.body;
+    const { password } = req.body;
 
     if (req.method === "POST") {
         try {
             const siswas = await prisma.siswa.findUnique({
                 where: {
-                    email: email,
+                    token: token,
                 },
             });
             if (!siswas) {

@@ -45,6 +45,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                     modul_id: string;
                     nama_modul: string;
                     url: string | null;
+                    thumbnail: string | null;
                     nama_mapel: string | undefined;
                 }[] = [];
 
@@ -67,11 +68,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                         modul_id: modul.id,
                         nama_modul: modul.nama_module,
                         url: modul.url,
+                        thumbnail: modul.thumbnail,
                         nama_mapel: modul.mapel?.nama_mapel,
                     }));
 
                     modulsArray.push(...moduls);
-                    console.log("asjksdhkj", modulsArray);
+                    // console.log("asjksdhkj", modulsArray);
                 }
 
                 if (modulsArray.length === 0) {
