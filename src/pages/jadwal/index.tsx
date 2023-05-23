@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from "react";
+import React, { FC, useEffect, useRef, useState } from "react";
 import Sidebar from "../components/Sidebar";
 import Navbar from "../components/Navbar";
 import Button from "../components/buttons/Button";
@@ -10,6 +10,7 @@ import axios, { AxiosError } from "axios";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { mutate } from "swr";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 
 interface Jadwal {
   id: string;
@@ -66,7 +67,23 @@ interface Ruang {
   tipe: string;
 }
 
+const schema = yup.object().shape({
+  ruang_id: yup.string(),
+});
+type FormData = yup.InferType<typeof schema>;
+
+
 const Jadwal: FC<Jadwal> = () => {
+
+  const {
+    register,
+    handleSubmit,
+    watch,
+    setValue,
+    formState: { errors },
+  } = useForm<FormData>({
+    resolver: yupResolver(schema),
+  });
 
 
   const { data: ruang, error: errorruang } = useSWR<Ruang[]>(
@@ -74,22 +91,66 @@ const Jadwal: FC<Jadwal> = () => {
     fetcher,
     {}
   );
-  const [selectedRuang, setSelectedRuang] = useState("");
-  const [defaultRuang, setDefaultRuang] = useState("");
+  // const [selectRuang, setselectRuang] = useState("");
+  // const [defaultRuang, setDefaultRuang] = useState("");
+  const [selectedRuangId, setSelectedRuangId] = useState("");
 
   useEffect(() => {
     if (ruang && ruang.length > 0) {
-      setDefaultRuang(ruang[0].id);
-      setSelectedRuang(ruang[0].id);
-    }
-  }, [ruang]);
+      setValue("ruang_id", ruang[0].id);
+      console.log(ruang[0].id);
+      setSelectedRuangId(ruang[0].id);
 
-  const handleRuangChange = async (
-    event: React.ChangeEvent<HTMLSelectElement>
-  ) => {
-    const ruangId = event.target.value;
-    setSelectedRuang(ruangId);
+    }
+  }, [ruang, setValue]);
+
+  // const handleRuangChange = async (
+  //   event: React.ChangeEvent<HTMLSelectElement>
+  // ) => {
+  //   const ruangId = event.target.value;
+  //   setselectRuang(ruangId);
+  // };
+
+  const [listOpenRuang, setIsListOpenRuang] = useState(false);
+  const componentRef = useRef<HTMLUListElement>(null);
+
+  useEffect(() => {
+    // Menangani klik di luar komponen
+    const handleOutsideClick = (event: any) => {
+      if (
+        componentRef.current &&
+        !componentRef.current.contains(event.target)
+      ) {
+        setIsListOpenRuang(false);
+
+      }
+    };
+
+    // Menambahkan event listener ketika komponen di-mount
+    document.addEventListener("mousedown", handleOutsideClick);
+
+    // Membersihkan event listener ketika komponen di-unmount
+    return () => {
+      document.removeEventListener("mousedown", handleOutsideClick);
+    };
+  }, [setIsListOpenRuang, componentRef]);
+
+
+  const toggleListRuang = () => {
+    setIsListOpenRuang(!listOpenRuang);
   };
+
+
+  const selectRuang = (ruang_id: string) => {
+    setValue("ruang_id", ruang_id);
+    setSelectedRuangId(ruang_id);
+    setIsListOpenRuang(false);
+  };
+
+
+
+
+
 
   const { data: sesi, error: errorsesi, isLoading: sesiLoading } = useSWR<Sesi[]>(
     "/api/sesi",
@@ -100,7 +161,7 @@ const Jadwal: FC<Jadwal> = () => {
   );
 
   const { data: senin, error: errorsenin, isLoading: seninloading } = useSWR<Jadwal[]>(
-    selectedRuang ? `/api/jadwal/hari?hari=SENIN&ruang_id=${selectedRuang}` : null,
+    selectedRuangId ? `/api/jadwal/hari?hari=SENIN&ruang_id=${selectedRuangId}` : null,
     fetcher,
     {
       shouldRetryOnError: false
@@ -108,7 +169,7 @@ const Jadwal: FC<Jadwal> = () => {
   );
 
   const { data: selasa, error: errorselasa, isLoading: selasaLoading } = useSWR<Jadwal[]>(
-    selectedRuang ? `/api/jadwal/hari?hari=SELASA&ruang_id=${selectedRuang}` : null,
+    selectedRuangId ? `/api/jadwal/hari?hari=SELASA&ruang_id=${selectedRuangId}` : null,
     fetcher,
     {
       shouldRetryOnError: false
@@ -116,7 +177,7 @@ const Jadwal: FC<Jadwal> = () => {
   );
 
   const { data: rabu, error: errorrabu, isLoading: rabuLoading } = useSWR<Jadwal[]>(
-    selectedRuang ? `/api/jadwal/hari?hari=RABU&ruang_id=${selectedRuang}` : null,
+    selectedRuangId ? `/api/jadwal/hari?hari=RABU&ruang_id=${selectedRuangId}` : null,
     fetcher,
     {
       shouldRetryOnError: false
@@ -125,7 +186,7 @@ const Jadwal: FC<Jadwal> = () => {
 
   const { data: kamis, error: errorkamis, isLoading: kamisLoading
   } = useSWR<Jadwal[]>(
-    selectedRuang ? `/api/jadwal/hari?hari=KAMIS&ruang_id=${selectedRuang}` : null,
+    selectedRuangId ? `/api/jadwal/hari?hari=KAMIS&ruang_id=${selectedRuangId}` : null,
     fetcher,
     {
       shouldRetryOnError: false
@@ -134,7 +195,7 @@ const Jadwal: FC<Jadwal> = () => {
 
   const { data: jumat, error: errorjumat, isLoading: jumatLoading
   } = useSWR<Jadwal[]>(
-    selectedRuang ? `/api/jadwal/hari?hari=JUMAT&ruang_id=${selectedRuang}` : null,
+    selectedRuangId ? `/api/jadwal/hari?hari=JUMAT&ruang_id=${selectedRuangId}` : null,
     fetcher,
     {
       shouldRetryOnError: false
@@ -143,7 +204,7 @@ const Jadwal: FC<Jadwal> = () => {
 
   const { data: sabtu, error: errorsabtu, isLoading: sabtuLoading
   } = useSWR<Jadwal[]>(
-    selectedRuang ? `/api/jadwal/hari?hari=SABTU&ruang_id=${selectedRuang}` : null,
+    selectedRuangId ? `/api/jadwal/hari?hari=SABTU&ruang_id=${selectedRuangId}` : null,
     fetcher,
     {
       shouldRetryOnError: false
@@ -152,7 +213,7 @@ const Jadwal: FC<Jadwal> = () => {
 
   const { data: minggu, error: errorminggu, isLoading: mingguLoading
   } = useSWR<Jadwal[]>(
-    selectedRuang ? `/api/jadwal/hari?hari=MINGGU&ruang_id=${selectedRuang}` : null,
+    selectedRuangId ? `/api/jadwal/hari?hari=MINGGU&ruang_id=${selectedRuangId}` : null,
     fetcher,
     {
       shouldRetryOnError: false
@@ -169,9 +230,67 @@ const Jadwal: FC<Jadwal> = () => {
             <div>
               <div className="flex justify-between">
                 <h1 className="text-lg font-bold">Jadwal</h1>
-                <select
+                <button
+                  type="button"
+                  className={` w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${listOpenRuang
+                    ? "border-[2px] border-Primary-50 bg-Primary-95"
+                    : "bg-Neutral-95"
+                    }`}
+                  onClick={toggleListRuang}
+                >
+                  {
+                    ruang?.find(ruang => ruang.id === watch("ruang_id"))?.nama_ruang
+                  }
+                  {listOpenRuang ? <IoIosArrowUp /> : <IoIosArrowDown />}
+                </button>
+                {
+                  listOpenRuang && (
+                    <ul
+                      ref={componentRef}
+                      className="absolute w-full top-[44px] z-10 bg-Neutral-100 border-[2px] border-Primary-50 rounded-xl py-2 px-2 outline-none appearance-none flex flex-col gap-1"
+                    >
+                      {errorruang ? (
+                        <li className="text-center">Error</li>
+                      ) : !ruang ? (
+                        <li className="text-center">Loading...</li>
+                      ) : ruang.length === 0 ? (
+                        <li className="text-center">Data Kosong</li>
+                      ) : (
+                        ruang.map((ruang) => (
+                          <li
+                            key={ruang.id}>
+                            <button
+                              className={`w-full text-left px-2 py-1 rounded-full ${watch("ruang_id") === ruang.id
+                                ? "text-Primary-90 bg-Primary-20"
+                                : "text-Primary-20 hover:bg-Primary-95"
+                                }`}
+                              onClick={() => {
+                                selectRuang(ruang.id)
+                                console.log(ruang.id)
+                              }
+                              }
+                            >
+                              {ruang.nama_ruang}
+                            </button>
+                          </li>
+                        ))
+                      )}
+                    </ul>
+                  )
+                }
+
+
+                {errors.ruang_id && (
+                  <span className="text-red-500">{errors.ruang_id.message}</span>
+                )}
+
+
+
+
+
+                {/* <select
                   className="bg-Neutral-100 text-Primary-10 px-4 rounded py-2 w-40 font-semibold border-[2px] outline-none"
-                  value={selectedRuang}
+                  value={selectRuang}
                   onChange={handleRuangChange}
                   name="nama_ruang"
                 >
@@ -180,7 +299,7 @@ const Jadwal: FC<Jadwal> = () => {
                       {ruang.nama_ruang}
                     </option>
                   ))}
-                </select>
+                </select> */}
               </div>
             </div>
             <div className="h-full flex flex-col gap-4 justify-between">
@@ -355,10 +474,10 @@ const Jadwal: FC<Jadwal> = () => {
                 );
               })}
             </div>
-          </div>
-        </div>
-      </div>
-    </div>
+          </div >
+        </div >
+      </div >
+    </div >
   );
 };
 

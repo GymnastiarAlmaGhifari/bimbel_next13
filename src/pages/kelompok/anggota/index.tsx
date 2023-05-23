@@ -53,8 +53,6 @@ const Anggota: FC<AnggotaProps> = ({
     revalidateOnFocus: false // Menonaktifkan pengamb
   });
 
-
-
   const [isLoading, setIsLoading] = useState(false);
 
   const {
@@ -68,7 +66,9 @@ const Anggota: FC<AnggotaProps> = ({
     resolver: yupResolver(schema),
   });
 
-  const watchCheckboxes: any = watch('checkboxes');
+  watch('checkboxes');
+  watch('checkboxes2');
+
 
   useEffect(() => {
     // Saat data di-load, centang semua checkbox
@@ -117,9 +117,6 @@ const Anggota: FC<AnggotaProps> = ({
     }
   };
 
-
-
-  // buat useEffect untuk mengatur nilai default checkbox saat data anggota tersedia
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       {anggota && anggota.length > 0 ? (
