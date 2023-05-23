@@ -8,7 +8,7 @@ import CardModul from "../components/card/CardModul";
 
 const Siswa = () => {
   return (
-    <div className="flex flex-row h-screen">
+    <div className="flex flex-row h-screen font-mulish">
       <Sidebar />
       <div className="w-full flex flex-col ">
         <Navbar />

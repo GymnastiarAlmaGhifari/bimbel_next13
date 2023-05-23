@@ -10,7 +10,6 @@ import { useSession } from "next-auth/react";
 import EditSiswa from "./edit";
 import CreateSiswa from "./create";
 
-
 interface Siswa {
   id: string;
   nama: string;
@@ -60,84 +59,78 @@ const Siswa: FC<Siswa> = () => {
     setSelectedDelete(null);
   };
 
-
-
   return (
-    <div className="flex flex-row h-screen">
+    <div className="flex flex-row h-screen font-mulish">
       <Sidebar />
       <div className="w-full flex flex-col ">
         <Navbar />
         <div className="h-full p-5 bg-Neutral-95 overflow-auto ">
           <div className="flex flex-col h-full bg-Neutral-100 py-4 gap-4 rounded-lg overflow-auto">
-            <HeadTable label="Siswa" onClick={
-              () => setShowCreate(true)
-            } />
+            <HeadTable label="Siswa" onClick={() => setShowCreate(true)} />
             <div className="flex flex-col rounded-bl-lg rounded-br-lg p-4 gap-4 overflow-y-auto scrollbar">
-
-              {
-                siswa ? (
-                  <>
-                    {siswa.length === 0 ? (
-                      <div className="flex flex-col justify-center items-center">
-                        <p className="text-2xl font-bold text-Neutral-600">Data Kosong</p>
-                        <p className="text-Neutral-500">Silahkan tambahkan data siswa</p>
-                      </div>
-                    ) : (
-                      <>
-                        {siswa.map((siswa) => (
-                          <CardSiswa
-                            key={siswa.id}
-                            tipe={siswa.kelompok?.program.tipe}
-                            kelas={siswa.kelompok?.program.kelas.nama_kelas}
-                            level={siswa.kelompok?.program.level}
-                            nama_siswa={siswa.nama}
-                            nama_kelompok={siswa.kelompok?.nama_kelompok}
-                            hp={siswa.nomor_telepon}
-                            onEdit={
-                              () => setSelectedEdit(siswa)
-                            }
-                            onDelete={() => setSelectedDelete(siswa)}
-                          />
-                        ))}
-                      </>
-                    )}
-                  </>
-                ) : (
-                  <>
-                    {error ? (
-                      <div className="flex flex-col justify-center items-center">
-                        <p className="text-2xl font-bold text-Neutral-600">Data Kosong</p>
-                        <p className="text-Neutral-500">Silahkan tambahkan data siswa</p>
-                      </div>
-                    ) : (
-                      <div className="flex flex-col justify-center items-center">
-                        <p className="text-2xl font-bold text-Neutral-600">Loading...</p>
-                      </div>
-                    )
-                    }
-                  </>
-                )
-              }
+              {siswa ? (
+                <>
+                  {siswa.length === 0 ? (
+                    <div className="flex flex-col justify-center items-center">
+                      <p className="text-2xl font-bold text-Neutral-600">
+                        Data Kosong
+                      </p>
+                      <p className="text-Neutral-500">
+                        Silahkan tambahkan data siswa
+                      </p>
+                    </div>
+                  ) : (
+                    <>
+                      {siswa.map((siswa) => (
+                        <CardSiswa
+                          key={siswa.id}
+                          tipe={siswa.kelompok?.program.tipe}
+                          kelas={siswa.kelompok?.program.kelas.nama_kelas}
+                          level={siswa.kelompok?.program.level}
+                          nama_siswa={siswa.nama}
+                          nama_kelompok={siswa.kelompok?.nama_kelompok}
+                          hp={siswa.nomor_telepon}
+                          onEdit={() => setSelectedEdit(siswa)}
+                          onDelete={() => setSelectedDelete(siswa)}
+                        />
+                      ))}
+                    </>
+                  )}
+                </>
+              ) : (
+                <>
+                  {error ? (
+                    <div className="flex flex-col justify-center items-center">
+                      <p className="text-2xl font-bold text-Neutral-600">
+                        Data Kosong
+                      </p>
+                      <p className="text-Neutral-500">
+                        Silahkan tambahkan data siswa
+                      </p>
+                    </div>
+                  ) : (
+                    <div className="flex flex-col justify-center items-center">
+                      <p className="text-2xl font-bold text-Neutral-600">
+                        Loading...
+                      </p>
+                    </div>
+                  )}
+                </>
+              )}
             </div>
           </div>
         </div>
       </div>
-      {
-        selectedEdit && (
-          <ModalDetail
-            titleModal="Edit Siswa"
+      {selectedEdit && (
+        <ModalDetail titleModal="Edit Siswa" onClose={backSiswa}>
+          <EditSiswa
+            data={selectedEdit}
             onClose={backSiswa}
-
-          >
-            <EditSiswa
-              data={selectedEdit}
-              onClose={backSiswa}
-              onSucsess={() => setShowSuccess(true)}
-              siswaId={selectedEdit.id}
-            />
-          </ModalDetail>
-        )
-      }
+            onSucsess={() => setShowSuccess(true)}
+            siswaId={selectedEdit.id}
+          />
+        </ModalDetail>
+      )}
       {/* {
         selectedDelete && (
           <ModalDetail
@@ -145,25 +138,19 @@ const Siswa: FC<Siswa> = () => {
             onClose={backSiswa}
           > */}
 
-
       {/* create */}
 
-      {
-        showCreate && (
-          <ModalDetail
-            titleModal="Tambah Siswa"
+      {showCreate && (
+        <ModalDetail
+          titleModal="Tambah Siswa"
+          onClose={() => setShowCreate(false)}
+        >
+          <CreateSiswa
             onClose={() => setShowCreate(false)}
-          >
-            <CreateSiswa
-              onClose={() => setShowCreate(false)}
-              onSucsess={() => setShowSuccess(true)}
-            />
-          </ModalDetail>
-        )
-      }
-
-
-
+            onSucsess={() => setShowSuccess(true)}
+          />
+        </ModalDetail>
+      )}
     </div>
   );
 };

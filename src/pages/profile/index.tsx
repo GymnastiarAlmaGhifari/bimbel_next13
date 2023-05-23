@@ -6,7 +6,7 @@ import { MdModeEdit } from "react-icons/md";
 
 export default function Profile() {
   return (
-    <div className="flex flex-row h-screen">
+    <div className="flex flex-row h-screen font-mulish">
       <Sidebar />
       <div className=" w-full bg-red-500 flex flex-col">
         <div className="flex flex-col h-full">

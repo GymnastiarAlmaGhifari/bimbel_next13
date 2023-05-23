@@ -72,9 +72,7 @@ const schema = yup.object().shape({
 });
 type FormData = yup.InferType<typeof schema>;
 
-
 const Jadwal: FC<Jadwal> = () => {
-
   const {
     register,
     handleSubmit,
@@ -84,7 +82,6 @@ const Jadwal: FC<Jadwal> = () => {
   } = useForm<FormData>({
     resolver: yupResolver(schema),
   });
-
 
   const { data: ruang, error: errorruang } = useSWR<Ruang[]>(
     "/api/ruang",
@@ -100,7 +97,6 @@ const Jadwal: FC<Jadwal> = () => {
       setValue("ruang_id", ruang[0].id);
       console.log(ruang[0].id);
       setSelectedRuangId(ruang[0].id);
-
     }
   }, [ruang, setValue]);
 
@@ -122,7 +118,6 @@ const Jadwal: FC<Jadwal> = () => {
         !componentRef.current.contains(event.target)
       ) {
         setIsListOpenRuang(false);
-
       }
     };
 
@@ -135,11 +130,9 @@ const Jadwal: FC<Jadwal> = () => {
     };
   }, [setIsListOpenRuang, componentRef]);
 
-
   const toggleListRuang = () => {
     setIsListOpenRuang(!listOpenRuang);
   };
-
 
   const selectRuang = (ruang_id: string) => {
     setValue("ruang_id", ruang_id);
@@ -147,81 +140,114 @@ const Jadwal: FC<Jadwal> = () => {
     setIsListOpenRuang(false);
   };
 
+  const {
+    data: sesi,
+    error: errorsesi,
+    isLoading: sesiLoading,
+  } = useSWR<Sesi[]>("/api/sesi", fetcher, {
+    shouldRetryOnError: false,
+  });
 
-
-
-
-
-  const { data: sesi, error: errorsesi, isLoading: sesiLoading } = useSWR<Sesi[]>(
-    "/api/sesi",
-    fetcher,
-    {
-      shouldRetryOnError: false
-    }
-  );
-
-  const { data: senin, error: errorsenin, isLoading: seninloading } = useSWR<Jadwal[]>(
-    selectedRuangId ? `/api/jadwal/hari?hari=SENIN&ruang_id=${selectedRuangId}` : null,
-    fetcher,
-    {
-      shouldRetryOnError: false
-    }
-  );
-
-  const { data: selasa, error: errorselasa, isLoading: selasaLoading } = useSWR<Jadwal[]>(
-    selectedRuangId ? `/api/jadwal/hari?hari=SELASA&ruang_id=${selectedRuangId}` : null,
-    fetcher,
-    {
-      shouldRetryOnError: false
-    }
-  );
-
-  const { data: rabu, error: errorrabu, isLoading: rabuLoading } = useSWR<Jadwal[]>(
-    selectedRuangId ? `/api/jadwal/hari?hari=RABU&ruang_id=${selectedRuangId}` : null,
-    fetcher,
-    {
-      shouldRetryOnError: false
-    }
-  );
-
-  const { data: kamis, error: errorkamis, isLoading: kamisLoading
+  const {
+    data: senin,
+    error: errorsenin,
+    isLoading: seninloading,
   } = useSWR<Jadwal[]>(
-    selectedRuangId ? `/api/jadwal/hari?hari=KAMIS&ruang_id=${selectedRuangId}` : null,
+    selectedRuangId
+      ? `/api/jadwal/hari?hari=SENIN&ruang_id=${selectedRuangId}`
+      : null,
     fetcher,
     {
-      shouldRetryOnError: false
+      shouldRetryOnError: false,
     }
   );
 
-  const { data: jumat, error: errorjumat, isLoading: jumatLoading
+  const {
+    data: selasa,
+    error: errorselasa,
+    isLoading: selasaLoading,
   } = useSWR<Jadwal[]>(
-    selectedRuangId ? `/api/jadwal/hari?hari=JUMAT&ruang_id=${selectedRuangId}` : null,
+    selectedRuangId
+      ? `/api/jadwal/hari?hari=SELASA&ruang_id=${selectedRuangId}`
+      : null,
     fetcher,
     {
-      shouldRetryOnError: false
+      shouldRetryOnError: false,
     }
   );
 
-  const { data: sabtu, error: errorsabtu, isLoading: sabtuLoading
+  const {
+    data: rabu,
+    error: errorrabu,
+    isLoading: rabuLoading,
   } = useSWR<Jadwal[]>(
-    selectedRuangId ? `/api/jadwal/hari?hari=SABTU&ruang_id=${selectedRuangId}` : null,
+    selectedRuangId
+      ? `/api/jadwal/hari?hari=RABU&ruang_id=${selectedRuangId}`
+      : null,
     fetcher,
     {
-      shouldRetryOnError: false
+      shouldRetryOnError: false,
     }
   );
 
-  const { data: minggu, error: errorminggu, isLoading: mingguLoading
+  const {
+    data: kamis,
+    error: errorkamis,
+    isLoading: kamisLoading,
   } = useSWR<Jadwal[]>(
-    selectedRuangId ? `/api/jadwal/hari?hari=MINGGU&ruang_id=${selectedRuangId}` : null,
+    selectedRuangId
+      ? `/api/jadwal/hari?hari=KAMIS&ruang_id=${selectedRuangId}`
+      : null,
     fetcher,
     {
-      shouldRetryOnError: false
-    },
+      shouldRetryOnError: false,
+    }
+  );
+
+  const {
+    data: jumat,
+    error: errorjumat,
+    isLoading: jumatLoading,
+  } = useSWR<Jadwal[]>(
+    selectedRuangId
+      ? `/api/jadwal/hari?hari=JUMAT&ruang_id=${selectedRuangId}`
+      : null,
+    fetcher,
+    {
+      shouldRetryOnError: false,
+    }
+  );
+
+  const {
+    data: sabtu,
+    error: errorsabtu,
+    isLoading: sabtuLoading,
+  } = useSWR<Jadwal[]>(
+    selectedRuangId
+      ? `/api/jadwal/hari?hari=SABTU&ruang_id=${selectedRuangId}`
+      : null,
+    fetcher,
+    {
+      shouldRetryOnError: false,
+    }
+  );
+
+  const {
+    data: minggu,
+    error: errorminggu,
+    isLoading: mingguLoading,
+  } = useSWR<Jadwal[]>(
+    selectedRuangId
+      ? `/api/jadwal/hari?hari=MINGGU&ruang_id=${selectedRuangId}`
+      : null,
+    fetcher,
+    {
+      shouldRetryOnError: false,
+    }
   );
 
   return (
-    <div className="flex flex-row h-screen">
+    <div className="flex flex-row h-screen font-mulish">
       <Sidebar />
       <div className="w-full flex flex-col ">
         <Navbar />
@@ -230,24 +256,26 @@ const Jadwal: FC<Jadwal> = () => {
             <div>
               <div className="flex justify-between">
                 <h1 className="text-lg font-bold">Jadwal</h1>
-                <button
-                  type="button"
-                  className={` w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${listOpenRuang
-                    ? "border-[2px] border-Primary-50 bg-Primary-95"
-                    : "bg-Neutral-95"
+                <div className="flex flex-col w-52 relative">
+                  <button
+                    type="button"
+                    className={`w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${
+                      listOpenRuang
+                        ? "border-[2px] border-Primary-50 bg-Primary-95"
+                        : "bg-Neutral-95"
                     }`}
-                  onClick={toggleListRuang}
-                >
-                  {
-                    ruang?.find(ruang => ruang.id === watch("ruang_id"))?.nama_ruang
-                  }
-                  {listOpenRuang ? <IoIosArrowUp /> : <IoIosArrowDown />}
-                </button>
-                {
-                  listOpenRuang && (
+                    onClick={toggleListRuang}
+                  >
+                    {
+                      ruang?.find((ruang) => ruang.id === watch("ruang_id"))
+                        ?.nama_ruang
+                    }
+                    {listOpenRuang ? <IoIosArrowUp /> : <IoIosArrowDown />}
+                  </button>
+                  {listOpenRuang && (
                     <ul
                       ref={componentRef}
-                      className="absolute w-full top-[44px] z-10 bg-Neutral-100 border-[2px] border-Primary-50 rounded-xl py-2 px-2 outline-none appearance-none flex flex-col gap-1"
+                      className="absolute w-full z-10 bg-Neutral-100 border-[2px] border-Primary-50 rounded-xl p-2 outline-none appearance-none flex flex-col gap-1 top-0 translate-y-[44px]"
                     >
                       {errorruang ? (
                         <li className="text-center">Error</li>
@@ -257,18 +285,17 @@ const Jadwal: FC<Jadwal> = () => {
                         <li className="text-center">Data Kosong</li>
                       ) : (
                         ruang.map((ruang) => (
-                          <li
-                            key={ruang.id}>
+                          <li key={ruang.id}>
                             <button
-                              className={`w-full text-left px-2 py-1 rounded-full ${watch("ruang_id") === ruang.id
-                                ? "text-Primary-90 bg-Primary-20"
-                                : "text-Primary-20 hover:bg-Primary-95"
-                                }`}
+                              className={`w-full text-left px-4 py-1 rounded-full ${
+                                watch("ruang_id") === ruang.id
+                                  ? "text-Primary-90 bg-Primary-20"
+                                  : "text-Primary-20 hover:bg-Primary-95"
+                              }`}
                               onClick={() => {
-                                selectRuang(ruang.id)
-                                console.log(ruang.id)
-                              }
-                              }
+                                selectRuang(ruang.id);
+                                console.log(ruang.id);
+                              }}
                             >
                               {ruang.nama_ruang}
                             </button>
@@ -276,17 +303,14 @@ const Jadwal: FC<Jadwal> = () => {
                         ))
                       )}
                     </ul>
-                  )
-                }
-
+                  )}
+                </div>
 
                 {errors.ruang_id && (
-                  <span className="text-red-500">{errors.ruang_id.message}</span>
+                  <span className="text-red-500">
+                    {errors.ruang_id.message}
+                  </span>
                 )}
-
-
-
-
 
                 {/* <select
                   className="bg-Neutral-100 text-Primary-10 px-4 rounded py-2 w-40 font-semibold border-[2px] outline-none"
@@ -330,7 +354,6 @@ const Jadwal: FC<Jadwal> = () => {
                 </div>
               </div>
               {sesi?.map((item: any) => {
-
                 const hari_senin = senin?.find(
                   (hari_senin) => hari_senin.sesi?.nama_sesi === item.nama_sesi
                 );
@@ -474,10 +497,10 @@ const Jadwal: FC<Jadwal> = () => {
                 );
               })}
             </div>
-          </div >
-        </div >
-      </div >
-    </div >
+          </div>
+        </div>
+      </div>
+    </div>
   );
 };
 
