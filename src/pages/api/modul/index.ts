@@ -21,8 +21,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       const moduls = await prisma.module.create({
         data: {
           nama_module,
-          url,
-          thumbnail,
           mapel_id,
         },
       });
