@@ -105,9 +105,9 @@ const handler: NextApiHandler = async (req, res) => {
 
     else if (req.method === "POST") {
         try {
-            await fs.readdir(path.join(process.cwd() + "/public", "/img", "/siswa", "/tagihan"));
+            await fs.readdir(path.join(process.cwd() + "/upload", "/img", "/siswa", "/tagihan"));
         } catch (error) {
-            await fs.mkdir(path.join(process.cwd() + "/public", "/img", "/siswa", "/tagihan"));
+            await fs.mkdir(path.join(process.cwd() + "/upload", "/img", "/siswa", "/tagihan"));
         }
         try {
             await readFile(req, true);
@@ -130,7 +130,7 @@ const handler: NextApiHandler = async (req, res) => {
 
             res.status(200).json({
                 status: 200,
-                message: "tagihan berhasil diupload",
+                message: "nota tagihan berhasil diupload",
                 data: {},
             });
         } catch (error) {
