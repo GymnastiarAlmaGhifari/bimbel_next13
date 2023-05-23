@@ -22,6 +22,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 });
             }
 
+            if (siswas.password === await bcrypt.hash(password, 10)) {
+                return res.status(401).json({
+                    status: 401,
+                    message: "Password tidak boleh sama dengan sebelumnya",
+                    data: {},
+                }); 
+            }
+
             const updatepassword = await prisma.siswa.update({
                 where: {
                     id: siswas.id,
