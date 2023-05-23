@@ -1,3 +1,4 @@
+"use client"
 import Search from "@/pages/components/Search";
 import Button from "@/pages/components/buttons/Button";
 import CardTambahAnggotaKelompok from "@/pages/components/card/CardTambahAnggotakelompok";
@@ -53,6 +54,7 @@ const Anggota: FC<AnggotaProps> = ({
   });
 
 
+
   const [isLoading, setIsLoading] = useState(false);
 
   const {
@@ -72,7 +74,6 @@ const Anggota: FC<AnggotaProps> = ({
     // Saat data di-load, centang semua checkbox
     setValue('checkboxes', anggota?.map((item: any) => item.id));
   }, [anggota, setValue]);
-
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     let { checkboxes } = data;
@@ -116,20 +117,25 @@ const Anggota: FC<AnggotaProps> = ({
     }
   };
 
+
+
   // buat useEffect untuk mengatur nilai default checkbox saat data anggota tersedia
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       {anggota && anggota.length > 0 ? (
         anggota.map((item) => (
-          <div key={item.id}>
-            <input
-              type="checkbox"
-              id={`checkbox - ${item.id}`}
-              value={item.id}
-              {...register('checkboxes')}
-            />
-            <label htmlFor={`checkbox - ${item.id}`}>{item.nama}</label>
-          </div>
+          <CardTambahAnggotaKelompok
+            key={item.id}
+            type="checkbox"
+            id={item.id}
+            value={item.id}
+            register={{ ...register('checkboxes') }}
+            label={item.nama}
+            nomor_telepon={item.nomor_telepon}
+            getValues={getValues} // Meneruskan fungsi getValues sebagai prop
+            setValue={setValue} // Meneruskan fungsi setValue sebagai prop
+            groupName="kelompok"
+          />
         ))
       ) : (
         <div>Data tidak tersedia.</div>
@@ -146,15 +152,18 @@ const Anggota: FC<AnggotaProps> = ({
           <div className="grid grid-cols-6 gap-4 ">
             {siswaTanpaKelompok && siswaTanpaKelompok.length > 0 ? (
               siswaTanpaKelompok.map((item) => (
-                <div key={item.id}>
-                  <input
-                    type="checkbox"
-                    id={`checkbox2 - ${item.id}`}
-                    value={item.id}
-                    {...register('checkboxes2')}
-                  />
-                  <label htmlFor={`checkbox2 - ${item.id}`}>{item.nama}</label>
-                </div>
+                <CardTambahAnggotaKelompok
+                  key={item.id}
+                  type="checkbox"
+                  id={item.id}
+                  value={item.id}
+                  register={{ ...register('checkboxes2') }}
+                  label={item.nama}
+                  nomor_telepon={item.nomor_telepon}
+                  getValues={getValues} // Meneruskan fungsi getValues sebagai prop
+                  setValue={setValue} // Meneruskan fungsi setValue sebagai prop
+                  groupName="siswaTanpaKelompok"
+                />
               ))
             ) : (
               <div>Data tidak tersedia.</div>
