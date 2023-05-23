@@ -1,3 +1,4 @@
+"use client"
 import Search from "@/pages/components/Search";
 import Button from "@/pages/components/buttons/Button";
 import CardTambahAnggotaKelompok from "@/pages/components/card/CardTambahAnggotakelompok";
@@ -25,11 +26,16 @@ const schema = yup.object().shape({
     }
     return originalValue;
   }),
+  checkboxes2: yup.mixed().nullable().transform((value, originalValue) => {
+    if (originalValue === '' || !value) { // Check if value is falsy
+      return []; // Return an empty array
+    }
+    return originalValue;
+  }
+  ),
 });
 
 type FormData = yup.InferType<typeof schema>
-
-
 
 const Anggota: FC<AnggotaProps> = ({
   kelompokId,
@@ -39,51 +45,15 @@ const Anggota: FC<AnggotaProps> = ({
 
 }) => {
 
-
-
-  // useEffect(() => {
-  //   // Mengatur nilai default checkbox saat data anggota tersedia
-  //   if (anggota) {
-  //     const defaultCheckboxes = anggota.map((item: any) => item.id);
-  //     setValue('checkboxes', defaultCheckboxes);
-  //     checkboxesRef.current = defaultCheckboxes;
-  //   }
-  // }, [anggota, setValue]);
-
-  // const onSubmit: SubmitHandler<FormData> = async (data) => {
-  //   let { checkboxes } = data;
-
-  //   if (!Array.isArray(checkboxes)) {
-  //     checkboxes = [checkboxes];
-  //   }
-
-  //   console.log(checkboxes);
-
-  //   // setIsLoading(true); // Set loading state to true
-
-  //   // try {
-  //   //   await axios.put(`/api/kelompok/${kelompokId}`, {
-  //   //     Siswa: {
-  //   //       connect: (checkboxes as string[]).map((item) => ({
-  //   //         id: item,
-  //   //       })),
-  //   //     },
-  //   //   });
-
-  //   //   mutate(`/api/kelompok/siswa/${kelompokId}`);
-  //   //   mutate(`/api/kelompok/${kelompokId}`);
-
-  //   //   setIsLoading(false); // Set loading state to false
-  //   //   onSuccess(); // Trigger onSuccess function from parent component
-  //   //   onClose(); // Trigger onClose function from parent component
-  //   // } catch (error) {
-  //   //   console.log(error);
-  //   //   setIsLoading(false); // Set loading state to false
-  //   // }
-  // };
   const { data: anggota, error } = useSWR<any[]>(`/api/kelompok/siswa/${kelompokId}`, fetcher, {
     revalidateOnFocus: false // Menonaktifkan pengambilan data ulang saat komponen mendapatkan fokus
   });
+
+  const { data: siswaTanpaKelompok, error: errorSiswaTanpaKelompok } = useSWR<any[]>(`/api/kelompok/siswa`, fetcher, {
+    revalidateOnFocus: false // Menonaktifkan pengamb
+  });
+
+
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -96,57 +66,28 @@ const Anggota: FC<AnggotaProps> = ({
     formState: { errors },
   } = useForm<FormData>({
     resolver: yupResolver(schema),
-    defaultValues: {
-      checkboxes: [],
-    },
   });
 
-  // const checkboxesRef = useRef<string[]>([]);
-
-
-  // const handleCheck = (value: string, checked: boolean) => {
-  //   if (checked) {
-  //     checkboxesRef.current.push(value);
-  //   } else {
-  //     const index = checkboxesRef.current.indexOf(value);
-  //     if (index !== -1) {
-  //       checkboxesRef.current.splice(index, 1);
-  //     }
-  //   }
-
-  //   setValue(
-  //     'checkboxes',
-  //     checkboxesRef.current.length > 0 ? checkboxesRef.current : [],
-  //     {
-  //       shouldValidate: true,
-  //     }
-  //   );
-  // };
-
-  // useEffect(() => {
-  //   if (anggota) {
-  //     // Saat data di-load, centang semua checkbox
-  //     setValue('checkboxes', anggota.map((item) => item.id));
-  //   }
-  // }, [anggota, setValue]);
-
-  const watchCheckboxes :any = watch('checkboxes');
-
+  const watchCheckboxes: any = watch('checkboxes');
 
   useEffect(() => {
     // Saat data di-load, centang semua checkbox
     setValue('checkboxes', anggota?.map((item: any) => item.id));
-
-
   }, [anggota, setValue]);
-
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     let { checkboxes } = data;
+    let { checkboxes2 } = data;
 
     if (!Array.isArray(checkboxes)) {
       checkboxes = [checkboxes];
     }
+
+    if (!Array.isArray(checkboxes2)) {
+      checkboxes2 = [checkboxes2];
+    }
+
+    console.log(checkboxes2);
 
     console.log(checkboxes);
 
@@ -157,9 +98,15 @@ const Anggota: FC<AnggotaProps> = ({
         data: data.checkboxes,
       });
 
+      await axios.put(`/api/kelompok/siswanull/${kelompokId}`, {
+        data: data.checkboxes2,
+      });
+
       mutate(`/api/kelompok/siswa/${kelompokId}`);
+      mutate(`/api/kelompok/siswanull/${kelompokId}`);
       mutate(`/api/kelompok/${kelompokId}`);
       mutate(`/api/kelompok/siswa`);
+
 
       setIsLoading(false); // Set loading state to false
       onSuccess(); // Trigger onSuccess function from parent component
@@ -170,28 +117,80 @@ const Anggota: FC<AnggotaProps> = ({
     }
   };
 
+
+
   // buat useEffect untuk mengatur nilai default checkbox saat data anggota tersedia
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       {anggota && anggota.length > 0 ? (
         anggota.map((item) => (
-          <div key={item.id}>
-            <input
-              type="checkbox"
-              id={`checkbox-${item.id}`}
-              value={item.id}
-              {...register('checkboxes')}
-            />
-            <label htmlFor={`checkbox-${item.id}`}>{item.nama}</label>
-          </div>
+          <CardTambahAnggotaKelompok
+            key={item.id}
+            type="checkbox"
+            id={item.id}
+            value={item.id}
+            register={{ ...register('checkboxes') }}
+            label={item.nama}
+            nomor_telepon={item.nomor_telepon}
+            getValues={getValues} // Meneruskan fungsi getValues sebagai prop
+            setValue={setValue} // Meneruskan fungsi setValue sebagai prop
+            groupName="kelompok"
+          />
         ))
       ) : (
         <div>Data tidak tersedia.</div>
       )}
-      <button type="submit">Submit</button>
+      <div className="w-full h-[1px] bg-Neutral-70"></div>
+      <div className="flex flex-col gap-4">
+        <div className="flex justify-between">
+          <p className="font-semibold text-lg text-Primary-20">
+            Siswa Tanpa Kelompok
+          </p>
+          <Search />
+        </div>
+        <div className=" h-80 overflow-auto scrollbar pr-2 ">
+          <div className="grid grid-cols-6 gap-4 ">
+            {siswaTanpaKelompok && siswaTanpaKelompok.length > 0 ? (
+              siswaTanpaKelompok.map((item) => (
+                <CardTambahAnggotaKelompok
+                  key={item.id}
+                  type="checkbox"
+                  id={item.id}
+                  value={item.id}
+                  register={{ ...register('checkboxes2') }}
+                  label={item.nama}
+                  nomor_telepon={item.nomor_telepon}
+                  getValues={getValues} // Meneruskan fungsi getValues sebagai prop
+                  setValue={setValue} // Meneruskan fungsi setValue sebagai prop
+                  groupName="siswaTanpaKelompok"
+                />
+              ))
+            ) : (
+              <div>Data tidak tersedia.</div>
+            )}
+          </div>
+        </div>
+      </div>
+      <div className="flex justify-end gap-4 mt-4">
+        <button
+          type="button"
+          className="px-4 py-2 rounded-md bg-Primary-10 text-Primary-70 hover:bg-Primary-70 hover:text-white transition-all duration-200"
+          onClick={onClose}
+        >
+          Batal
+        </button>
+        <button
+          type="submit"
+          className="px-4 py-2 rounded-md bg-Primary-70 text-white hover:bg-Primary-70 transition-all duration-200"
+          disabled={isLoading}
+        >
+          {isLoading ? 'Menyimpan...' : 'Simpan'}
+        </button>
+      </div>
     </form>
   );
 };
+
 
 // return (
 //   <div className="flex flex-col gap-4">
@@ -217,42 +216,42 @@ const Anggota: FC<AnggotaProps> = ({
 //       <CardTambahAnggotaKelompok />
 //       <CardTambahAnggotaKelompok /> */}
 //     </div>
-//     <div className="w-full h-[1px] bg-Neutral-70"></div>
-//     <div className="flex flex-col gap-4">
-//       <div className="flex justify-between">
-//         <p className="font-semibold text-lg text-Primary-20">
-//           Siswa Tanpa Kelompok
-//         </p>
-//         <Search />
-//       </div>
-//       <div className=" h-80 overflow-auto scrollbar pr-2 ">
-//         <div className="grid grid-cols-6 gap-4 ">
-//           <CardTambahAnggotaKelompok />
-//           <CardTambahAnggotaKelompok />
-//           <CardTambahAnggotaKelompok />
-//           <CardTambahAnggotaKelompok />
-//           <CardTambahAnggotaKelompok />
-//           <CardTambahAnggotaKelompok />
-//           <CardTambahAnggotaKelompok />
-//           <CardTambahAnggotaKelompok />
-//           <CardTambahAnggotaKelompok />
-//           <CardTambahAnggotaKelompok />
-//           <CardTambahAnggotaKelompok />
-//           <CardTambahAnggotaKelompok />
-//           <CardTambahAnggotaKelompok />
-//           <CardTambahAnggotaKelompok />
-//           <CardTambahAnggotaKelompok />
-//           <CardTambahAnggotaKelompok />
-//           <CardTambahAnggotaKelompok />
-//           <CardTambahAnggotaKelompok />
-//           <CardTambahAnggotaKelompok />
-//           <CardTambahAnggotaKelompok />
-//           <CardTambahAnggotaKelompok />
-//           <CardTambahAnggotaKelompok />
-//           <CardTambahAnggotaKelompok />
-//           <CardTambahAnggotaKelompok />
-//         </div>
-//       </div>
+// <div className="w-full h-[1px] bg-Neutral-70"></div>
+// <div className="flex flex-col gap-4">
+//   <div className="flex justify-between">
+//     <p className="font-semibold text-lg text-Primary-20">
+//       Siswa Tanpa Kelompok
+//     </p>
+//     <Search />
+//   </div>
+//   <div className=" h-80 overflow-auto scrollbar pr-2 ">
+//     <div className="grid grid-cols-6 gap-4 ">
+//       <CardTambahAnggotaKelompok />
+//       <CardTambahAnggotaKelompok />
+//       <CardTambahAnggotaKelompok />
+//       <CardTambahAnggotaKelompok />
+//       <CardTambahAnggotaKelompok />
+//       <CardTambahAnggotaKelompok />
+//       <CardTambahAnggotaKelompok />
+//       <CardTambahAnggotaKelompok />
+//       <CardTambahAnggotaKelompok />
+//       <CardTambahAnggotaKelompok />
+//       <CardTambahAnggotaKelompok />
+//       <CardTambahAnggotaKelompok />
+//       <CardTambahAnggotaKelompok />
+//       <CardTambahAnggotaKelompok />
+//       <CardTambahAnggotaKelompok />
+//       <CardTambahAnggotaKelompok />
+//       <CardTambahAnggotaKelompok />
+//       <CardTambahAnggotaKelompok />
+//       <CardTambahAnggotaKelompok />
+//       <CardTambahAnggotaKelompok />
+//       <CardTambahAnggotaKelompok />
+//       <CardTambahAnggotaKelompok />
+//       <CardTambahAnggotaKelompok />
+//       <CardTambahAnggotaKelompok />
+//     </div>
+//   </div>
 //       <div className="flex justify-end mt-4 gap-4">
 //         <Button
 //           center
