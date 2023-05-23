@@ -17,7 +17,7 @@ let randomString: string;
 const readFile = (req: NextApiRequest, saveLocally?: boolean): Promise<{ fields: formidable.Fields; files: formidable.Files }> => {
   const options: formidable.Options = {};
   if (saveLocally) {
-    options.uploadDir = path.join(process.cwd(), "/public/img/user");
+    options.uploadDir = path.join(process.cwd(), "/upload/img/user");
     options.filename = (name, ext, path, form) => {
       const extention = path.originalFilename?.split(".").pop();
       return req.headers.from + "-" + randomString + "." + extention;
@@ -35,7 +35,7 @@ const readFile = (req: NextApiRequest, saveLocally?: boolean): Promise<{ fields:
 
 const handler: NextApiHandler = async (req, res) => {
   try {
-    await fs.readdir(path.join(process.cwd() + "/public", "/img", "/user"));
+    await fs.readdir(path.join(process.cwd() + "/upload", "/img", "/user"));
 
     randomString = Math.floor(100000 + Math.random() * 900000).toString();
 
@@ -51,7 +51,7 @@ const handler: NextApiHandler = async (req, res) => {
       res.status(500).json({ message: "Error updating user" });
     }
   } catch (error) {
-    await fs.mkdir(path.join(process.cwd() + "/public", "/img", "/user"));
+    await fs.mkdir(path.join(process.cwd() + "/upload", "/img", "/user"));
   }
   await readFile(req, true);
   res.json({ done: "ok" });

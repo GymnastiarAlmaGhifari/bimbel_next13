@@ -12,8 +12,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   if (req.method === 'POST') {
 
-    const sourcePath = path.join(process.cwd(), "/public/modul/temp.pdf");
-    const destinationPath = path.join(process.cwd(), '/public/modul/temp.pdf');
+    const sourcePath = path.join(process.cwd(), "/upload/modul/temp.pdf");
+    const destinationPath = path.join(process.cwd(), '/upload/modul/temp.pdf');
     const newFileName = id + ".pdf";
 
     try {
@@ -32,7 +32,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         await page.waitForTimeout(2000);
 
 
-        const screenshotPath = join(process.cwd(), 'public/modul/thumb', 'temporary.png');
+        const screenshotPath = join(process.cwd(), 'upload/modul/thumb', 'temporary.png');
         await page.screenshot({ path: screenshotPath });
 
         const x = 310;
@@ -40,7 +40,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         const width = 750;
         const height = 1000;
 
-        const outputPath = join(process.cwd(), 'public/modul/thumb', id + '.png');
+        const outputPath = join(process.cwd(), 'upload/modul/thumb', id + '.png');
 
         await sharp(screenshotPath)
           .extract({ left: x, top: y, width, height })

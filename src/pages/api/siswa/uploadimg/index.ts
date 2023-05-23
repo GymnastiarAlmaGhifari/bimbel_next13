@@ -26,7 +26,7 @@ const readFile = (req: NextApiRequest, saveLocally?: boolean): Promise<{ fields:
 
   const options: formidable.Options = {};
   if (saveLocally) {
-    options.uploadDir = path.join(process.cwd(), "/public/img/siswa");
+    options.uploadDir = path.join(process.cwd(), "/upload/img/siswa");
     options.filename = (name, ext, path, form) => {
       const extention = path.originalFilename?.split(".").pop();
       return decodedToken.id + "." + "jpg";
@@ -44,10 +44,10 @@ const readFile = (req: NextApiRequest, saveLocally?: boolean): Promise<{ fields:
 
 const handler: NextApiHandler = async (req, res) => {
   try {
-    await fs.readdir(path.join(process.cwd() + "/public", "/img", "/siswa"));
+    await fs.readdir(path.join(process.cwd() + "/upload", "/img", "/siswa"));
 
   } catch (error) {
-    await fs.mkdir(path.join(process.cwd() + "/public", "/img", "/siswa"));
+    await fs.mkdir(path.join(process.cwd() + "/upload", "/img", "/siswa"));
   }
   await readFile(req, true);
   res.json({ 
