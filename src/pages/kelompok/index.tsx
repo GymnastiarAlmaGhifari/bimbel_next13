@@ -25,11 +25,34 @@ interface Kelompok {
 }
 
 const Kelompok: FC<Kelompok> = () => {
+
+  const [inputValue, setInputValue] = useState<string>("");
+  const [debouncedValue, setDebouncedValue] = useState<string>("");
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedValue(inputValue);
+    }, 1000);
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [inputValue]);
+
   const { data: kelompoks, error } = useSWR<Kelompok[]>(
     "/api/kelompok",
     fetcher,
     {}
   );
+
+  let filteredKelompok = kelompoks;
+
+  if (debouncedValue) {
+    filteredKelompok = kelompoks?.filter((kelompok) =>
+      kelompok.nama_kelompok.toLowerCase().includes(debouncedValue.toLowerCase())
+    );
+  }
+
   const [selected, setSelected] = useState<Kelompok | null>(null);
 
   const [selectedAnggota, setSelectedAnggota] = useState<Kelompok | null>(null);
@@ -59,6 +82,10 @@ const Kelompok: FC<Kelompok> = () => {
     };
   }, [showSuccess]);
 
+  const handleInputChange = (value: string) => {
+    setInputValue(value);
+  };
+
   return (
     <div className="flex flex-row h-screen">
       <Sidebar />
@@ -71,14 +98,15 @@ const Kelompok: FC<Kelompok> = () => {
               onClick={() => {
                 setShowCreate(true);
               }}
+              onChange={handleInputChange}
             />
             <div className="flex flex-col rounded-bl-lg rounded-br-lg p-4 gap-4 overflow-y-auto scollbar scrollbar-thin scrollbar-track-Neutral-100 scrollbar-thumb-Primary-40 scrollbar-rounded-lg ">
-              {kelompoks ? (
+              {filteredKelompok ? (
                 <>
-                  {kelompoks.length === 0 ? (
+                  {filteredKelompok.length === 0 ? (
                     <p>No program found.</p>
                   ) : (
-                    kelompoks.map((kelompok) => (
+                    filteredKelompok.map((kelompok) => (
                       <CardKelompok
                         key={kelompok.id}
                         nama_kelompok={kelompok.nama_kelompok}

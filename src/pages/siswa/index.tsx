@@ -34,9 +34,32 @@ interface Siswa {
 const Siswa: FC<Siswa> = () => {
   const { data: session, status } = useSession();
 
+  const [inputValue, setInputValue] = useState<string>("");
+  const [debouncedValue, setDebouncedValue] = useState<string>("");
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedValue(inputValue);
+    }, 1000);
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [inputValue]);
+
   const { data: siswa, error } = useSWR<Siswa[]>("/api/siswa", fetcher, {});
 
-  // selectedit dan select delete
+  let filteredSiswa = siswa;
+
+  if (debouncedValue) {
+    filteredSiswa = siswa?.filter((siswa) =>
+      siswa.nama.toLowerCase().includes(debouncedValue.toLowerCase())
+    );
+  }
+
+  const handleInputChange = (value: string) => {
+    setInputValue(value);
+  };
 
   const [selectedEdit, setSelectedEdit] = useState<Siswa | null>(null);
 
@@ -71,20 +94,22 @@ const Siswa: FC<Siswa> = () => {
           <div className="flex flex-col h-full bg-Neutral-100 py-4 gap-4 rounded-lg overflow-auto">
             <HeadTable label="Siswa" onClick={
               () => setShowCreate(true)
-            } />
+            }
+              onChange={handleInputChange}
+            />
             <div className="flex flex-col rounded-bl-lg rounded-br-lg p-4 gap-4 overflow-y-auto scrollbar">
 
               {
-                siswa ? (
+                filteredSiswa ? (
                   <>
-                    {siswa.length === 0 ? (
+                    {filteredSiswa.length === 0 ? (
                       <div className="flex flex-col justify-center items-center">
                         <p className="text-2xl font-bold text-Neutral-600">Data Kosong</p>
-                        <p className="text-Neutral-500">Silahkan tambahkan data siswa</p>
+                        <p className="text-Neutral-500">Silahkan tambahkan data Siswa</p>
                       </div>
                     ) : (
                       <>
-                        {siswa.map((siswa) => (
+                        {filteredSiswa.map((siswa) => (
                           <CardSiswa
                             key={siswa.id}
                             tipe={siswa.kelompok?.program.tipe}

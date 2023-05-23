@@ -11,6 +11,8 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { mutate } from "swr";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
+import { ModalDetail, ModalSucces } from "@/pages/components/modal/Modal";
+
 
 interface Jadwal {
   id: string;
@@ -135,18 +137,15 @@ const Jadwal: FC<Jadwal> = () => {
     };
   }, [setIsListOpenRuang, componentRef]);
 
-
   const toggleListRuang = () => {
     setIsListOpenRuang(!listOpenRuang);
   };
-
 
   const selectRuang = (ruang_id: string) => {
     setValue("ruang_id", ruang_id);
     setSelectedRuangId(ruang_id);
     setIsListOpenRuang(false);
   };
-
 
   const { data: sesi, error: errorsesi, isLoading: sesiLoading } = useSWR<Sesi[]>(
     "/api/sesi",
@@ -215,6 +214,18 @@ const Jadwal: FC<Jadwal> = () => {
       shouldRetryOnError: false
     },
   );
+
+  // useState untuk modal setiap id perhari
+  const [seninModal, setSeninModal] = useState<Jadwal | null>(null);
+  const [selasaModal, setSelasaModal] = useState<Jadwal | null>(null);
+  const [rabuModal, setRabuModal] = useState<Jadwal | null>(null);
+  const [kamisModal, setKamisModal] = useState<Jadwal | null>(null);
+  const [jumatModal, setJumatModal] = useState<Jadwal | null>(null);
+  const [sabtuModal, setSabtuModal] = useState<Jadwal | null>(null);
+  const [mingguModal, setMingguModal] = useState<Jadwal | null>(null);
+
+
+
 
   return (
     <div className="flex flex-row h-screen">
@@ -375,6 +386,11 @@ const Jadwal: FC<Jadwal> = () => {
                           hari="sadawd"
                           kelompok={hari_senin.sesi.nama_sesi}
                           nama_tentor={hari_senin.user.name}
+                          onClick={
+                            () => {
+                              setSeninModal(hari_senin)
+                            }
+                          }
                         />
                       </div>
                     ) : (
@@ -389,6 +405,11 @@ const Jadwal: FC<Jadwal> = () => {
                           hari="sadawd"
                           kelompok={hari_selasa.sesi.nama_sesi}
                           nama_tentor={hari_selasa.user.name}
+                          onClick={
+                            () => {
+                              setSelasaModal(hari_selasa)
+                            }
+                          }
                         />
                       </div>
                     ) : (
@@ -403,6 +424,11 @@ const Jadwal: FC<Jadwal> = () => {
                           hari="sadawd"
                           kelompok={hari_rabu.sesi.nama_sesi}
                           nama_tentor={hari_rabu.user.name}
+                          onClick={
+                            () => {
+                              setRabuModal(hari_rabu)
+                            }
+                          }
                         />
                       </div>
                     ) : (
@@ -417,6 +443,11 @@ const Jadwal: FC<Jadwal> = () => {
                           hari="sadawd"
                           kelompok={hari_kamis.sesi.nama_sesi}
                           nama_tentor={hari_kamis.user.name}
+                          onClick={
+                            () => {
+                              setKamisModal(hari_kamis)
+                            }
+                          }
                         />
                       </div>
                     ) : (
@@ -431,6 +462,11 @@ const Jadwal: FC<Jadwal> = () => {
                           hari="sadawd"
                           kelompok={hari_jumat.sesi.nama_sesi}
                           nama_tentor={hari_jumat.user.name}
+                          onClick={
+                            () => {
+                              setJumatModal(hari_jumat)
+                            }
+                          }
                         />
                       </div>
                     ) : (
@@ -445,6 +481,11 @@ const Jadwal: FC<Jadwal> = () => {
                           hari="sadawd"
                           kelompok={hari_sabtu.sesi.nama_sesi}
                           nama_tentor={hari_sabtu.user.name}
+                          onClick={
+                            () => {
+                              setSabtuModal(hari_sabtu)
+                            }
+                          }
                         />
                       </div>
                     ) : (
@@ -459,6 +500,11 @@ const Jadwal: FC<Jadwal> = () => {
                           hari="sadawd"
                           kelompok={hari_minggu.sesi.nama_sesi}
                           nama_tentor={hari_minggu.user.name}
+                          onClick={
+                            () => {
+                              setMingguModal(hari_minggu)
+                            }
+                          }
                         />
                       </div>
                     ) : (
@@ -473,6 +519,116 @@ const Jadwal: FC<Jadwal> = () => {
           </div >
         </div >
       </div >
+      {
+        seninModal ? (
+          <ModalDetail
+            titleModal="Detail Jadwal"
+            onClose={
+              () => {
+                setSeninModal(null)
+              }
+            }
+          >
+            <div className="">test
+              {seninModal.sesi.nama_sesi}
+            </div>
+          </ModalDetail>
+        ) : (
+          kamisModal ? (
+            <ModalDetail
+              titleModal="Detail Jadwal"
+              onClose={
+                () => {
+                  setKamisModal(null)
+                }
+              }
+            >
+              <div className="">test
+                {kamisModal.sesi.nama_sesi}
+              </div>
+            </ModalDetail>
+          ) : (
+            rabuModal ? (
+              <ModalDetail
+                titleModal="Detail Jadwal"
+                onClose={
+                  () => {
+                    setRabuModal(null)
+                  }
+                }
+              >
+                <div className="">test
+                  {rabuModal.sesi.nama_sesi}
+                </div>
+              </ModalDetail>
+
+            ) : (
+              jumatModal ? (
+                <ModalDetail
+                  titleModal="Detail Jadwal"
+                  onClose={
+                    () => {
+                      setJumatModal(null)
+                    }
+                  }
+                >
+                  <div className="">test
+                    {jumatModal.sesi.nama_sesi}
+                  </div>
+                </ModalDetail>
+              ) : (
+                sabtuModal ? (
+                  <ModalDetail
+                    titleModal="Detail Jadwal"
+                    onClose={
+                      () => {
+                        setSabtuModal(null)
+                      }
+                    }
+                  >
+                    <div className="">test
+                      {sabtuModal.sesi.nama_sesi}
+                    </div>
+                  </ModalDetail>
+                ) : (
+                  mingguModal ? (
+                    <ModalDetail
+                      titleModal="Detail Jadwal"
+                      onClose={
+                        () => {
+                          setMingguModal(null)
+                        }
+                      }
+                    >
+                      <div className="">test
+                        {mingguModal.sesi.nama_sesi}
+                      </div>
+                    </ModalDetail>
+                  ) : (
+                    selasaModal ? (
+                      <ModalDetail
+                        titleModal="Detail Jadwal"
+                        onClose={
+                          () => {
+                            setSelasaModal(null)
+                          }
+                        }
+                      >
+                        <div className="">test
+                          {selasaModal.sesi.nama_sesi}
+                        </div>
+                      </ModalDetail>
+                    ) : (
+                      <div></div>
+                    )
+                  )
+                )
+              )
+            )
+          )
+        )
+      }
+
     </div >
   );
 };
