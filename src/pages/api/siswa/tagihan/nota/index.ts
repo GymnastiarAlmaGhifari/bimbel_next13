@@ -6,15 +6,15 @@ import Image from "next/image";
 
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-    let img = req.query.img as string;
+    let nota = req.query.nota as string;
     
     if (req.method === "GET") {
         try {
-                const imgPath = path.join('/upload/img/siswa', img);
+                const notaPath = path.join('/upload/img/siswa/tagihan', nota);
                 //response image from image path
-                if (imgPath) {
+                if (notaPath) {
                     // Read the image file
-                    const filePath = path.join(process.cwd(), imgPath);
+                    const filePath = path.join(process.cwd(), notaPath);
                     const data = fs.readFileSync(filePath);
 
                     res.writeHead(200, {
@@ -30,7 +30,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             console.error(error);
             const response = {
                 status: 500,
-                message: "Error memuat image siswa",
+                message: "Error memuat nota tagihan",
             };
             return res.status(500).json(response);
         }

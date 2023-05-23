@@ -10,7 +10,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     
     if (req.method === "GET") {
         try {
-                const imgPath = path.join('/upload/img/siswa', img);
+                const imgPath = path.join('/upload/modul/thumb', img);
                 //response image from image path
                 if (imgPath) {
                     // Read the image file
@@ -30,7 +30,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             console.error(error);
             const response = {
                 status: 500,
-                message: "Error memuat image siswa",
+                message: "Error memuat thumbnail: " + error,
             };
             return res.status(500).json(response);
         }

@@ -7,8 +7,8 @@ export default async function copyFile(req: NextApiRequest, res: NextApiResponse
 
     if (req.method === "POST") {
 
-  const sourcePath = path.join(process.cwd(), "/public/img/siswa/default.jpg");
-    const destinationPath = path.join(process.cwd(), "/public/img/siswa/default.jpg");
+  const sourcePath = path.join(process.cwd(), "/upload/img/siswa/default.jpg");
+    const destinationPath = path.join(process.cwd(), "/upload/img/siswa/default.jpg");
     const newFileName = id + ".jpg";
     console.log(destinationPath);
 

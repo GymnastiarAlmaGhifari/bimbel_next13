@@ -63,9 +63,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
       const img = JSON.stringify(users.image);
 
-      const gambar = img.replace(/['"]+/g, "");
 
-      const imagePath = path.join(process.cwd(), "public", gambar);
+      const imagePath = path.join(process.cwd(), "upload", "img", "user", img);
 
       try {
         // Check if the image file exists
@@ -74,14 +73,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           fs.unlinkSync(imagePath);
           console.log({ message: "Image deleted successfully" });
 
-          const directory = path.join(process.cwd(), "public", "img", "user");
+          const directory = path.join(process.cwd(), "upload", "img", "user");
           const filenameWithoutExt = userId + "-" + users.random;
-          console.log("Filename without extension:", filenameWithoutExt);
 
           let filePath;
           try {
             const files = await fs.promises.readdir(directory);
-            console.log("Filenames in directory:", files); // log the filenames
             const foundFile = files.find((file) => path.parse(file).name === filenameWithoutExt);
             if (foundFile) {
               filePath = path.join(foundFile);
@@ -99,16 +96,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             console.error(err);
           }
 
-          const image = "/img/user/" + filePath;
           try {
             const user = await prisma.user.update({
               where: { id: userId },
               data: {
-                image: image,
+                image: filePath,
               },
             });
 
-            console.log("image", image);
             res.status(200).json(user);
           } catch (error) {
             console.error(error);
@@ -117,14 +112,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         } else {
           console.log({ message: "Image not found" });
 
-          const directory = path.join(process.cwd(), "public", "img", "user");
+          const directory = path.join(process.cwd(), "upload", "img", "user");
           const filenameWithoutExt = userId + "-" + users.random;
           console.log("Filename without extension:", filenameWithoutExt);
 
           let filePath;
           try {
             const files = await fs.promises.readdir(directory);
-            console.log("Filenames in directory:", files); // log the filenames
             const foundFile = files.find((file) => path.parse(file).name === filenameWithoutExt);
             if (foundFile) {
               filePath = path.join(foundFile);
@@ -142,16 +136,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             console.error(err);
           }
 
-          const image = "/img/user/" + filePath;
           try {
             const user = await prisma.user.update({
               where: { id: userId },
               data: {
-                image: image,
+                image: filePath,
               },
             });
 
-            console.log("image", image);
+            console.log("image", filePath);
             res.status(200).json(user);
           } catch (error) {
             console.error(error);
