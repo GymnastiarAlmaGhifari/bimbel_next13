@@ -42,11 +42,7 @@ const CardPembayaran: FC<CardPembayaranprops> = ({
         <div className="flex items-center h-max w-auto gap-3">
           <div className="h-14 w-14">
             <Image
-              src={
-                gambar
-                  ? gambar
-                  : "https://img.jakpost.net/c/2019/08/09/2019_08_09_77763_1565315121._large.jpg"
-              }
+              src={gambar ? gambar : "/img/user/default.png"}
               alt="Megachan"
               width={100}
               height={100}
@@ -69,9 +65,7 @@ const CardPembayaran: FC<CardPembayaranprops> = ({
       <div className="flex justify-between">
         <div className="flex flex-col gap-1">
           <h3 className="text-sm text-Neutral-30">Tanggal Batas Pembayaran</h3>
-          <span className="font-bold text-Primary-10">
-            {tanggal_tagihan}
-          </span>
+          <span className="font-bold text-Primary-10">{tanggal_tagihan}</span>
         </div>
         <div className="flex flex-col items-center gap-1">
           <h3 className="text-sm text-Neutral-30">Periode Bulan</h3>
@@ -81,18 +75,14 @@ const CardPembayaran: FC<CardPembayaranprops> = ({
         </div>
         <div className="flex flex-col items-end gap-1">
           <h3 className="text-sm text-Neutral-30">Tanggal Dibayar</h3>
-          <span className="font-boldtext-Primary-10">
-            {tanggal_bayar}
-          </span>
+          <span className="font-boldtext-Primary-10">{tanggal_bayar}</span>
         </div>
       </div>
 
       <div className="w-full h-[1px] bg-Neutral-30"></div>
       <div className="flex justify-between">
         <h2 className="font-semibold text-Error-40">{status}</h2>
-        <h2 className="font-semibold text-Error-40">
-          {jumlah_tagihan}
-        </h2>
+        <h2 className="font-semibold text-Error-40">{jumlah_tagihan}</h2>
         {/* <Button
           type="button"
           bgColor="bg-Tertiary-50"

@@ -213,10 +213,10 @@ const UserEdit: FC<UserEditProps> = ({ userId, onClose, onSucsess, data }) => {
               <div>
                 <label
                   htmlFor="image"
-                  className="bg-gray-500 text-white px-4 py-2 rounded cursor-pointer flex items-center space-x-2"
+                  className="bg-Primary-40 text-white px-4 py-2 rounded cursor-pointer flex items-center justify-center space-x-2 rounded-full bg-opacity-90 hover:bg-opacity-100"
                 >
-                  <IoMdCloudUpload className="w-5 h-5" />
-                  <span>Choose File</span>
+                  <IoMdCloudUpload size={24}/>
+                  <span className="font-semibold">Choose File</span>
                 </label>
                 <input
                   type="file"
