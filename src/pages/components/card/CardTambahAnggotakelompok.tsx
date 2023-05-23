@@ -1,17 +1,84 @@
 import Image from "next/image";
-import React, { FC, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { HiOutlineCheck } from "react-icons/hi";
 
 type CardTambahAnggotaKelompokProps = {
-  // nama_siswa: string;
+  type?: string;
+  id?: string;
+  value?: string;
+  register?: any;
+  label?: string;
+  nomor_telepon?: string;
+  getValues?: any; // Tambahkan properti getValues
+  setValue?: any; //
+  groupName?: string;
+
 };
 
-const CardTambahAnggotaKelompok: FC<CardTambahAnggotaKelompokProps> = ({ }) => {
-  const [check, setcheck] = useState(false);
+const CardTambahAnggotaKelompok: FC<CardTambahAnggotaKelompokProps> = ({
+  type,
+  id,
+  value,
+  register,
+  label,
+  nomor_telepon,
+  getValues,
+  setValue,
+  groupName,
+
+}) => {
+
+  // handle check sesuai dengan value yang diinputkan jika true maka akan menampilkan icon check
+  const [check, setCheck] = useState(false);
+
+  useEffect(() => {
+    if (getValues) {
+      const checkboxes = getValues('checkboxes') || [];
+      const checkboxes2 = getValues('checkboxes2') || [];
+
+      if (value) {
+        // Checkbox pada anggota kelompok dicentang, tambahkan nilai baru ke dalam array checkboxes
+        if (checkboxes.includes(value)) {
+          setCheck(true);
+        }
+      } else {
+        // Checkbox pada siswa tanpa kelompok dicentang, tambahkan nilai baru ke dalam array checkboxes2
+        if (checkboxes2.includes(id)) {
+          setCheck(true);
+        }
+      }
+    }
+  }, [getValues, value, id]);
 
   const handleCheck = () => {
-    setcheck(!check);
+    setCheck(!check);
+
+    if (getValues && setValue) {
+      const checkboxes = getValues('checkboxes') || [];
+      const checkboxes2 = getValues('checkboxes2') || [];
+
+      if (!check) {
+        if (groupName === 'kelompok') {
+          // Checkbox pada anggota kelompok dicentang, tambahkan nilai baru ke dalam array checkboxes
+          setValue('checkboxes', [...checkboxes, value]);
+        } else if (groupName === 'siswaTanpaKelompok') {
+          // Checkbox pada siswa tanpa kelompok dicentang, tambahkan nilai baru ke dalam array checkboxes2
+          setValue('checkboxes2', [...checkboxes2, id]);
+        }
+      } else {
+        if (groupName === 'kelompok') {
+          // Checkbox pada anggota kelompok tidak dicentang, hapus nilai dari array checkboxes
+          setValue('checkboxes', checkboxes.filter((item: any) => item !== value));
+        } else if (groupName === 'siswaTanpaKelompok') {
+          // Checkbox pada siswa tanpa kelompok tidak dicentang, hapus nilai dari array checkboxes2
+          setValue('checkboxes2', checkboxes2.filter((item: any) => item !== id));
+        }
+      }
+    }
   };
+
+
+
   return (
     <div onClick={handleCheck}>
       <div
@@ -20,10 +87,11 @@ const CardTambahAnggotaKelompok: FC<CardTambahAnggotaKelompokProps> = ({ }) => {
       >
         <div className="flex justify-end w-full ">
           <input
-            type="checkbox"
-            name=""
-            id="check"
+            type={type}
+            id={id}
             className="appearance-none"
+            value={value}
+            {...register}
           />
           <label htmlFor="check">
             <div
@@ -39,7 +107,7 @@ const CardTambahAnggotaKelompok: FC<CardTambahAnggotaKelompokProps> = ({ }) => {
             </div>
           </label>
         </div>
-        <div className="w-16 h-16 rounded-full overflow-clip scale-100 bg-red-400">
+        <div className="w-16 h-16 rounded-fsull overflow-clip scale-100 bg-red-400">
           <Image
             alt="Foto Siswa"
             src={
@@ -51,8 +119,8 @@ const CardTambahAnggotaKelompok: FC<CardTambahAnggotaKelompokProps> = ({ }) => {
           />
         </div>
         <div className="">
-          <p className="font-bold text-center">Agimul Karim</p>
-          <p className="text-sm text-center">08512345678</p>
+          <p className="font-bold text-center">{label}</p>
+          <p className="text-sm text-center">{nomor_telepon}</p>
         </div>
       </div>
     </div>
