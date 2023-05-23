@@ -40,11 +40,7 @@ const CardModul: FC<CardModulProps> = ({
       <div className="flex gap-5">
         <div className="h-full w-40">
           <Image
-            src={
-              thumbnail
-                ? thumbnail
-                : "https://img.jakpost.net/c/2019/08/09/2019_08_09_77763_1565315121._large.jpg"
-            }
+            src={thumbnail ? thumbnail : "/img/user/default.png"}
             alt="Megachan"
             width={100}
             height={100}
@@ -77,9 +73,7 @@ const CardModul: FC<CardModulProps> = ({
           <div className="flex justify-between">
             <div className="flex flex-col gap-1">
               <h3 className="text-sm text-Neutral-30">Tingkatan</h3>
-              <span className="font-bold text-Primary-10">
-                {tingkatan}
-              </span>
+              <span className="font-bold text-Primary-10">{tingkatan}</span>
             </div>
             <div className="flex flex-col items-center gap-1">
               <h3 className="text-sm text-Neutral-30">Tipe</h3>
@@ -87,9 +81,7 @@ const CardModul: FC<CardModulProps> = ({
             </div>
             <div className="flex flex-col items-end gap-1">
               <h3 className="text-sm text-Neutral-30">Kelompok</h3>
-              <span className="font-bold text-Primary-10">
-                {kelompok}
-              </span>
+              <span className="font-bold text-Primary-10">{kelompok}</span>
             </div>
           </div>
         </div>

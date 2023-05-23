@@ -58,8 +58,24 @@ const Sidebar = () => {
 
   return (
     <>
-      <div className={`${isOpen ? "w-64" : "w-28"} group h-full z-50 relative`}>
-        <div className="h-14 flex justify-between items-center gap-6 pl-4">
+      <div className={`${isOpen ? "w-64" : "w-24"} group h-full z-50 relative`}>
+        <div className="h-14 flex justify-between items-center gap-6">
+          <button
+            onClick={toggleMenu}
+            className="rounded-r-full pr-1 text-Neutral-100 flex items-center"
+          >
+            <svg width="19" height="32" className="translate-x-[-1px]">
+              <path
+                d="M13.992 10.5C1.42245 6.91278 1.01172 1 1.01172 1V31C1.01172 31 1.77636 26.5439 13.9842 23.5C20 22 20 12.2146 13.992 10.5Z"
+                fill="#"
+              />
+            </svg>
+            {isOpen ? (
+              <AiOutlineClose size={12} className="absolute" />
+            ) : (
+              <HiOutlineMenuAlt4 size={12} className="absolute " />
+            )}
+          </button>
           <div className="w-full py-2">
             <Image
               src={isOpen ? "/LogoSidebarOpen.svg" : "/LogoSidebarClose.svg"}
@@ -69,16 +85,6 @@ const Sidebar = () => {
               className="bg-cover"
             />
           </div>
-          <button
-            onClick={toggleMenu}
-            className="rounded-l-full p-1 text-Neutral-100 bg-gradient-to-br from-Tertiary-60 to-Primary-50"
-          >
-            {isOpen ? (
-              <AiOutlineClose size={24} />
-            ) : (
-              <HiOutlineMenuAlt4 size={24} />
-            )}
-          </button>
         </div>
 
         <nav className={`${isOpen ? "" : ""}  px-4 pt-5`}>
