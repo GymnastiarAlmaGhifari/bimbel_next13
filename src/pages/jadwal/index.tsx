@@ -148,10 +148,6 @@ const Jadwal: FC<Jadwal> = () => {
   };
 
 
-
-
-
-
   const { data: sesi, error: errorsesi, isLoading: sesiLoading } = useSWR<Sesi[]>(
     "/api/sesi",
     fetcher,
