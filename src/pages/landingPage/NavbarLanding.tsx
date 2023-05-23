@@ -4,6 +4,7 @@ import ButtonNavbar from "@/pages/components/buttons/ButtonNavbar";
 import Program from "./Program";
 
 import { useEffect, useRef } from "react";
+import Link from "next/link";
 
 export default function NavbarLanding() {
   const navBg = useRef<HTMLInputElement>(null);
@@ -71,12 +72,21 @@ export default function NavbarLanding() {
 </linearGradient>
 </defs>
 </svg> */}
-      <div className="flex gap-2">
+      <div className="flex gap-4">
+        <div className="flex gap-2">
+
         <ButtonNavbar label="Home" goTo="Home" />
         <ButtonNavbar label="About Us" goTo="About" />
         <ButtonNavbar label="Program" goTo="Program" />
         <ButtonNavbar label="Benefit" goTo="Benefit" />
         <ButtonNavbar label="Diskon" goTo="Diskon" />
+        </div>
+        <Link
+          href={"/login"}
+          className="p-2 w-52 bg-Neutral-100 bg-opacity-10 border-[1px]  rounded-full font-semibold text-Neutral-100 text-center hover:text-Neutral-20 hover:bg-Neutral-100 hover:border-none h-10 box-border"
+        >
+          Login Untuk Admin
+        </Link>
       </div>
     </nav>
   );

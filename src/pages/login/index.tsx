@@ -3,6 +3,8 @@
 import { signIn, useSession } from "next-auth/react";
 import Router from "next/router";
 import { useState } from "react";
+import Input from "../components/inputs/Input";
+import Button from "../components/buttons/Button";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -12,7 +14,7 @@ const Login = () => {
   // if (session) { existing session, redirect to home page }
 
   const { data: session } = useSession();
-  
+
   if (session) {
     Router.push("/dashboard");
   }
@@ -70,7 +72,19 @@ const Login = () => {
               Email
             </label>
             <input
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              className="bg-Neutral-95
+              peer
+              h-10
+              w-full
+              px-4
+              py-2
+              rounded-full
+              outline-none
+              transition
+              box-border
+              disabled:opacity-70
+              disabled:cursor-not-allowed
+              focus:border-[2px] focus:border-Primary-50 focus:bg-Primary-99"
               id="email"
               type="email"
               placeholder="Email"
@@ -86,7 +100,19 @@ const Login = () => {
               Password
             </label>
             <input
-              className="shadow appearance-none border border-red-500 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
+              className="bg-Neutral-95
+              peer
+              h-10
+              w-full
+              px-4
+              py-2
+              rounded-full
+              outline-none
+              transition
+              box-border
+              disabled:opacity-70
+              disabled:cursor-not-allowed
+              focus:border-[2px] focus:border-Primary-50 focus:bg-Primary-99"
               id="password"
               type="password"
               placeholder="******************"
@@ -102,7 +128,7 @@ const Login = () => {
             Forgot Password?
           </a>
           <button
-            className="bg-Primary-40 hover:bg-Primary-60 text-Neutral-100 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+            className="bg-Primary-50 hover:bg-Primary-50 text-Neutral-100 font-bold py-2 px-4 rounded-full focus:outline-none focus:shadow-outline"
             type="submit"
           >
             Sign In
