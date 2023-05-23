@@ -2,13 +2,12 @@ import { NextApiRequest, NextApiResponse } from "next";
 import prisma from "@/libs/prismadb";
 import EmailServices from "@/pages/api/service/email";
 
-let OTP_base: string = "";
+let OTP_base: number;
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-    const email = req.headers.authorization;
-    const { OTP } = req.body;
+    const { email, OTP } = req.body;
 
-    if (req.method === "GET") {
+    if (req.method === "PUT") {
         try {
             const siswas = await prisma.siswa.findUnique({
                 where: {
@@ -23,12 +22,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 });
             }
 
-            OTP_base = Math.floor(100000 + Math.random() * 900000).toString();
+            OTP_base = Math.floor(100000 + Math.random() * 900000);
             EmailServices.sendEmailResetPassword(siswas.email, OTP_base);
 
             const response = {
                 status: 200,
-                message: "Berhasil mengirim OTP",
+                message: "Berhasil mengirim OTP ke email",
                 data: {
                     OTP: OTP_base,
                 },
