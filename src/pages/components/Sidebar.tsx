@@ -147,10 +147,11 @@ const Sidebar = () => {
                   </Link>
                 </li>
                 <li>
-                  <Link href="/pembayaran">
+                  <Link href="/pembayaran/gaji">
                     <button
                       className={`${
-                        router.pathname === "/pembayaran"
+                        router.pathname === "/pembayaran/gaji" ||
+                        router.pathname === "/pembayaran/tagihan"
                           ? activeStyleButtonSideBar
                           : "hover:bg-Primary-90"
                       } ${baseStyleButtonSideBar} ${
