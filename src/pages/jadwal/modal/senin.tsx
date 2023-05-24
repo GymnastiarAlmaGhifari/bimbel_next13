@@ -40,8 +40,9 @@ interface Ruang {
 interface Mapel {
     id: string;
     nama_mapel: string;
-    kelas_id: string;
-}
+    kelas: {
+        id: string;
+    }
 
 interface User {
     id: string;
@@ -136,6 +137,22 @@ const Senin: FC<Senin> = ({ jadwalId, data, onClose, onSucsess, idRuang }) => {
     ]
     );
 
+    const [checkValue, setCheckValue] = useState<string>("");
+
+    let filteredMapel = mapel
+
+    if (checkValue) {
+        filteredMapel = mapel?.filter((mapelItem) => {
+            return mapelItem.kelas.id === checkValue; // Add 'return' statement
+        });
+        console.log('Filtered Mapel:', filteredMapel); // Console log the filtered array
+    }
+
+    const handleCheckChange = (value: string) => {
+        setCheckValue(value)
+    }
+
+
     const toggleListSesi = () => {
         setIsListOpenSesi(!isListOpenSesi);
     };
@@ -168,8 +185,14 @@ const Senin: FC<Senin> = ({ jadwalId, data, onClose, onSucsess, idRuang }) => {
             setValue('sesi', data.sesi?.id);
             setValue('mapel', data.mapel?.id);
             setValue('ruang', idRuang);
+            // set handleCheckChange untuk filter mapel
+            if (mapel?.length && mapel[0]?.kelas?.id) {
+                setCheckValue(mapel[0].kelas.id);
+            } else if (kelompok?.length && kelompok[0]?.program?.kelas_id) {
+                setCheckValue(kelompok[0].program.kelas_id);
+            }
         }
-    }, [kelompok, setValue, data]);
+    }, [kelompok, setValue, data, mapel, idRuang]);
 
     const onSubmit: SubmitHandler<FormData> = async (data) => {
         let { kelompokCheck } = data;
@@ -233,12 +256,16 @@ const Senin: FC<Senin> = ({ jadwalId, data, onClose, onSucsess, idRuang }) => {
                                         () => {
                                             setSelectedOption(selectedOption?.id === item.id ? null : item);
                                             setValue('kelompokCheck', item.id);
+                                            handleCheckChange(item.program.kelas_id);
                                         }
                                     }
                                 />
                                 {item.nama_kelompok} - {item.program.nama_program}
                             </label>
                         ))}
+                        {
+                            errors.kelompokCheck && <span className="text-sm text-red-500">Kelompok harus dipilih</span>
+                        }
 
 
                         <div className="flex flex-row gap-2">
@@ -376,14 +403,8 @@ const Senin: FC<Senin> = ({ jadwalId, data, onClose, onSucsess, idRuang }) => {
                                 </button>
                                 {isListOpenMapel && (
                                     <ul className="absolute w-full top-[44px] z-10 bg-Neutral-100 border-[2px] border-Primary-50 rounded-xl py-2 px-2 outline-none appearance-none flex flex-col gap-1" ref={componentRef}>
-                                        {errorMapel ? (
-                                            <li>Error fetching data</li>
-                                        ) : !mapel ? (
-                                            <li>Loading...</li>
-                                        ) : mapel.length === 0 ? (
-                                            <li>No classes available</li>
-                                        ) : (
-                                            mapel.map((mapelItem) => (
+                                        {
+                                            filteredMapel?.map((mapelItem) => (
                                                 <li key={mapelItem.id}>
                                                     <button
                                                         type="button"
@@ -397,7 +418,7 @@ const Senin: FC<Senin> = ({ jadwalId, data, onClose, onSucsess, idRuang }) => {
                                                     </button>
                                                 </li>
                                             ))
-                                        )}
+                                        }
                                     </ul>
                                 )}
                             </div>
