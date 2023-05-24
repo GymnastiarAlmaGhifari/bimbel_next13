@@ -43,7 +43,7 @@ const Navbar = () => {
           </div>
           <div className="w-10 h-10 rounded-full overflow-clip scale-100 border-[1px] border-Primary-50">
             <Image
-              src={users?.image ? users.image : "/img/user/default.png"}
+              src={"/api/user/img?img=" + users?.image ? "/api/user/img?img=" + users?.image : "/img/user/default.png"}
               alt="Megachan"
               width={100}
               height={100}

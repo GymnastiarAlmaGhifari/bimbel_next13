@@ -19,7 +19,7 @@ const readFile = (
 
     const options: formidable.Options = {};
     if (saveLocally) {
-        options.uploadDir = path.join(process.cwd(), "/public/modul/");
+        options.uploadDir = path.join(process.cwd(), "/upload/modul/");
         options.filename = (name, ext, path, form) => {
             return "temp.pdf";
         };
@@ -36,10 +36,10 @@ const readFile = (
 
 const handler: NextApiHandler = async (req, res) => {
     try {
-        await fs.readdir(path.join(process.cwd() + "/public", "/modul"));
+        await fs.readdir(path.join(process.cwd() + "/upload", "/modul"));
 
     } catch (error) {
-        await fs.mkdir(path.join(process.cwd() + "/public", "/modul"));
+        await fs.mkdir(path.join(process.cwd() + "/upload", "/modul"));
         res.status(200).json(error);
     }
 

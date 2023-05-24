@@ -4,13 +4,14 @@ import fs from "fs";
 import path from "path";
 import Image from "next/image";
 
-
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+
     let img = req.query.img as string;
-    
+
     if (req.method === "GET") {
         try {
-                const imgPath = path.join('/upload/img/siswa', img);
+            //if siswa has kelompok id then respon with kelompok
+                const imgPath = path.join('/upload/img/user', img);
                 //response image from image path
                 if (imgPath) {
                     // Read the image file
@@ -25,12 +26,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                     res.end(data);
 
                 }
+
         }
         catch (error) {
             console.error(error);
             const response = {
                 status: 500,
-                message: "Error memuat image siswa",
+                message: "Error memuat image user",
             };
             return res.status(500).json(response);
         }

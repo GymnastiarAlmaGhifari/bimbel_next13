@@ -32,7 +32,7 @@ const UserCard: FC<UserCard> = ({
         <div className="flex items-center h-max w-auto gap-3">
           <div className="h-14 w-14 border-[1px] border-Primary-50 rounded-full">
             <Image
-              src={gambar ? gambar : "/img/user/default.png"}
+              src={"/api/user/img?img=" + gambar ? "/api/user/img?img=" + gambar : "/upload/img/user/default.png"}
               alt="Megachan"
               width={100}
               height={100}
