@@ -202,7 +202,7 @@ const UserEdit: FC<UserEditProps> = ({ userId, onClose, onSucsess, data }) => {
               ) : (
                 <div>
                   <Image
-                    src={data?.image || "/img/user/default.png"}
+                    src={"/api/user/img?img=" + data?.image || "/img/user/default.png"}
                     alt="Gambar"
                     width={200}
                     height={200}
