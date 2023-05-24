@@ -114,6 +114,7 @@ const Siswa: FC<Siswa> = () => {
                             level={siswa.kelompok?.program.level}
                             nama_siswa={siswa.nama}
                             nama_kelompok={siswa.kelompok?.nama_kelompok}
+                            gambar={siswa.image}
                             hp={siswa.nomor_telepon}
                             onEdit={
                               () => setSelectedEdit(siswa)

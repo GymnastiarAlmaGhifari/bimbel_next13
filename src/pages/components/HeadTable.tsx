@@ -8,6 +8,8 @@ import riwayat from "../riwayat";
 
 interface HeadTableProps {
   role?: boolean;
+  bulanPembayaran?: boolean;
+  tahunPembayaran?: boolean;
   riwayat?: boolean;
   withfilter?: boolean;
   onClick?: () => void;
@@ -23,6 +25,8 @@ const HeadTable: React.FC<HeadTableProps> = ({
   withfilter,
   onClick,
   label,
+  bulanPembayaran,
+  tahunPembayaran,
   onChange,
   noSearch,
   riwayat,
@@ -51,6 +55,20 @@ const HeadTable: React.FC<HeadTableProps> = ({
               <MdOutlineSort size={24} />
               <span className="text-sm font-bold text-Neutral-20">Filter</span>
             </button>
+          ) : (
+            ""
+          )}
+          {bulanPembayaran ? (
+            <span className="inline-block flex items-center text-center py-2 px-4 bg-Primary-40 rounded-full text-Neutral-100 font-semibold">
+              Bulan
+            </span>
+          ) : (
+            ""
+          )}
+          {tahunPembayaran ? (
+            <span className="inline-block flex items-center text-center py-2 px-4 bg-Primary-40 rounded-full text-Neutral-100 font-semibold">
+              Tahun
+            </span>
           ) : (
             ""
           )}

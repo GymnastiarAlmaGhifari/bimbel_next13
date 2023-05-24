@@ -83,7 +83,7 @@ export default function NavbarLanding() {
         </div>
         <Link
           href={"/login"}
-          className="p-2 w-52 bg-Neutral-100 bg-opacity-10 border-[1px]  rounded-full font-semibold text-Neutral-100 text-center hover:text-Neutral-20 hover:bg-Neutral-100 hover:border-none h-10 box-border"
+          className="transition-all duration-100 p-2 w-52 border-[1px]  rounded-full font-semibold text-Neutral-100 text-center hover:text-Neutral-20 hover:bg-Neutral-100 hover:border-none h-10 box-border"
         >
           Login Untuk Admin
         </Link>
