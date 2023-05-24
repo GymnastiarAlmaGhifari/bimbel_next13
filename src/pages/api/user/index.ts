@@ -28,6 +28,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     if (user) {
       return res.status(400).json({ message: "Email already exists." });
     } else {
+
       try {
         const user = await prisma.user.create({
           data: {
