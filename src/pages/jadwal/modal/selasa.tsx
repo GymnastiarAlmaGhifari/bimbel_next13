@@ -2,10 +2,10 @@ import React from 'react'
 
 type Props = {}
 
-const selasa = (props: Props) => {
+const Selasa = (props: Props) => {
     return (
-        <div>selasa</div>
+        <div>Selasa</div>
     )
 }
 
-export default selasa
+export default Selasa

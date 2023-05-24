@@ -24,7 +24,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           ruang_id: ruang,
         },
         include: {
-          kelompok: true,
+          kelompok: {
+            include: {
+              program: true,
+            },
+          },
           sesi: true,
           mapel: true,
           user: true,
