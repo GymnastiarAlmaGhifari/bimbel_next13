@@ -16,8 +16,6 @@ RUN npx prisma generate
 
 RUN npm run build
 
-RUN rm -rf node_modules
-
 EXPOSE 3000
 
 VOLUME ["/linear/upload"]
