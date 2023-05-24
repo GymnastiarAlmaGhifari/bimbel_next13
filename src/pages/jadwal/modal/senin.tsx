@@ -23,6 +23,7 @@ interface Kelompok {
     program: {
         id: string;
         nama_program: string;
+        kelas_id: string;
     };
 }
 
@@ -39,6 +40,7 @@ interface Ruang {
 interface Mapel {
     id: string;
     nama_mapel: string;
+    kelas_id: string;
 }
 
 interface User {
@@ -74,13 +76,19 @@ const Senin: FC<Senin> = ({ jadwalId, data, onClose, onSucsess, idRuang }) => {
     const { data: ruang, error: errorRuang } = useSWR<Ruang[]>("api/ruang", fetcher, {});
     const { data: user, error: errorUser } = useSWR<User[]>("api/user", fetcher, {});
 
+
     const [isLoading, setIsLoading] = useState(false);
-    const [selectedOption, setSelectedOption] = useState<Kelompok | null>(null);
+
     const [selectedOptionUser, setSelectedOptionUser] = useState<User | null>(null);
     const [isListOpenSesi, setIsListOpenSesi] = useState(false);
     const [isListOpenRuang, setIsListOpenRuang] = useState(false);
     const [isListOpenMapel, setIsListOpenMapel] = useState(false);
     const componentRef = useRef<HTMLUListElement>(null);
+
+    // const { data: mapel, error: errorMapel } = useSWR<User[]>(`api/jadwal/mapel/${selectedOption?.program.kelas_id}`, fetcher, {});
+
+
+
 
     const {
         register,
@@ -91,6 +99,10 @@ const Senin: FC<Senin> = ({ jadwalId, data, onClose, onSucsess, idRuang }) => {
     } = useForm<FormData>({
         resolver: yupResolver(schema),
     });
+
+    // buat let untuk menampung data kelompokCheck yang apabila berubah akan mutate mapel sesuai dengan id kelas yang dipilih
+    const [selectedOption, setSelectedOption] = useState<Kelompok | null>(null);
+    const [debouncedValue, setDebouncedValue] = useState<string>("");
 
     watch('kelompokCheck');
     watch('userCheck');
@@ -163,16 +175,14 @@ const Senin: FC<Senin> = ({ jadwalId, data, onClose, onSucsess, idRuang }) => {
         let { kelompokCheck } = data;
         if (!Array.isArray(kelompokCheck)) {
             // keluarkan dari bentuk array
-            kelompokCheck = [kelompokCheck];
+            kelompokCheck = kelompokCheck;
         }
-        console.log(kelompokCheck);
 
         let { userCheck } = data;
         if (!Array.isArray(userCheck)) {
             // keluarkan dari bentuk array
-            userCheck = [userCheck];
+            userCheck = userCheck;
         }
-        console.log(userCheck);
 
         const { sesi, mapel, ruang } = data;
         const payload = {
@@ -182,7 +192,27 @@ const Senin: FC<Senin> = ({ jadwalId, data, onClose, onSucsess, idRuang }) => {
             mapel_id: mapel,
             ruang_id: ruang,
         };
-        console.log(JSON.stringify(payload));
+        console.log(payload);
+
+        setIsLoading(true);
+
+        try {
+            const response = await axios.put(`/api/jadwaldetail/${jadwalId}`, payload);
+            console.log(response.data);
+
+            mutate(`/api/jadwaldetail/${jadwalId}`);
+            mutate(`/api/jadwal/hari?hari=SENIN&ruang_id=${idRuang}`, undefined)
+            mutate(`/api/jadwal/hari?hari=SELASA&ruang_id=${ruang}`, undefined)
+
+            onSucsess();
+            onClose();
+
+        } catch (error) {
+            console.log(error);
+        } finally {
+            setIsLoading(false);
+        }
+
 
         // console.log(data);
     };
