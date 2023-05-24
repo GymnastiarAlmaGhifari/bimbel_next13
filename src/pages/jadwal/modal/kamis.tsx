@@ -2,10 +2,10 @@ import React from 'react'
 
 type Props = {}
 
-const kamis = (props: Props) => {
+const Kamis = (props: Props) => {
     return (
-        <div>kamis</div>
+        <div>Kamis</div>
     )
 }
 
-export default kamis
+export default Kamis
