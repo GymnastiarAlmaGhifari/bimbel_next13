@@ -6,8 +6,8 @@ import Input from "@/pages/components/inputs/Input";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import Button from "@/pages/components/buttons/Button";
-import Image from "next/image";
 import { IoMdCloudUpload, IoIosArrowUp, IoIosArrowDown } from "react-icons/io";
+import Image from "next/image";
 
 interface UserEditProps {
   userId: string;
@@ -215,7 +215,7 @@ const UserEdit: FC<UserEditProps> = ({ userId, onClose, onSucsess, data }) => {
                   htmlFor="image"
                   className="bg-Primary-40 text-white px-4 py-2 rounded cursor-pointer flex items-center justify-center space-x-2 rounded-full bg-opacity-90 hover:bg-opacity-100"
                 >
-                  <IoMdCloudUpload size={24}/>
+                  <IoMdCloudUpload size={24} />
                   <span className="font-semibold">Choose File</span>
                 </label>
                 <input
