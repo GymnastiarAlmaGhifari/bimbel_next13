@@ -2,10 +2,10 @@ import React from 'react'
 
 type Props = {}
 
-const minggu = (props: Props) => {
+const Minggu = (props: Props) => {
     return (
-        <div>minggu</div>
+        <div>Minggu</div>
     )
 }
 
-export default minggu
+export default Minggu

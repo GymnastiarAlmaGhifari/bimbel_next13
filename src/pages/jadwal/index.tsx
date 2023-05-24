@@ -12,6 +12,13 @@ import { mutate } from "swr";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import { ModalDetail, ModalSucces } from "@/pages/components/modal/Modal";
+import Senin from "./modal/senin";
+import Selasa from "./modal/selasa";
+import Rabu from "./modal/rabu";
+import Kamis from "./modal/kamis";
+import Jumat from "./modal/jumat";
+import Sabtu from "./modal/sabtu";
+import Minggu from "./modal/minggu";
 
 
 interface Jadwal {
@@ -140,6 +147,7 @@ const Jadwal: FC<Jadwal> = () => {
     setValue("ruang_id", ruang_id);
     setSelectedRuangId(ruang_id);
     setIsListOpenRuang(false);
+    setSelectedRuangIdPass(ruang_id);
   };
 
   const {
@@ -257,6 +265,23 @@ const Jadwal: FC<Jadwal> = () => {
   const [sabtuModal, setSabtuModal] = useState<Jadwal | null>(null);
   const [mingguModal, setMingguModal] = useState<Jadwal | null>(null);
 
+  const [showSuccess, setShowSuccess] = useState(false);
+
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      setShowSuccess(false);
+    }, 2500);
+
+    return () => {
+      clearTimeout(timeoutId);
+    };
+  }, [showSuccess]);
+
+  // useState untuk modal create jadwal perhari
+  const [seninModalCreate, setSeninModalCreate] = useState(false);
+
+  // state simpan id ruang dengan variable berbeda
+  const [selectedRuangIdPass, setSelectedRuangIdPass] = useState("");
 
 
 
@@ -273,11 +298,10 @@ const Jadwal: FC<Jadwal> = () => {
                 <div className="flex flex-col w-52 relative">
                   <button
                     type="button"
-                    className={`w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${
-                      listOpenRuang
-                        ? "border-[2px] border-Primary-50 bg-Primary-95"
-                        : "bg-Neutral-95"
-                    }`}
+                    className={`w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${listOpenRuang
+                      ? "border-[2px] border-Primary-50 bg-Primary-95"
+                      : "bg-Neutral-95"
+                      }`}
                     onClick={toggleListRuang}
                   >
                     {
@@ -301,11 +325,10 @@ const Jadwal: FC<Jadwal> = () => {
                         ruang.map((ruang) => (
                           <li key={ruang.id}>
                             <button
-                              className={`w-full text-left px-4 py-1 rounded-full ${
-                                watch("ruang_id") === ruang.id
-                                  ? "text-Primary-90 bg-Primary-20"
-                                  : "text-Primary-20 hover:bg-Primary-95"
-                              }`}
+                              className={`w-full text-left px-4 py-1 rounded-full ${watch("ruang_id") === ruang.id
+                                ? "text-Primary-90 bg-Primary-20"
+                                : "text-Primary-20 hover:bg-Primary-95"
+                                }`}
                               onClick={() => {
                                 selectRuang(ruang.id);
                                 console.log(ruang.id);
@@ -325,19 +348,6 @@ const Jadwal: FC<Jadwal> = () => {
                     {errors.ruang_id.message}
                   </span>
                 )}
-
-                {/* <select
-                  className="bg-Neutral-100 text-Primary-10 px-4 rounded py-2 w-40 font-semibold border-[2px] outline-none"
-                  value={selectRuang}
-                  onChange={handleRuangChange}
-                  name="nama_ruang"
-                >
-                  {ruang?.map((ruang) => (
-                    <option key={ruang.id} value={ruang.id}>
-                      {ruang.nama_ruang}
-                    </option>
-                  ))}
-                </select> */}
               </div>
             </div>
             <div className="h-full flex flex-col gap-4 justify-between">
@@ -426,6 +436,14 @@ const Jadwal: FC<Jadwal> = () => {
                     ) : (
                       <div className="py-2 px-4 bg-Error-40 rounded-lg h-full text-Error-90 font-bold w-full flex items-center justify-center text-center shadow-[0px_0px_10px_5px_rgba(149,146,146,.25)]">
                         Tidak Ada Jadwal
+                        {/* button tambah jadwal */}
+                        <button
+                          onClick={() => {
+                            setSeninModalCreate(true);
+                          }}
+                        >
+                          tambah jadwal
+                        </button>
                       </div>
                     )}
                     {hari_selasa ? (
@@ -559,9 +577,21 @@ const Jadwal: FC<Jadwal> = () => {
               }
             }
           >
-            <div className="">test
-              {seninModal.sesi.nama_sesi}
-            </div>
+
+            <Senin
+              jadwalId={seninModal.id}
+              data={seninModal}
+              idRuang={selectedRuangIdPass}
+              onClose={
+                () => {
+                  setSeninModal(null)
+                }
+              }
+              onSucsess={() => {
+                setShowSuccess(true);
+              }}
+
+            />
           </ModalDetail>
         ) : (
           kamisModal ? (
@@ -575,6 +605,7 @@ const Jadwal: FC<Jadwal> = () => {
             >
               <div className="">test
                 {kamisModal.sesi.nama_sesi}
+                <Kamis />
               </div>
             </ModalDetail>
           ) : (
@@ -589,6 +620,7 @@ const Jadwal: FC<Jadwal> = () => {
               >
                 <div className="">test
                   {rabuModal.sesi.nama_sesi}
+                  <Rabu />
                 </div>
               </ModalDetail>
 
@@ -604,6 +636,7 @@ const Jadwal: FC<Jadwal> = () => {
                 >
                   <div className="">test
                     {jumatModal.sesi.nama_sesi}
+                    <Jumat />
                   </div>
                 </ModalDetail>
               ) : (
@@ -618,6 +651,7 @@ const Jadwal: FC<Jadwal> = () => {
                   >
                     <div className="">test
                       {sabtuModal.sesi.nama_sesi}
+                      <Sabtu />
                     </div>
                   </ModalDetail>
                 ) : (
@@ -632,6 +666,7 @@ const Jadwal: FC<Jadwal> = () => {
                     >
                       <div className="">test
                         {mingguModal.sesi.nama_sesi}
+                        <Minggu />
                       </div>
                     </ModalDetail>
                   ) : (
@@ -646,6 +681,7 @@ const Jadwal: FC<Jadwal> = () => {
                       >
                         <div className="">test
                           {selasaModal.sesi.nama_sesi}
+                          <Jumat />
                         </div>
                       </ModalDetail>
                     ) : (
@@ -657,6 +693,33 @@ const Jadwal: FC<Jadwal> = () => {
             )
           )
         )
+      }
+      {showSuccess && (
+        <ModalSucces label="POOP" onClose={() => setShowSuccess(false)}>
+          {/* <div className="flex flex-col items-center justify-center">
+            <h1 className=" font-bold text-green-500">Berhasil</h1>
+            <p className="text-sm text-gray-500">
+              {selected?.name}Data berhasil diubah
+            </p>
+          </div> */}
+        </ModalSucces>
+      )}
+      {
+        seninModalCreate
+          ? (
+            <ModalDetail
+              titleModal="Detail Jadwal"
+              onClose={
+                () => {
+                  setSeninModalCreate(false)
+                }
+              }
+            >
+              <div className="">iwajdiwajida</div>
+            </ModalDetail>
+          ) : (
+            <div></div>
+          )
       }
 
     </div >
