@@ -11,7 +11,7 @@ import * as yup from "yup";
 import useSWR, { mutate } from "swr";
 import fetcher from "@/libs/fetcher";
 import { IoIosAdd } from "react-icons/io";
-
+import TambahJadwal from "./create";
 
 interface JadwalProps {
   kelompokId: string;
@@ -20,6 +20,7 @@ interface JadwalProps {
   data: any;
   onOpenModal?: () => void;
 }
+
 
 const schema = yup.object().shape({
   checkboxes: yup.mixed().nullable().transform((value, originalValue) => {

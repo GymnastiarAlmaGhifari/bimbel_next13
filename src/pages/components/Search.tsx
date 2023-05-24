@@ -14,8 +14,8 @@ const Search: React.FC<SearchProps> = ({ onChange, noButton }) => {
   };
 
   return (
-    <div className="inline-block flex flex-row items-center  relative">
-      <div className="focus-within:ring-1 focus-within:ring-Tertiary-50 focus-within:bg-Tertiary-95  w-80  h-10 bg-Neutral-95 rounded-full flex items-center pl-4 pr-20 ">
+    <div className="inline-block flex flex-row items-center relative">
+      <div className="focus-within:ring-1 focus-within:ring-Tertiary-50 focus-within:bg-Tertiary-95 w-80  h-10 bg-Neutral-95 rounded-full flex items-center pl-4 pr-20 ">
         <input
           type="search"
           name=""
