@@ -17,6 +17,10 @@ interface InputProps {
     defaultValue?: string | number;
     inputMode?: string;
     className?: string;
+    onChange?: void
+    value?: string | number;
+    checked?: boolean;
+
 }
 
 const Input: React.FC<InputProps> = ({
@@ -29,6 +33,9 @@ const Input: React.FC<InputProps> = ({
     required,
     errors,
     defaultValue,
+    onChange,
+    value,
+    checked,
     inputMode,
     className,
 }) => {
@@ -52,6 +59,9 @@ const Input: React.FC<InputProps> = ({
                 {...register}
                 placeholder=" "
                 type={type}
+                onChange={onChange}
+                value={value}
+                checked={checked}
                 inputMode={inputMode}
                 defaultValue={defaultValue}
                 className={`
