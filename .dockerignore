@@ -1,0 +1,6 @@
+# .dockerignore
+
+# Files and directories to exclude from the Docker build context
+node_modules
+.git
+.next
