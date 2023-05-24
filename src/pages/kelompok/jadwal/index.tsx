@@ -4,14 +4,13 @@ import CardTambahJadwalKelompok from "@/pages/components/card/CardTambahJadwalKe
 import { ModalDetail } from "@/pages/components/modal/Modal";
 import React, { FC, useState } from "react";
 import { IoIosAdd } from "react-icons/io";
-
+import TambahJadwal from "./create";
 
 interface JadwalProps {
   onOpenModal?: () => void;
 }
 
-const Jadwal: FC<JadwalProps> = ({ }) => {
-
+const Jadwal: FC<JadwalProps> = ({}) => {
   const [onOpenModal, setOnOpenModal] = useState(false);
 
   return (
@@ -35,11 +34,9 @@ const Jadwal: FC<JadwalProps> = ({ }) => {
             bgColor="bg-Tertiary-50"
             label="Tambah"
             icon={IoIosAdd}
-            onClick={
-              () => {
-                setOnOpenModal(true)
-              }
-            }
+            onClick={() => {
+              setOnOpenModal(true);
+            }}
             outlined
           />
         </div>
@@ -76,7 +73,7 @@ const Jadwal: FC<JadwalProps> = ({ }) => {
             label="Batal"
             textColor="text-Neutral-30"
             type="button"
-          // onClick={onClose}
+            // onClick={onClose}
           />
           <Button
             type="submit"
@@ -88,38 +85,15 @@ const Jadwal: FC<JadwalProps> = ({ }) => {
           />
         </div>
       </div>
-      {
-        onOpenModal && (
-          <ModalDetail
-            titleModal="Tambah Jadwal"
-            onClose={() => setOnOpenModal(false)}
-          >
-            <div className="flex flex-col items-center justify-center">
-              <div className="flex flex-col gap-4">
-                <div className="flex justify-between">
-                  <p className="font-semibold text-lg text-Primary-20">
-                    Jadwal Tanpa Kelompok
-                  </p>
-                  <Button
-                    type="button"
-                    brColor="border-Tertiary-50"
-                    textColor="text-Tertiary-50"
-                    bgColor="bg-Tertiary-50"
-                    label="Close Tambah"
-                    onClick={
-                      () => {
-                        setOnOpenModal(false)
-                      }
-                    }
-                  />
-                </div>
-              </div>
-            </div>
-          </ModalDetail>
-        )
-      }
+      {onOpenModal && (
+        <ModalDetail
+          titleModal="Tambah Jadwal"
+          onClose={() => setOnOpenModal(false)}
+        >
+          <TambahJadwal />
+        </ModalDetail>
+      )}
     </div>
-
   );
 };
 
