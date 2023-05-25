@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import Search from "@/pages/components/Search";
 import Button from "@/pages/components/buttons/Button";
 import CardTambahAnggotaKelompok from "@/pages/components/card/CardTambahAnggotakelompok";
@@ -17,40 +17,50 @@ interface AnggotaProps {
   onClose: () => void;
   onSuccess: () => void;
   data: any;
-};
+}
 
 const schema = yup.object().shape({
-  checkboxes: yup.mixed().nullable().transform((value, originalValue) => {
-    if (originalValue === '') {
-      return null; // Mengubah string kosong menjadi nilai null
-    }
-    return originalValue;
-  }),
-  checkboxes2: yup.mixed().nullable().transform((value, originalValue) => {
-    if (originalValue === '' || !value) { // Check if value is falsy
-      return []; // Return an empty array
-    }
-    return originalValue;
-  }
-  ),
+  checkboxes: yup
+    .mixed()
+    .nullable()
+    .transform((value, originalValue) => {
+      if (originalValue === "") {
+        return null; // Mengubah string kosong menjadi nilai null
+      }
+      return originalValue;
+    }),
+  checkboxes2: yup
+    .mixed()
+    .nullable()
+    .transform((value, originalValue) => {
+      if (originalValue === "" || !value) {
+        // Check if value is falsy
+        return []; // Return an empty array
+      }
+      return originalValue;
+    }),
 });
 
-type FormData = yup.InferType<typeof schema>
+type FormData = yup.InferType<typeof schema>;
 
 const Anggota: FC<AnggotaProps> = ({
   kelompokId,
   onClose,
   onSuccess,
   data,
-
 }) => {
+  const { data: anggota, error } = useSWR<any[]>(
+    `/api/kelompok/siswa/${kelompokId}`,
+    fetcher,
+    {
+      revalidateOnFocus: false, // Menonaktifkan pengambilan data ulang saat komponen mendapatkan fokus
+    }
+  );
 
-  const { data: anggota, error } = useSWR<any[]>(`/api/kelompok/siswa/${kelompokId}`, fetcher, {
-    revalidateOnFocus: false // Menonaktifkan pengambilan data ulang saat komponen mendapatkan fokus
-  });
-
-  const { data: siswaTanpaKelompok, error: errorSiswaTanpaKelompok } = useSWR<any[]>(`/api/kelompok/siswa`, fetcher, {
-    revalidateOnFocus: false // Menonaktifkan pengamb
+  const { data: siswaTanpaKelompok, error: errorSiswaTanpaKelompok } = useSWR<
+    any[]
+  >(`/api/kelompok/siswa`, fetcher, {
+    revalidateOnFocus: false, // Menonaktifkan pengamb
   });
 
   const [isLoading, setIsLoading] = useState(false);
@@ -66,13 +76,15 @@ const Anggota: FC<AnggotaProps> = ({
     resolver: yupResolver(schema),
   });
 
-  watch('checkboxes');
-  watch('checkboxes2');
-
+  watch("checkboxes");
+  watch("checkboxes2");
 
   useEffect(() => {
     // Saat data di-load, centang semua checkbox
-    setValue('checkboxes', anggota?.map((item: any) => item.id));
+    setValue(
+      "checkboxes",
+      anggota?.map((item: any) => item.id)
+    );
   }, [anggota, setValue]);
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
@@ -107,7 +119,6 @@ const Anggota: FC<AnggotaProps> = ({
       mutate(`/api/kelompok/${kelompokId}`);
       mutate(`/api/kelompok/siswa`);
 
-
       setIsLoading(false); // Set loading state to false
       onSuccess(); // Trigger onSuccess function from parent component
       onClose(); // Trigger onClose function from parent component
@@ -119,26 +130,28 @@ const Anggota: FC<AnggotaProps> = ({
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      {anggota && anggota.length > 0 ? (
-        anggota.map((item) => (
-          <CardTambahAnggotaKelompok
-            key={item.id}
-            type="checkbox"
-            id={item.id}
-            value={item.id}
-            register={{ ...register('checkboxes') }}
-            label={item.nama}
-            nomor_telepon={item.nomor_telepon}
-            getValues={getValues} // Meneruskan fungsi getValues sebagai prop
-            setValue={setValue} // Meneruskan fungsi setValue sebagai prop
-            groupName="kelompok"
-          />
-        ))
-      ) : (
-        <div>Data tidak tersedia.</div>
-      )}
-      <div className="w-full h-[1px] bg-Neutral-70"></div>
-      <div className="flex flex-col gap-4">
+      <div className="grid grid-cols-6">
+        {anggota && anggota.length > 0 ? (
+          anggota.map((item) => (
+            <CardTambahAnggotaKelompok
+              key={item.id}
+              type="checkbox"
+              id={item.id}
+              value={item.id}
+              register={{ ...register("checkboxes") }}
+              label={item.nama}
+              nomor_telepon={item.nomor_telepon}
+              getValues={getValues} // Menebruskan fungsi getValues sebagai prop
+              setValue={setValue} // Meneruskan fungsi setValue sebagai prop
+              groupName="kelompok"
+            />
+          ))
+        ) : (
+          <div>Data tidak tersedia.</div>
+        )}
+      </div>
+      <div className="w-full h-[1px] bg-Neutral-70 my-2"></div>
+      <div className="flex flex-col gap-4 mt-4">
         <div className="flex justify-between">
           <p className="font-semibold text-lg text-Primary-20">
             Siswa Tanpa Kelompok
@@ -154,7 +167,7 @@ const Anggota: FC<AnggotaProps> = ({
                   type="checkbox"
                   id={item.id}
                   value={item.id}
-                  register={{ ...register('checkboxes2') }}
+                  register={{ ...register("checkboxes2") }}
                   label={item.nama}
                   nomor_telepon={item.nomor_telepon}
                   getValues={getValues} // Meneruskan fungsi getValues sebagai prop
@@ -181,13 +194,12 @@ const Anggota: FC<AnggotaProps> = ({
           className="px-4 py-2 rounded-md bg-Primary-70 text-white hover:bg-Primary-70 transition-all duration-200"
           disabled={isLoading}
         >
-          {isLoading ? 'Menyimpan...' : 'Simpan'}
+          {isLoading ? "Menyimpan..." : "Simpan"}
         </button>
       </div>
     </form>
   );
 };
-
 
 // return (
 //   <div className="flex flex-col gap-4">
@@ -204,7 +216,6 @@ const Anggota: FC<AnggotaProps> = ({
 //           <label htmlFor={item.id}>{item.name}</label>
 //         </div>
 //       ))}
-
 
 //       {/* <CardTambahAnggotaKelompok />
 //       <CardTambahAnggotaKelompok />
