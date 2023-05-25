@@ -36,8 +36,15 @@ const RekeningEdit: FC<RekeningEditProps> = ({ rekeningId, data, onSucsess, onCl
     });
     const onSubmit: SubmitHandler<FormData> = async (data) => {
         setIsLoading(true);
+
+        const { nama_rekening, nomor_rekening } = data;
+
         try {
-            await axios.put(`/api/rekening/${rekeningId}`, data);
+            await axios.put(`/api/rekening/${rekeningId}`,
+                {
+                    nama_rekening,
+                    nomor_rekening
+                });
             mutate(`/api/rekening`);
 
             onSucsess();
@@ -55,7 +62,7 @@ const RekeningEdit: FC<RekeningEditProps> = ({ rekeningId, data, onSucsess, onCl
             <Input
                 id="nama_rekening"
                 label="Nama Rekening"
-                defaultValue={data.nama_rekening}
+                defaultValue={data?.nama_rekening}
                 errors={errors}
                 type="text"
                 register={{ ...register("nama_rekening") }}
@@ -66,7 +73,7 @@ const RekeningEdit: FC<RekeningEditProps> = ({ rekeningId, data, onSucsess, onCl
             <Input
                 id="nomor_rekening"
                 label="Nomor Rekening"
-                defaultValue={data.nomor_rekening}
+                defaultValue={data?.nomor_rekening}
                 errors={errors}
                 type="number"
                 register={{ ...register("nomor_rekening") }}
