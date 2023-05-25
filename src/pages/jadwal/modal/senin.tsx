@@ -22,11 +22,12 @@ interface Senin {
 
 interface Kelompok {
   id: string;
-  nama_kelompok: string;
-  program: {
-    id: string;
-    nama_program: string;
-  };
+    nama_kelompok: string;
+    program: {
+        id: string;
+        nama_program: string;
+        kelas_id: string;
+    };
 }
 
 interface Sesi {
@@ -40,9 +41,11 @@ interface Ruang {
 }
 
 interface Mapel {
-  id: string;
-  nama_mapel: string;
-}
+    id: string;
+    nama_mapel: string;
+    kelas: {
+        id: string;
+    }
 
 interface User {
   id: string;
@@ -76,66 +79,100 @@ const schema = yup.object().shape({
 type FormData = yup.InferType<typeof schema>;
 
 const Senin: FC<Senin> = ({ jadwalId, data, onClose, onSucsess, idRuang }) => {
-  const { data: kelompok, error: errorKelompok } = useSWR<Kelompok[]>(
-    "api/kelompok",
-    fetcher,
-    {}
-  );
-  const { data: sesi, error: errorSesi } = useSWR<Sesi[]>(
-    "api/sesi",
-    fetcher,
-    {}
-  );
-  const { data: mapel, error: errorMapel } = useSWR<Mapel[]>(
-    "api/mapel",
-    fetcher,
-    {}
-  );
-  const { data: ruang, error: errorRuang } = useSWR<Ruang[]>(
-    "api/ruang",
-    fetcher,
-    {}
-  );
-  const { data: user, error: errorUser } = useSWR<User[]>(
-    "api/user",
-    fetcher,
-    {}
-  );
-  const [check, setCheck] = useState(true);
 
-  const [isLoading, setIsLoading] = useState(false);
-  const [selectedOption, setSelectedOption] = useState<Kelompok | null>(null);
-  const [selectedOptionUser, setSelectedOptionUser] = useState<User | null>(
-    null
-  );
-  const [isListOpenSesi, setIsListOpenSesi] = useState(false);
-  const [isListOpenRuang, setIsListOpenRuang] = useState(false);
-  const [isListOpenMapel, setIsListOpenMapel] = useState(false);
-  const componentRef = useRef<HTMLUListElement>(null);
-  const handleCheck = () => {
-    setCheck(!check);
-    console.log("check" + check);
-  };
-  const {
-    register,
-    handleSubmit,
-    watch,
-    setValue,
-    formState: { errors },
-  } = useForm<FormData>({
-    resolver: yupResolver(schema),
-  });
+    const { data: kelompok, error: errorKelompok } = useSWR<Kelompok[]>("api/kelompok", fetcher, {});
+    const { data: sesi, error: errorSesi } = useSWR<Sesi[]>("api/sesi", fetcher, {});
+    const { data: mapel, error: errorMapel } = useSWR<Mapel[]>("api/mapel", fetcher, {});
+    const { data: ruang, error: errorRuang } = useSWR<Ruang[]>("api/ruang", fetcher, {});
+    const { data: user, error: errorUser } = useSWR<User[]>("api/user", fetcher, {});
 
-  watch("kelompokCheck");
-  watch("userCheck");
 
-  useEffect(() => {
-    // Menangani klik di luar komponen
-    const handleOutsideClick = (event: any) => {
-      if (
-        componentRef.current &&
-        !componentRef.current.contains(event.target)
-      ) {
+    const [isLoading, setIsLoading] = useState(false);
+
+    const [selectedOptionUser, setSelectedOptionUser] = useState<User | null>(null);
+    const [isListOpenSesi, setIsListOpenSesi] = useState(false);
+    const [isListOpenRuang, setIsListOpenRuang] = useState(false);
+    const [isListOpenMapel, setIsListOpenMapel] = useState(false);
+    const componentRef = useRef<HTMLUListElement>(null);
+
+    // const { data: mapel, error: errorMapel } = useSWR<User[]>(`api/jadwal/mapel/${selectedOption?.program.kelas_id}`, fetcher, {});
+
+
+
+
+    const {
+        register,
+        handleSubmit,
+        watch,
+        setValue,
+        formState: { errors },
+    } = useForm<FormData>({
+        resolver: yupResolver(schema),
+    });
+
+    // buat let untuk menampung data kelompokCheck yang apabila berubah akan mutate mapel sesuai dengan id kelas yang dipilih
+    const [selectedOption, setSelectedOption] = useState<Kelompok | null>(null);
+    const [debouncedValue, setDebouncedValue] = useState<string>("");
+
+    watch('kelompokCheck');
+    watch('userCheck');
+
+    useEffect(() => {
+        // Menangani klik di luar komponen
+        const handleOutsideClick = (event: any) => {
+            if (
+                componentRef.current &&
+                !componentRef.current.contains(event.target)
+            ) {
+                setIsListOpenSesi(false);
+                setIsListOpenRuang(false);
+                setIsListOpenMapel(false);
+
+            }
+        };
+
+        // Menambahkan event listener ketika komponen di-mount
+        document.addEventListener("mousedown", handleOutsideClick);
+
+        // Membersihkan event listener ketika komponen di-unmount
+        return () => {
+            document.removeEventListener("mousedown", handleOutsideClick);
+        };
+    }, [
+        setIsListOpenSesi,
+        setIsListOpenRuang,
+        setIsListOpenMapel,
+        componentRef
+    ]
+    );
+
+    const [checkValue, setCheckValue] = useState<string>("");
+
+    let filteredMapel = mapel
+
+    if (checkValue) {
+        filteredMapel = mapel?.filter((mapelItem) => {
+            return mapelItem.kelas.id === checkValue; // Add 'return' statement
+        });
+        console.log('Filtered Mapel:', filteredMapel); // Console log the filtered array
+    }
+
+    const handleCheckChange = (value: string) => {
+        setCheckValue(value)
+    }
+
+
+    const toggleListSesi = () => {
+        setIsListOpenSesi(!isListOpenSesi);
+    };
+    const toggleListRuang = () => {
+        setIsListOpenRuang(!isListOpenRuang);
+    };
+    const toggleListMapel = () => {
+        setIsListOpenMapel(!isListOpenMapel);
+    };
+    const selectSesi = (sesi: string) => {
+        setValue("sesi", sesi);
         setIsListOpenSesi(false);
         setIsListOpenRuang(false);
         setIsListOpenMapel(false);
@@ -151,55 +188,67 @@ const Senin: FC<Senin> = ({ jadwalId, data, onClose, onSucsess, idRuang }) => {
     };
   }, [setIsListOpenSesi, setIsListOpenRuang, setIsListOpenMapel, componentRef]);
 
-  const toggleListSesi = () => {
-    setIsListOpenSesi(!isListOpenSesi);
-  };
-  const toggleListRuang = () => {
-    setIsListOpenRuang(!isListOpenRuang);
-  };
-  const toggleListMapel = () => {
-    setIsListOpenMapel(!isListOpenMapel);
-  };
-  const selectSesi = (sesi: string) => {
-    setValue("sesi", sesi);
-    setIsListOpenSesi(false);
-  };
-  const selectRuang = (ruang: string) => {
-    setValue("ruang", ruang);
-    setIsListOpenRuang(false);
-  };
-  const selectMapel = (mapel: string) => {
-    setValue("mapel", mapel);
-    setIsListOpenMapel(false);
-  };
+    useEffect(() => {
+        // Saat data di-load, centang checkbox sesuai dengan data yang ada di database
+        if (data) {
+            setSelectedOption(data.kelompok);
+            setValue('kelompokCheck', data.kelompok?.id);
+            setSelectedOptionUser(data.user);
+            setValue('userCheck', data.user?.id);
+            setValue('sesi', data.sesi?.id);
+            setValue('mapel', data.mapel?.id);
+            setValue('ruang', idRuang);
+            // set handleCheckChange untuk filter mapel
+            if (mapel?.length && mapel[0]?.kelas?.id) {
+                setCheckValue(mapel[0].kelas.id);
+            } else if (kelompok?.length && kelompok[0]?.program?.kelas_id) {
+                setCheckValue(kelompok[0].program.kelas_id);
+            }
+        }
+    }, [kelompok, setValue, data, mapel, idRuang]);
 
-  useEffect(() => {
-    // Saat data di-load, centang checkbox sesuai dengan data yang ada di database
-    if (data) {
-      setSelectedOption(data.kelompok);
-      setValue("kelompokCheck", data.kelompok?.id);
-      setSelectedOptionUser(data.user);
-      setValue("userCheck", data.user?.id);
-      setValue("sesi", data.sesi?.id);
-      setValue("mapel", data.mapel?.id);
-      setValue("ruang", idRuang);
-    }
-  }, [kelompok, setValue, data]);
+    const onSubmit: SubmitHandler<FormData> = async (data) => {
+        let { kelompokCheck } = data;
+        if (!Array.isArray(kelompokCheck)) {
+            // keluarkan dari bentuk array
+            kelompokCheck = kelompokCheck;
+        }
 
-  const onSubmit: SubmitHandler<FormData> = async (data) => {
-    let { kelompokCheck } = data;
-    if (!Array.isArray(kelompokCheck)) {
-      // keluarkan dari bentuk array
-      kelompokCheck = [kelompokCheck];
-    }
-    console.log(kelompokCheck);
+        let { userCheck } = data;
+        if (!Array.isArray(userCheck)) {
+            // keluarkan dari bentuk array
+            userCheck = userCheck;
+        }
 
-    let { userCheck } = data;
-    if (!Array.isArray(userCheck)) {
-      // keluarkan dari bentuk array
-      userCheck = [userCheck];
-    }
-    console.log(userCheck);
+        const { sesi, mapel, ruang } = data;
+        const payload = {
+            kelompok_id: kelompokCheck,
+            user_id: userCheck,
+            sesi_id: sesi,
+            mapel_id: mapel,
+            ruang_id: ruang,
+        };
+        console.log(payload);
+
+        setIsLoading(true);
+
+        try {
+            const response = await axios.put(`/api/jadwaldetail/${jadwalId}`, payload);
+            console.log(response.data);
+
+            mutate(`/api/jadwaldetail/${jadwalId}`);
+            mutate(`/api/jadwal/hari?hari=SENIN&ruang_id=${idRuang}`, undefined)
+            mutate(`/api/jadwal/hari?hari=SELASA&ruang_id=${ruang}`, undefined)
+
+            onSucsess();
+            onClose();
+
+        } catch (error) {
+            console.log(error);
+        } finally {
+            setIsLoading(false);
+        }
+
 
     const { sesi, mapel, ruang } = data;
     const payload = {
@@ -209,7 +258,34 @@ const Senin: FC<Senin> = ({ jadwalId, data, onClose, onSucsess, idRuang }) => {
       mapel_id: mapel,
       ruang_id: ruang,
     };
-    console.log(JSON.stringify(payload));
+
+    return (
+        <form onSubmit={handleSubmit(onSubmit)}>
+            <h1>{jadwalId}</h1>
+            <div className="flex flex-row justify-between items-center">
+                <div className="flex flex-row items-center">
+                    <div className="flex flex-col">
+                        {kelompok?.map((item: Kelompok) => (
+                            <label key={item.id}>
+                                <input
+                                    type="checkbox"
+                                    value={item.id}
+                                    checked={selectedOption?.id === item.id}
+                                    {...register("kelompokCheck")}
+                                    onChange={
+                                        () => {
+                                            setSelectedOption(selectedOption?.id === item.id ? null : item);
+                                            setValue('kelompokCheck', item.id);
+                                            handleCheckChange(item.program.kelas_id);
+                                        }
+                                    }
+                                />
+                                {item.nama_kelompok} - {item.program.nama_program}
+                            </label>
+                        ))}
+                        {
+                            errors.kelompokCheck && <span className="text-sm text-red-500">Kelompok harus dipilih</span>
+                        }
 
     // console.log(data);
   };
@@ -377,6 +453,69 @@ const Senin: FC<Senin> = ({ jadwalId, data, onClose, onSucsess, idRuang }) => {
                       )}
                     </ul>
                   )}
+                            <div className="relative flex flex-col gap-2">
+                                <button
+                                    type="button"
+                                    className={` w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${isListOpenMapel
+                                        ? "border-[2px] border-Primary-50 bg-Primary-95"
+                                        : "bg-Neutral-95"
+                                        }`}
+                                    onClick={toggleListMapel}
+                                >
+                                    {/* buat label */}
+                                    {watch("mapel") ? (
+                                        mapel?.find((mapelItem) => mapelItem.id === watch("mapel"))
+                                            ?.nama_mapel
+                                    ) : (
+                                        <span className="text-Neutral-300">Pilih Mapel</span>
+                                    )}
+                                    {isListOpenMapel ? <IoIosArrowUp /> : <IoIosArrowDown />}
+                                </button>
+                                {isListOpenMapel && (
+                                    <ul className="absolute w-full top-[44px] z-10 bg-Neutral-100 border-[2px] border-Primary-50 rounded-xl py-2 px-2 outline-none appearance-none flex flex-col gap-1" ref={componentRef}>
+                                        {
+                                            filteredMapel?.map((mapelItem) => (
+                                                <li key={mapelItem.id}>
+                                                    <button
+                                                        type="button"
+                                                        className={`w-full text-left px-2 py-1 rounded-full ${watch("mapel") === mapelItem.id
+                                                            ? "text-Primary-90 bg-Primary-20"
+                                                            : "text-Primary-20 hover:bg-Primary-95"
+                                                            }`}
+                                                        onClick={() => selectMapel(mapelItem.id)}
+                                                    >
+                                                        {mapelItem.nama_mapel}
+                                                    </button>
+                                                </li>
+                                            ))
+                                        }
+                                    </ul>
+                                )}
+                            </div>
+                            {errors.mapel && (
+                                <span className="text-red-500">{errors.mapel.message}</span>
+                            )}
+                        </div>
+                        {user?.map((item: User) => (
+                            <label key={item.id}>
+                                <input
+                                    type="checkbox"
+                                    value={item.id}
+                                    checked={selectedOptionUser?.id === item.id}
+                                    {...register("userCheck")}
+                                    onChange={
+                                        () => {
+                                            setSelectedOptionUser(selectedOptionUser?.id === item.id ? null : item);
+                                            setValue('userCheck', item.id);
+                                        }
+                                    }
+                                />
+                                {item.name}
+                            </label>
+                        ))}
+                        {errors.kelompokCheck && <p>{errors.kelompokCheck.message}</p>}
+                        <button type="submit">Submit</button>
+                    </div>
                 </div>
                 {errors.ruang && (
                   <span className="text-red-500">{errors.ruang.message}</span>
