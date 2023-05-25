@@ -102,14 +102,15 @@ const SesiEdit: FC<SesiEditProps> = ({ sesiId, onClose, data }) => {
                 defaultValue={data?.jam_selesai ?? ""}
               />
             </div>
-            <div className="flex flex-row justify-between">
+            <div className="flex flex-row justify-end gap-4">
               <Button
-                bgColor="bg-Error-50"
+                center
+                bgColor="bg-Neutral-70"
                 brColor=""
-                label="Hapus Pengguna"
-                textColor="text-Neutral-100"
+                label="Batal"
+                textColor="text-Neutral-30"
                 type="button"
-                withBgColor
+                onClick={onClose}
               />
               <Button
                 bgColor="bg-Tertiary-50"
