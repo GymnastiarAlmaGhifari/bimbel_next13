@@ -21,40 +21,45 @@ interface JadwalProps {
   onOpenModal?: () => void;
 }
 
-
 const schema = yup.object().shape({
-  checkboxes: yup.mixed().nullable().transform((value, originalValue) => {
-    if (originalValue === '') {
-      return null; // Mengubah string kosong menjadi nilai null
-    }
-    return originalValue;
-  }),
-  checkboxes2: yup.mixed().nullable().transform((value, originalValue) => {
-    if (originalValue === '' || !value) { // Check if value is falsy
-      return []; // Return an empty array
-    }
-    return originalValue;
-  }
-  ),
+  checkboxes: yup
+    .mixed()
+    .nullable()
+    .transform((value, originalValue) => {
+      if (originalValue === "") {
+        return null; // Mengubah string kosong menjadi nilai null
+      }
+      return originalValue;
+    }),
+  checkboxes2: yup
+    .mixed()
+    .nullable()
+    .transform((value, originalValue) => {
+      if (originalValue === "" || !value) {
+        // Check if value is falsy
+        return []; // Return an empty array
+      }
+      return originalValue;
+    }),
 });
 
-type FormData = yup.InferType<typeof schema>
+type FormData = yup.InferType<typeof schema>;
 
-const Jadwal: FC<JadwalProps> = ({
-  kelompokId,
-  onClose,
-  onSuccess,
-  data,
-}) => {
-
+const Jadwal: FC<JadwalProps> = ({ kelompokId, onClose, onSuccess, data }) => {
   const [onOpenModal, setOnOpenModal] = useState(false);
 
-  const { data: jadwal, error } = useSWR<any[]>(`/api/kelompok/jadwal/${kelompokId}`, fetcher, {
-    revalidateOnFocus: false // Menonaktifkan pengambilan data ulang saat komponen mendapatkan fokus
-  });
+  const { data: jadwal, error } = useSWR<any[]>(
+    `/api/kelompok/jadwal/${kelompokId}`,
+    fetcher,
+    {
+      revalidateOnFocus: false, // Menonaktifkan pengambilan data ulang saat komponen mendapatkan fokus
+    }
+  );
 
-  const { data: jadwalTanpaKelompok, error: errorJadwalTanpaKelompok } = useSWR<any[]>(`/api/kelompok/jadwal`, fetcher, {
-    revalidateOnFocus: false // Menonaktifkan pengambilan data ulang saat komponen mendapatkan fokus
+  const { data: jadwalTanpaKelompok, error: errorJadwalTanpaKelompok } = useSWR<
+    any[]
+  >(`/api/kelompok/jadwal`, fetcher, {
+    revalidateOnFocus: false, // Menonaktifkan pengambilan data ulang saat komponen mendapatkan fokus
   });
 
   const [isLoading, setIsLoading] = useState(false);
@@ -70,12 +75,15 @@ const Jadwal: FC<JadwalProps> = ({
     resolver: yupResolver(schema),
   });
 
-  watch('checkboxes');
-  watch('checkboxes2');
+  watch("checkboxes");
+  watch("checkboxes2");
 
   useEffect(() => {
     // Saat data di-load, centang semua checkbox
-    setValue('checkboxes', jadwal?.map((item: any) => item.id));
+    setValue(
+      "checkboxes",
+      jadwal?.map((item: any) => item.id)
+    );
   }, [jadwal, setValue]);
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
@@ -110,7 +118,6 @@ const Jadwal: FC<JadwalProps> = ({
       mutate(`/api/kelompok/${kelompokId}`);
       mutate(`/api/kelompok/jadwal`);
 
-
       setIsLoading(false); // Set loading state to false
       onSuccess(); // Trigger onSuccess function from parent component
       onClose(); // Trigger onClose function from parent component
@@ -132,7 +139,7 @@ const Jadwal: FC<JadwalProps> = ({
                 type="checkbox"
                 id={item.id}
                 value={item.id}
-                register={{ ...register('checkboxes') }}
+                register={{ ...register("checkboxes") }}
                 hari={item.hari}
                 sesi={item.sesi.nama_sesi}
                 ruang={item.ruang.nama_ruang}
@@ -160,11 +167,9 @@ const Jadwal: FC<JadwalProps> = ({
               bgColor="bg-Tertiary-50"
               label="Tambah"
               icon={IoIosAdd}
-              onClick={
-                () => {
-                  setOnOpenModal(true)
-                }
-              }
+              onClick={() => {
+                setOnOpenModal(true);
+              }}
               outlined
             />
           </div>
@@ -177,7 +182,7 @@ const Jadwal: FC<JadwalProps> = ({
                     type="checkbox"
                     id={item.id}
                     value={item.id}
-                    register={{ ...register('checkboxes2') }}
+                    register={{ ...register("checkboxes2") }}
                     hari={item.hari}
                     sesi={item.sesi.nama_sesi}
                     ruang={item.ruang.nama_ruang}
@@ -200,7 +205,7 @@ const Jadwal: FC<JadwalProps> = ({
               label="Batal"
               textColor="text-Neutral-30"
               type="button"
-            // onClick={onClose}
+              // onClick={onClose}
             />
             <Button
               type="submit"
@@ -212,13 +217,13 @@ const Jadwal: FC<JadwalProps> = ({
             />
           </div>
         </div>
-        {
-          onOpenModal && (
-            <ModalDetail
-              titleModal="Tambah Jadwal"
-              onClose={() => setOnOpenModal(false)}
-            >
-              <div className="flex flex-col items-center justify-center">
+        {onOpenModal && (
+          <ModalDetail
+            titleModal="Tambah Jadwal"
+            onClose={() => setOnOpenModal(false)}
+          >
+            <TambahJadwal onClose={() => setOnOpenModal(false)} />
+            {/* <div className="flex flex-col items-center justify-center">
                 <div className="flex flex-col gap-4">
                   <div className="flex justify-between">
                     <p className="font-semibold text-lg text-Primary-20">
@@ -238,10 +243,9 @@ const Jadwal: FC<JadwalProps> = ({
                     />
                   </div>
                 </div>
-              </div>
-            </ModalDetail>
-          )
-        }
+              </div> */}
+          </ModalDetail>
+        )}
       </div>
     </form>
   );
