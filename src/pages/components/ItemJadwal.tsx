@@ -1,31 +1,72 @@
 import React, { FC } from "react";
 import { MdModeEdit } from "react-icons/md";
+import Button from "./buttons/Button";
+import { IoIosAdd } from "react-icons/io";
 
-type ItemJadwalProps = {
+type ItemJadwalTerisiProps = {
   hari: string;
   kelompok: string;
   nama_tentor: string;
   onClick?: () => void;
-
+};
+type ItemJadwalBelumTerisiProps = {
+  onClick?: () => void;
 };
 
-const ItemJadwal: FC<ItemJadwalProps> = ({ kelompok, nama_tentor, onClick, hari }) => {
+const ItemJadwalTerisi: FC<ItemJadwalTerisiProps> = ({
+  kelompok,
+  nama_tentor,
+  onClick,
+  hari,
+}) => {
   return (
-    <div className="flex flex-col bg-Tertiary-50 rounded p-2">
-      <div className="h-full">
-        <p className="text-Tertiary-90 font-bold">{hari}</p>
-        <p className="text-Tertiary-90 font-bold">{kelompok}</p>
-        <p className="text-Tertiary-90">{nama_tentor}</p>
+    <div className="flex flex-col justify-center w-full h-full">
+      <div className="h-full w-full flex flex-col gap-2">
+        <div className="flex justify-between">
+          <p className="text-Tertiary-90 font-bold">{hari}</p>
+          <p className="text-Tertiary-90 font-bold">{kelompok}</p>
+        </div>
+        <p className="text-Tertiary-90 font-bold">{nama_tentor}</p>
       </div>
-      <div className="text-right">
-        <button
+      <div className="absolute bottom-0 right-0">
+        <Button
+          bgColor="bg-Neutral-100"
+          brColor=""
+          label=""
+          noLabel
+          textColor="text-Tertiary-90"
+          type={"button"}
+          icon={MdModeEdit}
           onClick={onClick}
-          className="font-semibold text-Tertiary-90 p-2 rounded-full hover:bg-Tertiary-90/30">
-          <MdModeEdit />
-        </button>
+        />
       </div>
     </div>
   );
 };
 
-export default ItemJadwal;
+export default ItemJadwalTerisi;
+
+export const ItemJadwalBelumTerisi: FC<ItemJadwalBelumTerisiProps> = ({
+  onClick,
+}) => {
+  return (
+    <div className="flex flex-col justify-center w-full h-full">
+      <p className="inline-block h-full flex items-center justify-center">
+        Tidak Ada Jadwal
+      </p>
+      {/* button tambah jadwal */}
+      <div className="absolute bottom-0 right-0">
+        <Button
+          bgColor="bg-Neutral-100"
+          brColor=""
+          label=""
+          noLabel
+          textColor="text-Error-95"
+          icon={IoIosAdd}
+          type={"button"}
+          onClick={onClick}
+        />
+      </div>
+    </div>
+  );
+};
