@@ -2,7 +2,7 @@ import React, { FC, useEffect, useRef, useState } from "react";
 import Sidebar from "../components/Sidebar";
 import Navbar from "../components/Navbar";
 import Button from "../components/buttons/Button";
-import ItemJadwal from "../components/ItemJadwal";
+import ItemJadwal, { ItemJadwalBelumTerisi } from "../components/ItemJadwal";
 import useSWR from "swr";
 import fetcher from "@/libs/fetcher";
 import * as yup from "yup";
@@ -10,7 +10,7 @@ import axios, { AxiosError } from "axios";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { mutate } from "swr";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
+import { IoIosArrowDown, IoIosArrowUp, IoIosAdd } from "react-icons/io";
 import { ModalDetail, ModalSucces } from "@/pages/components/modal/Modal";
 import Senin from "./modal/senin";
 import Selasa from "./modal/selasa";
@@ -19,7 +19,6 @@ import Kamis from "./modal/kamis";
 import Jumat from "./modal/jumat";
 import Sabtu from "./modal/sabtu";
 import Minggu from "./modal/minggu";
-
 
 interface Jadwal {
   id: string;
@@ -283,8 +282,6 @@ const Jadwal: FC<Jadwal> = () => {
   // state simpan id ruang dengan variable berbeda
   const [selectedRuangIdPass, setSelectedRuangIdPass] = useState("");
 
-
-
   return (
     <div className="flex flex-row h-screen font-mulish">
       <Sidebar />
@@ -298,10 +295,11 @@ const Jadwal: FC<Jadwal> = () => {
                 <div className="flex flex-col w-52 relative">
                   <button
                     type="button"
-                    className={`w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${listOpenRuang
-                      ? "border-[2px] border-Primary-50 bg-Primary-95"
-                      : "bg-Neutral-95"
-                      }`}
+                    className={`w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${
+                      listOpenRuang
+                        ? "border-[2px] border-Primary-50 bg-Primary-95"
+                        : "bg-Neutral-95"
+                    }`}
                     onClick={toggleListRuang}
                   >
                     {
@@ -325,10 +323,11 @@ const Jadwal: FC<Jadwal> = () => {
                         ruang.map((ruang) => (
                           <li key={ruang.id}>
                             <button
-                              className={`w-full text-left px-4 py-1 rounded-full ${watch("ruang_id") === ruang.id
-                                ? "text-Primary-90 bg-Primary-20"
-                                : "text-Primary-20 hover:bg-Primary-95"
-                                }`}
+                              className={`w-full text-left px-4 py-1 rounded-full ${
+                                watch("ruang_id") === ruang.id
+                                  ? "text-Primary-90 bg-Primary-20"
+                                  : "text-Primary-20 hover:bg-Primary-95"
+                              }`}
                               onClick={() => {
                                 selectRuang(ruang.id);
                                 console.log(ruang.id);
@@ -420,30 +419,24 @@ const Jadwal: FC<Jadwal> = () => {
                       </div>
                     </div>
                     {hari_senin ? (
-                      <div className="py-2 px-4 bg-Tertiary-50 rounded-lg h-full text-Tertiary-90 font-bold w-full flex items-center justify-center shadow-[0px_0px_10px_5px_rgba(149,146,146,.25)]">
+                      <div className="py-2 px-4 bg-Tertiary-50 rounded-lg h-full text-Tertiary-90 font-bold w-full flex items-center justify-center shadow-[0px_0px_10px_5px_rgba(149,146,146,.25)] relative">
                         <ItemJadwal
                           key={hari_senin.id}
                           hari="sadawd"
                           kelompok={hari_senin.sesi.nama_sesi}
                           nama_tentor={hari_senin.user.name}
-                          onClick={
-                            () => {
-                              setSeninModal(hari_senin)
-                            }
-                          }
+                          onClick={() => {
+                            setSeninModal(hari_senin);
+                          }}
                         />
                       </div>
                     ) : (
-                      <div className="py-2 px-4 bg-Error-40 rounded-lg h-full text-Error-90 font-bold w-full flex items-center justify-center text-center shadow-[0px_0px_10px_5px_rgba(149,146,146,.25)]">
-                        Tidak Ada Jadwal
-                        {/* button tambah jadwal */}
-                        <button
+                      <div className="py-2 px-4 bg-Error-40 rounded-lg h-full text-Error-90 font-bold w-full flex items-center justify-center text-center shadow-[0px_0px_10px_5px_rgba(149,146,146,.25)] flex-col relative">
+                        <ItemJadwalBelumTerisi
                           onClick={() => {
                             setSeninModalCreate(true);
                           }}
-                        >
-                          tambah jadwal
-                        </button>
+                        />
                       </div>
                     )}
                     {hari_selasa ? (
@@ -453,11 +446,9 @@ const Jadwal: FC<Jadwal> = () => {
                           hari="sadawd"
                           kelompok={hari_selasa.sesi.nama_sesi}
                           nama_tentor={hari_selasa.user.name}
-                          onClick={
-                            () => {
-                              setSelasaModal(hari_selasa)
-                            }
-                          }
+                          onClick={() => {
+                            setSelasaModal(hari_selasa);
+                          }}
                         />
                       </div>
                     ) : (
@@ -472,11 +463,9 @@ const Jadwal: FC<Jadwal> = () => {
                           hari="sadawd"
                           kelompok={hari_rabu.sesi.nama_sesi}
                           nama_tentor={hari_rabu.user.name}
-                          onClick={
-                            () => {
-                              setRabuModal(hari_rabu)
-                            }
-                          }
+                          onClick={() => {
+                            setRabuModal(hari_rabu);
+                          }}
                         />
                       </div>
                     ) : (
@@ -485,17 +474,15 @@ const Jadwal: FC<Jadwal> = () => {
                       </div>
                     )}
                     {hari_kamis ? (
-                      <div className="py-2 px-4 bg-Tertiary-50 rounded-lg h-full text-Tertiary-90 font-bold w-full flex items-center justify-center shadow-[0px_0px_10px_5px_rgba(149,146,146,.25)]">
+                      <div className="py-2 px-4 bg-Tertiary-50 rounded-lg h-full w-full flex items-center shadow-[0px_0px_10px_5px_rgba(149,146,146,.25)] relative">
                         <ItemJadwal
                           key={hari_kamis.id}
                           hari="sadawd"
                           kelompok={hari_kamis.sesi.nama_sesi}
                           nama_tentor={hari_kamis.user.name}
-                          onClick={
-                            () => {
-                              setKamisModal(hari_kamis)
-                            }
-                          }
+                          onClick={() => {
+                            setKamisModal(hari_kamis);
+                          }}
                         />
                       </div>
                     ) : (
@@ -510,11 +497,9 @@ const Jadwal: FC<Jadwal> = () => {
                           hari="sadawd"
                           kelompok={hari_jumat.sesi.nama_sesi}
                           nama_tentor={hari_jumat.user.name}
-                          onClick={
-                            () => {
-                              setJumatModal(hari_jumat)
-                            }
-                          }
+                          onClick={() => {
+                            setJumatModal(hari_jumat);
+                          }}
                         />
                       </div>
                     ) : (
@@ -529,11 +514,9 @@ const Jadwal: FC<Jadwal> = () => {
                           hari="sadawd"
                           kelompok={hari_sabtu.sesi.nama_sesi}
                           nama_tentor={hari_sabtu.user.name}
-                          onClick={
-                            () => {
-                              setSabtuModal(hari_sabtu)
-                            }
-                          }
+                          onClick={() => {
+                            setSabtuModal(hari_sabtu);
+                          }}
                         />
                       </div>
                     ) : (
@@ -548,11 +531,9 @@ const Jadwal: FC<Jadwal> = () => {
                           hari="sadawd"
                           kelompok={hari_minggu.sesi.nama_sesi}
                           nama_tentor={hari_minggu.user.name}
-                          onClick={
-                            () => {
-                              setMingguModal(hari_minggu)
-                            }
-                          }
+                          onClick={() => {
+                            setMingguModal(hari_minggu);
+                          }}
                         />
                       </div>
                     ) : (
@@ -564,136 +545,110 @@ const Jadwal: FC<Jadwal> = () => {
                 );
               })}
             </div>
-          </div >
-        </div >
-      </div >
-      {
-        seninModal ? (
-          <ModalDetail
-            titleModal="Detail Jadwal"
-            onClose={
-              () => {
-                setSeninModal(null)
-              }
-            }
-          >
-
-            <Senin
-              jadwalId={seninModal.id}
-              data={seninModal}
-              idRuang={selectedRuangIdPass}
-              onClose={
-                () => {
-                  setSeninModal(null)
-                }
-              }
-              onSucsess={() => {
-                setShowSuccess(true);
-              }}
-
-            />
-          </ModalDetail>
-        ) : (
-          kamisModal ? (
-            <ModalDetail
-              titleModal="Detail Jadwal"
-              onClose={
-                () => {
-                  setKamisModal(null)
-                }
-              }
-            >
-              <div className="">test
-                {kamisModal.sesi.nama_sesi}
-                <Kamis />
-              </div>
-            </ModalDetail>
-          ) : (
-            rabuModal ? (
-              <ModalDetail
-                titleModal="Detail Jadwal"
-                onClose={
-                  () => {
-                    setRabuModal(null)
-                  }
-                }
-              >
-                <div className="">test
-                  {rabuModal.sesi.nama_sesi}
-                  <Rabu />
-                </div>
-              </ModalDetail>
-
-            ) : (
-              jumatModal ? (
-                <ModalDetail
-                  titleModal="Detail Jadwal"
-                  onClose={
-                    () => {
-                      setJumatModal(null)
-                    }
-                  }
-                >
-                  <div className="">test
-                    {jumatModal.sesi.nama_sesi}
-                    <Jumat />
-                  </div>
-                </ModalDetail>
-              ) : (
-                sabtuModal ? (
-                  <ModalDetail
-                    titleModal="Detail Jadwal"
-                    onClose={
-                      () => {
-                        setSabtuModal(null)
-                      }
-                    }
-                  >
-                    <div className="">test
-                      {sabtuModal.sesi.nama_sesi}
-                      <Sabtu />
-                    </div>
-                  </ModalDetail>
-                ) : (
-                  mingguModal ? (
-                    <ModalDetail
-                      titleModal="Detail Jadwal"
-                      onClose={
-                        () => {
-                          setMingguModal(null)
-                        }
-                      }
-                    >
-                      <div className="">test
-                        {mingguModal.sesi.nama_sesi}
-                        <Minggu />
-                      </div>
-                    </ModalDetail>
-                  ) : (
-                    selasaModal ? (
-                      <ModalDetail
-                        titleModal="Detail Jadwal"
-                        onClose={
-                          () => {
-                            setSelasaModal(null)
-                          }
-                        }
-                      >
-                        <div className="">test
-                          {selasaModal.sesi.nama_sesi}
-                          <Jumat />
-                        </div>
-                      </ModalDetail>
-                    ) : (
-                      <div></div>
-                    )
-                  )
-                )
-              )
-            )
-          )
-        )
-      }
+          </div>
+        </div>
+      </div>
+      {seninModal ? (
+        <ModalDetail
+          wAuto
+          titleModal="Detail Jadwal"
+          onClose={() => {
+            setSeninModal(null);
+          }}
+        >
+          <Senin
+            jadwalId={seninModal.id}
+            data={seninModal}
+            idRuang={selectedRuangIdPass}
+            onClose={() => {
+              setSeninModal(null);
+            }}
+            onSucsess={() => {
+              setShowSuccess(true);
+            }}
+          />
+        </ModalDetail>
+      ) : kamisModal ? (
+        <ModalDetail
+          titleModal="Detail Jadwal"
+          onClose={() => {
+            setKamisModal(null);
+          }}
+        >
+          <div className="">
+            test
+            {kamisModal.sesi.nama_sesi}
+            <Kamis />
+          </div>
+        </ModalDetail>
+      ) : rabuModal ? (
+        <ModalDetail
+          titleModal="Detail Jadwal"
+          onClose={() => {
+            setRabuModal(null);
+          }}
+        >
+          <div className="">
+            test
+            {rabuModal.sesi.nama_sesi}
+            <Rabu />
+          </div>
+        </ModalDetail>
+      ) : jumatModal ? (
+        <ModalDetail
+          titleModal="Detail Jadwal"
+          onClose={() => {
+            setJumatModal(null);
+          }}
+        >
+          <div className="">
+            test
+            {jumatModal.sesi.nama_sesi}
+            <Jumat />
+          </div>
+        </ModalDetail>
+      ) : sabtuModal ? (
+        <ModalDetail
+          titleModal="Detail Jadwal"
+          onClose={() => {
+            setSabtuModal(null);
+          }}
+        >
+          <div className="">
+            test
+            {sabtuModal.sesi.nama_sesi}
+            <Sabtu />
+          </div>
+        </ModalDetail>
+      ) : mingguModal ? (
+        <ModalDetail
+          titleModal="Detail Jadwal"
+          onClose={() => {
+            setMingguModal(null);
+          }}
+        >
+          <div className="">
+            test
+            {mingguModal.sesi.nama_sesi}
+            <Minggu />
+          </div>
+        </ModalDetail>
+      ) : selasaModal ? (
+        <ModalDetail
+          titleModal="Detail Jadwal"
+          onClose={() => {
+            setSelasaModal(null);
+          }}
+        >
+          <div className="">
+            test
+            {selasaModal.sesi.nama_sesi}
+            <Jumat />
+          </div>
+        </ModalDetail>
+      ) : (
+        <div></div>
+      )}
       {showSuccess && (
         <ModalSucces label="POOP" onClose={() => setShowSuccess(false)}>
           {/* <div className="flex flex-col items-center justify-center">
@@ -704,25 +659,19 @@ const Jadwal: FC<Jadwal> = () => {
           </div> */}
         </ModalSucces>
       )}
-      {
-        seninModalCreate
-          ? (
-            <ModalDetail
-              titleModal="Detail Jadwal"
-              onClose={
-                () => {
-                  setSeninModalCreate(false)
-                }
-              }
-            >
-              <div className="">iwajdiwajida</div>
-            </ModalDetail>
-          ) : (
-            <div></div>
-          )
-      }
-
-    </div >
+      {seninModalCreate ? (
+        <ModalDetail
+          titleModal="Detail Jadwal"
+          onClose={() => {
+            setSeninModalCreate(false);
+          }}
+        >
+          <div className="">iwajdiwajida</div>
+        </ModalDetail>
+      ) : (
+        <div></div>
+      )}
+    </div>
   );
 };
 

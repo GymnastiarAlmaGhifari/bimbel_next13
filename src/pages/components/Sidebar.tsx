@@ -151,7 +151,8 @@ const Sidebar = () => {
                     <button
                       className={`${
                         router.pathname === "/pembayaran/gaji" ||
-                        router.pathname === "/pembayaran/tagihan"
+                        router.pathname === "/pembayaran/tagihan" ||
+                        router.pathname === "/pembayaran/riwayatPembayaran"
                           ? activeStyleButtonSideBar
                           : "hover:bg-Primary-90"
                       } ${baseStyleButtonSideBar} ${
