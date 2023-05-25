@@ -1,5 +1,12 @@
 # .dockerignore
 
 # Files and directories to exclude from the Docker build context
-.git
 .github
+
+Dockerfile
+.dockerignore
+node_modules
+npm-debug.log
+README.md
+.next
+.git

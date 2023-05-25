@@ -3,7 +3,7 @@ import prisma from "@/libs/prismadb";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === "POST") {
-    const { nama_program, tipe, level, kelas_id } = req.body;
+    const { nama_program, tipe, level, kelas_id, Deskripsi } = req.body;
     try {
       const result = await prisma.program.create({
         data: {
@@ -11,6 +11,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           tipe,
           level,
           kelas_id,
+          Deskripsi,
         },
       });
       res.status(201).json({ message: "Data berhasil disimpan", data: result });
