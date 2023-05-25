@@ -5,6 +5,7 @@ import Button from "./buttons/Button";
 import { IoIosAdd } from "react-icons/io";
 import { FC } from "react";
 import riwayat from "../riwayat";
+import Link from "next/link";
 
 interface HeadTableProps {
   role?: boolean;
@@ -15,6 +16,7 @@ interface HeadTableProps {
   onClick?: () => void;
   noLabel?: boolean;
   noSearch?: boolean;
+  noAdd?: boolean;
   label: string;
   onChange?: (value: string) => void;
   nama_kelompok?: string;
@@ -24,6 +26,7 @@ const HeadTable: React.FC<HeadTableProps> = ({
   role,
   withfilter,
   onClick,
+  noAdd,
   label,
   bulanPembayaran,
   tahunPembayaran,
@@ -80,29 +83,35 @@ const HeadTable: React.FC<HeadTableProps> = ({
       </div>
       <div className="flex gap-4">
         {riwayat ? (
+          <Link href={"/pembayaran/riwayatPembayaran"}>
+            <Button
+              type="button"
+              brColor="border-Tertiary-50"
+              textColor="text-Tertiary-50"
+              bgColor="bg-Tertiary-50"
+              label="Riwayat Pembayaran"
+              icon={MdHistory}
+              onClick={onClick}
+              outlined
+            />
+          </Link>
+        ) : (
+          ""
+        )}
+        {noAdd ? (
+          ""
+        ) : (
           <Button
             type="button"
             brColor="border-Tertiary-50"
             textColor="text-Tertiary-50"
             bgColor="bg-Tertiary-50"
-            label="Riwayat Pembayaran"
-            icon={MdHistory}
+            label="Tambah"
+            icon={IoIosAdd}
             onClick={onClick}
             outlined
           />
-        ) : (
-          ""
         )}
-        <Button
-          type="button"
-          brColor="border-Tertiary-50"
-          textColor="text-Tertiary-50"
-          bgColor="bg-Tertiary-50"
-          label="Tambah"
-          icon={IoIosAdd}
-          onClick={onClick}
-          outlined
-        />
         {role ? (
           <Button
             type="button"
