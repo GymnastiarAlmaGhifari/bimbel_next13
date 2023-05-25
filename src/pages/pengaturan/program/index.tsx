@@ -18,6 +18,7 @@ interface Program {
   nama_program: string;
   level: string;
   tipe: string;
+  Deskripsi: string;
   nama_kelas: string;
   createdAt: Date;
   updatedAt: Date;
@@ -115,7 +116,7 @@ const Program: FC<Program> = () => {
                       filteredProgram.map((item) => (
                         <CardProgram
                           mapel_ajar="Semua Mata Pelajaran TryOut"
-                          deskripsi="Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi provident nisi recusandae omnis. Illo, mollitia cum sunt numquam incidunt dolores?"
+                          deskripsi={item.Deskripsi}
                           key={item.id}
                           nama_program={item.nama_program}
                           tipe={item.tipe}
