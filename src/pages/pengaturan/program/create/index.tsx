@@ -26,6 +26,7 @@ const schema = yup.object().shape({
     level: yup.string().required("Pilih Level Terlebih Dahulu"),
     tipe: yup.string().required("Pilih Tipe Terlebih Dahulu"),
     kelas_id: yup.string().required("Pilih Kelas Terlebih Dahulu"),
+    Deskripsi: yup.string(),
 });
 
 type FormData = yup.InferType<typeof schema>;
@@ -49,7 +50,7 @@ const CreateProgram: FC<RuangCreateProps> = ({ onClose, onSucsess }) => {
     });
 
     const onSubmit: SubmitHandler<FormData> = async (data) => {
-        const { nama_program, level, tipe, kelas_id } = data;
+        const { nama_program, level, tipe, kelas_id, Deskripsi } = data;
 
         setIsLoading(true); // Set loading state to true
         setError(null);
@@ -60,6 +61,7 @@ const CreateProgram: FC<RuangCreateProps> = ({ onClose, onSucsess }) => {
                 tipe,
                 level,
                 kelas_id,
+                Deskripsi
             });
 
             mutate("/api/program");
@@ -321,6 +323,19 @@ const CreateProgram: FC<RuangCreateProps> = ({ onClose, onSucsess }) => {
                 </div>
                 {errors.kelas_id && (
                     <span className="text-red-500">{errors.kelas_id.message}</span>
+                )}
+            </div>
+
+            <div className="flex flex-col gap-2">
+                <label htmlFor="" className="text-sm text-Primary-10">
+                    Deskripsi
+                </label>
+                <textarea
+                    className="w-full h-20 px-4 py-2 rounded-xl outline-none bg-Neutral-95"
+                    {...register("Deskripsi", { required: "Deskripsi harus diisi" })}
+                />
+                {errors.Deskripsi && (
+                    <span className="text-red-500">{errors.Deskripsi.message}</span>
                 )}
             </div>
 
