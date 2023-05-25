@@ -85,7 +85,7 @@ const CardTambahAnggotaKelompok: FC<CardTambahAnggotaKelompokProps> = ({
       <div
         className={`flex flex-col gap-2 p-2 border-[2px] ${
           check ? "border-Primary-40" : ""
-        } w-full rounded-lg items-center bg-Neutral-100`}
+        } w-40 rounded-lg items-center bg-Neutral-100`}
       >
         <div className="flex justify-end w-full ">
           <input
@@ -110,7 +110,7 @@ const CardTambahAnggotaKelompok: FC<CardTambahAnggotaKelompokProps> = ({
             </div>
           </label>
         </div>
-        <div className="w-16 h-16 rounded-fsull overflow-clip scale-100 bg-red-400">
+        <div className="w-16 h-16 rounded-full overflow-clip scale-100 bg-red-400">
           <Image
             alt="Foto Siswa"
             src={
