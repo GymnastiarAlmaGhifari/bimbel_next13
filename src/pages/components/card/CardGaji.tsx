@@ -3,12 +3,13 @@ import Button from "../buttons/Button";
 import { MdModeEdit } from "react-icons/md";
 
 type CardGajiProps = {
-  role: string;
-  gaji: string;
+  role?: string;
+  gaji?: number;
   onClick?: () => void;
+  onEdit?: () => void;
 };
 
-const CardGaji: FC<CardGajiProps> = ({ role, gaji, onClick }) => {
+const CardGaji: FC<CardGajiProps> = ({ role, gaji, onClick, onEdit }) => {
   return (
     <div className="flex flex-col bg-Neutral-100 shadow-[0px_2px_8px_-4px_rgba(0,0,0,.3)] rounded-lg py-5 px-4 gap-3 w-full">
       <div className="flex justify-between">
@@ -27,7 +28,7 @@ const CardGaji: FC<CardGajiProps> = ({ role, gaji, onClick }) => {
           label="Edit Gaji"
           textColor="text-Tertiary-50"
           icon={MdModeEdit}
-          onClick={onClick}
+          onClick={onEdit}
         />
       </div>
     </div>

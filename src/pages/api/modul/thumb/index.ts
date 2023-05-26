@@ -27,18 +27,18 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       const page = await browser.newPage();
 
       try {
-        await page.goto(process.env.NEXTAUTH_URL + '/modul/' + id + '.pdf');
-        await page.setViewport({ width: 1080, height: 1920 });
+        await page.goto(process.env.NEXTAUTH_URL + '/api/modul/pdf?modul=' + id + '.pdf');
+        await page.setViewport({ width: 800, height: 1000 });
         await page.waitForTimeout(2000);
 
 
         const screenshotPath = join(process.cwd(), 'upload/modul/thumb', 'temporary.png');
         await page.screenshot({ path: screenshotPath });
 
-        const x = 310;
-        const y = 59;
-        const width = 750;
-        const height = 1000;
+        const x = 305;
+        const y = 58;
+        const width = 490;
+        const height = 615;
 
         const outputPath = join(process.cwd(), 'upload/modul/thumb', id + '.png');
 

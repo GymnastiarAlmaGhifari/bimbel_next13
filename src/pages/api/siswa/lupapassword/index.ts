@@ -21,6 +21,16 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 });
             }
 
+            const isValid = await bcrypt.compare(password, siswas.password);
+            if (isValid) {
+                const response = {
+                    status: 401,
+                    message: "Password tidak boleh sama dengan sebelumnya",
+                    data: {},
+                };
+                return res.status(401).json(response);
+            }
+
             const updatepassword = await prisma.siswa.update({
                 where: {
                     id: siswas.id,
@@ -33,7 +43,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             res.status(200).json({
                 status: 200,
                 message: "Berhasil reset password",
-                data: {},
+                data: {password},
             });
         } catch (error) {
             console.error(error);

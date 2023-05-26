@@ -10,6 +10,7 @@ import KelompokEdit from "./edit";
 import CreateKelompok from "./create";
 import Anggota from "./anggota";
 import Jadwal from "./jadwal";
+import TambahJadwal from "./jadwal";
 
 interface Kelompok {
   program: any;
@@ -182,7 +183,7 @@ const Kelompok: FC<Kelompok> = () => {
       {selectedAnggota && (
         <ModalDetail
           wAuto
-          titleModal="Tambah Anggota (Nama Kelompok)"
+          titleModal={`Tambah Anggota ${selectedAnggota.nama_kelompok}`}
           onClose={() => setSelectedAnggota(null)}
         >
           <Anggota
@@ -199,12 +200,12 @@ const Kelompok: FC<Kelompok> = () => {
       {/* Modal add jadwal */}
       {selectedJadwal && (
         <ModalDetail
-          titleModal="Tambah Jadwal (Nama Kelompok)"
+          titleModal={`Tambah Jadwdal ${selectedJadwal.nama_kelompok}`}
           onClose={() => setSelectedJadwal(null)}
         >
-          <Jadwal
+          <TambahJadwal
             onClose={() => setSelectedJadwal(null)}
-            onSuccess={() => {
+            onSucsess={() => {
               setShowSuccess(true);
             }}
             data={selectedJadwal}

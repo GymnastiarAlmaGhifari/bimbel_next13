@@ -16,77 +16,85 @@ interface RuangCreateProps {
 }
 
 const schema = yup.object().shape({
-  nama_program: yup
-    .string()
-    .required("tidak boleh kosong")
-    .min(3, "nama program minimal 3 karakter"),
-  level: yup.string().required("Pilih Level Terlebih Dahulu"),
-  tipe: yup.string().required("Pilih Tipe Terlebih Dahulu"),
-  kelas_id: yup.string().required("Pilih Kelas Terlebih Dahulu"),
+    nama_program: yup
+        .string()
+        .required("tidak boleh kosong")
+        .min(3, "nama program minimal 3 karakter"),
+    level: yup.string().required("Pilih Level Terlebih Dahulu"),
+    tipe: yup.string().required("Pilih Tipe Terlebih Dahulu"),
+    kelas_id: yup.string().required("Pilih Kelas Terlebih Dahulu"),
+    Deskripsi: yup.string(),
 });
 
 type FormData = yup.InferType<typeof schema>;
 
 const CreateProgram: FC<RuangCreateProps> = ({ onClose, onSucsess }) => {
-  const { data: kelas, error: errorprogram } = useSWR<any[]>(
-    "/api/kelas",
-    fetcher
-  );
+    const { data: kelas, error: errorprogram } = useSWR<any[]>("/api/kelas", fetcher);
 
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState<string | null>(null);
 
-  const {
-    register,
-    handleSubmit,
-    watch,
-    setValue,
-    formState: { errors },
-  } = useForm<FormData>({
-    resolver: yupResolver(schema),
-  });
+    const {
+        register,
+        handleSubmit,
+        watch,
+        setValue,
+        formState: { errors },
+    } = useForm<FormData>({
+        resolver: yupResolver(schema),
+    });
 
-  const onSubmit: SubmitHandler<FormData> = async (data) => {
-    const { nama_program, level, tipe, kelas_id } = data;
+    const onSubmit: SubmitHandler<FormData> = async (data) => {
+        const { nama_program, level, tipe, kelas_id, Deskripsi } = data;
 
-    setIsLoading(true); // Set loading state to true
-    setError(null);
+        setIsLoading(true); // Set loading state to true
+        setError(null);
 
-    try {
-      await axios.post(`/api/program`, {
-        nama_program,
-        tipe,
-        level,
-        kelas_id,
-      });
+        try {
+            await axios.post(`/api/program`, {
+                nama_program,
+                tipe,
+                level,
+                kelas_id,
+                Deskripsi
+            });
 
-      mutate("/api/program");
-      onClose(); // Set loading state to false
-    } catch (error: any) {
-      console.error(error);
+            mutate("/api/program");
+            onClose(); // Set loading state to false
 
-      if (axios.isAxiosError(error)) {
-        const axiosError = error as AxiosError;
-        if (axiosError.response) {
-          console.log("Response data:", axiosError.response.data);
-          console.log("Response status:", axiosError.response.status);
+        } catch (error: any) {
+            console.error(error);
 
-          const responseData = axiosError.response.data as { message: string };
+            if (axios.isAxiosError(error)) {
+                const axiosError = error as AxiosError;
+                if (axiosError.response) {
+                    console.log("Response data:", axiosError.response.data);
+                    console.log("Response status:", axiosError.response.status);
 
-          // Extract the main error message from the response data
-          const errorMessage = responseData.message;
+                    const responseData = axiosError.response.data as { message: string };
 
-          setError(`An error occurred: ${errorMessage}`);
-        } else if (axiosError.request) {
-          console.log("No response received:", axiosError.request);
+                    // Extract the main error message from the response data
+                    const errorMessage = responseData.message;
 
-          const request = axiosError.request.toString();
-          setError(`No response received: ${request}`);
-        } else {
-          console.log("Error setting up the request:", axiosError.message);
+                    setError(`An error occurred: ${errorMessage}`);
+                } else if (axiosError.request) {
+                    console.log("No response received:", axiosError.request);
 
-          const request = axiosError.message.toString();
-          setError(`Error setting up the request: ${request}`);
+                    const request = axiosError.request.toString();
+                    setError(`No response received: ${request}`);
+                } else {
+                    console.log("Error setting up the request:", axiosError.message);
+
+                    const request = axiosError.message.toString();
+                    setError(`Error setting up the request: ${request}`);
+                }
+            } else {
+                console.log("Error:", error.message);
+                setError("An unknown error occurred.");
+            }
+        } finally {
+            setIsLoading(false);
+            onSucsess();
         }
       } else {
         console.log("Error:", error.message);
@@ -326,30 +334,64 @@ const CreateProgram: FC<RuangCreateProps> = ({ onClose, onSucsess }) => {
                     >
                       {kelasItem.nama_kelas}
                     </button>
-                  </li>
-                ))
-              )}
-            </ul>
-          )}
-        </div>
-        {errors.kelas_id && (
-          <span className="text-red-500">{errors.kelas_id.message}</span>
-        )}
-      </div>
+                    {isListOpenKelas && (
+                        <ul className="absolute w-full top-[44px] z-10 bg-Neutral-100 border-[2px] border-Primary-50 rounded-xl py-2 px-2 outline-none appearance-none flex flex-col gap-1" ref={componentRef}>
+                            {error ? (
+                                <li>Error fetching data</li>
+                            ) : !kelas ? (
+                                <li>Loading...</li>
+                            ) : kelas.length === 0 ? (
+                                <li>No classes available</li>
+                            ) : (
+                                kelas.map((kelasItem) => (
+                                    <li key={kelasItem.id}>
+                                        <button
+                                            type="button"
+                                            className={`w-full text-left px-2 py-1 rounded-full ${watch("kelas_id") === kelasItem.id
+                                                ? "text-Primary-90 bg-Primary-20"
+                                                : "text-Primary-20 hover:bg-Primary-95"
+                                                }`}
+                                            onClick={() => selectKelas(kelasItem.id)}
+                                        >
+                                            {kelasItem.nama_kelas}
+                                        </button>
+                                    </li>
+                                ))
+                            )}
+                        </ul>
+                    )}
+                </div>
+                {errors.kelas_id && (
+                    <span className="text-red-500">{errors.kelas_id.message}</span>
+                )}
+            </div>
 
-      {/* Buat selected berisi SUPER ADMIN dan TENTOR */}
-      <div className="flex flex-row justify-end">
-        <Button
-          type="submit"
-          bgColor="bg-Tertiary-50"
-          brColor=""
-          label="Konfirmasi"
-          textColor="text-Neutral-100"
-          withBgColor
-        />
-      </div>
-    </form>
-  );
+            <div className="flex flex-col gap-2">
+                <label htmlFor="" className="text-sm text-Primary-10">
+                    Deskripsi
+                </label>
+                <textarea
+                    className="w-full h-20 px-4 py-2 rounded-xl outline-none bg-Neutral-95"
+                    {...register("Deskripsi", { required: "Deskripsi harus diisi" })}
+                />
+                {errors.Deskripsi && (
+                    <span className="text-red-500">{errors.Deskripsi.message}</span>
+                )}
+            </div>
+
+            {/* Buat selected berisi SUPER ADMIN dan TENTOR */}
+            < div className="flex flex-row justify-end" >
+                <Button
+                    type="submit"
+                    bgColor="bg-Tertiary-50"
+                    brColor=""
+                    label="Konfirmasi"
+                    textColor="text-Neutral-100"
+                    withBgColor
+                />
+            </div>
+        </form>
+    );
 };
 
 export default CreateProgram;

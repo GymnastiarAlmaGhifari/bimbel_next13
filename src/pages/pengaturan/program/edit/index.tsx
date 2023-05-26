@@ -29,6 +29,7 @@ const schema = yup.object().shape({
   level: yup.string(),
   tipe: yup.string(),
   kelas_id: yup.string(),
+  Deskripsi: yup.string(),
 });
 
 type FormData = yup.InferType<typeof schema>;
@@ -48,7 +49,7 @@ const ProgramEdit: FC<ProgramEditProps> = ({ programId, onClose, data }) => {
   });
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
-    const { nama_program, level, tipe, kelas_id } = data;
+    const { nama_program, level, tipe, kelas_id, Deskripsi } = data;
 
     setIsLoading(true); // Set loading state to true
 
@@ -58,6 +59,7 @@ const ProgramEdit: FC<ProgramEditProps> = ({ programId, onClose, data }) => {
         level,
         tipe,
         kelas_id,
+        Deskripsi
       });
 
       mutate("/api/program");
@@ -331,6 +333,21 @@ const ProgramEdit: FC<ProgramEditProps> = ({ programId, onClose, data }) => {
                 <span className="text-red-500">{errors.kelas_id.message}</span>
               )}
             </div>
+
+            {/* deskripsi */}
+            <div className="flex flex-col gap-2">
+              <label htmlFor="" className="text-sm text-Primary-10">
+                Deskripsi
+              </label>
+              <textarea
+                className="w-full h-20 px-4 py-2 rounded-xl outline-none bg-Neutral-95"
+                {...register("Deskripsi", { required: "Deskripsi harus diisi" })}
+              ></textarea>
+              {errors.Deskripsi && (
+                <span className="text-red-500">{errors.Deskripsi.message}</span>
+              )}
+            </div>
+
 
             <div className="flex flex-row gap-4 justify-end">
               <Button
