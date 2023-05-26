@@ -335,15 +335,7 @@ const UserEdit: FC<UserEditProps> = ({ userId, onClose, onSucsess, data }) => {
         {error && <p className="text-red-500">{error}</p>}
 
         <div className="flex flex-row justify-end gap-4">
-          <Button
-            center
-            bgColor="bg-Neutral-70"
-            brColor=""
-            label="Batal"
-            textColor="text-Neutral-30"
-            type="button"
-            onClick={onClose}
-          />
+          0
           <Button
             center
             type="submit"

@@ -9,6 +9,7 @@ type CardProgramProps = {
   deskripsi?: string;
   tipe: string;
   kelas: string;
+  harga: number;
   onEdit: () => void;
 };
 
@@ -18,6 +19,7 @@ const CardProgram: FC<CardProgramProps> = ({
   level,
   deskripsi,
   tipe,
+  harga,
   mapel_ajar,
   onEdit,
 }) => {
@@ -55,6 +57,10 @@ const CardProgram: FC<CardProgramProps> = ({
       <div className="flex flex-col gap-1">
         <h3 className="text-sm text-Neutral-30">Deskripsi</h3>
         <span className="font-bold text-Primary-10">{deskripsi}</span>
+      </div>
+      <div className="flex flex-col gap-1">
+        <h3 className="text-sm text-Neutral-30">harga</h3>
+        <span className="font-bold text-Primary-10">{harga}</span>
       </div>
       <div className="w-full h-[1px] bg-Neutral-70"></div>
       <div className="flex justify-end">

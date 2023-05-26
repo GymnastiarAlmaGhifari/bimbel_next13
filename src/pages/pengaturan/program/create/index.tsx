@@ -27,6 +27,7 @@ const schema = yup.object().shape({
   tipe: yup.string().required("Pilih Tipe Terlebih Dahulu"),
   kelas_id: yup.string().required("Pilih Kelas Terlebih Dahulu"),
   Deskripsi: yup.string(),
+  harga: yup.number().required("Harga tidak boleh kosong"),
 });
 
 type FormData = yup.InferType<typeof schema>;
@@ -50,7 +51,7 @@ const CreateProgram: FC<RuangCreateProps> = ({ onClose, onSucsess }) => {
   });
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
-    const { nama_program, level, tipe, kelas_id, Deskripsi } = data;
+    const { nama_program, level, tipe, kelas_id, Deskripsi, harga } = data;
 
     setIsLoading(true); // Set loading state to true
     setError(null);
@@ -61,7 +62,8 @@ const CreateProgram: FC<RuangCreateProps> = ({ onClose, onSucsess }) => {
         tipe,
         level,
         kelas_id,
-        Deskripsi
+        Deskripsi,
+        harga,
       });
 
       mutate("/api/program");
@@ -326,6 +328,22 @@ const CreateProgram: FC<RuangCreateProps> = ({ onClose, onSucsess }) => {
         )}
       </div>
 
+      {/* harga */}
+      <div className="flex flex-col gap-2">
+        <Input
+          type="number"
+          id="harga"
+          label="Harga"
+          register={{ ...register("harga") }}
+          errors={errors}
+        />
+      </div>
+      {
+        errors.harga && (
+          <span className="text-red-500">{errors.harga.message}</span>
+
+        )
+      }
       <div className="flex flex-col gap-2">
         <label htmlFor="" className="text-sm text-Primary-10">
           Deskripsi

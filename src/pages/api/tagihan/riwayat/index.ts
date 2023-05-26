@@ -10,9 +10,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     try {
       const tagihan = await prisma.tagihan.findMany({
         where: {
-          status: {
-            not: "LUNAS",
-          },
+          status: "LUNAS",
         },
         include: {
           user: true,

@@ -8,7 +8,7 @@ import { IoIosArrowForward } from "react-icons/io";
 import { MdModeEdit, MdDelete, MdVisibility } from "react-icons/md";
 
 interface CardModulProps {
-  nama_modul: string;
+  nama_module: string;
   tanggal_upload: string;
   kelompok: string;
   url: string;
@@ -16,16 +16,18 @@ interface CardModulProps {
   tingkatan: string;
   mapel: string;
   onClick?: () => void;
+  goPdf?: () => void;
 }
 
 const CardModul: FC<CardModulProps> = ({
   onClick,
   kelompok,
-  nama_modul,
+  nama_module,
   mapel,
   tingkatan,
   tanggal_upload,
   thumbnail,
+  goPdf,
   url,
 }) => {
   const detailProfile = () => {
@@ -47,10 +49,11 @@ const CardModul: FC<CardModulProps> = ({
           />
         </div>
         <div className="flex flex-col w-full gap-4">
-          <div className="">
-            <h1 className="text-lg font-bold text-Primary-10">{nama_modul}</h1>
-          </div>
           <div className="flex justify-between">
+            <div className="flex flex-col gap-1">
+              <h3 className="text-sm text-Neutral-30">Nama Modul</h3>
+              <span className="font-bold text-Primary-10">{nama_module}</span>
+            </div>
             <div className="flex flex-col gap-1">
               <h3 className="text-sm text-Neutral-30">Mata Pelajaran</h3>
               <span className="font-bold text-Primary-10">{mapel}</span>
@@ -89,7 +92,7 @@ const CardModul: FC<CardModulProps> = ({
           label="Lihat Modul"
           textColor="text-Primary-40"
           icon={MdVisibility}
-          // onClick={onClick}
+          onClick={goPdf}
         />
         <Button
           type="button"
