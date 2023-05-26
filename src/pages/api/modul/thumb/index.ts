@@ -3,6 +3,7 @@ import puppeteer, { Frame } from 'puppeteer';
 import path, { join } from 'path';
 import sharp from 'sharp';
 import fs from 'fs-extra';
+import prisma from '@/libs/prismadb';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
 
@@ -47,6 +48,16 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           .toFile(outputPath);
 
         array.push('Screenshot captured and cropped!');
+
+        await prisma.module.update({
+          where: {
+            id: id,
+          },
+          data: {
+            thumbnail: id + '.png',
+            url: id + '.pdf',
+          },
+        });
         res.status(200).json(array);
       } catch (error) {
         res.status(500).json({ success: false, message: 'Error capturing screenshot', error: error });
