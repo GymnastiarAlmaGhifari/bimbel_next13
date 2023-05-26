@@ -59,7 +59,7 @@ const schema = yup.object().shape({
 
 type FormData = yup.InferType<typeof schema>;
 
-const TambahJadwal: FC<TambahJadwalProps> = ({ onClose, onSucsess }) => {
+const TambahJadwal: FC<TambahJadwalProps> = ({ onClose, onSucsess, kelompokId, data }) => {
 
   const { data: sesi, error: errorSesi } = useSWR<Sesi[]>(
     "api/sesi",
@@ -196,24 +196,32 @@ const TambahJadwal: FC<TambahJadwalProps> = ({ onClose, onSucsess }) => {
 
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
-    const { hari, } = data;
+    const { sesi, mapel, ruang, hari } = data;
+
+    let { userCheck } = data;
+    if (Array.isArray(userCheck)) {
+      userCheck = userCheck[0].toString();
+    }
 
     setIsLoading(true); // Set loading state to true
     setError(null);
 
+    const payload = {
+      kelompok_id: kelompokId,
+      user_id: userCheck,
+      hari: hari,
+      sesi_id: sesi,
+      mapel_id: mapel,
+      ruang_id: ruang,
+    };
+
     try {
-      await axios.post(`/api/user`, {
-        name,
-
-        hari,
-        // mapel,
-        // sesi,
-
+      await axios.post(`/api/jadwaldetail/`, {
+        ...payload,
       });
 
-      mutate("/api/user");
-      mutate(`/api/userimg`);
-      mutate(`/api/user/getadmin`);
+      mutate(`/api/jadwaldetail/`, undefined);
+      mutate(`/api/kelompok/jadwal/${kelompokId}`, undefined);
       onClose(); // Set loading state to false
     } catch (error: any) {
       console.error(error);

@@ -181,7 +181,7 @@ const Kelompok: FC<Kelompok> = () => {
       {selectedAnggota && (
         <ModalDetail
           wAuto
-          titleModal="Tambah Anggota (Nama Kelompok)"
+          titleModal={`Tambah Anggota ${selectedAnggota.nama_kelompok}`}
           onClose={() => setSelectedAnggota(null)}
         >
           <Anggota
@@ -199,7 +199,7 @@ const Kelompok: FC<Kelompok> = () => {
       {/* Modal add jadwal */}
       {selectedJadwal && (
         <ModalDetail
-          titleModal="Tambah Jadwal (Nama Kelompok)"
+          titleModal={`Tambah Jadwdal ${selectedJadwal.nama_kelompok}`}
           onClose={() => setSelectedJadwal(null)}
         >
           <TambahJadwal
