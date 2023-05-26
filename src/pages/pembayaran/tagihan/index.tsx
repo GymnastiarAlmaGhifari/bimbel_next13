@@ -3,7 +3,15 @@ import Navbar from "@/pages/components/Navbar";
 import NavbarPembayaran from "@/pages/components/NavbarPembayaran";
 import Sidebar from "@/pages/components/Sidebar";
 import CardPembayaran from "@/pages/components/card/CardPembayaran";
-import React from "react";
+import React, { FC, useEffect, useState } from "react";
+import useSWR from "swr";
+import fetcher from "@/libs/fetcher";
+import { ModalDetail, ModalSucces } from "@/pages/components/modal/Modal";
+
+interface Pembayaran {
+  id: string;
+
+}
 
 const Pembayaran = () => {
   return (

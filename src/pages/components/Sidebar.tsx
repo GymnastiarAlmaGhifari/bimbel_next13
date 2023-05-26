@@ -95,13 +95,11 @@ const Sidebar = () => {
                 <li>
                   <Link href="/dashboard">
                     <button
-                      className={`${
-                        router.pathname === "/dashboard"
+                      className={`${router.pathname === "/dashboard"
                           ? activeStyleButtonSideBar
                           : "hover:bg-Primary-90"
-                      } ${baseStyleButtonSideBar} ${
-                        isOpen ? "w-full" : "w-14 justify-center"
-                      }`}
+                        } ${baseStyleButtonSideBar} ${isOpen ? "w-full" : "w-14 justify-center"
+                        }`}
                     >
                       <div className="">
                         <AiFillHome size={24} />
@@ -113,13 +111,11 @@ const Sidebar = () => {
                 <li>
                   <Link href="/jadwal">
                     <button
-                      className={`${
-                        router.pathname === "/jadwal"
+                      className={`${router.pathname === "/jadwal"
                           ? activeStyleButtonSideBar
                           : "hover:bg-Primary-90"
-                      } ${baseStyleButtonSideBar} ${
-                        isOpen ? "w-full" : "w-14 justify-center"
-                      }`}
+                        } ${baseStyleButtonSideBar} ${isOpen ? "w-full" : "w-14 justify-center"
+                        }`}
                     >
                       <div>
                         <BsCalendar size={24} />
@@ -131,13 +127,11 @@ const Sidebar = () => {
                 <li>
                   <Link href="/pengguna">
                     <button
-                      className={`${
-                        router.pathname === "/pengguna"
+                      className={`${router.pathname === "/pengguna"
                           ? activeStyleButtonSideBar
                           : "hover:bg-Primary-90"
-                      } ${baseStyleButtonSideBar} ${
-                        isOpen ? "w-full" : "w-14 justify-center"
-                      }`}
+                        } ${baseStyleButtonSideBar} ${isOpen ? "w-full" : "w-14 justify-center"
+                        }`}
                     >
                       <div>
                         <BsFillPersonFill size={24} />
@@ -147,17 +141,15 @@ const Sidebar = () => {
                   </Link>
                 </li>
                 <li>
-                  <Link href="/pembayaran/gaji">
+                  <Link href="/pembayaran/tagihan">
                     <button
-                      className={`${
-                        router.pathname === "/pembayaran/gaji" ||
-                        router.pathname === "/pembayaran/tagihan" ||
-                        router.pathname === "/pembayaran/riwayatPembayaran"
+                      className={`${router.pathname === "/pembayaran/gaji" ||
+                          router.pathname === "/pembayaran/tagihan" ||
+                          router.pathname === "/pembayaran/riwayatPembayaran"
                           ? activeStyleButtonSideBar
                           : "hover:bg-Primary-90"
-                      } ${baseStyleButtonSideBar} ${
-                        isOpen ? "w-full" : "w-14 justify-center"
-                      }`}
+                        } ${baseStyleButtonSideBar} ${isOpen ? "w-full" : "w-14 justify-center"
+                        }`}
                     >
                       <div>
                         <MdPayment size={24} />
@@ -169,13 +161,11 @@ const Sidebar = () => {
                 <li>
                   <Link href="/siswa">
                     <button
-                      className={`${
-                        router.pathname === "/siswa"
+                      className={`${router.pathname === "/siswa"
                           ? activeStyleButtonSideBar
                           : "hover:bg-Primary-90"
-                      } ${baseStyleButtonSideBar} ${
-                        isOpen ? "w-full" : "w-14 justify-center"
-                      }`}
+                        } ${baseStyleButtonSideBar} ${isOpen ? "w-full" : "w-14 justify-center"
+                        }`}
                     >
                       <div>
                         <IoMdSchool size={24} />
@@ -187,13 +177,11 @@ const Sidebar = () => {
                 <li>
                   <Link href="/kelompok">
                     <button
-                      className={`${
-                        router.pathname === "/kelompok"
+                      className={`${router.pathname === "/kelompok"
                           ? activeStyleButtonSideBar
                           : "hover:bg-Primary-90"
-                      } ${baseStyleButtonSideBar} ${
-                        isOpen ? "w-full" : "w-14 justify-center"
-                      }`}
+                        } ${baseStyleButtonSideBar} ${isOpen ? "w-full" : "w-14 justify-center"
+                        }`}
                     >
                       <div>
                         <MdPeopleAlt size={24} />
@@ -205,13 +193,11 @@ const Sidebar = () => {
                 <li>
                   <Link href="/modul">
                     <button
-                      className={`${
-                        router.pathname === "/modul"
+                      className={`${router.pathname === "/modul"
                           ? activeStyleButtonSideBar
                           : "hover:bg-Primary-90"
-                      } ${baseStyleButtonSideBar} ${
-                        isOpen ? "w-full" : "w-14 justify-center"
-                      }`}
+                        } ${baseStyleButtonSideBar} ${isOpen ? "w-full" : "w-14 justify-center"
+                        }`}
                     >
                       <div>
                         <MdLocalLibrary size={24} />
@@ -225,17 +211,15 @@ const Sidebar = () => {
                     <button
                       className={
                         // buatkan ketika menyala berada di pengaturan/prgram, pengaturan/module, dan pengaturan/sesi
-                        `${
-                          router.pathname === "/pengaturan/program" ||
+                        `${router.pathname === "/pengaturan/program" ||
                           router.pathname === "/pengaturan/ruang" ||
                           router.pathname === "/pengaturan/sesi" ||
                           router.pathname === "/pengaturan/mapel" ||
                           router.pathname === "/pengaturan/kelas" ||
                           router.pathname === "/pengaturan/gaji"
-                            ? activeStyleButtonSideBar
-                            : "hover:bg-Primary-90"
-                        } ${baseStyleButtonSideBar} ${
-                          isOpen ? "w-full" : "w-14 justify-center"
+                          ? activeStyleButtonSideBar
+                          : "hover:bg-Primary-90"
+                        } ${baseStyleButtonSideBar} ${isOpen ? "w-full" : "w-14 justify-center"
                         }`
                       }
                     >
@@ -253,13 +237,11 @@ const Sidebar = () => {
                 <li>
                   <Link href="/dashboard">
                     <button
-                      className={`${
-                        router.pathname === "/dashboard"
+                      className={`${router.pathname === "/dashboard"
                           ? activeStyleButtonSideBar
                           : "hover:bg-Primary-90"
-                      } ${baseStyleButtonSideBar} ${
-                        isOpen ? "w-full" : "w-14 justify-center"
-                      }`}
+                        } ${baseStyleButtonSideBar} ${isOpen ? "w-full" : "w-14 justify-center"
+                        }`}
                     >
                       <div>
                         <BsFillPersonFill size={24} />
@@ -271,13 +253,11 @@ const Sidebar = () => {
                 <li>
                   <Link href="/jadwal">
                     <button
-                      className={`${
-                        router.pathname === "/jadwal"
+                      className={`${router.pathname === "/jadwal"
                           ? activeStyleButtonSideBar
                           : "hover:bg-Primary-90"
-                      } ${baseStyleButtonSideBar} ${
-                        isOpen ? "w-full" : "w-14 justify-center"
-                      }`}
+                        } ${baseStyleButtonSideBar} ${isOpen ? "w-full" : "w-14 justify-center"
+                        }`}
                     >
                       <div>
                         <BsFillPersonFill size={24} />

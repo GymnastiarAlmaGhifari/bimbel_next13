@@ -178,11 +178,10 @@ const Create: FC<UserCreateProps> = ({ onClose, onSucsess }) => {
         <div className="relative flex flex-col gap-2">
           <button
             type="button"
-            className={` w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${
-              isListOpenRole
+            className={` w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${isListOpenRole
                 ? "border-[2px] border-Primary-50 bg-Primary-95"
                 : "bg-Neutral-95"
-            }`}
+              }`}
             onClick={toggleListRole}
           >
             {getRoleLabel(watch("role")) || "Pilih Role"}
@@ -197,11 +196,10 @@ const Create: FC<UserCreateProps> = ({ onClose, onSucsess }) => {
                 <li key={option.value}>
                   <button
                     type="button"
-                    className={`w-full text-left px-2 py-1 rounded-full ${
-                      watch("role") === option.value
+                    className={`w-full text-left px-2 py-1 rounded-full ${watch("role") === option.value
                         ? "text-Primary-90 bg-Primary-20"
                         : "text-Primary-20 hover:bg-Primary-95"
-                    }`}
+                      }`}
                     onClick={() => selectrole(option.value)}
                   >
                     {option.label}

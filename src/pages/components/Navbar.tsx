@@ -11,6 +11,7 @@ import { useSession } from "next-auth/react";
 import { signOut } from "next-auth/react";
 import useSWR, { mutate } from "swr";
 import fetcher from "@/libs/fetcher";
+import Notification from "./Notification";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -33,7 +34,8 @@ const Navbar = () => {
   };
 
   return (
-    <div className="bg-Neutral-100 h-14 flex items-center justify-end px-4 py-2 z-40">
+    <div className="bg-Neutral-100 h-14 flex items-center justify-end gap-6 px-4 py-2 z-40">
+      <Notification />
       <button onClick={toggleMenu} className="relative">
         <div className="flex items-center inline-block gap-2">
           <div className="inline-block pr-2 flex flex-col">
@@ -43,7 +45,11 @@ const Navbar = () => {
           </div>
           <div className="w-10 h-10 rounded-full overflow-clip scale-100 border-[1px] border-Primary-50">
             <Image
-              src={"/api/user/img?img=" + users?.image ? "/api/user/img?img=" + users?.image : "/img/user/default.png"}
+              src={
+                "/api/user/img?img=" + users?.image
+                  ? "/api/user/img?img=" + users?.image
+                  : "/img/user/default.png"
+              }
               alt="Megachan"
               width={100}
               height={100}
