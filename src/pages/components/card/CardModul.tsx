@@ -10,8 +10,6 @@ import { MdModeEdit, MdDelete, MdVisibility } from "react-icons/md";
 interface CardModulProps {
   nama_modul: string;
   tanggal_upload: string;
-  nama_penyusun: string;
-  tipe: string;
   kelompok: string;
   url: string;
   thumbnail: string;
@@ -25,9 +23,7 @@ const CardModul: FC<CardModulProps> = ({
   kelompok,
   nama_modul,
   mapel,
-  nama_penyusun,
   tingkatan,
-  tipe,
   tanggal_upload,
   thumbnail,
   url,
@@ -35,12 +31,14 @@ const CardModul: FC<CardModulProps> = ({
   const detailProfile = () => {
     window.location.href = "/detailProfileSiswa";
   };
+
+
   return (
     <div className="flex flex-col bg-Neutral-100 shadow-[0px_2px_8px_-4px_rgba(0,0,0,.3)] rounded-lg py-5 px-4 gap-3">
       <div className="flex gap-5">
         <div className="h-full w-40">
           <Image
-            src={thumbnail ? thumbnail : "/img/user/default.png"}
+            src={"/api/modul/thumb?img=" + thumbnail ? "/api/modul/thumb?img=" + thumbnail : "/img/user/default.png"}
             alt="Megachan"
             width={100}
             height={100}
@@ -66,7 +64,6 @@ const CardModul: FC<CardModulProps> = ({
             <div className="flex flex-col items-end gap-1">
               <h3 className="text-sm text-Neutral-30">Penyusun</h3>
               <span className="font-bold  text-Primary-10">
-                {nama_penyusun}
               </span>
             </div>
           </div>
@@ -74,10 +71,6 @@ const CardModul: FC<CardModulProps> = ({
             <div className="flex flex-col gap-1">
               <h3 className="text-sm text-Neutral-30">Tingkatan</h3>
               <span className="font-bold text-Primary-10">{tingkatan}</span>
-            </div>
-            <div className="flex flex-col items-center gap-1">
-              <h3 className="text-sm text-Neutral-30">Tipe</h3>
-              <span className="font-bold text-Primary-10">{tipe}</span>
             </div>
             <div className="flex flex-col items-end gap-1">
               <h3 className="text-sm text-Neutral-30">Kelompok</h3>
@@ -114,7 +107,7 @@ const CardModul: FC<CardModulProps> = ({
           label="Edit Modul"
           textColor="text-Tertiary-50"
           icon={MdModeEdit}
-          // onClick={onClick}
+        // onClick={onClick}
         />
       </div>
     </div>
