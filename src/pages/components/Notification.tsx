@@ -4,9 +4,9 @@ import CardNotification from "./card/CardNotification";
 import Button from "./buttons/Button";
 import { MdDelete } from "react-icons/md";
 
-interface NotificationProps {}
+interface NotificationProps { }
 
-const Notification: FC<NotificationProps> = ({}) => {
+const Notification: FC<NotificationProps> = ({ }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const handleClick = () => {
@@ -40,7 +40,7 @@ const Notification: FC<NotificationProps> = ({}) => {
               icon={IoIosClose}
               noLabel
               textColor="text-Neutral-30"
-              // onClick={onClose}
+            // onClick={onClose}
             />
           </div>
           <div className="flex flex-col h-96 overflow-y-auto scrollbar">
