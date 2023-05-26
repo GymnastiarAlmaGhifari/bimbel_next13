@@ -46,11 +46,11 @@ export const authOptions: AuthOptions = {
           where: { email },
         });
         if (!user) {
-          throw new Error("No user found");
+          throw new Error("Email Anda Belum Terdaftar");
         }
         const isValid = await bcrypt.compare(password, user.password);
         if (!isValid) {
-          throw new Error("Invalid password");
+          throw new Error("Password Anda Salah");
         }
         return user;
       },

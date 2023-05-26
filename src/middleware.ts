@@ -19,22 +19,11 @@ export default withAuth(
     callbacks: {
       authorized: ({ token }) =>
         // jika ada token dan role nya SUPER atau ADMIN atau TENTOR maka akan diizinkan dan akan re
-        token?.role === "SUPER" ||
-        token?.role === "ADMIN" ||
-        token?.role === "TENTOR",
+        token?.role === "SUPER" || token?.role === "ADMIN" || token?.role === "TENTOR",
     },
   }
 );
 
 export const config = {
-  matcher: [
-    "/dashboard",
-    "/pembayaran",
-    "/siswa",
-    "/kelompok",
-    "/pengguna",
-    "/profile",
-    "/pengaturan",
-    "/riwayat",
-  ],
+  matcher: ["/dashboard", "/pembayaran", "/siswa", "/kelompok", "/pengguna", "/profile", "/pengaturan", "/riwayat", "/api/modul/pdf"],
 };

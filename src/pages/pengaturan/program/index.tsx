@@ -19,6 +19,7 @@ interface Program {
   level: string;
   tipe: string;
   Deskripsi: string;
+  harga: number;
   nama_kelas: string;
   createdAt: Date;
   updatedAt: Date;
@@ -122,6 +123,7 @@ const Program: FC<Program> = () => {
                           tipe={item.tipe}
                           level={item.level}
                           kelas={item.kelas.nama_kelas}
+                          harga={item.harga}
                           onEdit={() => setSelectedProgram(item)}
                         />
                       ))

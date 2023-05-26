@@ -5,7 +5,7 @@ const nextConfig = {
     domains: ["th.bing.com", "img.jakpost.net", "indopolitika.com", "localhost", "linear.yoganova.my.id", "linear-vps.yoganova.my.id"],
     disableStaticImages: true,
     unoptimized: true,
-    responseLimit: '100mb',
+    responseLimit: "100mb",
   },
 };
 
