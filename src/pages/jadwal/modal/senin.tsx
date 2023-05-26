@@ -270,10 +270,11 @@ const Senin: FC<Senin> = ({ jadwalId, data, onClose, onSucsess, idRuang }) => {
             userCheck = userCheck[0].toString();
         }
 
-        const { sesi, mapel, ruang } = data;
+        const { sesi, mapel, ruang, hari } = data;
         const payload = {
             kelompok_id: kelompokCheck,
             user_id: userCheck,
+            hari: hari,
             sesi_id: sesi,
             mapel_id: mapel,
             ruang_id: ruang,
