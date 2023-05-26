@@ -220,9 +220,11 @@ const TambahJadwal: FC<TambahJadwalProps> = ({ onClose, onSucsess, kelompokId, d
         ...payload,
       });
 
+
       mutate(`/api/jadwaldetail/`, undefined);
       mutate(`/api/kelompok/jadwal/${kelompokId}`, undefined);
       onClose(); // Set loading state to false
+      onSucsess();
     } catch (error: any) {
       console.error(error);
 
@@ -237,17 +239,17 @@ const TambahJadwal: FC<TambahJadwalProps> = ({ onClose, onSucsess, kelompokId, d
           // Extract the main error message from the response data
           const errorMessage = responseData.message;
 
-          setError(`An error occurred: ${errorMessage}`);
+          setError(`${errorMessage}`);
         } else if (axiosError.request) {
-          console.log("No response received:", axiosError.request);
+          console.log(axiosError.request);
 
           const request = axiosError.request.toString();
-          setError(`No response received: ${request}`);
+          setError(request);
         } else {
-          console.log("Error setting up the request:", axiosError.message);
+          console.log(axiosError.message);
 
           const request = axiosError.message.toString();
-          setError(`Error setting up the request: ${request}`);
+          setError(request);
         }
       } else {
         console.log("Error:", error.message);
@@ -255,8 +257,6 @@ const TambahJadwal: FC<TambahJadwalProps> = ({ onClose, onSucsess, kelompokId, d
       }
     } finally {
       setIsLoading(false);
-      onClose();
-      onSucsess();
     }
   };
   const getHariLabel = (value: string) => {
@@ -265,7 +265,10 @@ const TambahJadwal: FC<TambahJadwalProps> = ({ onClose, onSucsess, kelompokId, d
   };
 
   return (
-    <form className="flex flex-col gap-4">
+    <form className="flex flex-col gap-4" onSubmit={handleSubmit(onSubmit)} >
+      {error && (
+        <div className="text-red-500 text-sm font-semibold">{error}</div>
+      )}
       <div className="flex flex-col gap-1">
         <label htmlFor="" className="text-sm text-Primary-10">
           Hari
