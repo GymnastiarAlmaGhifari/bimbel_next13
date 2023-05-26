@@ -1,9 +1,10 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import prisma from "@/libs/prismadb";
+import { Bulan } from "@prisma/client";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-    let Bulan = req.body.Bulan;
-    let Tahun = req.body.Tahun;
+    let Bulan = req.query.Bulan as Bulan | null | undefined;;
+    let Tahun = Number(req.query.Tahun);
 
     if (req.method === "GET") {
         try {
