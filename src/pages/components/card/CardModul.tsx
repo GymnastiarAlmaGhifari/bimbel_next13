@@ -5,7 +5,7 @@ import Button from "../buttons/Button";
 import Kelas from "@/pages/pengaturan/kelas";
 import { string } from "yup";
 import { IoIosArrowForward } from "react-icons/io";
-import { MdModeEdit, MdDelete } from "react-icons/md";
+import { MdModeEdit, MdDelete, MdVisibility } from "react-icons/md";
 
 interface CardModulProps {
   nama_modul: string;
@@ -89,6 +89,15 @@ const CardModul: FC<CardModulProps> = ({
 
       <div className="w-full h-[1px] bg-Neutral-70"></div>
       <div className="flex justify-end gap-4 items-center">
+        <Button
+          type="button"
+          bgColor="bg-Primary-50"
+          brColor=""
+          label="Lihat Modul"
+          textColor="text-Primary-40"
+          icon={MdVisibility}
+          // onClick={onClick}
+        />
         <Button
           type="button"
           bgColor="bg-Error-50"

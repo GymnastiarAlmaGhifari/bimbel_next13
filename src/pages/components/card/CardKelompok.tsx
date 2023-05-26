@@ -89,7 +89,6 @@ const CardKelompok: FC<CardKelompokProps> = ({
   const [isExpandedJadwal, setIsExpandedJadwal] = useState(false);
   const [idKelompok, setIdKelompok] = useState("");
 
-
   const handleDetailsClick = () => {
     setIsExpandedDetails(!isExpandedDetails);
     if (isExpandedJadwal == true) {
@@ -118,7 +117,7 @@ const CardKelompok: FC<CardKelompokProps> = ({
     data: siswa,
     error: siswaError,
     isLoading,
-  } = useSWR(`/api/kelompok/siswa/${idKelompok}`, fetcher,);
+  } = useSWR(`/api/kelompok/siswa/${idKelompok}`, fetcher);
 
   const {
     data: jadwal,
@@ -135,11 +134,27 @@ const CardKelompok: FC<CardKelompokProps> = ({
       }`}
     >
       <div className="flex justify-between">
-        <div className="flex items-center gap-3">
-          <h1 className=" text-Primary-10 font-bold capitalize">{nama_kelompok}</h1>
-          <span className="text-Neutral-30">{tipe}</span>
+        <h1 className=" text-Primary-10 font-bold capitalize">
+          {nama_kelompok}
+        </h1>
+        {/* <span className="text-Neutral-30">{tipe}</span> */}
+        <div className="flex flex-col">
+          <div className="flex flex-col items-end gap-1 justify-center">
+            <h3 className="text-sm text-Neutral-30">Jumlah Anggota</h3>
+            <span className="font-bold text-Primary-10">6</span>
+          </div>
         </div>
-        <h3 className="text-sm text-Neutral-30 font-bold">{level}</h3>
+      </div>
+      <div className="flex justify-between">
+        <div className="flex flex-col gap-1 justify-center">
+          <h3 className="text-sm text-Neutral-30">Progam</h3>
+          <span className="font-bold text-Primary-10">Program</span>
+        </div>
+        <div className="flex flex-col items-end gap-1 justify-center">
+          <h3 className="text-sm text-Neutral-30">Jumlah Jadwal</h3>
+          <span className="font-bold text-Primary-10">3</span>
+        </div>
+        {/* <h3 className="text-sm text-Neutral-30 font-bold">{level}</h3> */}
       </div>
       <div className="w-full h-[1px] bg-Neutral-70"></div>
       <div className="flex justify-between items-center">
@@ -305,7 +320,6 @@ const CardKelompok: FC<CardKelompokProps> = ({
                         <h1 className="font-bold text-Neutral-100">
                           {item.sesi?.nama_sesi}
                         </h1>
-
                       </div>
                       <div className="flex w-full justify-between">
                         <div className="flex flex-col gap-1">

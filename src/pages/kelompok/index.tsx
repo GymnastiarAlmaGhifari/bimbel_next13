@@ -26,7 +26,6 @@ interface Kelompok {
 }
 
 const Kelompok: FC<Kelompok> = () => {
-
   const [inputValue, setInputValue] = useState<string>("");
   const [debouncedValue, setDebouncedValue] = useState<string>("");
 
@@ -50,7 +49,9 @@ const Kelompok: FC<Kelompok> = () => {
 
   if (debouncedValue) {
     filteredKelompok = kelompoks?.filter((kelompok) =>
-      kelompok.nama_kelompok.toLowerCase().includes(debouncedValue.toLowerCase())
+      kelompok.nama_kelompok
+        .toLowerCase()
+        .includes(debouncedValue.toLowerCase())
     );
   }
 
@@ -95,6 +96,7 @@ const Kelompok: FC<Kelompok> = () => {
         <div className="h-full p-5 bg-Neutral-95 overflow-auto">
           <div className="flex flex-col h-full bg-Neutral-100 py-4 gap-4 rounded-lg overflow-auto">
             <HeadTable
+              filterKelompok
               label="Kelompok"
               onClick={() => {
                 setShowCreate(true);
@@ -191,7 +193,6 @@ const Kelompok: FC<Kelompok> = () => {
             }}
             data={selectedAnggota}
             kelompokId={selectedAnggota.id}
-
           />
         </ModalDetail>
       )}
@@ -209,7 +210,6 @@ const Kelompok: FC<Kelompok> = () => {
             }}
             data={selectedJadwal}
             kelompokId={selectedJadwal.id}
-
           />
         </ModalDetail>
       )}
