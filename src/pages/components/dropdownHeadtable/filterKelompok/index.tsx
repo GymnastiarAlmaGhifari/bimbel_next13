@@ -10,26 +10,11 @@ interface FilterKelompokProps {
 }
 
 const schema = yup.object().shape({
-  kelompokCheck: yup
-    .mixed()
-    .nullable()
-    .transform((value, originalValue) => {
-      if (originalValue === "") {
-        return null; // Mengubah string kosong menjadi nilai null
-      }
-      return originalValue;
-    }),
-  userCheck: yup
-    .mixed()
-    .nullable()
-    .transform((value, originalValue) => {
-      if (originalValue === "") {
-        return null; // Mengubah string kosong menjadi nilai null
-      }
-      return originalValue;
-    }),
   tipe: yup.string(),
 });
+
+type FormData = yup.InferType<typeof schema>;
+
 const FilterKelompok: FC<FilterKelompokProps> = ({}) => {
   const componentRef = useRef<HTMLUListElement>(null);
   const [isListOpenTipe, setIsListOpenTipe] = useState(false);
@@ -75,49 +60,60 @@ const FilterKelompok: FC<FilterKelompokProps> = ({}) => {
   };
 
   const selectTipe = (tipe: string) => {
-    // setValue("tipe", tipe);
+    setValue("tipe", tipe);
     setIsListOpenTipe(false);
   };
+
   const getTipeLabel = (value: string) => {
     const option = tipeOptions.find((option) => option.value === value);
     return option ? option.label : "";
   };
 
+  // buatkan useEffect untuk default value filterkelompok dengan nilai Kelompok
+  useEffect(() => {
+    setValue("tipe", "KELOMPOK");
+  }, [setValue]);
+
   return (
     <div className="relative flex flex-col gap-2 w-40">
-      <button
-        type="button"
-        className={` w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${
-          isListOpenTipe
-            ? "border-[2px] border-Primary-50 bg-Primary-95"
-            : "bg-Neutral-95"
-        }`}
-        onClick={toggleListTipe}
-      >
-        {/* {getTipeLabel(watch("tipe")) || "Pilih Tipe"} */}
-        {isListOpenTipe ? <IoIosArrowUp /> : <IoIosArrowDown />}
-      </button>
-      {isListOpenTipe && (
-        <ul
-          className="absolute w-full top-[44px] z-10 bg-Neutral-100 border-[2px] border-Primary-50 rounded-xl py-2 px-2 outline-none appearance-none flex flex-col gap-1"
-          ref={componentRef}
+      <div className="relative flex flex-col gap-2">
+        <button
+          type="button"
+          className={` w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${
+            isListOpenTipe
+              ? "border-[2px] border-Primary-50 bg-Primary-95"
+              : "bg-Neutral-95"
+          }`}
+          onClick={toggleListTipe}
         >
-          {tipeOptions.map((option) => (
-            <li key={option.value}>
-              <button
-                type="button"
-                className={`w-full text-left px-2 py-1 rounded-full${
-                  watch("values") === option.value
-                    ? "text-Primary-90 bg-Primary-20"
-                    : "text-Primary-20 hover:bg-Primary-95"
-                }`}
-                onClick={() => selectTipe(option.value)}
-              >
-                {option.label}
-              </button>
-            </li>
-          ))}
-        </ul>
+          {getTipeLabel(watch("tipe") ?? "") || "...loading"}
+          {isListOpenTipe ? <IoIosArrowUp /> : <IoIosArrowDown />}
+        </button>
+        {isListOpenTipe && (
+          <ul
+            className="absolute w-full top-[44px] z-10 bg-Neutral-100 border-[2px] border-Primary-50 rounded-xl py-2 px-2 outline-none appearance-none flex flex-col gap-1"
+            ref={componentRef}
+          >
+            {tipeOptions.map((option) => (
+              <li key={option.value}>
+                <button
+                  type="button"
+                  className={`w-full text-left px-2 py-1 rounded-full ${
+                    watch("tipe") === option.value
+                      ? "text-Primary-90 bg-Primary-20"
+                      : "text-Primary-20 hover:bg-Primary-95"
+                  }`}
+                  onClick={() => selectTipe(option.value)}
+                >
+                  {option.label}
+                </button>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+      {errors.tipe && (
+        <span className="text-red-500">{errors.tipe.message}</span>
       )}
     </div>
   );
