@@ -9,6 +9,7 @@ import { HiOutlineCheck } from "react-icons/hi";
 interface ModalDetailProps {
   children: React.ReactNode;
   onClose: () => void;
+  // titleModal: string atau buatmenjadi agim ${titleModal}
   titleModal: string;
   wAuto?: boolean;
 }
@@ -65,7 +66,7 @@ export default Modal;
 
 export const ModalHapus: FC<ModalHapusProps> = ({ children, onClose }) => {
   return (
-    <Dialog open={true} onClose={() => {}} className="relative z-50">
+    <Dialog open={true} onClose={() => { }} className="relative z-50">
       <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
       <div className="fixed inset-0 flex items-center justify-center">
         <Dialog.Panel className="h-auto bg-Neutral-100 py-4 px-6 rounded-xl flex flex-col gap-4 w-1/4">
@@ -83,13 +84,12 @@ export const ModalDetail: FC<ModalDetailProps> = ({
   titleModal,
 }) => {
   return (
-    <Dialog open={true} onClose={() => {}} className="relative z-50">
+    <Dialog open={true} onClose={() => { }} className="relative z-50">
       <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
       <div className="fixed inset-0 flex items-center justify-center">
         <Dialog.Panel
-          className={`h-auto bg-Neutral-100 py-4 px-6 rounded-xl flex flex-col gap-4 ${
-            wAuto ? "w-max" : "w-1/2"
-          }`}
+          className={`h-auto bg-Neutral-100 py-4 px-6 rounded-xl flex flex-col gap-4 ${wAuto ? "w-max" : "w-1/2"
+            }`}
         >
           <div className="flex flex-col">
             <div className="flex justify-between">
