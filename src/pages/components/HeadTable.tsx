@@ -6,12 +6,14 @@ import { IoIosAdd } from "react-icons/io";
 import { FC } from "react";
 import riwayat from "../riwayat";
 import Link from "next/link";
+import FilterKelompok from "./dropdownHeadtable/filterKelompok";
 
 interface HeadTableProps {
   role?: boolean;
   bulanPembayaran?: boolean;
   tahunPembayaran?: boolean;
   riwayat?: boolean;
+  filterKelompok?: boolean;
   withfilter?: boolean;
   onClick?: () => void;
   noLabel?: boolean;
@@ -28,6 +30,7 @@ const HeadTable: React.FC<HeadTableProps> = ({
   onClick,
   noAdd,
   label,
+  filterKelompok,
   bulanPembayaran,
   tahunPembayaran,
   onChange,
@@ -61,6 +64,7 @@ const HeadTable: React.FC<HeadTableProps> = ({
           ) : (
             ""
           )}
+          {filterKelompok ? <FilterKelompok /> : ""}
           {bulanPembayaran ? (
             <span className="inline-block flex items-center text-center py-2 px-4 bg-Primary-40 rounded-full text-Neutral-100 font-semibold">
               Bulan
