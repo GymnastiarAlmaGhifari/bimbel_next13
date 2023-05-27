@@ -1,6 +1,7 @@
 import React, { FC } from "react";
 import Button from "../buttons/Button";
 import { MdModeEdit } from "react-icons/md";
+import Image from "next/image";
 
 type CardProgramProps = {
   nama_program: string;
@@ -10,6 +11,7 @@ type CardProgramProps = {
   tipe: string;
   kelas: string;
   harga: number;
+  gambar?: string;
   onEdit: () => void;
 };
 
@@ -20,9 +22,18 @@ const CardProgram: FC<CardProgramProps> = ({
   deskripsi,
   tipe,
   harga,
+  gambar,
   mapel_ajar,
   onEdit,
 }) => {
+
+  const formattedHarga = harga
+    ? harga.toLocaleString("id-ID", {
+      style: "currency",
+      currency: "IDR",
+    }).replace(",00", "")
+    : "";
+
   return (
     <div className="flex flex-col bg-Neutral-100 shadow-[0px_2px_8px_-4px_rgba(0,0,0,.3)] rounded-lg py-5 px-4 gap-3">
       <div className="flex justify-between">
@@ -60,7 +71,18 @@ const CardProgram: FC<CardProgramProps> = ({
       </div>
       <div className="flex flex-col gap-1">
         <h3 className="text-sm text-Neutral-30">harga</h3>
-        <span className="font-bold text-Primary-10">{harga}</span>
+        <span className="font-bold text-Primary-10">{formattedHarga}</span>
+      </div>
+      <div className="flex flex-col gap-1">
+        <h3 className="text-sm text-Neutral-30">gambar</h3>
+        <Image
+          src={"/api/user/img?img=" + gambar ? "/api/user/img?img=" + gambar : "/upload/img/user/default.png"}
+          alt="Megachan"
+          width={100}
+          height={100}
+          className="rounded-full w-full h-full object-cover"
+          loader={({ src }) => `${src}?cache-control=no-store`}
+        />
       </div>
       <div className="w-full h-[1px] bg-Neutral-70"></div>
       <div className="flex justify-end">

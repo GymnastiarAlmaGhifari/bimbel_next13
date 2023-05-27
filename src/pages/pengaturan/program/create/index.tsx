@@ -11,7 +11,8 @@ import * as yup from "yup";
 import Button from "@/pages/components/buttons/Button";
 import useSWR from "swr";
 import fetcher from "@/libs/fetcher";
-import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
+import { IoIosArrowDown, IoIosArrowUp, IoMdCloudUpload } from "react-icons/io";
+import Image from "next/image";
 
 interface RuangCreateProps {
   onClose: () => void;
@@ -27,16 +28,18 @@ const schema = yup.object().shape({
   tipe: yup.string().required("Pilih Tipe Terlebih Dahulu"),
   kelas_id: yup.string().required("Pilih Kelas Terlebih Dahulu"),
   Deskripsi: yup.string(),
-  harga: yup.number().required("Harga tidak boleh kosong"),
+  harga: yup.string().required('Amount is required'),
+  image: yup.mixed().required(),
 });
 
-type FormData = yup.InferType<typeof schema>;
-
+type FormData = yup.InferType<typeof schema> & {
+  image: FileList;
+};
 
 
 const CreateProgram: FC<RuangCreateProps> = ({ onClose, onSucsess }) => {
   const { data: kelas, error: errorprogram } = useSWR<any[]>("/api/kelas", fetcher);
-
+  const [previewImage, setPreviewImage] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -51,10 +54,15 @@ const CreateProgram: FC<RuangCreateProps> = ({ onClose, onSucsess }) => {
   });
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
-    const { nama_program, level, tipe, kelas_id, Deskripsi, harga } = data;
+    const { nama_program, level, tipe, kelas_id, Deskripsi, harga, image } = data;
 
     setIsLoading(true); // Set loading state to true
     setError(null);
+
+    const rawHarga = parseInt(harga.replace(/\D/g, ""))
+
+    const formData = new FormData();
+    formData.append("image", data.image[0]);
 
     try {
       await axios.post(`/api/program`, {
@@ -63,7 +71,8 @@ const CreateProgram: FC<RuangCreateProps> = ({ onClose, onSucsess }) => {
         level,
         kelas_id,
         Deskripsi,
-        harga,
+        harga: rawHarga,
+        img: image
       });
 
       mutate("/api/program");
@@ -178,6 +187,25 @@ const CreateProgram: FC<RuangCreateProps> = ({ onClose, onSucsess }) => {
     return option ? option.label : "";
   };
 
+  const formatRupiah = (e: any) => {
+    const rawValue = e.target.value.replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    const formattedValue = "Rp " + rawValue;
+    setValue("harga", formattedValue);
+  };
+
+  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreviewImage(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    } else {
+      setPreviewImage(null);
+    }
+  };
+
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5" >
       {/* Error message */}
@@ -190,6 +218,59 @@ const CreateProgram: FC<RuangCreateProps> = ({ onClose, onSucsess }) => {
         errors={errors}
       />
       {errors.nama_program && <p className="text-red-500">{errors.nama_program.message}</p>}
+
+      <div className="flex flex-col gap-6 w-[400px]">
+        {previewImage && (
+          <div className="">
+            <Image
+              src={previewImage}
+              alt="Gambar"
+              width={200}
+              height={200}
+              loader={({ src }) => `${src}?cache-control=no-store`}
+            />
+          </div>
+        )}
+        <div>
+          <label
+            htmlFor="image"
+            className="bg-Primary-40 text-white px-4 py-2 rounded cursor-pointer flex items-center justify-center space-x-2 rounded-full bg-opacity-90 hover:bg-opacity-100"
+          >
+            <IoMdCloudUpload size={24} />
+            <span className="font-semibold">Choose File</span>
+          </label>
+          <input
+            type="file"
+            id="image"
+            {...register("image", {
+              required: "Gambar wajib diunggah",
+              validate: {
+                fileSize: (value) => {
+                  const fileSize = value[0]?.size || 0;
+                  if (fileSize > 2 * 1024 * 1024) {
+                    return "Ukuran file maksimum adalah 2MB";
+                  }
+                  return true;
+                },
+                fileType: (value) => {
+                  const fileType = value[0]?.type || "";
+                  if (!["image/jpeg", "image/png"].includes(fileType)) {
+                    return "Hanya mendukung format JPEG atau PNG";
+                  }
+                  return true;
+                },
+              },
+            })}
+            accept="image/jpeg, image/png, image/jpg"
+            className="absolute w-0 h-0"
+            onChange={handleImageChange}
+          />
+          {/* <Image  src={data?.image} alt="Gambar" width={200} height={200} /> */}
+          {errors?.image && (
+            <p className="text-red-500">{errors.image?.message}</p>
+          )}
+        </div>
+      </div>
 
       <div className="flex flex-col gap-2">
         <label htmlFor="" className="text-sm text-Primary-10">
@@ -331,11 +412,12 @@ const CreateProgram: FC<RuangCreateProps> = ({ onClose, onSucsess }) => {
       {/* harga */}
       <div className="flex flex-col gap-2">
         <Input
-          type="number"
+          type="text"
           id="harga"
           label="Harga"
           register={{ ...register("harga") }}
           errors={errors}
+          onChange={formatRupiah}
         />
       </div>
       {

@@ -57,7 +57,7 @@ const CardAnggotaJadwal: FC<CardAnggotaJadwalProps> = (
           <input
             type={type}
             id={id}
-            // className="appearance-none"
+            className="appearance-none w-0 h-0 rounded-full border-2 border-Neutral-100"
             value={value}
             {...register}
             onChange={onChange}
