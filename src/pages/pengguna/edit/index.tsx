@@ -360,7 +360,6 @@ const UserEdit: FC<UserEditProps> = ({ userId, onClose, onSucsess, data }) => {
         {error && <p className="text-red-500">{error}</p>}
 
         <div className="flex flex-row justify-end gap-4">
-          0
           <Button
             center
             type="submit"
