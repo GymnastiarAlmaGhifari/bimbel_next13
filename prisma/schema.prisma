@@ -129,6 +129,7 @@ model program {
   tipe Tipe
   Deskripsi String?
   harga Int?
+  img String?
   kelas kelas @relation(fields: [kelas_id], references: [id])
   kelas_id String
   createdAt DateTime @default(now())
@@ -262,6 +263,7 @@ enum TipePembayaran {
 enum StatusPembayaran {
   BELUM_DIBAYAR
   SUDAH_DIBAYAR
+  PENDING
 }
 
 enum Level {
