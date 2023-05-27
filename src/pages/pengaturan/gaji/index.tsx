@@ -9,11 +9,14 @@ import React, { FC, useEffect, useState } from "react";
 import { IoIosAdd } from "react-icons/io";
 import useSWR from "swr";
 import fetcher from "@/libs/fetcher";
-import { ModalDetail, ModalHapus, ModalSucces } from "@/pages/components/modal/Modal";
+import {
+  ModalDetail,
+  ModalHapus,
+  ModalSucces,
+} from "@/pages/components/modal/Modal";
 import CreateGaji from "./create";
 import GajiEdit from "./edit";
 import RekeningEdit from "./editRekening";
-
 
 type GajiProps = {
   id?: string;
@@ -28,10 +31,17 @@ interface RekeningProps {
 }
 
 const Gaji: FC<GajiProps> = () => {
+  const { data: gaji, error: errorgaji } = useSWR<GajiProps[]>(
+    "/api/setgaji",
+    fetcher,
+    {}
+  );
 
-  const { data: gaji, error: errorgaji } = useSWR<GajiProps[]>("/api/setgaji", fetcher, {});
-
-  const { data: rekening, error: errorrekening } = useSWR<RekeningProps[]>("/api/rekening", fetcher, {});
+  const { data: rekening, error: errorrekening } = useSWR<RekeningProps[]>(
+    "/api/rekening",
+    fetcher,
+    {}
+  );
 
   const [showDelete, setShowDelete] = useState<GajiProps | null>(null);
 
@@ -41,7 +51,8 @@ const Gaji: FC<GajiProps> = () => {
 
   const [selectedGaji, setSelectedGaji] = useState<GajiProps | null>(null);
 
-  const [selectedRekening, setSelectedRekening] = useState<RekeningProps | null>(null);
+  const [selectedRekening, setSelectedRekening] =
+    useState<RekeningProps | null>(null);
 
   useEffect(() => {
     const timeoutId = setTimeout(() => {
@@ -66,8 +77,8 @@ const Gaji: FC<GajiProps> = () => {
         <div className="h-full p-5 bg-Neutral-95 overflow-auto">
           <div className="flex flex-col h-full p-4 gap-4 bg-Neutral-100 rounded-lg overflow-auto">
             <NavbarPengaturan />
-            <div className="flex flex-col rounded-bl-lg rounded-br-lg p-4 gap-4 overflow-auto">
-              <div className="flex gap-5 overflow-auto">
+            <div className="flex flex-col h-full rounded-bl-lg rounded-br-lg p-4 gap-4 overflow-auto">
+              <div className="flex gap-5 overflow-auto h-full">
                 <div className="flex flex-col gap-4 w-full overflow-auto">
                   <div className="flex justify-between w-full items-center">
                     <h1 className="text-xl font-semibold text-Primary-10">
@@ -80,13 +91,11 @@ const Gaji: FC<GajiProps> = () => {
                       bgColor="bg-Tertiary-50"
                       label="Tambah"
                       icon={IoIosAdd}
-                      onClick={
-                        () => setShowCreate(true)
-                      }
+                      onClick={() => setShowCreate(true)}
                       outlined
                     />
                   </div>
-                  <div className="flex flex-col gap-4 overflow-y-auto scrollbar-thin scrollbar-track-Neutral-100 scrollbar-thumb-Primary-40 scrollbar-rounded-lg pr-2">
+                  <div className="flex flex-col gap-4 h-full overflow-y-auto scrollbar-thin scrollbar-track-Neutral-100 scrollbar-thumb-Primary-40 scrollbar-rounded-lg pr-2">
                     {gaji ? (
                       <>
                         {gaji.length === 0 ? (
@@ -101,9 +110,7 @@ const Gaji: FC<GajiProps> = () => {
                               key={gaji.id}
                               gaji={gaji.jumlah_gaji}
                               role={gaji.role}
-                              onEdit={
-                                () => setSelectedGaji(gaji)
-                              }
+                              onEdit={() => setSelectedGaji(gaji)}
                             />
                           ))
                         )}
@@ -111,63 +118,59 @@ const Gaji: FC<GajiProps> = () => {
                     ) : (
                       <p>Loading...</p>
                     )}
-                    <div className="h-full w-[1px] bg-Neutral-90"></div>
-                    <div className="flex flex-col w-[500px] gap-4">
-                      <div className="flex justify-between w-full">
-                        <h1 className="text-xl font-semibold text-Primary-10">
-                          Rekening
-                        </h1>
-                      </div>
-                      {rekening ? (
-                        <>
-                          {rekening.length === 0 ? (
-                            <div className="flex flex-col items-center justify-center">
-                              <h1 className="text-2xl font-bold text-gray-500">
-                                Tidak Ada List Rekening
-                              </h1>
-                            </div>
-                          ) : (
-                            rekening.map((rekening) => (
-                              <CardRekening
-                                key={rekening.id}
-                                nama_rek={rekening.nama_rekening}
-                                no_rek={rekening.nomor_rekening}
-                                onClick={
-                                  () => setSelectedRekening(rekening)
-                                }
-                              />
-                            ))
-                          )}
-                        </>
-                      ) : (
-                        <p>Loading...</p>
-                      )}
-                    </div>
                   </div>
+                </div>
+                <div className="h-full w-[1px] bg-Neutral-90"></div>
+                <div className="flex flex-col w-[500px] gap-4">
+                  <div className="flex justify-between w-full">
+                    <h1 className="text-xl font-semibold text-Primary-10">
+                      Rekening
+                    </h1>
+                  </div>
+                  {rekening ? (
+                    <>
+                      {rekening.length === 0 ? (
+                        <div className="flex flex-col items-center justify-center">
+                          <h1 className="text-2xl font-bold text-gray-500">
+                            Tidak Ada List Rekening
+                          </h1>
+                        </div>
+                      ) : (
+                        rekening.map((rekening) => (
+                          <CardRekening
+                            key={rekening.id}
+                            nama_rek={rekening.nama_rekening}
+                            no_rek={rekening.nomor_rekening}
+                            onClick={() => setSelectedRekening(rekening)}
+                          />
+                        ))
+                      )}
+                    </>
+                  ) : (
+                    <p>Loading...</p>
+                  )}
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-      {
-        showCreate && (
-          <ModalDetail
-            titleModal="Tambah Gaji"
+      {showCreate && (
+        <ModalDetail
+          titleModal="Tambah Gaji"
+          onClose={() => setShowCreate(false)}
+        >
+          <CreateGaji
             onClose={() => setShowCreate(false)}
-          >
-            <CreateGaji
-              onClose={() => setShowCreate(false)}
-              onSucsess={() => setShowSuccess(true)}
-
-            />
-          </ModalDetail>
-        )
-      }
+            onSucsess={() => setShowSuccess(true)}
+          />
+        </ModalDetail>
+      )}
       {showSuccess && (
-        <ModalSucces label="POOP" onClose={() => setShowSuccess(false)}>
-
-        </ModalSucces>
+        <ModalSucces
+          label="POOP"
+          onClose={() => setShowSuccess(false)}
+        ></ModalSucces>
       )}
       {selectedGaji && (
         <ModalDetail
@@ -178,9 +181,7 @@ const Gaji: FC<GajiProps> = () => {
             gajiId={selectedGaji.id}
             data={selectedGaji}
             onSucsess={() => setShowSuccess(true)}
-            onClose={
-              () => setSelectedGaji(null)
-            }
+            onClose={() => setSelectedGaji(null)}
           />
         </ModalDetail>
       )}
@@ -193,9 +194,7 @@ const Gaji: FC<GajiProps> = () => {
             rekeningId={selectedRekening.id}
             data={selectedRekening}
             onSucsess={() => setShowSuccess(true)}
-            onClose={
-              () => setSelectedRekening(null)
-            }
+            onClose={() => setSelectedRekening(null)}
           />
         </ModalDetail>
       )}

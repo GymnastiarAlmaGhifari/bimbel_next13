@@ -12,13 +12,14 @@ import { mutate } from "swr";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { IoIosArrowDown, IoIosArrowUp, IoIosAdd } from "react-icons/io";
 import { ModalDetail, ModalSucces } from "@/pages/components/modal/Modal";
-import Senin from "./modal/senin";
+import Senin from "./modal/senin/edit/senin";
 import Selasa from "./modal/selasa";
 import Rabu from "./modal/rabu";
 import Kamis from "./modal/kamis";
 import Jumat from "./modal/jumat";
 import Sabtu from "./modal/sabtu";
 import Minggu from "./modal/minggu";
+import CreateSenin from "./modal/senin/create";
 
 interface Jadwal {
   id: string;
@@ -156,8 +157,6 @@ const Jadwal: FC<Jadwal> = () => {
   useEffect(() => {
     setSelectedRuangIdPass(selectedRuangId);
   }, [selectedRuangId]);
-
-
 
   const {
     data: sesi,
@@ -307,10 +306,11 @@ const Jadwal: FC<Jadwal> = () => {
                 <div className="flex flex-col w-52 relative">
                   <button
                     type="button"
-                    className={`w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${listOpenRuang
-                      ? "border-[2px] border-Primary-50 bg-Primary-95"
-                      : "bg-Neutral-95"
-                      }`}
+                    className={`w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${
+                      listOpenRuang
+                        ? "border-[2px] border-Primary-50 bg-Primary-95"
+                        : "bg-Neutral-95"
+                    }`}
                     onClick={toggleListRuang}
                   >
                     {
@@ -334,10 +334,11 @@ const Jadwal: FC<Jadwal> = () => {
                         ruang.map((ruang) => (
                           <li key={ruang.id}>
                             <button
-                              className={`w-full text-left px-4 py-1 rounded-full ${watch("ruang_id") === ruang.id
-                                ? "text-Primary-90 bg-Primary-20"
-                                : "text-Primary-20 hover:bg-Primary-95"
-                                }`}
+                              className={`w-full text-left px-4 py-1 rounded-full ${
+                                watch("ruang_id") === ruang.id
+                                  ? "text-Primary-90 bg-Primary-20"
+                                  : "text-Primary-20 hover:bg-Primary-95"
+                              }`}
                               onClick={() => {
                                 selectRuang(ruang.id);
                                 console.log(ruang.id);
@@ -484,7 +485,7 @@ const Jadwal: FC<Jadwal> = () => {
                       </div>
                     )}
                     {hari_kamis ? (
-                      <div className="py-2 px-4 bg-Tertiary-50 rounded-lg h-full w-full flex items-center shadow-[0px_0px_10px_5px_rgba(149,146,146,.25)] relative">
+                      <div className="py-2 px-4 bg-Tertiary-50 text-Tertiary-90 rounded-lg h-full w-full flex items-center shadow-[0px_0px_10px_5px_rgba(149,146,146,.25)] relative">
                         <ItemJadwal
                           key={hari_kamis.id}
                           hari="sadawd"
@@ -671,12 +672,19 @@ const Jadwal: FC<Jadwal> = () => {
       )}
       {seninModalCreate ? (
         <ModalDetail
-          titleModal="Detail Jadwal"
+          wAuto
+          titleModal="Tambah Jadwal (Hari) (Sesi)"
           onClose={() => {
             setSeninModalCreate(false);
           }}
         >
-          <div className="">iwajdiwajida</div>
+          <CreateSenin
+            data={""}
+            idRuang=""
+            jadwalId=""
+            onClose={() => setSeninModalCreate(false)}
+            onSucsess={() => {}}
+          />
         </ModalDetail>
       ) : (
         <div></div>
