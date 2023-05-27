@@ -149,7 +149,6 @@ const UserEdit: FC<UserEditProps> = ({ userId, onClose, onSucsess, data }) => {
         await axios.post("/api/user/userimg", formData, {
           headers: {
             "Content-Type": "multipart/form-data",
-            // from : formDa ta . image
             from: userId,
           },
         });
