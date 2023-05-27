@@ -43,7 +43,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             res.status(200).json({
                 status: 200,
                 message: "Berhasil reset password",
-                data: {password},
+                data: {},
             });
         } catch (error) {
             console.error(error);

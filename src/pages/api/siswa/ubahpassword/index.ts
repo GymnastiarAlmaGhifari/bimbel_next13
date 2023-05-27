@@ -27,7 +27,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 const response = {
                     status: 401,
                     message: "Password tidak boleh sama dengan sebelumnya",
-                    data: {"input password": password},
+                    data: {},
                 };
                 return res.status(401).json(response);
             }
@@ -44,7 +44,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             res.status(200).json({
                 status: 200,
                 message: "Berhasil ubah password",
-                data: {password},
+                data: {},
             });
 
         } catch (error) {
