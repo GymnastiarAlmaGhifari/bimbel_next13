@@ -17,10 +17,12 @@ interface CardModulProps {
   mapel: string;
   onClick?: () => void;
   goPdf?: () => void;
+  onEdit?: () => void;
 }
 
 const CardModul: FC<CardModulProps> = ({
   onClick,
+  onEdit,
   kelompok,
   nama_module,
   mapel,
@@ -110,7 +112,7 @@ const CardModul: FC<CardModulProps> = ({
           label="Edit Modul"
           textColor="text-Tertiary-50"
           icon={MdModeEdit}
-        // onClick={onClick}
+          onClick={onEdit}
         />
       </div>
     </div>

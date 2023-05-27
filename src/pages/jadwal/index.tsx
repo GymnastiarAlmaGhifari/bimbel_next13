@@ -149,6 +149,16 @@ const Jadwal: FC<Jadwal> = () => {
     setSelectedRuangIdPass(ruang_id);
   };
 
+  // useEffect(() => {
+  //   setSelectedRuangIdPass(ruang_id);
+  // }, [ruang_id]);
+
+  useEffect(() => {
+    setSelectedRuangIdPass(selectedRuangId);
+  }, [selectedRuangId]);
+
+
+
   const {
     data: sesi,
     error: errorsesi,
@@ -281,6 +291,8 @@ const Jadwal: FC<Jadwal> = () => {
 
   // state simpan id ruang dengan variable berbeda
   const [selectedRuangIdPass, setSelectedRuangIdPass] = useState("");
+  // const nama ruang selected
+  const [selectedRuang, setSelectedRuang] = useState("");
 
   return (
     <div className="flex flex-row h-screen font-mulish">
@@ -295,11 +307,10 @@ const Jadwal: FC<Jadwal> = () => {
                 <div className="flex flex-col w-52 relative">
                   <button
                     type="button"
-                    className={`w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${
-                      listOpenRuang
-                        ? "border-[2px] border-Primary-50 bg-Primary-95"
-                        : "bg-Neutral-95"
-                    }`}
+                    className={`w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${listOpenRuang
+                      ? "border-[2px] border-Primary-50 bg-Primary-95"
+                      : "bg-Neutral-95"
+                      }`}
                     onClick={toggleListRuang}
                   >
                     {
@@ -323,11 +334,10 @@ const Jadwal: FC<Jadwal> = () => {
                         ruang.map((ruang) => (
                           <li key={ruang.id}>
                             <button
-                              className={`w-full text-left px-4 py-1 rounded-full ${
-                                watch("ruang_id") === ruang.id
-                                  ? "text-Primary-90 bg-Primary-20"
-                                  : "text-Primary-20 hover:bg-Primary-95"
-                              }`}
+                              className={`w-full text-left px-4 py-1 rounded-full ${watch("ruang_id") === ruang.id
+                                ? "text-Primary-90 bg-Primary-20"
+                                : "text-Primary-20 hover:bg-Primary-95"
+                                }`}
                               onClick={() => {
                                 selectRuang(ruang.id);
                                 console.log(ruang.id);

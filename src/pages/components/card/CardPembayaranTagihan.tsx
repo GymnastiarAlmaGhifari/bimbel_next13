@@ -6,19 +6,20 @@ import { MdModeEdit } from "react-icons/md";
 import Kelas from "@/pages/pengaturan/kelas";
 
 interface CardPembayaranTagihanProps {
-  nama_siswa: string;
-  jumlah_tagihan: string;
-  tanggal_tagihan: string;
-  kelas: string;
-  tanggal_jatuh_tempo: string;
-  tanggal_bayar: string;
-  tanggal_approve: string;
-  bulan: string;
-  tahun: string;
-  status: string;
-  tipe: string;
+  nama_siswa?: string;
+  nama_user?: string;
+  nama_rekening?: string;
+  nomor_rekening?: string;
+  jumlah_tagihan?: number;
+  tanggal_tagihan?: string;
+  tanggal_jatuh_tempo?: string;
+  tanggal_bayar?: string;
+  tanggal_approve?: string;
+  bulan?: string;
+  tahun?: number;
+  status?: string;
+  nota?: string;
   gambar?: any;
-  nota: string;
   onClick?: () => void;
   onAccept?: () => void;
 }
@@ -34,6 +35,9 @@ const CardPembayaranTagihan: FC<CardPembayaranTagihanProps> = ({
   bulan,
   status,
   nota,
+  nama_rekening,
+  nama_user,
+  nomor_rekening,
   tahun,
   gambar,
   onAccept,

@@ -25,7 +25,24 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           nama_kelompok: "asc",
         },
       });
-      res.status(200).json(result);
+
+      const resultformat = await Promise.all(
+        result.map(async (result: any) => ({
+          ...result,
+          jumlah_siswa: await prisma.siswa.count({
+            where: {
+              kelompok_id: result.id,
+            },
+          }),
+          jumlah_jadwal: await prisma.jadwal_detail.count({
+            where: {
+              kelompok_id: result.id,
+            },
+          }),
+        }))
+      );
+
+      res.status(200).json(resultformat);
     } catch (error) {
       res.status(400).json(error);
     }

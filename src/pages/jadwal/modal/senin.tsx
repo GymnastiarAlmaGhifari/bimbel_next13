@@ -236,6 +236,7 @@ const Senin: FC<Senin> = ({ jadwalId, data, onClose, onSucsess, idRuang }) => {
     };
 
     useEffect(() => {
+        setValue("ruang", idRuang);
         if (data) {
             setSelectedOption(data.kelompok);
             setValue("kelompokCheck", data.kelompok?.id);
@@ -243,7 +244,7 @@ const Senin: FC<Senin> = ({ jadwalId, data, onClose, onSucsess, idRuang }) => {
             setValue("userCheck", data.user?.id);
             setValue("sesi", data.sesi?.id);
             setValue("mapel", data.mapel?.id);
-            setValue("ruang", idRuang);
+
             // set handleCheckChange untuk filter mapel
             if (mapel?.length && mapel[0]?.kelas?.id) {
                 setCheckValue(mapel[0].kelas.id);
@@ -292,7 +293,9 @@ const Senin: FC<Senin> = ({ jadwalId, data, onClose, onSucsess, idRuang }) => {
 
             mutate(`/api/jadwaldetail/${jadwalId}`);
             mutate(`/api/jadwal/hari?hari=SENIN&ruang_id=${idRuang}`, undefined);
-            mutate(`/api/jadwal/hari?hari=SELASA&ruang_id=${ruang}`, undefined);
+            mutate(`/api/jadwal/hari?hari=SENIN&ruang_id=${ruang}`, undefined);
+            mutate(`/api/jadwal/hari?hari=SENIN&ruang_id=${idRuang}`);
+            mutate(`/api/jadwal/hari?hari=SENIN&ruang_id=${ruang}`);
 
             onSucsess();
             onClose();
@@ -471,12 +474,12 @@ const Senin: FC<Senin> = ({ jadwalId, data, onClose, onSucsess, idRuang }) => {
                                             : "bg-Neutral-95"
                                             }`}
                                         onClick={toggleListRuang}
+                                        defaultValue={idRuang}
                                     >
                                         {/* buat label */}
                                         {watch("ruang") ? (
-                                            ruang?.find(
-                                                (ruangItem) => ruangItem.id === watch("ruang")
-                                            )?.nama_ruang
+                                            ruang?.find((ruangItem) => ruangItem.id === watch("ruang"))
+                                                ?.nama_ruang
                                         ) : (
                                             <span className="text-Neutral-300">Pilih Ruang</span>
                                         )}
