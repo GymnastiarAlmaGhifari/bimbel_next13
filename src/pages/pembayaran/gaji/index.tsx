@@ -2,7 +2,8 @@ import HeadTable from "@/pages/components/HeadTable";
 import Navbar from "@/pages/components/Navbar";
 import NavbarPembayaran from "@/pages/components/NavbarPembayaran";
 import Sidebar from "@/pages/components/Sidebar";
-import CardPembayaran from "@/pages/components/card/CardPembayaran";
+import CardPembayaranGaji from "@/pages/components/card/CardPembayaranGaji";
+import CardPembayaran from "@/pages/components/card/CardPembayaranTagihan";
 import React from "react";
 
 const Pembayaran = () => {
@@ -17,18 +18,17 @@ const Pembayaran = () => {
             <div className="flex flex-col h-full bg-Neutral-100 py-4 gap-4 rounded-lg overflow-auto">
               <HeadTable bulanPembayaran tahunPembayaran label="Gaji" riwayat />
               <div className="flex flex-col rounded-bl-lg rounded-br-lg p-4 gap-4 overflow-y-auto scrollbar">
-                <CardPembayaran
+                <CardPembayaranGaji
+                  tipe_pembayaran="Transfer"
                   bulan="Mei"
-                  jumlah_tagihan="Rp. 1000000"
-                  kelas="3 SMP"
-                  nama_siswa="Agimul Karim"
-                  status="Belum Dibayar"
+                  jumlah_gaji="Rp. 1000000"
+                  nama_user="Agimul Karim"
+                  status="Dibayar"
                   tahun="2023"
                   tanggal_approve=""
-                  tanggal_bayar=""
-                  tanggal_jatuh_tempo="1 Juni 2023"
-                  tanggal_tagihan="1 Juni 2023"
-                  tipe="Reguler"
+                  tanggal_bayar="3 Juni 2023"
+                  tanggal_gaji="1"
+                  tipe="Admin"
                 />
               </div>
             </div>

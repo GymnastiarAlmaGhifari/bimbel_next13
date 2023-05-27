@@ -1,13 +1,36 @@
-import React, { FC, useState } from "react";
+import React, { FC, useEffect, useRef, useState } from "react";
 import { IoIosClose, IoIosNotifications } from "react-icons/io";
 import CardNotification from "./card/CardNotification";
 import Button from "./buttons/Button";
 import { MdDelete } from "react-icons/md";
 
-interface NotificationProps { }
+interface NotificationProps {
+  onClose: () => void;
+}
 
-const Notification: FC<NotificationProps> = ({ }) => {
+const Notification: FC<NotificationProps> = ({ onClose }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const componentRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    // Menangani klik di luar komponen
+    const handleOutsideClick = (event: any) => {
+      if (
+        componentRef.current &&
+        !componentRef.current.contains(event.target)
+      ) {
+        setIsOpen(false);
+      }
+    };
+
+    // Menambahkan event listener ketika komponen di-mount
+    document.addEventListener("mousedown", handleOutsideClick);
+
+    // Membersihkan event listener ketika komponen di-unmount
+    return () => {
+      document.removeEventListener("mousedown", handleOutsideClick);
+    };
+  }, [setIsOpen, componentRef]);
 
   const handleClick = () => {
     setIsOpen(!isOpen);
@@ -27,7 +50,10 @@ const Notification: FC<NotificationProps> = ({ }) => {
         </div>
       </button>
       {isOpen ? (
-        <div className="absolute right-0 mt-1 flex flex-col bg-Neutral-100 w-[550px] py-2 rounded-lg border-[1px] border-Neutral-90 gap-2">
+        <div
+          className="absolute right-0 mt-1 flex flex-col bg-Neutral-100 w-[550px] py-2 rounded-lg border-[1px] border-Neutral-90 gap-2"
+          ref={componentRef}
+        >
           <div className="flex justify-between items-center">
             <h1 className="ml-4 font-bold text-Primary-10">
               Notifiaction (10)
@@ -40,7 +66,7 @@ const Notification: FC<NotificationProps> = ({ }) => {
               icon={IoIosClose}
               noLabel
               textColor="text-Neutral-30"
-            // onClick={onClose}
+              onClick={onClose}
             />
           </div>
           <div className="flex flex-col h-96 overflow-y-auto scrollbar">
