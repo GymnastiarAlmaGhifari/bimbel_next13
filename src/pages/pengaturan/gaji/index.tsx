@@ -95,7 +95,7 @@ const Gaji: FC<GajiProps> = () => {
                       outlined
                     />
                   </div>
-                  <div className="flex flex-col gap-4 overflow-y-auto scrollbar-thin scrollbar-track-Neutral-100 scrollbar-thumb-Primary-40 scrollbar-rounded-lg pr-2">
+                  <div className="flex flex-col gap-4 h-full overflow-y-auto scrollbar-thin scrollbar-track-Neutral-100 scrollbar-thumb-Primary-40 scrollbar-rounded-lg pr-2">
                     {gaji ? (
                       <>
                         {gaji.length === 0 ? (
