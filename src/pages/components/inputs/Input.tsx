@@ -17,7 +17,7 @@ interface InputProps {
     defaultValue?: string | number;
     inputMode?: string;
     className?: string;
-    onChange?: void
+    onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
     value?: string | number;
     checked?: boolean;
 
