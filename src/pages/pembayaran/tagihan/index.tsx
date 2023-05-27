@@ -2,7 +2,8 @@ import HeadTable from "@/pages/components/HeadTable";
 import Navbar from "@/pages/components/Navbar";
 import NavbarPembayaran from "@/pages/components/NavbarPembayaran";
 import Sidebar from "@/pages/components/Sidebar";
-import CardPembayaran from "@/pages/components/card/CardPembayaran";
+import CardPembayaranTagihan from "@/pages/components/card/CardPembayaranTagihan";
+import CardPembayaran from "@/pages/components/card/CardPembayaranTagihan";
 import React from "react";
 
 const Pembayaran = () => {
@@ -22,7 +23,7 @@ const Pembayaran = () => {
                 riwayat
               />
               <div className="flex flex-col rounded-bl-lg rounded-br-lg p-4 gap-4 overflow-y-auto scrollbar">
-                <CardPembayaran
+                <CardPembayaranTagihan
                   bulan="Mei"
                   jumlah_tagihan="Rp. 1000000"
                   kelas="3 SMP"

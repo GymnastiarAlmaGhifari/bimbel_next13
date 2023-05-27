@@ -51,7 +51,6 @@ const UserEdit: FC<UserEditProps> = ({ userId, onClose, onSucsess, data }) => {
     resolver: yupResolver(schema),
   });
 
-
   const componentRef = useRef<HTMLUListElement>(null);
 
   useEffect(() => {
@@ -78,7 +77,6 @@ const UserEdit: FC<UserEditProps> = ({ userId, onClose, onSucsess, data }) => {
     { value: "SUPER", label: "SUPER ADMIN" },
     { value: "ADMIN", label: "ADMIN" },
     { value: "TENTOR", label: "TENTOR" },
-
   ];
 
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -179,7 +177,14 @@ const UserEdit: FC<UserEditProps> = ({ userId, onClose, onSucsess, data }) => {
       }
     }
   };
-  const roleLabel = data?.role === "SUPER" ? "SUPER ADMIN" : data?.role === "ADMIN" ? "ADMIN" : data?.role === "TENTOR" ? "TENTOR" : "Pilih peran";
+  const roleLabel =
+    data?.role === "SUPER"
+      ? "SUPER ADMIN"
+      : data?.role === "ADMIN"
+      ? "ADMIN"
+      : data?.role === "TENTOR"
+      ? "TENTOR"
+      : "Pilih peran";
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex gap-10">
@@ -197,7 +202,9 @@ const UserEdit: FC<UserEditProps> = ({ userId, onClose, onSucsess, data }) => {
         ) : (
           <div>
             <Image
-              src={"/api/user/img?img=" + data?.image || "/img/user/default.png"}
+              src={
+                "/api/user/img?img=" + data?.image || "/img/user/default.png"
+              }
               alt="Gambar"
               width={200}
               height={200}
@@ -255,9 +262,7 @@ const UserEdit: FC<UserEditProps> = ({ userId, onClose, onSucsess, data }) => {
             errors={errors}
             defaultValue={data?.name}
           />
-          {errors.name && (
-            <p className="text-red-500">{errors.name.message}</p>
-          )}
+          {errors.name && <p className="text-red-500">{errors.name.message}</p>}
           <Input
             id="email"
             label="Email"
@@ -275,25 +280,30 @@ const UserEdit: FC<UserEditProps> = ({ userId, onClose, onSucsess, data }) => {
             <div className="relative flex flex-col gap-2">
               <button
                 type="button"
-                className={` w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${isListOpen
-                  ? "border-[2px] border-Primary-50 bg-Primary-95"
-                  : "bg-Neutral-95"
-                  }`}
+                className={` w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${
+                  isListOpen
+                    ? "border-[2px] border-Primary-50 bg-Primary-95"
+                    : "bg-Neutral-95"
+                }`}
                 onClick={toggleList}
               >
                 {getRoleLabel(roleLabel)}
                 {isListOpen ? <IoIosArrowUp /> : <IoIosArrowDown />}
               </button>
               {isListOpen && (
-                <ul className="absolute w-full top-[44px] z-10 bg-Neutral-100 border-[2px] border-Primary-50 rounded-xl py-2 px-2 outline-none appearance-none flex flex-col gap-1" ref={componentRef}>
+                <ul
+                  className="absolute w-full top-[44px] z-10 bg-Neutral-100 border-[2px] border-Primary-50 rounded-xl py-2 px-2 outline-none appearance-none flex flex-col gap-1"
+                  ref={componentRef}
+                >
                   {roleOptions.map((option) => (
                     <li key={option.value}>
                       <button
                         type="button"
-                        className={`w-full text-left px-2 py-1 rounded-full ${watch("role") === option.value
-                          ? "text-Primary-90 bg-Primary-20"
-                          : "text-Primary-20 hover:bg-Primary-95"
-                          }`}
+                        className={`w-full text-left px-2 py-1 rounded-full ${
+                          watch("role") === option.value
+                            ? "text-Primary-90 bg-Primary-20"
+                            : "text-Primary-20 hover:bg-Primary-95"
+                        }`}
                         onClick={() => selectRole(option.value)}
                       >
                         {option.label}
@@ -350,7 +360,16 @@ const UserEdit: FC<UserEditProps> = ({ userId, onClose, onSucsess, data }) => {
             bgColor="bg-Tertiary-50"
             brColor=""
             // label ketika loading true maka labelnya jadi loading
-            label={isLoading ? "Loading..." : "Simpan"}
+            label={
+              isLoading ? (
+                <div className="flex gap-1 items-center">
+                  <div className="inline-block h-4 w-4 animate-spin rounded-full border-[3px] border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_3s_linear_infinite]"></div> 
+                  <span>Loading</span>
+                </div>
+              ) : (
+                "Simpan"
+              )
+            }
             textColor="text-Neutral-100"
             withBgColor
             disabled={isLoading} // Disable the button when loading is true

@@ -81,106 +81,104 @@ const EditSiswa: FC<UserEditProps> = ({
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5">
-      <>
-        {isLoading && <div className="loader">Loading...</div>}
+      <div className="flex flex-col gap-4 w-full">
+        <Input
+          id="nama"
+          label="Nama"
+          type="text"
+          register={{ ...register("nama") }}
+          errors={errors}
+          defaultValue={data?.nama}
+        />
+        {errors.nama && <p className="text-red-500">{errors.nama.message}</p>}
+        <Input
+          id="email"
+          label="Email"
+          type="email"
+          register={{ ...register("email") }}
+          errors={errors}
+          defaultValue={data?.email}
+        />
+        {errors.email && <p className="text-red-500">{errors.email.message}</p>}
 
-        {!isLoading && (
-          <>
-            <div className="flex flex-col gap-4 w-full">
-              <Input
-                id="nama"
-                label="Nama"
-                type="text"
-                register={{ ...register("nama") }}
-                errors={errors}
-                defaultValue={data?.nama}
-              />
-              {errors.nama && (
-                <p className="text-red-500">{errors.nama.message}</p>
-              )}
-              <Input
-                id="email"
-                label="Email"
-                type="email"
-                register={{ ...register("email") }}
-                errors={errors}
-                defaultValue={data?.email}
-              />
-              {errors.email && (
-                <p className="text-red-500">{errors.email.message}</p>
-              )}
-
-              <Input
-                id="nomor_telepon"
-                label="Nomor Telepon"
-                type="number"
-                register={{ ...register("nomor_telepon") }}
-                errors={errors}
-                defaultValue={data?.nomor_telepon}
-              />
-              {errors.nomor_telepon && (
-                <p className="text-red-500">{errors.nomor_telepon.message}</p>
-              )}
-
-
-              <Input
-                id="sekolah"
-                label="Sekolah"
-                type="text"
-                register={{ ...register("sekolah") }}
-                errors={errors}
-                defaultValue={data?.sekolah}
-              />
-              {errors.sekolah && (
-                <p className="text-red-500">{errors.sekolah.message}</p>
-              )}
-              <Input
-                id="hp_ortu"
-                label="Nomor Telepon Orang Tua"
-                type="number"
-                register={{ ...register("hp_ortu") }}
-                errors={errors}
-                defaultValue={data?.hp_ortu}
-              />
-
-              {errors.hp_ortu && (
-                <p className="text-red-500">{errors.hp_ortu.message}</p>
-              )}
-              <Input
-                id="alamat"
-                label="Alamat"
-                type="text"
-                register={{ ...register("alamat") }}
-                errors={errors}
-                defaultValue={data?.alamat}
-              />
-              {errors.alamat && (
-                <p className="text-red-500">{errors.alamat.message}</p>
-              )}
-            </div>
-            {error && <p className="text-red-500">{error}</p>}
-            <div className="flex flex-row justify-end gap-4 ">
-              <Button
-                center
-                bgColor="bg-Neutral-70"
-                brColor=""
-                label="Batal"
-                textColor="text-Neutral-30"
-                type="button"
-                onClick={onClose}
-              />
-              <Button
-                type="submit"
-                bgColor="bg-Tertiary-50"
-                brColor=""
-                label="Konfirmasi"
-                textColor="text-Neutral-100"
-                withBgColor
-              />
-            </div>
-          </>
+        <Input
+          id="nomor_telepon"
+          label="Nomor Telepon"
+          type="number"
+          register={{ ...register("nomor_telepon") }}
+          errors={errors}
+          defaultValue={data?.nomor_telepon}
+        />
+        {errors.nomor_telepon && (
+          <p className="text-red-500">{errors.nomor_telepon.message}</p>
         )}
-      </>
+
+        <Input
+          id="sekolah"
+          label="Sekolah"
+          type="text"
+          register={{ ...register("sekolah") }}
+          errors={errors}
+          defaultValue={data?.sekolah}
+        />
+        {errors.sekolah && (
+          <p className="text-red-500">{errors.sekolah.message}</p>
+        )}
+        <Input
+          id="hp_ortu"
+          label="Nomor Telepon Orang Tua"
+          type="number"
+          register={{ ...register("hp_ortu") }}
+          errors={errors}
+          defaultValue={data?.hp_ortu}
+        />
+
+        {errors.hp_ortu && (
+          <p className="text-red-500">{errors.hp_ortu.message}</p>
+        )}
+        <Input
+          id="alamat"
+          label="Alamat"
+          type="text"
+          register={{ ...register("alamat") }}
+          errors={errors}
+          defaultValue={data?.alamat}
+        />
+        {errors.alamat && (
+          <p className="text-red-500">{errors.alamat.message}</p>
+        )}
+      </div>
+      {error && <p className="text-red-500">{error}</p>}
+      <div className="flex flex-row justify-end gap-4 ">
+        <Button
+          center
+          bgColor="bg-Neutral-70"
+          brColor=""
+          label="Batal"
+          textColor="text-Neutral-30"
+          type="button"
+          onClick={onClose}
+        />
+        <Button
+          type="submit"
+          bgColor="bg-Tertiary-50"
+          brColor=""
+          // label ketika loading true maka labelnya jadi loading
+          label={
+            isLoading ? (
+              <div className="flex gap-1 items-center">
+                <div className="inline-block h-4 w-4 animate-spin rounded-full border-[3px] border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_3s_linear_infinite]"></div>
+                <span>Loading</span>
+              </div>
+            ) : (
+              "Simpan"
+            )
+          }
+          textColor="text-Neutral-100"
+          disabled={isLoading}
+          withBgColor
+        />
+      </div>
     </form>
   );
 };

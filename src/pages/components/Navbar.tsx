@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import { MdArrowBack, MdOutlineKey, MdOutlineLogout } from "react-icons/md";
 import Button from "./buttons/Button";
@@ -17,6 +17,28 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   const { data: session, status } = useSession();
+
+  const componentRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    // Menangani klik di luar komponen
+    const handleOutsideClick = (event: any) => {
+      if (
+        componentRef.current &&
+        !componentRef.current.contains(event.target)
+      ) {
+        setIsOpen(false);
+      }
+    };
+
+    // Menambahkan event listener ketika komponen di-mount
+    document.addEventListener("mousedown", handleOutsideClick);
+
+    // Membersihkan event listener ketika komponen di-unmount
+    return () => {
+      document.removeEventListener("mousedown", handleOutsideClick);
+    };
+  }, [setIsOpen, componentRef]);
 
   //simpan ke variable session id to use in fetcher
   const sessionId = session?.user.id;
@@ -35,7 +57,7 @@ const Navbar = () => {
 
   return (
     <div className="bg-Neutral-100 h-14 flex items-center justify-end gap-6 px-4 py-2 z-40">
-      <Notification />
+      <Notification onClose={() => {}} />
       <button onClick={toggleMenu} className="relative">
         <div className="flex items-center inline-block gap-2">
           <div className="inline-block pr-2 flex flex-col">
@@ -60,7 +82,10 @@ const Navbar = () => {
           {isOpen ? <IoIosArrowUp /> : <IoIosArrowDown />}
         </div>
         {isOpen ? (
-          <div className="absolute right-0 mt-1 flex flex-col bg-Neutral-100 py-2 px-4 rounded-lg border-[1px] border-Neutral-90 gap-2">
+          <div
+            className="absolute right-0 mt-1 flex flex-col bg-Neutral-100 py-2 px-4 rounded-lg border-[1px] border-Neutral-90 gap-2"
+            ref={componentRef}
+          >
             {isOpen ? (
               <Button
                 bgColor="bg-Primary-50"

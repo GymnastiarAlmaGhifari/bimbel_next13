@@ -5,14 +5,13 @@ import Button from "../buttons/Button";
 import { MdModeEdit } from "react-icons/md";
 import Kelas from "@/pages/pengaturan/kelas";
 
-interface CardPembayaranprops {
-  nama_siswa: string;
-  jumlah_tagihan: string;
-  tanggal_tagihan: string;
-  kelas: string;
-  tanggal_jatuh_tempo: string;
+interface CardPembayaranGajiProps {
+  nama_user: string;
+  jumlah_gaji: string;
+  tanggal_gaji: string;
   tanggal_bayar: string;
   tanggal_approve: string;
+  tipe_pembayaran: string;
   bulan: string;
   tahun: string;
   status: string;
@@ -21,16 +20,13 @@ interface CardPembayaranprops {
   gambar?: any;
 }
 
-const CardPembayaran: FC<CardPembayaranprops> = ({
+const CardPembayaranGaji: FC<CardPembayaranGajiProps> = ({
   onClick,
-  nama_siswa,
-  jumlah_tagihan,
-  tanggal_tagihan,
-  tanggal_jatuh_tempo,
+  nama_user,
+  jumlah_gaji,
+  tanggal_gaji,
+  tipe_pembayaran,
   tanggal_bayar,
-  tanggal_approve,
-  tipe,
-  kelas,
   bulan,
   status,
   tahun,
@@ -51,50 +47,32 @@ const CardPembayaran: FC<CardPembayaranprops> = ({
             />
           </div>
           <div className="flex flex-col gap-1">
-            <h1 className=" text-Neutral-10 font-bold">{nama_siswa}</h1>
+            <h1 className=" text-Neutral-10 font-bold">{nama_user}</h1>
             <div className="flex flex-col  gap-1">
-              <h3 className="text-Neutral-30">{tipe}</h3>
+              <h3 className="text-Neutral-30">Admin</h3>
             </div>
           </div>
         </div>
-        <div className="flex flex-col items-end gap-1 justify-center">
-          <h3 className="text-sm text-Neutral-30">Kelas</h3>
-          <span className="font-bold text-Primary-10">{kelas}</span>
-        </div>
-      </div>
-      <div className="flex justify-between">
-        <div className="flex flex-col gap-1">
-          <h3 className="text-sm text-Neutral-30">Tanggal Batas Pembayaran</h3>
-          <span className="font-bold text-Primary-10">{tanggal_tagihan}</span>
-        </div>
         <div className="flex flex-col items-center gap-1">
-          <h3 className="text-sm text-Neutral-30">Periode Bulan</h3>
+          <h3 className="text-sm text-Neutral-30">Periode</h3>
           <span className="font-bold text-Primary-10">
             {bulan} {tahun}
           </span>
         </div>
         <div className="flex flex-col items-end gap-1">
           <h3 className="text-sm text-Neutral-30">Tanggal Dibayar</h3>
-          <span className="font-boldtext-Primary-10">{tanggal_bayar}</span>
+          <span className="font-bold text-Primary-10">{tanggal_bayar}</span>
         </div>
       </div>
-
       <div className="w-full h-[1px] bg-Neutral-30"></div>
       <div className="flex justify-between">
-        <h2 className="font-semibold text-Error-40">{status}</h2>
-        <h2 className="font-semibold text-Error-40">{jumlah_tagihan}</h2>
-        {/* <Button
-          type="button"
-          bgColor="bg-Tertiary-50"
-          brColor=""
-          label="Edit Pengguna"
-          textColor="text-Tertiary-50"
-          icon={MdModeEdit}
-          onClick={onClick}
-        /> */}
+        <h2 className="font-semibold text-Primary-40">{status}</h2>
+        <h2 className="font-semibold text-Primary-40">
+          {jumlah_gaji} - {tipe_pembayaran}
+        </h2>
       </div>
     </div>
   );
 };
 
-export default CardPembayaran;
+export default CardPembayaranGaji;

@@ -16,6 +16,7 @@ interface CardSiswaProps {
   kelas: string;
   onEdit?: () => void;
   onDelete?: () => void;
+  onClick?: () => void;
   tipe: string;
   gambar?: any;
 }
@@ -23,6 +24,7 @@ interface CardSiswaProps {
 const CardSiswa: FC<CardSiswaProps> = ({
   onEdit,
   onDelete,
+  onClick,
   nama_kelompok,
   tipe,
   gambar,
@@ -43,7 +45,11 @@ const CardSiswa: FC<CardSiswaProps> = ({
         <div className="flex items-center h-max w-auto gap-3">
           <div className="h-14 w-14">
             <Image
-              src={"/api/siswa/img?img=" + gambar ? "/api/siswa/img?img=" + gambar : "/img/user/default.png"}
+              src={
+                "/api/siswa/img?img=" + gambar
+                  ? "/api/siswa/img?img=" + gambar
+                  : "/img/user/default.png"
+              }
               alt="Megachan"
               width={100}
               height={100}
@@ -105,16 +111,15 @@ const CardSiswa: FC<CardSiswaProps> = ({
             onClick={openWhatsApp}
             icon={IoLogoWhatsapp}
           />
-          <Link href={"/detailProfileSiswa"}>
-            <Button
-              type="button"
-              bgColor="bg-Primary-50"
-              brColor=""
-              label="Detail Data"
-              textColor="text-Primary-20"
-              icon={IoIosArrowForward}
-            />
-          </Link>
+          <Button
+            type="button"
+            bgColor="bg-Primary-50"
+            brColor=""
+            label="Detail Data"
+            textColor="text-Primary-20"
+            icon={IoIosArrowForward}
+            onClick={onClick}
+          />
         </div>
         <div className="flex flex-row gap-3">
           <Button
