@@ -11,6 +11,7 @@ import CreateKelompok from "./create";
 import Anggota from "./anggota";
 import Jadwal from "./jadwal";
 import TambahJadwal from "./jadwal";
+import DetailSiswa from "../siswa/detail";
 
 interface Kelompok {
   program: any;
@@ -61,6 +62,7 @@ const Kelompok: FC<Kelompok> = () => {
 
   const [selectedAnggota, setSelectedAnggota] = useState<Kelompok | null>(null);
   const [selectedJadwal, setSelectedJadwal] = useState<Kelompok | null>(null);
+  const [selectedDetail, setSelectedDetail] = useState<Kelompok | null>(null);
 
   useEffect(() => {
     if (error) {
@@ -130,6 +132,7 @@ const Kelompok: FC<Kelompok> = () => {
                         addJadwal={() => {
                           setSelectedJadwal(kelompok);
                         }}
+                        onDetail={() => setSelectedDetail(kelompok)}
                       />
                     ))
                   )}
@@ -215,6 +218,24 @@ const Kelompok: FC<Kelompok> = () => {
             }}
             data={selectedJadwal}
             kelompokId={selectedJadwal.id}
+          />
+        </ModalDetail>
+      )}
+
+      {selectedDetail && (
+        <ModalDetail
+          titleModal="Detail Siswa"
+          onClose={() => setSelectedDetail(null)}
+        >
+          <DetailSiswa
+            alamat=""
+            email=""
+            hp_ortu=""
+            kelas=""
+            kelompok=""
+            nama=""
+            nomor_telepon=""
+            sekolah=""
           />
         </ModalDetail>
       )}

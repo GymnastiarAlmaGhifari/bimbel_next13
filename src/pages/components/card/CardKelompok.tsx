@@ -25,6 +25,7 @@ interface CardKelompokProps {
   jumlah_siswa: number;
   jumlah_jadwal: number;
   onClick: () => void;
+  onDetail: () => void;
   addAnggota: () => void;
   addJadwal: () => void;
 }
@@ -86,6 +87,7 @@ const CardKelompok: FC<CardKelompokProps> = ({
   level,
   jumlah_siswa,
   jumlah_jadwal,
+  onDetail,
   onClick,
   addAnggota,
   addJadwal,
@@ -289,6 +291,7 @@ const CardKelompok: FC<CardKelompokProps> = ({
                         label="Info"
                         textColor="text-Tertiary-50"
                         type="button"
+                        onClick={onDetail}
                         icon={MdOutlineInfo}
                       />
                       <Button
