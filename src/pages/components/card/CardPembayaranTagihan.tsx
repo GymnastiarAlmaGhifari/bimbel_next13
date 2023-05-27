@@ -5,26 +5,25 @@ import Button from "../buttons/Button";
 import { MdModeEdit } from "react-icons/md";
 import Kelas from "@/pages/pengaturan/kelas";
 
-interface CardPembayaranprops {
-  nama_siswa?: string;
-  nama_user?: string;
-  nama_rekening?: string;
-  nomor_rekening?: string;
-  jumlah_tagihan?: number;
-  tanggal_tagihan?: string;
-  tanggal_jatuh_tempo?: string;
-  tanggal_bayar?: string;
-  tanggal_approve?: string;
-  bulan?: string;
-  tahun?: number;
-  status?: string;
-  nota?: string;
+interface CardPembayaranTagihanProps {
+  nama_siswa: string;
+  jumlah_tagihan: string;
+  tanggal_tagihan: string;
+  kelas: string;
+  tanggal_jatuh_tempo: string;
+  tanggal_bayar: string;
+  tanggal_approve: string;
+  bulan: string;
+  tahun: string;
+  status: string;
+  tipe: string;
   gambar?: any;
+  nota: string;
   onClick?: () => void;
   onAccept?: () => void;
 }
 
-const CardPembayaran: FC<CardPembayaranprops> = ({
+const CardPembayaranTagihan: FC<CardPembayaranTagihanProps> = ({
   onClick,
   nama_siswa,
   jumlah_tagihan,
@@ -35,9 +34,6 @@ const CardPembayaran: FC<CardPembayaranprops> = ({
   bulan,
   status,
   nota,
-  nama_rekening,
-  nama_user,
-  nomor_rekening,
   tahun,
   gambar,
   onAccept,
@@ -63,7 +59,6 @@ const CardPembayaran: FC<CardPembayaranprops> = ({
             </div>
             <h1 className=" text-Neutral-10 font-bold">user</h1>
             <div className="flex flex-col  gap-1">
-              <h3 className="text-Neutral-30"> - {nama_user}</h3>
             </div>
           </div>
         </div>
@@ -84,9 +79,6 @@ const CardPembayaran: FC<CardPembayaranprops> = ({
         <div className="flex flex-col items-center gap-1">
           <h3 className="text-sm text-Neutral-30">rekening</h3>
           <span className="font-bold text-Primary-10">
-            {
-              nama_rekening
-            }  - {nomor_rekening}
           </span>
         </div>
         <div className="flex flex-col items-center gap-1">
@@ -143,4 +135,4 @@ const CardPembayaran: FC<CardPembayaranprops> = ({
   );
 };
 
-export default CardPembayaran;
+export default CardPembayaranTagihan;

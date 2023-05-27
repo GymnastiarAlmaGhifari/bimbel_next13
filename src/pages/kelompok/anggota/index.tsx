@@ -194,7 +194,14 @@ const Anggota: FC<AnggotaProps> = ({
           className="px-4 py-2 rounded-md bg-Primary-70 text-white hover:bg-Primary-70 transition-all duration-200"
           disabled={isLoading}
         >
-          {isLoading ? "Menyimpan..." : "Simpan"}
+          {isLoading ? (
+            <div className="flex gap-1 items-center">
+              <div className="inline-block h-4 w-4 animate-spin rounded-full border-[3px] border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_3s_linear_infinite]"></div>
+              <span>Loading</span>
+            </div>
+          ) : (
+            "Simpan"
+          )}{" "}
         </button>
       </div>
     </form>

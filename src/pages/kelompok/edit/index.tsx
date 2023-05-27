@@ -150,7 +150,17 @@ const KelompokEdit: FC<UserEditProps> = ({
                   type="submit"
                   bgColor="bg-Tertiary-50"
                   brColor=""
-                  label="Konfirmasi"
+                  // label ketika loading true maka labelnya jadi loading
+                  label={
+                    isLoading ? (
+                      <div className="flex gap-1 items-center">
+                        <div className="inline-block h-4 w-4 animate-spin rounded-full border-[3px] border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_3s_linear_infinite]"></div>
+                        <span>Loading</span>
+                      </div>
+                    ) : (
+                      "Simpan"
+                    )
+                  }
                   textColor="text-Neutral-100"
                   withBgColor
                 />
