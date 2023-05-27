@@ -45,11 +45,19 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
             } catch (error) {
                 console.error(error);
-                res.status(500).json({ message: "Error memuat Support" });
+                res.status(500).json({ 
+                    status: 500,
+                    message: "Error memuat Support",
+                    data: {},
+                });
             }
         } catch (error) {
             console.error(error);
-            res.status(500).json({ message: "Error memuat data siswa" });
+            res.status(500).json({ 
+                status: 500,
+                message: "Error memuat data siswa",
+                data: {},
+             });
         }
     }
 }
