@@ -17,9 +17,9 @@ const Pembayaran = () => {
             <div className="flex flex-col h-full bg-Neutral-100 py-4 gap-4 rounded-lg overflow-auto">
               <HeadTable bulanPembayaran tahunPembayaran label="Gaji" riwayat />
               <div className="flex flex-col rounded-bl-lg rounded-br-lg p-4 gap-4 overflow-y-auto scrollbar">
-                <CardPembayaran
+                {/* <CardPembayaran
                   bulan="Mei"
-                  jumlah_tagihan="Rp. 1000000"
+                  jumlah_tagihan="1000000"
                   kelas="3 SMP"
                   nama_siswa="Agimul Karim"
                   status="Belum Dibayar"
@@ -29,7 +29,7 @@ const Pembayaran = () => {
                   tanggal_jatuh_tempo="1 Juni 2023"
                   tanggal_tagihan="1 Juni 2023"
                   tipe="Reguler"
-                />
+                /> */}
               </div>
             </div>
           </div>

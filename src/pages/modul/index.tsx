@@ -9,6 +9,7 @@ import useSWR from "swr";
 import fetcher from "@/libs/fetcher";
 import { ModalDetail, ModalSucces } from "@/pages/components/modal/Modal";
 import Create from "./create";
+import EditModul from "./edit";
 
 interface ModulProps {
   id: string;
@@ -30,6 +31,8 @@ const Modul: FC<ModulProps> = () => {
 
   const [showCreate, setShowCreate] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
+
+  const [selectedEdit, setSelectedEdit] = useState<ModulProps | null>(null);
 
   useEffect(() => {
     const timeoutId = setTimeout(() => {
@@ -77,6 +80,10 @@ const Modul: FC<ModulProps> = () => {
                           window.open("/api/modul/pdf?modul=" + modul.url, "_blank");
                         }
                         }
+                        onEdit={() => {
+                          setSelectedEdit(modul);
+                        }
+                        }
                       />
                     ))
                   )}
@@ -102,7 +109,7 @@ const Modul: FC<ModulProps> = () => {
       {/* modal create */}
       {showCreate && (
         <ModalDetail
-          titleModal="Tambah Pengguna"
+          titleModal="Tambah Modul"
           onClose={() => setShowCreate(false)}
         >
           <Create
@@ -113,6 +120,27 @@ const Modul: FC<ModulProps> = () => {
           />
         </ModalDetail>
       )}
+
+      {
+        selectedEdit && (
+          <ModalDetail
+            titleModal="Edit Modul"
+            onClose={() => setSelectedEdit(null)}
+          >
+            <EditModul
+              onClose={() => setSelectedEdit(null)}
+              onSucces={
+                () => {
+                  setShowSuccess(true);
+                }
+              }
+              data={selectedEdit}
+              modulId={selectedEdit.id}
+            />
+          </ModalDetail>
+        )
+
+      }
     </div>
   );
 };

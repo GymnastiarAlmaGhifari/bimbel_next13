@@ -1,24 +1,20 @@
 import { FC, useEffect, useRef, useState } from "react";
 import axios, { AxiosError } from "axios";
-import useSWR, { mutate } from "swr";
-import fetcher from "@/libs/fetcher";
+import { mutate } from "swr";
 import { SubmitHandler, useForm } from "react-hook-form";
 import Input from "@/pages/components/inputs/Input";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import useSWR from "swr";
+import fetcher from "@/libs/fetcher";
 import Button from "@/pages/components/buttons/Button";
 import { IoIosArrowDown, IoIosArrowUp, IoMdCloudUpload } from "react-icons/io";
 
-
-export const config = {
-    api: {
-        responseLimit: false,
-    },
-}
-
-interface CreateModul {
+interface MapelEdit {
     onClose: () => void;
-    onSucsess: () => void;
+    onSucces: () => void;
+    data: any;
+    modulId: string;
 }
 
 interface Mapel {
@@ -31,7 +27,7 @@ interface Mapel {
 }
 
 const schema = yup.object().shape({
-    nama_modul: yup
+    nama_module: yup
         .string()
         .required("tidak boleh kosong")
         .min(3, "judul minimal 3 karakter"),
@@ -43,12 +39,12 @@ type FormData = yup.InferType<typeof schema> & {
     pdf: FileList;
 };
 
-const Create: FC<CreateModul> = ({ onClose, onSucsess }) => {
+
+const EditModul: FC<MapelEdit> = ({ onClose, onSucces, data, modulId }) => {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [isListOpenMapel, setIsListOpenMapel] = useState(false);
     const componentRef = useRef<HTMLUListElement>(null);
-
     const { data: mapel, error: errorMapel } = useSWR<Mapel[]>("/api/mapel", fetcher);
     useEffect(() => {
         // Menangani klik di luar komponen
@@ -89,77 +85,132 @@ const Create: FC<CreateModul> = ({ onClose, onSucsess }) => {
     } = useForm<FormData>({
         resolver: yupResolver(schema),
     });
+
+    useEffect(() => {
+        setValue("mapel", data?.mapel_id);
+    }, [data, setValue]);
+
     const onSubmit: SubmitHandler<FormData> = async (data) => {
 
-        const { nama_modul, mapel, pdf } = data;
+        const { nama_module, mapel, pdf } = data;
 
-        setIsLoading(true); // Set loading state to true
-        setError(null);
+        if (!pdf || pdf.length === 0) {
+            console.log("tidak ada file");
+            setIsLoading(true); // Set loading state to true
+            setError(null);
+            console.log(nama_module, mapel);
+            try {
+                const response = await axios.put(`/api/modul/${modulId}`, {
+                    nama_module: nama_module,
+                    mapel_id: mapel,
+                });
+                mutate("/api/modul");
+                mutate(`/api/modul/${modulId}`);
+                // onClose(); // Set loading state to false
 
-        try {
-            const response = await axios.post(`/api/modul`, {
-                nama_module: nama_modul,
-                mapel_id: mapel,
-            });
-            mutate("/api/mdoul");
-            // onClose(); // Set loading state to false
+                console.log(response.data);
+                // simpan response data.id ke variable id
+            } catch (error: any) {
+                console.error(error);
 
-            console.log(response.data);
-            // simpan response data.id ke variable id
-            const id = response.data.id;
+                if (axios.isAxiosError(error)) {
+                    const axiosError = error as AxiosError;
+                    if (axiosError.response) {
+                        console.log("Response data:", axiosError.response.data);
+                        console.log("Response status:", axiosError.response.status);
 
-            console.log(id);
-            // api yang  digunakan untuk upload file
+                        const responseData = axiosError.response.data as { message: string };
 
-            const formData = new FormData();
-            formData.append("pdf", data.pdf[0]);
+                        // Extract the main error message from the response data
+                        const errorMessage = responseData.message;
 
-            const responseUpload = await axios.post(`/api/modul/upload`, formData, {
-                headers: {
-                    "Content-Type": "multipart/form-data",
-                },
-            });
+                        setError(`An error occurred: ${errorMessage}`);
+                    } else if (axiosError.request) {
+                        console.log("No response received:", axiosError.request);
 
-            console.log(responseUpload.data);
+                        const request = axiosError.request.toString();
+                        setError(`No response received: ${request}`);
+                    } else {
+                        console.log("Error setting up the request:", axiosError.message);
 
-            const responsethumb = await axios.post(`/api/modul/thumbup`, {
-                id: id,
-            });
-
-            console.log(responsethumb.data);
-
-        } catch (error: any) {
-            console.error(error);
-
-            if (axios.isAxiosError(error)) {
-                const axiosError = error as AxiosError;
-                if (axiosError.response) {
-                    console.log("Response data:", axiosError.response.data);
-                    console.log("Response status:", axiosError.response.status);
-
-                    const responseData = axiosError.response.data as { message: string };
-
-                    // Extract the main error message from the response data
-                    const errorMessage = responseData.message;
-
-                    setError(`An error occurred: ${errorMessage}`);
-                } else if (axiosError.request) {
-                    console.log("No response received:", axiosError.request);
-
-                    const request = axiosError.request.toString();
-                    setError(`No response received: ${request}`);
+                        const request = axiosError.message.toString();
+                        setError(`Error setting up the request: ${request}`);
+                    }
                 } else {
-                    console.log("Error setting up the request:", axiosError.message);
-
-                    const request = axiosError.message.toString();
-                    setError(`Error setting up the request: ${request}`);
+                    console.log("Error:", error.message);
+                    setError("An unknown error occurred.");
                 }
-            } else {
-                console.log("Error:", error.message);
-                setError("An unknown error occurred.");
+            } finally {
+                setIsLoading(false);
+                onClose();
             }
-        } finally {
-            setIsLoading(false);
+        } else {
+            console.log("ada file");
+            try {
+                const response = await axios.put(`/api/modul/${modulId}`, {
+                    nama_module: nama_module,
+                    mapel_id: mapel,
+                });
+                mutate("/api/modul");
+                mutate("/api/modul", undefined);
+
+                // onClose(); // Set loading state to false
+
+                console.log(response.data);
+                // simpan response data.id ke variable id
+                // api yang  digunakan untuk upload file
+
+                const formData = new FormData();
+                formData.append("pdf", data.pdf[0]);
+
+                const responseUpload = await axios.post(`/api/modul/upload`, formData, {
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                    },
+                });
+
+                console.log(responseUpload.data);
+
+                const responsethumb = await axios.post(`/api/modul/thumbup`, {
+                    id: modulId,
+                });
+
+                console.log(responsethumb.data);
+
+            } catch (error: any) {
+                console.error(error);
+
+                if (axios.isAxiosError(error)) {
+                    const axiosError = error as AxiosError;
+                    if (axiosError.response) {
+                        console.log("Response data:", axiosError.response.data);
+                        console.log("Response status:", axiosError.response.status);
+
+                        const responseData = axiosError.response.data as { message: string };
+
+                        // Extract the main error message from the response data
+                        const errorMessage = responseData.message;
+
+                        setError(`An error occurred: ${errorMessage}`);
+                    } else if (axiosError.request) {
+                        console.log("No response received:", axiosError.request);
+
+                        const request = axiosError.request.toString();
+                        setError(`No response received: ${request}`);
+                    } else {
+                        console.log("Error setting up the request:", axiosError.message);
+
+                        const request = axiosError.message.toString();
+                        setError(`Error setting up the request: ${request}`);
+                    }
+                } else {
+                    console.log("Error:", error.message);
+                    setError("An unknown error occurred.");
+                }
+            } finally {
+                setIsLoading(false);
+                onClose();
+            }
         }
     };
 
@@ -176,15 +227,14 @@ const Create: FC<CreateModul> = ({ onClose, onSucsess }) => {
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5">
             {error && <p className="text-red-500">{error}</p>}
             <Input
-                id="nama_modul"
-                label="Nama Modul"
+                id="nama_module"
+                label="Nama Module"
                 type="text"
-                register={{ ...register("nama_modul") }}
+                register={{ ...register("nama_module") }}
                 errors={errors}
+                defaultValue={data?.nama_module}
             />
-            {errors.nama_modul && <p className="text-red-500">{errors.nama_modul.message}</p>}
-
-            {/* input type file pdf only */}
+            {errors.nama_module && <p className="text-red-500">{errors.nama_module.message}</p>}
             <label
                 htmlFor="pdf"
                 className="bg-Primary-40 text-white px-4 py-2 rounded cursor-pointer flex items-center justify-center space-x-2 rounded-full bg-opacity-90 hover:bg-opacity-100"
@@ -267,9 +317,8 @@ const Create: FC<CreateModul> = ({ onClose, onSucsess }) => {
                     withBgColor
                 />
             </div>
-
         </form>
     )
 }
 
-export default Create
+export default EditModul
