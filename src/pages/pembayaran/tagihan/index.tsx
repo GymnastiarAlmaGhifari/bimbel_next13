@@ -9,6 +9,7 @@ import fetcher from "@/libs/fetcher";
 import { ModalDetail, ModalSucces } from "@/pages/components/modal/Modal";
 import LihatNota from "../modal/nota";
 import Acc from "../modal/acc";
+import Create from "../modal/create";
 
 interface Pembayaran {
   id: string;
@@ -39,6 +40,9 @@ const Pembayaran: FC<Pembayaran> = () => {
   // state shownota
   const [showNota, setShowNota] = useState<Pembayaran | null>(null);
 
+  // create
+  const [showCreate, setShowCreate] = useState<boolean>(false);
+
   const [AcceptPembayaran, setAcceptPembayaran] = useState<Pembayaran | null>(null);
 
   return (
@@ -55,6 +59,7 @@ const Pembayaran: FC<Pembayaran> = () => {
                 tahunPembayaran
                 label="Tagihan"
                 riwayat
+                onClick={() => setShowCreate(true)}
               />
               <div className="flex flex-col rounded-bl-lg rounded-br-lg p-4 gap-4 overflow-y-auto scrollbar">
                 {pembayaran ? (
@@ -141,6 +146,18 @@ const Pembayaran: FC<Pembayaran> = () => {
             // onSucsess={() => {
             //   setShowSuccess(true);
             // }}
+            />
+          </ModalDetail>
+        )
+      }
+      {
+        showCreate && (
+          <ModalDetail
+            titleModal="Tambah Tagihan"
+            onClose={() => setShowCreate(false)}
+          >
+            <Create
+            // onClose={() => setShowCreate(false)}
             />
           </ModalDetail>
         )

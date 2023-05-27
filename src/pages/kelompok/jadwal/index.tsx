@@ -39,6 +39,10 @@ interface User {
   id: string;
   name: string;
   mapel_id: string;
+  mapel: {
+    id: string;
+    nama_mapel: string;
+  };
 }
 
 const schema = yup.object().shape({
@@ -508,7 +512,7 @@ const TambahJadwal: FC<TambahJadwalProps> = ({ onClose, onSucsess, kelompokId, d
               getValues={getValues}
               groupName="kelompokCheck"
               label={item.name}
-              nomor_telepon={item.mapel_id}
+              nomor_telepon={item.mapel?.nama_mapel}
             />
           ))}
           {errors.userCheck && <p>{errors.userCheck.message}</p>}

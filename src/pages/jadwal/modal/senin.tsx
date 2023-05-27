@@ -52,6 +52,9 @@ interface User {
     id: string;
     name: string;
     mapel_id: string;
+    mapel: {
+        nama_mapel: string;
+    }
 }
 
 const schema = yup.object().shape({
@@ -597,7 +600,7 @@ const Senin: FC<Senin> = ({ jadwalId, data, onClose, onSucsess, idRuang }) => {
                                 getValues={getValues}
                                 groupName="kelompokCheck"
                                 label={item.name}
-                                nomor_telepon={item.mapel_id}
+                                nomor_telepon={item.mapel?.nama_mapel}
                             />
                         ))}
                         {errors.kelompokCheck && <p>{errors.kelompokCheck.message}</p>}

@@ -3,12 +3,38 @@ import { IoIosClose, IoIosNotifications } from "react-icons/io";
 import CardNotification from "./card/CardNotification";
 import Button from "./buttons/Button";
 import { MdDelete } from "react-icons/md";
+import useSWR, { mutate } from "swr";
+import fetcher from "@/libs/fetcher";
 
 interface NotificationProps {
   onClose: () => void;
+  id?: string;
+  nama_rekening?: string;
+  nomor_rekening?: string;
+  jumlah_tagihan?: number;
+  tanggal_tagihan?: string;
+  tanggal_jatuh_tempo?: string;
+  tanggal_bayar?: string;
+  tanggal_approve?: string;
+  Bulan?: string;
+  Tahun?: number;
+  status?: string;
+  nota?: string;
+  user?: {
+    name?: string
+  }
+  siswa?: {
+    nama?: string
+    image?: string
+  }
 }
 
 const Notification: FC<NotificationProps> = ({ onClose }) => {
+
+  const { data: notification, error } = useSWR('/api/notif', fetcher, {
+    refreshInterval: 1000 * 60,
+  })
+
   const [isOpen, setIsOpen] = useState(false);
   const componentRef = useRef<HTMLDivElement>(null);
 
@@ -56,7 +82,7 @@ const Notification: FC<NotificationProps> = ({ onClose }) => {
         >
           <div className="flex justify-between items-center">
             <h1 className="ml-4 font-bold text-Primary-10">
-              Notifiaction (10)
+              Notifiaction (10)x
             </h1>
             <Button
               type="button"
@@ -70,15 +96,60 @@ const Notification: FC<NotificationProps> = ({ onClose }) => {
             />
           </div>
           <div className="flex flex-col h-96 overflow-y-auto scrollbar">
-            <CardNotification />
-            <CardNotification isRead />
-            <CardNotification />
-            <CardNotification isRead />
-            <CardNotification />
-            <CardNotification isRead />
-            <CardNotification isRead />
-            <CardNotification isRead />
-            <CardNotification isRead />
+            {
+              notification ? (
+                <>
+                  {notification.length === 0 ? (
+                    <div className="flex flex-col items-center justify-center h-full">
+                      <h1 className="text-2xl font-bold text-Neutral-20">
+                        Tidak Ada Notifikasi
+                      </h1>
+                    </div>
+                  ) : (
+                    <>
+                      {notification.map((notif: NotificationProps) => (
+                        <CardNotification
+                          key={notif.id}
+                          // bulan={notif.Bulan}
+                          // jumlah_tagihan={notif?.jumlah_tagihan}
+                          // nama_rekening={notif?.nama_rekening}
+                          nama_siswa={notif?.siswa?.nama}
+                          // nama_user={notif?.user?.name}
+                          // nomor_rekening={notif?.nomor_rekening}
+                          // nota={notif?.nota}
+                          // status={notif?.status}
+                          // tanggal_approve={notif?.tanggal_approve}
+                          tanggal_bayar={notif?.tanggal_bayar}
+                        // tanggal_jatuh_tempo={notif?.tanggal_jatuh_tempo}
+                        // tanggal_tagihan={notif?.tanggal_tagihan}
+                        // gambar={notif?.siswa.image}
+                        // tahun={notif?.Tahun}
+                        // onClick={() =>
+                        //   setShowNota(notif)
+                        // }
+                        // onAccept={() =>
+                        //   setAcceptnotif(notif)
+                        />
+                      ))}
+                    </>
+                  )}
+                </>
+              ) : (
+                <>
+                  {error ? (
+                    <div className="flex flex-col justify-center items-center">
+                      <p className="text-2xl font-bold text-Neutral-600">Data Kosong</p>
+                      <p className="text-Neutral-500"></p>
+                    </div>
+                  ) : (
+                    <div className="flex flex-col justify-center items-center">
+                      <p className="text-2xl font-bold text-Neutral-600">Loading...</p>
+                    </div>
+                  )
+                  }
+                </>
+              )
+            }
           </div>
         </div>
       ) : (

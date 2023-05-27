@@ -50,7 +50,7 @@ const CardJadwalKelompok: FC<CardJadwalKelompokProps> = ({
         <div onClick={handleCheck}>
             <div
                 className={`flex flex-col gap-2 p-2 border-[2px] ${check ? "border-Primary-40" : ""
-                    } w-full rounded-lg items-center bg-Neutral-100`}
+                    } w-52 rounded-lg items-center bg-Neutral-100`}
             >
                 <div className="flex justify-end w-full ">
                     <input

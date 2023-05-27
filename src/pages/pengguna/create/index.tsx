@@ -7,6 +7,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import Button from "@/pages/components/buttons/Button";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
+import { useSession } from "next-auth/react";
 
 interface UserCreateProps {
   onClose: () => void;
@@ -33,6 +34,8 @@ const Create: FC<UserCreateProps> = ({ onClose, onSucsess }) => {
   const [error, setError] = useState<string | null>(null);
   const [isListOpenRole, setIsListOpenRole] = useState(false);
   const componentRef = useRef<HTMLUListElement>(null);
+
+  const { data: session } = useSession();
 
   const {
     register,
@@ -179,8 +182,8 @@ const Create: FC<UserCreateProps> = ({ onClose, onSucsess }) => {
           <button
             type="button"
             className={` w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${isListOpenRole
-                ? "border-[2px] border-Primary-50 bg-Primary-95"
-                : "bg-Neutral-95"
+              ? "border-[2px] border-Primary-50 bg-Primary-95"
+              : "bg-Neutral-95"
               }`}
             onClick={toggleListRole}
           >
@@ -192,20 +195,40 @@ const Create: FC<UserCreateProps> = ({ onClose, onSucsess }) => {
               className="absolute w-full top-[44px] z-10 bg-Neutral-100 border-[2px] border-Primary-50 rounded-xl py-2 px-2 outline-none appearance-none flex flex-col gap-1"
               ref={componentRef}
             >
-              {roleOptions.map((option) => (
-                <li key={option.value}>
-                  <button
-                    type="button"
-                    className={`w-full text-left px-2 py-1 rounded-full ${watch("role") === option.value
+              {session?.user?.role === "SUPER" && (
+                roleOptions.map((option) => (
+                  <li key={option.value}>
+                    <button
+                      type="button"
+                      className={`w-full text-left px-2 py-1 rounded-full ${watch("role") === option.value
                         ? "text-Primary-90 bg-Primary-20"
                         : "text-Primary-20 hover:bg-Primary-95"
-                      }`}
-                    onClick={() => selectrole(option.value)}
-                  >
-                    {option.label}
-                  </button>
-                </li>
-              ))}
+                        }`}
+                      onClick={() => selectrole(option.value)}
+                    >
+                      {option.label}
+                    </button>
+                  </li>
+                ))
+              )}
+              {session?.user?.role === "ADMIN" && (
+                roleOptions
+                  .filter((option) => option.value !== "SUPER")
+                  .map((option) => (
+                    <li key={option.value}>
+                      <button
+                        type="button"
+                        className={`w-full text-left px-2 py-1 rounded-full ${watch("role") === option.value
+                          ? "text-Primary-90 bg-Primary-20"
+                          : "text-Primary-20 hover:bg-Primary-95"
+                          }`}
+                        onClick={() => selectrole(option.value)}
+                      >
+                        {option.label}
+                      </button>
+                    </li>
+                  ))
+              )}
             </ul>
           )}
         </div>

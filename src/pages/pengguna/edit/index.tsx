@@ -8,6 +8,7 @@ import * as yup from "yup";
 import Button from "@/pages/components/buttons/Button";
 import { IoMdCloudUpload, IoIosArrowUp, IoIosArrowDown } from "react-icons/io";
 import Image from "next/image";
+import { useSession } from "next-auth/react";
 
 interface UserEditProps {
   userId: string;
@@ -41,6 +42,9 @@ const UserEdit: FC<UserEditProps> = ({ userId, onClose, onSucsess, data }) => {
   const [error, setError] = useState<string | null>(null);
 
   const [isListOpen, setIsListOpen] = useState(false);
+
+  const { data: session } = useSession();
+
   const {
     register,
     handleSubmit,
@@ -145,7 +149,6 @@ const UserEdit: FC<UserEditProps> = ({ userId, onClose, onSucsess, data }) => {
         await axios.post("/api/user/userimg", formData, {
           headers: {
             "Content-Type": "multipart/form-data",
-            // from : formDa ta . image
             from: userId,
           },
         });
@@ -158,12 +161,6 @@ const UserEdit: FC<UserEditProps> = ({ userId, onClose, onSucsess, data }) => {
           alamat,
         });
         await axios.put(`/api/user/userimg/${userId}`, {
-          // name,
-          // email,
-          // role,
-          // nomor_telepon,
-          // universitas: lulusan,
-          // alamat,
         });
         mutate("/api/user");
         mutate(`/api/userimg`);
@@ -181,10 +178,10 @@ const UserEdit: FC<UserEditProps> = ({ userId, onClose, onSucsess, data }) => {
     data?.role === "SUPER"
       ? "SUPER ADMIN"
       : data?.role === "ADMIN"
-      ? "ADMIN"
-      : data?.role === "TENTOR"
-      ? "TENTOR"
-      : "Pilih peran";
+        ? "ADMIN"
+        : data?.role === "TENTOR"
+          ? "TENTOR"
+          : "Pilih peran";
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex gap-10">
@@ -280,11 +277,10 @@ const UserEdit: FC<UserEditProps> = ({ userId, onClose, onSucsess, data }) => {
             <div className="relative flex flex-col gap-2">
               <button
                 type="button"
-                className={` w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${
-                  isListOpen
-                    ? "border-[2px] border-Primary-50 bg-Primary-95"
-                    : "bg-Neutral-95"
-                }`}
+                className={` w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${isListOpen
+                  ? "border-[2px] border-Primary-50 bg-Primary-95"
+                  : "bg-Neutral-95"
+                  }`}
                 onClick={toggleList}
               >
                 {getRoleLabel(roleLabel)}
@@ -295,21 +291,40 @@ const UserEdit: FC<UserEditProps> = ({ userId, onClose, onSucsess, data }) => {
                   className="absolute w-full top-[44px] z-10 bg-Neutral-100 border-[2px] border-Primary-50 rounded-xl py-2 px-2 outline-none appearance-none flex flex-col gap-1"
                   ref={componentRef}
                 >
-                  {roleOptions.map((option) => (
-                    <li key={option.value}>
-                      <button
-                        type="button"
-                        className={`w-full text-left px-2 py-1 rounded-full ${
-                          watch("role") === option.value
+                  {session?.user?.role === "SUPER" && (
+                    roleOptions.map((option) => (
+                      <li key={option.value}>
+                        <button
+                          type="button"
+                          className={`w-full text-left px-2 py-1 rounded-full ${watch("role") === option.value
                             ? "text-Primary-90 bg-Primary-20"
                             : "text-Primary-20 hover:bg-Primary-95"
-                        }`}
-                        onClick={() => selectRole(option.value)}
-                      >
-                        {option.label}
-                      </button>
-                    </li>
-                  ))}
+                            }`}
+                          onClick={() => selectRole(option.value)}
+                        >
+                          {option.label}
+                        </button>
+                      </li>
+                    ))
+                  )}
+                  {session?.user?.role === "ADMIN" && (
+                    roleOptions
+                      .filter((option) => option.value !== "SUPER")
+                      .map((option) => (
+                        <li key={option.value}>
+                          <button
+                            type="button"
+                            className={`w-full text-left px-2 py-1 rounded-full ${watch("role") === option.value
+                              ? "text-Primary-90 bg-Primary-20"
+                              : "text-Primary-20 hover:bg-Primary-95"
+                              }`}
+                            onClick={() => selectRole(option.value)}
+                          >
+                            {option.label}
+                          </button>
+                        </li>
+                      ))
+                  )}
                 </ul>
               )}
             </div>
@@ -345,7 +360,6 @@ const UserEdit: FC<UserEditProps> = ({ userId, onClose, onSucsess, data }) => {
         {error && <p className="text-red-500">{error}</p>}
 
         <div className="flex flex-row justify-end gap-4">
-          0
           <Button
             center
             type="submit"
@@ -355,7 +369,7 @@ const UserEdit: FC<UserEditProps> = ({ userId, onClose, onSucsess, data }) => {
             label={
               isLoading ? (
                 <div className="flex gap-1 items-center">
-                  <div className="inline-block h-4 w-4 animate-spin rounded-full border-[3px] border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_3s_linear_infinite]"></div> 
+                  <div className="inline-block h-4 w-4 animate-spin rounded-full border-[3px] border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_3s_linear_infinite]"></div>
                   <span>Loading</span>
                 </div>
               ) : (

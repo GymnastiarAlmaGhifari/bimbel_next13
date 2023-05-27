@@ -29,7 +29,7 @@ const schema = yup.object().shape({
   level: yup.string(),
   tipe: yup.string(),
   kelas_id: yup.string(),
-  harga: yup.number().required("Harga tidak boleh kosong"),
+  harga: yup.string().required('Amount is required'),
   Deskripsi: yup.string(),
 });
 
@@ -54,13 +54,15 @@ const ProgramEdit: FC<ProgramEditProps> = ({ programId, onClose, data }) => {
 
     setIsLoading(true); // Set loading state to true
 
+    const rawHarga = parseInt(harga.replace(/\D/g, ""))
+
     try {
       await axios.put(`/api/program/${programId}`, {
         nama_program,
         level,
         tipe,
         kelas_id,
-        harga,
+        harga: rawHarga,
         Deskripsi
       });
       mutate("/api/program");
@@ -165,6 +167,21 @@ const ProgramEdit: FC<ProgramEditProps> = ({ programId, onClose, data }) => {
         : data?.tipe === "KELOMPOK"
           ? "KELOMPOK"
           : "Pilih Tipe";
+
+  // format rupiah pada onchange yang replace(/\D/g,''); untuk menghilangkan selain angka serta buatkan titik setiap 3 digit angka
+  const formatRupiah = (e: any) => {
+    const rawValue = e.target.value.replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    const formattedValue = "Rp " + rawValue;
+    setValue("harga", formattedValue);
+  };
+
+  const formattedHarga = data?.harga
+    ? data?.harga.toLocaleString("id-ID", {
+      style: "currency",
+      currency: "IDR",
+    }).replace(",00", "")
+    : "";
+
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5">
@@ -339,11 +356,13 @@ const ProgramEdit: FC<ProgramEditProps> = ({ programId, onClose, data }) => {
             <div className="flex flex-col gap-2">
               <Input
                 id="harga"
-                type="number"
+                type="text"
                 label="Harga"
                 register={{ ...register("harga") }}
                 errors={errors}
-                defaultValue={data?.harga}
+                defaultValue={formattedHarga}
+                // onchange format rupiah
+                onChange={formatRupiah}
               />
             </div>
 
