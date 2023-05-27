@@ -20,6 +20,8 @@ interface Kelompok {
   nama_kelompok: string;
   jadwal_id: string;
   program_id: string;
+  jumlah_siswa: number;
+  jumlah_jadwal: number;
   tipe: string;
   level: string;
   createdAt: Date;
@@ -115,8 +117,11 @@ const Kelompok: FC<Kelompok> = () => {
                       <CardKelompok
                         key={kelompok.id}
                         nama_kelompok={kelompok.nama_kelompok}
-                        level={kelompok.level}
-                        tipe={kelompok.tipe}
+                        level={kelompok.program.level}
+                        tipe={kelompok.program.tipe}
+                        nama_program={kelompok.program.nama_program}
+                        jumlah_siswa={kelompok.jumlah_siswa}
+                        jumlah_jadwal={kelompok.jumlah_jadwal}
                         onClick={() => {
                           setSelected(kelompok);
                         }}

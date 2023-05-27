@@ -18,10 +18,12 @@ import Image from "next/image";
 
 interface CardKelompokProps {
   id?: string;
-
+  nama_program: string;
   level: string;
   tipe: string;
   nama_kelompok: string;
+  jumlah_siswa: number;
+  jumlah_jadwal: number;
   onClick: () => void;
   onDetail: () => void;
   addAnggota: () => void;
@@ -80,8 +82,11 @@ interface Jadwal {
 const CardKelompok: FC<CardKelompokProps> = ({
   id,
   nama_kelompok,
+  nama_program,
   tipe,
   level,
+  jumlah_siswa,
+  jumlah_jadwal,
   onDetail,
   onClick,
   addAnggota,
@@ -131,9 +136,8 @@ const CardKelompok: FC<CardKelompokProps> = ({
 
   return (
     <div
-      className={`flex flex-col bg-Neutral-100 shadow-[0px_2px_8px_-4px_rgba(0,0,0,.3)] rounded-lg py-5 px-4 gap-3 ${
-        isExpandedDetails || isExpandedJadwal ? "h-max" : ""
-      }`}
+      className={`flex flex-col bg-Neutral-100 shadow-[0px_2px_8px_-4px_rgba(0,0,0,.3)] rounded-lg py-5 px-4 gap-3 ${isExpandedDetails || isExpandedJadwal ? "h-max" : ""
+        }`}
     >
       <div className="flex justify-between">
         <h1 className=" text-Primary-10 font-bold capitalize">
@@ -143,18 +147,32 @@ const CardKelompok: FC<CardKelompokProps> = ({
         <div className="flex flex-col">
           <div className="flex flex-col items-end gap-1 justify-center">
             <h3 className="text-sm text-Neutral-30">Jumlah Anggota</h3>
-            <span className="font-bold text-Primary-10">6</span>
+            <span className="font-bold text-Primary-10">{
+              jumlah_siswa == 0 ? "Belum ada siswa" : jumlah_siswa
+            }</span>
           </div>
         </div>
       </div>
       <div className="flex justify-between">
         <div className="flex flex-col gap-1 justify-center">
           <h3 className="text-sm text-Neutral-30">Progam</h3>
-          <span className="font-bold text-Primary-10">Program</span>
+          <span className="font-bold text-Primary-10">{nama_program}</span>
+        </div>
+        <div className="flex flex-col gap-1 justify-center">
+          <h3 className="text-sm text-Neutral-30">Tipe</h3>
+          <span className="font-bold text-Primary-10">{tipe}</span>
+        </div>
+        <div className="flex flex-col gap-1 justify-center">
+          <h3 className="text-sm text-Neutral-30">Level</h3>
+          <span className="font-bold text-Primary-10">{level}</span>
         </div>
         <div className="flex flex-col items-end gap-1 justify-center">
           <h3 className="text-sm text-Neutral-30">Jumlah Jadwal</h3>
-          <span className="font-bold text-Primary-10">3</span>
+          <span className="font-bold text-Primary-10">
+            {
+              jumlah_jadwal == 0 ? "Belum ada jadwal" : jumlah_jadwal
+            }
+          </span>
         </div>
         {/* <h3 className="text-sm text-Neutral-30 font-bold">{level}</h3> */}
       </div>

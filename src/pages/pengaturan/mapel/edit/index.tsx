@@ -98,6 +98,11 @@ const MapelEdit: FC<MapelEditProps> = ({ mapelId, onClose, data }) => {
     setIsListOpenKelas(false);
   };
 
+  useEffect(() => {
+    // setValue kelasId  dari data.kelas.kelas_id
+    setValue("kelas_id", data?.kelas_id);
+  }, [data, setValue]);
+
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5">
       <div className="form-group">
