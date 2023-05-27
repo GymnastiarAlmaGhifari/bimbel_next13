@@ -9,6 +9,7 @@ import { ModalDetail } from "@/pages/components/modal/Modal";
 import { useSession } from "next-auth/react";
 import EditSiswa from "./edit";
 import CreateSiswa from "./create";
+import DetailSiswa from "./detail";
 
 interface Siswa {
   id: string;
@@ -61,7 +62,7 @@ const Siswa: FC<Siswa> = () => {
   };
 
   const [selectedEdit, setSelectedEdit] = useState<Siswa | null>(null);
-
+  const [selectedDetail, setSelectedDetail] = useState<Siswa | null>(null);
   const [selectedDelete, setSelectedDelete] = useState<Siswa | null>(null);
 
   const [showCreate, setShowCreate] = useState(false);
@@ -80,6 +81,7 @@ const Siswa: FC<Siswa> = () => {
   const backSiswa = () => {
     setSelectedEdit(null);
     setSelectedDelete(null);
+    setSelectedDetail(null);
   };
 
   return (
@@ -89,58 +91,63 @@ const Siswa: FC<Siswa> = () => {
         <Navbar />
         <div className="h-full p-5 bg-Neutral-95 overflow-auto ">
           <div className="flex flex-col h-full bg-Neutral-100 py-4 gap-4 rounded-lg overflow-auto">
-            <HeadTable label="Siswa" onClick={
-              () => setShowCreate(true)
-            }
+            <HeadTable
+              label="Siswa"
+              onClick={() => setShowCreate(true)}
               onChange={handleInputChange}
             />
             <div className="flex flex-col rounded-bl-lg rounded-br-lg p-4 gap-4 overflow-y-auto scrollbar">
-
-              {
-                filteredSiswa ? (
-                  <>
-                    {filteredSiswa.length === 0 ? (
-                      <div className="flex flex-col justify-center items-center">
-                        <p className="text-2xl font-bold text-Neutral-600">Data Kosong</p>
-                        <p className="text-Neutral-500">Silahkan tambahkan data Siswa</p>
-                      </div>
-                    ) : (
-                      <>
-                        {filteredSiswa.map((siswa) => (
-                          <CardSiswa
-                            key={siswa.id}
-                            tipe={siswa.kelompok?.program.tipe}
-                            kelas={siswa.kelompok?.program.kelas.nama_kelas}
-                            level={siswa.kelompok?.program.level}
-                            nama_siswa={siswa.nama}
-                            nama_kelompok={siswa.kelompok?.nama_kelompok}
-                            gambar={siswa.image}
-                            hp={siswa.nomor_telepon}
-                            onEdit={
-                              () => setSelectedEdit(siswa)
-                            }
-                            onDelete={() => setSelectedDelete(siswa)}
-                          />
-                        ))}
-                      </>
-                    )}
-                  </>
-                ) : (
-                  <>
-                    {error ? (
-                      <div className="flex flex-col justify-center items-center">
-                        <p className="text-2xl font-bold text-Neutral-600">Data Kosong</p>
-                        <p className="text-Neutral-500">Silahkan tambahkan data siswa</p>
-                      </div>
-                    ) : (
-                      <div className="flex flex-col justify-center items-center">
-                        <p className="text-2xl font-bold text-Neutral-600">Loading...</p>
-                      </div>
-                    )
-                    }
-                  </>
-                )
-              }
+              {filteredSiswa ? (
+                <>
+                  {filteredSiswa.length === 0 ? (
+                    <div className="flex flex-col justify-center items-center">
+                      <p className="text-2xl font-bold text-Neutral-600">
+                        Data Kosong
+                      </p>
+                      <p className="text-Neutral-500">
+                        Silahkan tambahkan data Siswa
+                      </p>
+                    </div>
+                  ) : (
+                    <>
+                      {filteredSiswa.map((siswa) => (
+                        <CardSiswa
+                          key={siswa.id}
+                          tipe={siswa.kelompok?.program.tipe}
+                          kelas={siswa.kelompok?.program.kelas.nama_kelas}
+                          level={siswa.kelompok?.program.level}
+                          nama_siswa={siswa.nama}
+                          nama_kelompok={siswa.kelompok?.nama_kelompok}
+                          gambar={siswa.image}
+                          hp={siswa.nomor_telepon}
+                          onEdit={() => setSelectedEdit(siswa)}
+                          onClick={() => setSelectedDetail(siswa)}
+                          onDelete={() => setSelectedDelete(siswa)}
+                        />
+                      ))}
+                    </>
+                  )}
+                </>
+              ) : (
+                <>
+                  {error ? (
+                    <div className="flex flex-col justify-center items-center">
+                      <p className="text-2xl font-bold text-Neutral-600">
+                        Data Kosong
+                      </p>
+                      <p className="text-Neutral-500">
+                        Silahkan tambahkan data siswa
+                      </p>
+                    </div>
+                  ) : (
+                    <div className="flex flex-col justify-center items-center">
+                      <p className="text-2xl font-bold text-Neutral-600">
+                        Loading...
+                      </p>
+                    </div>
+                  )}
+                </>
+              )}
             </div>
           </div>
         </div>
@@ -172,6 +179,21 @@ const Siswa: FC<Siswa> = () => {
           <CreateSiswa
             onClose={() => setShowCreate(false)}
             onSucsess={() => setShowSuccess(true)}
+          />
+        </ModalDetail>
+      )}
+
+      {selectedDetail && (
+        <ModalDetail titleModal="Detail Siswa" onClose={backSiswa}>
+          <DetailSiswa
+            alamat=""
+            email=""
+            hp_ortu=""
+            kelas=""
+            kelompok=""
+            nama=""
+            nomor_telepon=""
+            sekolah=""
           />
         </ModalDetail>
       )}

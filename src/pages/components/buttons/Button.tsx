@@ -4,11 +4,11 @@ import { IconType } from "react-icons";
 import { Link as RouterLink } from "react-router-dom";
 import { Link as ScrollLink } from "react-scroll";
 import { IoLogoWhatsapp } from "react-icons/io";
-import { ButtonHTMLAttributes, HtmlHTMLAttributes } from "react";
+import { ButtonHTMLAttributes, HtmlHTMLAttributes, ReactNode } from "react";
 
 interface ButtonProps {
   type: any;
-  label: string;
+  label: ReactNode;
   bgColor: string;
   textColor: string;
   brColor: string;
@@ -42,7 +42,8 @@ const Button: React.FC<ButtonProps> = ({
   // widthButton,
   icon: Icon,
 }) => {
-  const baseButtonStyle = "px-4 py-2 rounded-full font-bold flex gap-2 text-sm items-center h-10 ";
+  const baseButtonStyle =
+    "px-4 py-2 rounded-full font-bold flex gap-2 text-sm items-center h-10 ";
   return (
     <button
       type={type}

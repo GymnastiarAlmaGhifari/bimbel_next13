@@ -109,6 +109,12 @@ const ProgramEdit: FC<ProgramEditProps> = ({ programId, onClose, data }) => {
     };
   }, [setIsListOpenKelas, setIsListOpenLevel, setIsListOpenTipe, componentRef]);
 
+  // set kelas id dengan data kelas_id
+  useEffect(() => {
+    setValue("kelas_id", data?.kelas_id);
+  }, [data, setValue]);
+
+
   const toggleListKelas = () => {
     setIsListOpenKelas(!isListOpenKelas);
   };

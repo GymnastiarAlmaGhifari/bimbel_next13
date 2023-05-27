@@ -15,7 +15,7 @@ const LihatNota: FC<Nota> = ({ data, onClose }) => {
                     <div className="flex items-center h-max w-auto gap-3">
                         <div className="h-14 w-14">
                             <Image
-                                src={data.nota ? data.nota : "/img/user/default.png"}
+                                src={data?.nota ? data?.nota : "/img/user/default.png"}
                                 alt="Megachan"
                                 width={100}
                                 height={100}
@@ -24,9 +24,9 @@ const LihatNota: FC<Nota> = ({ data, onClose }) => {
                             />
                         </div>
                         <div className="flex flex-col gap-1">
-                            <h1 className=" text-Neutral-10 font-bold">{data.nama_siswa}</h1>
+                            <h1 className=" text-Neutral-10 font-bold">{data?.nama_siswa}</h1>
                             <div className="flex flex-col  gap-1">
-                                <h3 className="text-Neutral-30">{data.Bulan} - {data.Tahun}</h3>
+                                <h3 className="text-Neutral-30">{data?.Bulan} - {data?.Tahun}</h3>
                             </div>
                         </div>
                     </div>

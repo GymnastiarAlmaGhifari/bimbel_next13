@@ -11,6 +11,7 @@ import CreateKelompok from "./create";
 import Anggota from "./anggota";
 import Jadwal from "./jadwal";
 import TambahJadwal from "./jadwal";
+import DetailSiswa from "../siswa/detail";
 
 interface Kelompok {
   program: any;
@@ -19,6 +20,8 @@ interface Kelompok {
   nama_kelompok: string;
   jadwal_id: string;
   program_id: string;
+  jumlah_siswa: number;
+  jumlah_jadwal: number;
   tipe: string;
   level: string;
   createdAt: Date;
@@ -59,6 +62,7 @@ const Kelompok: FC<Kelompok> = () => {
 
   const [selectedAnggota, setSelectedAnggota] = useState<Kelompok | null>(null);
   const [selectedJadwal, setSelectedJadwal] = useState<Kelompok | null>(null);
+  const [selectedDetail, setSelectedDetail] = useState<Kelompok | null>(null);
 
   useEffect(() => {
     if (error) {
@@ -113,8 +117,11 @@ const Kelompok: FC<Kelompok> = () => {
                       <CardKelompok
                         key={kelompok.id}
                         nama_kelompok={kelompok.nama_kelompok}
-                        level={kelompok.level}
-                        tipe={kelompok.tipe}
+                        level={kelompok.program.level}
+                        tipe={kelompok.program.tipe}
+                        nama_program={kelompok.program.nama_program}
+                        jumlah_siswa={kelompok.jumlah_siswa}
+                        jumlah_jadwal={kelompok.jumlah_jadwal}
                         onClick={() => {
                           setSelected(kelompok);
                         }}
@@ -125,6 +132,7 @@ const Kelompok: FC<Kelompok> = () => {
                         addJadwal={() => {
                           setSelectedJadwal(kelompok);
                         }}
+                        onDetail={() => setSelectedDetail(kelompok)}
                       />
                     ))
                   )}
@@ -210,6 +218,24 @@ const Kelompok: FC<Kelompok> = () => {
             }}
             data={selectedJadwal}
             kelompokId={selectedJadwal.id}
+          />
+        </ModalDetail>
+      )}
+
+      {selectedDetail && (
+        <ModalDetail
+          titleModal="Detail Siswa"
+          onClose={() => setSelectedDetail(null)}
+        >
+          <DetailSiswa
+            alamat=""
+            email=""
+            hp_ortu=""
+            kelas=""
+            kelompok=""
+            nama=""
+            nomor_telepon=""
+            sekolah=""
           />
         </ModalDetail>
       )}
