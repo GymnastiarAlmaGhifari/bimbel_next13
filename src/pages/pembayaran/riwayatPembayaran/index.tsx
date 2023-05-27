@@ -1,7 +1,7 @@
 import HeadTable from "@/pages/components/HeadTable";
 import Navbar from "@/pages/components/Navbar";
 import Sidebar from "@/pages/components/Sidebar";
-import CardPembayaran from "@/pages/components/card/CardPembayaran";
+import CardPembayaran from "@/pages/components/card/CardPembayaranTagihan";
 import React, { FC, useEffect, useState } from "react";
 import useSWR from "swr";
 import fetcher from "@/libs/fetcher";
