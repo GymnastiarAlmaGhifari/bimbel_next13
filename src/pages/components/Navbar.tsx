@@ -57,7 +57,9 @@ const Navbar = () => {
 
   return (
     <div className="bg-Neutral-100 h-14 flex items-center justify-end gap-6 px-4 py-2 z-40">
-      <Notification onClose={() => {}} />
+      <Notification
+        onClose={() => { }}
+      />
       <button onClick={toggleMenu} className="relative">
         <div className="flex items-center inline-block gap-2">
           <div className="inline-block pr-2 flex flex-col">

@@ -8,24 +8,24 @@ import fetcher from "@/libs/fetcher";
 
 interface NotificationProps {
   onClose: () => void;
-  id: string;
-  nama_rekening: string;
-  nomor_rekening: string;
-  jumlah_tagihan: number;
-  tanggal_tagihan: string;
-  tanggal_jatuh_tempo: string;
-  tanggal_bayar: string;
-  tanggal_approve: string;
-  Bulan: string;
-  Tahun: number;
-  status: string;
-  nota: string;
-  user: {
-    name: string
+  id?: string;
+  nama_rekening?: string;
+  nomor_rekening?: string;
+  jumlah_tagihan?: number;
+  tanggal_tagihan?: string;
+  tanggal_jatuh_tempo?: string;
+  tanggal_bayar?: string;
+  tanggal_approve?: string;
+  Bulan?: string;
+  Tahun?: number;
+  status?: string;
+  nota?: string;
+  user?: {
+    name?: string
   }
-  siswa: {
-    nama: string
-    image: string
+  siswa?: {
+    nama?: string
+    image?: string
   }
 }
 
@@ -57,9 +57,6 @@ const Notification: FC<NotificationProps> = ({ onClose }) => {
       document.removeEventListener("mousedown", handleOutsideClick);
     };
   }, [setIsOpen, componentRef]);
-
-
-
 
   const handleClick = () => {
     setIsOpen(!isOpen);
