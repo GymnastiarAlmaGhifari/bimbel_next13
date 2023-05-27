@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import { MdModeEdit } from "react-icons/md";
+import { MdDelete, MdModeEdit } from "react-icons/md";
 import Button from "./buttons/Button";
 import { IoIosAdd } from "react-icons/io";
 
@@ -28,8 +28,24 @@ const ItemJadwalTerisi: FC<ItemJadwalTerisiProps> = ({
         </div>
         <p className="text-Tertiary-90 font-bold">{nama_tentor}</p>
       </div>
-      <div className="absolute bottom-0 right-0">
-        <Button
+      <div className="flex absolute bottom-2 right-2 gap-2">
+        {/* <Button
+          bgColor="bg-Neutral-100"
+          brColor=""
+          label=""
+          noLabel
+          textColor="text-Tertiary-90"
+          icon={MdDelete}
+          type={"button"}
+          // onClick={onClick}
+        /> */}
+        <button className="hover:text-Error-40" onClick={onClick}>
+          <MdDelete size={24} />
+        </button>
+        <button className="hover:text-Tertiary-40" onClick={onClick}>
+          <MdModeEdit size={24} />
+        </button>
+        {/* <Button
           bgColor="bg-Neutral-100"
           brColor=""
           label=""
@@ -37,8 +53,8 @@ const ItemJadwalTerisi: FC<ItemJadwalTerisiProps> = ({
           textColor="text-Tertiary-90"
           type={"button"}
           icon={MdModeEdit}
-          onClick={onClick}
-        />
+          // onClick={onClick}
+        /> */}
       </div>
     </div>
   );
@@ -51,12 +67,15 @@ export const ItemJadwalBelumTerisi: FC<ItemJadwalBelumTerisiProps> = ({
 }) => {
   return (
     <div className="flex flex-col justify-center w-full h-full">
-      <p className="inline-block h-full flex items-center justify-center">
+      <p className=" h-full flex items-center justify-center">
         Tidak Ada Jadwal
       </p>
       {/* button tambah jadwal */}
-      <div className="absolute bottom-0 right-0">
-        <Button
+      <div className="absolute bottom-0 right-2">
+        <button className="hover:text-Tertiary-40" onClick={onClick}>
+          <IoIosAdd size={24} />
+        </button>
+        {/* <Button
           bgColor="bg-Neutral-100"
           brColor=""
           label=""
@@ -65,7 +84,7 @@ export const ItemJadwalBelumTerisi: FC<ItemJadwalBelumTerisiProps> = ({
           icon={IoIosAdd}
           type={"button"}
           onClick={onClick}
-        />
+        /> */}
       </div>
     </div>
   );

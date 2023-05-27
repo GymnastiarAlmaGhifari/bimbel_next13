@@ -345,7 +345,6 @@ const UserEdit: FC<UserEditProps> = ({ userId, onClose, onSucsess, data }) => {
         {error && <p className="text-red-500">{error}</p>}
 
         <div className="flex flex-row justify-end gap-4">
-          0
           <Button
             center
             type="submit"
@@ -355,7 +354,7 @@ const UserEdit: FC<UserEditProps> = ({ userId, onClose, onSucsess, data }) => {
             label={
               isLoading ? (
                 <div className="flex gap-1 items-center">
-                  <div className="inline-block h-4 w-4 animate-spin rounded-full border-[3px] border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_3s_linear_infinite]"></div> 
+                  <div className="inline-block h-4 w-4 animate-spin rounded-full border-[3px] border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_3s_linear_infinite]"></div>
                   <span>Loading</span>
                 </div>
               ) : (
