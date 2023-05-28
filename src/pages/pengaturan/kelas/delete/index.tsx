@@ -43,7 +43,8 @@ const DeleteKelas: FC<KelasEditProps> = ({
   return (
     <div className="flex flex-col gap-6">
       <p className="text-center">
-        Apakah Anda yakin untuk menghapus kelas {data?.nama_kelas} secara
+        Apakah Anda yakin untuk menghapus kelas <span className="font-semibold
+        ">{data?.nama_kelas}</span>  secara
         permanen?
       </p>
       <div className="flex gap-4">

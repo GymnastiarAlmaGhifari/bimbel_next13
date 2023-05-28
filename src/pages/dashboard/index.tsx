@@ -21,6 +21,20 @@ const Dashboard = () => {
 
   const session = useSession();
 
+  const [inputValue, setInputValue] = useState<string>("");
+  const [debouncedValue, setDebouncedValue] = useState<string>("");
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedValue(inputValue);
+    }, 1000);
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [inputValue]);
+
+
   const {
     data: dashboard,
     error,
@@ -30,10 +44,38 @@ const Dashboard = () => {
     fetcher,
     {}
   );
-  const router = useRouter();
-  const backDashboard = () => {
-    router.push("/dashboard");
+
+  let filteredDashboard = null;
+
+  if (Array.isArray(dashboard)) {
+    // Filter the jadwal array for each item in the dashboard array
+    filteredDashboard = dashboard.map((item: any) => ({
+      ...item,
+      jadwal: item.jadwal.filter((jadwal: any) =>
+        jadwal.kelompok.nama_kelompok
+          .toLowerCase()
+          .includes(debouncedValue.toLowerCase())
+      ),
+    }));
+  } else if (dashboard && dashboard.jadwal) {
+    // Filter the jadwal array directly when dashboard is an object
+    filteredDashboard = {
+      ...dashboard,
+      jadwal: dashboard.jadwal.filter((jadwal: any) =>
+        jadwal.kelompok.nama_kelompok
+          .toLowerCase()
+          .includes(debouncedValue.toLowerCase())
+      ),
+    };
+  }
+
+
+  const handleInputChange = (value: string) => {
+    setInputValue(value);
   };
+
+
+
   return (
     <div className="flex flex-row h-full w-full font-mulish">
       <Sidebar />
@@ -71,7 +113,10 @@ const Dashboard = () => {
             }
           />
           <div className="flex flex-col h-full bg-Neutral-100 py-4 gap-4 rounded-lg overflow-auto">
-            <HeadTable noAdd label="Overview Jadwal" />
+            <HeadTable noAdd label="Overview Jadwal"
+
+              onChange={handleInputChange}
+            />
             <div className="flex flex-col scrollbar rounded-bl-lg rounded-br-lg p-4 gap-4 overflow-y-auto h-full ">
               {/* maping dashboard */}
 
@@ -82,14 +127,14 @@ const Dashboard = () => {
                 </div>
               ) : (
                 <div className="flex flex-col gap-4">
-                  {dashboard?.jadwal.map((index: any) => (
+                  {filteredDashboard?.jadwal.map((item: any) => (
                     <CardDashboard
-                      key={index}
-                      nama_kelompok={index?.kelompok.nama_kelompok}
-                      nama_mapel={index?.mapel.nama_mapel}
-                      nama_tentor={index?.user.name}
-                      nama_sesi={index?.sesi.nama_sesi}
-                      nama_program={index?.kelompok.program.nama_program}
+                      key={item.id}
+                      nama_kelompok={item.kelompok.nama_kelompok}
+                      nama_mapel={item.mapel.nama_mapel}
+                      nama_tentor={item.user.name}
+                      nama_sesi={item.sesi.nama_sesi}
+                      nama_program={item.kelompok.program.nama_program}
                     />
                   ))}
                 </div>

@@ -180,32 +180,33 @@ const CreateDiskon: FC<CreateDiskon> = ({ onClose, onSuccess }) => {
                         <p className="text-red-500">{errors.image?.message}</p>
                     )}
                 </div>
-                <div className="flex flex-col gap-10 w-full">
-                    <div className="flex flex-col gap-4 w-full">
-                        <Input
-                            id="nama_diskon"
-                            label="Nama Diskon"
-                            type="text"
-                            register={{ ...register("nama_diskon") }}
-                            errors={errors}
-                        />
-                        {errors.nama_diskon && (
-                            <p className="text-red-500">{errors.nama_diskon.message}</p>
-                        )}
+            </div>
+            <div className="flex flex-col gap-10 w-full">
+                <div className="flex flex-col gap-4 w-full">
+                    <Input
+                        id="nama_diskon"
+                        label="Nama Diskon"
+                        type="text"
+                        register={{ ...register("nama_diskon") }}
+                        errors={errors}
+                    />
+                    {errors.nama_diskon && (
+                        <p className="text-red-500">{errors.nama_diskon.message}</p>
+                    )}
 
-                    </div>
-                    <div className="flex flex-row justify-end">
-                        <Button
-                            type="submit"
-                            bgColor="bg-Tertiary-50"
-                            brColor=""
-                            label="Konfirmasi"
-                            textColor="text-Neutral-100"
-                            withBgColor
-                        />
-                    </div>
+                </div>
+                <div className="flex flex-row justify-end">
+                    <Button
+                        type="submit"
+                        bgColor="bg-Tertiary-50"
+                        brColor=""
+                        label="Konfirmasi"
+                        textColor="text-Neutral-100"
+                        withBgColor
+                    />
                 </div>
             </div>
+
         </form>
     )
 }

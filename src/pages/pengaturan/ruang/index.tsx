@@ -11,6 +11,7 @@ import Create from "./create";
 import Sidebar from "@/pages/components/Sidebar";
 import Navbar from "@/pages/components/Navbar";
 import NavbarPengaturan from "@/pages/components/NavbarPengaturan";
+import DeleteRuang from "./delete";
 
 interface Ruang {
   id: string;
@@ -31,6 +32,7 @@ const Ruang: FC<Props> = () => {
   const { data: ruang, error } = useSWR<Ruang[]>("/api/ruang", fetcher, {});
 
   const [selectedRuang, setSelectedRuang] = useState<Ruang | null>(null);
+  const [selectedRuangDelete, setSelectedRuangDelete] = useState<Ruang | null>(null);
 
   const [showCreate, setShowCreate] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
@@ -120,6 +122,9 @@ const Ruang: FC<Props> = () => {
                           onClick={() => {
                             setSelectedRuang(ruang);
                           }}
+                          onDelete={() => {
+                            setSelectedRuangDelete(ruang);
+                          }}
                         />
                       ))
                     )}
@@ -166,6 +171,31 @@ const Ruang: FC<Props> = () => {
                     />
                   </ModalDetail>
                 )}
+
+                {/* modal delete */}
+                {selectedRuangDelete && (
+                  <ModalDetail
+                    titleModal="Hapus Ruang"
+                    onClose={() => setSelectedRuangDelete(null)}
+                    silang
+                    center
+                    wAuto
+                  >
+                    <DeleteRuang
+                      idRuang={
+                        selectedRuangDelete?.id
+                      }
+                      data={selectedRuangDelete}
+                      onClose={() => setSelectedRuangDelete(null)}
+                      onSuccess={
+                        () => {
+                          setShowSuccess(true);
+                        }
+                      }
+                    />
+                  </ModalDetail>
+                )}
+
               </div>
             </div>
           </div>

@@ -22,15 +22,6 @@ const CardKelas: FC<CardKelasProps> = ({ nama_kelas, onEdit, onDelete }) => {
 
         <div className="flex flex-row gap-3">
           <Button
-            type="button"
-            bgColor="bg-Tertiary-50"
-            brColor=""
-            label="Edit Kelas"
-            textColor="text-Tertiary-50"
-            icon={MdModeEdit}
-            onClick={onEdit}
-          />
-          <Button
             bgColor="bg-Error-50"
             brColor=""
             label="Hapus Kelas"
@@ -38,6 +29,15 @@ const CardKelas: FC<CardKelasProps> = ({ nama_kelas, onEdit, onDelete }) => {
             type="button"
             icon={MdDelete}
             onClick={onDelete}
+          />
+          <Button
+            type="button"
+            bgColor="bg-Tertiary-50"
+            brColor=""
+            label="Edit Kelas"
+            textColor="text-Tertiary-50"
+            icon={MdModeEdit}
+            onClick={onEdit}
           />
         </div>
       </div>

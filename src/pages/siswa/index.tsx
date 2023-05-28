@@ -189,14 +189,10 @@ const Siswa: FC<Siswa> = () => {
       {selectedDetail && (
         <ModalDetail titleModal="Detail Siswa" onClose={backSiswa}>
           <DetailSiswa
-            alamat=""
-            email=""
-            hp_ortu=""
-            kelas=""
-            kelompok=""
-            nama=""
-            nomor_telepon=""
-            sekolah=""
+            idKelompok={
+              selectedDetail.kelompok_id ? selectedDetail.kelompok_id : ""
+            }
+            onClose={backSiswa}
           />
         </ModalDetail>
       )}

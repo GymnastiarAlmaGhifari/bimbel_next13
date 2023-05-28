@@ -126,13 +126,13 @@ const UserEdit: FC<UserEditProps> = ({ userId, onClose, onSucsess, data }) => {
     setIsListOpenMapel(!isListOpenMapel);
   };
 
-  let filteredMapel = mapel;
+  // let filteredMapel = mapel;
 
-  if (checkValue) {
-    filteredMapel = mapel?.filter((mapelItem) => {
-      return mapelItem.kelas.id === checkValue; // Add 'return' statement
-    });
-  }
+  // if (checkValue) {
+  //   filteredMapel = mapel?.filter((mapelItem) => {
+  //     return mapelItem.kelas.id === checkValue; // Add 'return' statement
+  //   });
+  // }
 
   const handleCheckChangeUser = (value: string) => {
     setCheckValueUser(value);
@@ -148,14 +148,22 @@ const UserEdit: FC<UserEditProps> = ({ userId, onClose, onSucsess, data }) => {
     setIsListOpenMapel(false);
   };
 
+
   const getRoleLabel = (value: string) => {
     const option = roleOptions.find((option) => option.value === value);
     return option ? option.label : "";
   };
 
-  const onSubmit: SubmitHandler<FormData> = async (data) => {
-    const { name, email, role, lulusan, nomor_telepon, alamat, image } = data;
+  // set value mapel dengan data mapel yang sudah ada
+  useEffect(() => {
+    setValue("mapel", data?.mapel?.id);
+  }, [data, setValue]);
 
+
+  const onSubmit: SubmitHandler<FormData> = async (data) => {
+    const { name, email, role, lulusan, nomor_telepon, mapel, alamat, image } = data;
+
+    console.log(data);
     if (!image || image.length === 0) {
       // alert("Please select an image");
       // return;
@@ -167,7 +175,7 @@ const UserEdit: FC<UserEditProps> = ({ userId, onClose, onSucsess, data }) => {
           name,
           email,
           role,
-          mapel,
+          mapel_id: mapel,
           nomor_telepon,
           universitas: lulusan,
           alamat,
@@ -228,7 +236,7 @@ const UserEdit: FC<UserEditProps> = ({ userId, onClose, onSucsess, data }) => {
           name,
           email,
           role,
-          mapel,
+          mapel_id: mapel,
           nomor_telepon,
           universitas: lulusan,
           alamat,
@@ -315,7 +323,7 @@ const UserEdit: FC<UserEditProps> = ({ userId, onClose, onSucsess, data }) => {
         <div>
           <label
             htmlFor="image"
-            className="bg-Primary-40 text-white px-4 py-2 rounded cursor-pointer flex items-center justify-center space-x-2 rounded-full bg-opacity-90 hover:bg-opacity-100"
+            className="bg-Primary-40 text-white px-4 py-2 cursor-pointer flex items-center justify-center space-x-2 rounded-full bg-opacity-90 hover:bg-opacity-100"
           >
             <IoMdCloudUpload size={24} />
             <span className="font-semibold">Choose File</span>
@@ -386,7 +394,7 @@ const UserEdit: FC<UserEditProps> = ({ userId, onClose, onSucsess, data }) => {
                   }`}
                 onClick={toggleList}
               >
-                {getRoleLabel(roleLabel)}
+                {getRoleLabel(watch("role") ?? "") || roleLabel}
                 {isListOpen ? <IoIosArrowUp /> : <IoIosArrowDown />}
               </button>
               {isListOpen && (
@@ -433,7 +441,7 @@ const UserEdit: FC<UserEditProps> = ({ userId, onClose, onSucsess, data }) => {
               <span className="text-red-500">{errors.role.message}</span>
             )}
           </div>
-          <div className="flex flex-col gap-1 w-full">
+          <div className="flex flex-col gap-2">
             <label htmlFor="" className="text-sm text-Primary-10">
               Mapel
             </label>
@@ -449,10 +457,11 @@ const UserEdit: FC<UserEditProps> = ({ userId, onClose, onSucsess, data }) => {
               >
                 {/* buat label */}
                 {watch("mapel") ? (
-                  mapel?.find((mapelItem) => mapelItem.id === watch("mapel"))
-                    ?.nama_mapel
+                  mapel?.find(
+                    (mapelItem) => mapelItem.id === watch("mapel")
+                  )?.nama_mapel
                 ) : (
-                  <span className="text-Neutral-300">Pilih Mapel</span>
+                  <span className="text-Neutral-300">Pilih Kelas</span>
                 )}
                 {isListOpenMapel ? <IoIosArrowUp /> : <IoIosArrowDown />}
               </button>
@@ -461,23 +470,28 @@ const UserEdit: FC<UserEditProps> = ({ userId, onClose, onSucsess, data }) => {
                   className="absolute w-full top-[44px] z-10 bg-Neutral-100 border-[2px] border-Primary-50 rounded-xl py-2 px-2 outline-none appearance-none flex flex-col gap-1"
                   ref={componentRef}
                 >
-                  {filteredMapel?.map((mapelItem) => (
-                    <li key={mapelItem.id}>
-                      <button
-                        type="button"
-                        className={`w-full text-left px-2 py-1 rounded-full ${watch("mapel") === mapelItem.id
-                          ? "text-Primary-90 bg-Primary-20"
-                          : "text-Primary-20 hover:bg-Primary-95"
-                          }`}
-                        onClick={() => {
-                          selectMapel(mapelItem.id);
-                          handleCheckChangeUser(mapelItem.id);
-                        }}
-                      >
-                        {mapelItem.nama_mapel}
-                      </button>
-                    </li>
-                  ))}
+                  {error ? (
+                    <li>Error fetching data</li>
+                  ) : !mapel ? (
+                    <li>Loading...</li>
+                  ) : mapel.length === 0 ? (
+                    <li>No classes available</li>
+                  ) : (
+                    mapel.map((mapelItem) => (
+                      <li key={mapelItem.id}>
+                        <button
+                          type="button"
+                          className={`w-full text-left px-2 py-1 rounded-full ${watch("mapel") === mapelItem.id
+                            ? "text-Primary-90 bg-Primary-20"
+                            : "text-Primary-20 hover:bg-Primary-95"
+                            }`}
+                          onClick={() => selectMapel(mapelItem.id)}
+                        >
+                          {mapelItem.nama_mapel}
+                        </button>
+                      </li>
+                    ))
+                  )}
                 </ul>
               )}
             </div>
