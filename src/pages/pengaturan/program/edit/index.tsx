@@ -226,7 +226,6 @@ const ProgramEdit: FC<ProgramEditProps> = ({ programId, onClose, data }) => {
     setValue("kelas_id", data?.kelas_id);
   }, [data, setValue]);
 
-
   const toggleListKelas = () => {
     setIsListOpenKelas(!isListOpenKelas);
   };

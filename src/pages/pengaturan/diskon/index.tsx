@@ -5,7 +5,7 @@ import Sidebar from "@/pages/components/Sidebar";
 import Button from "@/pages/components/buttons/Button";
 import { ModalDetail } from "@/pages/components/modal/Modal";
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { IoMdCloud, IoMdCloudUpload } from "react-icons/io";
 import CreateDiskon from "./create";
 import useSWR from "swr";
@@ -33,6 +33,10 @@ const Diskon = ({ }) => {
 
   const [showSuccess, setShowSuccess] = useState(false);
 
+const Diskon = ({}) => {
+  useEffect(() => {
+    document.title = "Bimbel Linear";
+  });
   return (
     <div className="flex flex-row h-screen font-mulish">
       <Sidebar />

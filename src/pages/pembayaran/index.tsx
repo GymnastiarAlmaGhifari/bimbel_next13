@@ -1,10 +1,13 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Sidebar from "../components/Sidebar";
 import HeadTable from "../components/HeadTable";
 import Navbar from "../components/Navbar";
 import CardPembayaran from "../components/card/CardPembayaranTagihan";
 
 const Pembayaran = () => {
+  useEffect(() => {
+    document.title = "Bimbel Linear";
+  });
   return (
     <div className="flex flex-row h-screen font-mulish">
       <Sidebar />
