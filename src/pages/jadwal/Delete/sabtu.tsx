@@ -3,7 +3,7 @@ import axios from "axios";
 import Button from "@/pages/components/buttons/Button";
 import { mutate } from "swr";
 
-interface DeleteSeninProps {
+interface DeleteSabtuProps {
     hari: string;
     sesi: string;
     ruang: string;
@@ -13,7 +13,7 @@ interface DeleteSeninProps {
     onSuccess: () => void;
 }
 
-const DeleteSenin: FC<DeleteSeninProps> = ({ hari, ruang, jadwalId, idRuang, sesi, onClose, onSuccess }) => {
+const DeleteSabtu: FC<DeleteSabtuProps> = ({ hari, ruang, jadwalId, idRuang, sesi, onClose, onSuccess }) => {
 
     const [isLoading, setIsLoading] = useState(false);
 
@@ -76,4 +76,4 @@ const DeleteSenin: FC<DeleteSeninProps> = ({ hari, ruang, jadwalId, idRuang, ses
     )
 }
 
-export default DeleteSenin
+export default DeleteSabtu
