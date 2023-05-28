@@ -329,17 +329,19 @@ const Jadwal: FC<Jadwal> = () => {
       <div className="w-full flex flex-col ">
         <Navbar />
         <div className="h-full p-5 bg-Neutral-95 overflow-auto">
-          <div className="flex flex-col h-full p-4 gap-4 bg-Neutral-100 rounded-lg w-full">
+          <div className="flex flex-col h-full p-4 gap-4 bg-Neutral-100 rounded-lg w-full overflow-auto">
             <div>
               <div className="flex justify-between">
                 <h1 className="text-lg font-bold">Jadwal</h1>
                 <div className="flex flex-col w-52 relative">
                   <button
                     type="button"
-                    className={`w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${listOpenRuang
-                      ? "border-[2px] border-Primary-50 bg-Primary-95"
-                      : "bg-Neutral-95"
-                      }`}
+
+                    className={`px-4 w-full h-10 text-left outline-none rounded-full flex justify-between items-center ${
+                      listOpenRuang
+                        ? "border-[2px] border-Primary-50 bg-Primary-95"
+                        : "bg-Neutral-95"
+                    }`}
                     onClick={toggleListRuang}
                   >
                     {
@@ -363,10 +365,11 @@ const Jadwal: FC<Jadwal> = () => {
                         ruang.map((ruang) => (
                           <li key={ruang.id}>
                             <button
-                              className={`w-full text-left px-4 py-1 rounded-full ${watch("ruang_id") === ruang.id
-                                ? "text-Primary-90 bg-Primary-20"
-                                : "text-Primary-20 hover:bg-Primary-95"
-                                }`}
+                              className={`w-full text-left py-1 px-4 rounded-full ${
+                                watch("ruang_id") === ruang.id
+                                  ? "text-Primary-90 bg-Primary-20"
+                                  : "text-Primary-20 hover:bg-Primary-95"
+                              }`}
                               onClick={() => {
                                 selectRuang(ruang.id);
                                 setSelectNamaRuang(ruang.nama_ruang);
@@ -389,246 +392,248 @@ const Jadwal: FC<Jadwal> = () => {
                 )}
               </div>
             </div>
-            <div className="h-full flex flex-col gap-4 justify-between">
-              <div className="flex gap-4 w-full">
-                <div className="py-2 px-4 w-full rounded-lg bg-Neutral-100 text-Primary-20 shadow-[0px_0px_10px_5px_rgba(149,146,146,.25)] font-semibold text-center ">
+            <div className="h-full flex flex-col gap-4 justify-between overflow-auto">
+              <div className="flex gap-4 w-full pr-4">
+                <div className="py-2 w-full rounded-lg bg-Neutral-100 text-Primary-20 shadow-[0px_0px_10px_5px_rgba(149,146,146,.25)] font-semibold text-center ">
                   Hari
                 </div>
-                <div className="py-2 px-4 w-full rounded-lg bg-Neutral-100 text-Primary-20 shadow-[0px_0px_10px_5px_rgba(149,146,146,.25)] font-semibold text-center ">
+                <div className="py-2 w-full rounded-lg bg-Neutral-100 text-Primary-20 shadow-[0px_0px_10px_5px_rgba(149,146,146,.25)] font-semibold text-center ">
                   Senin
                 </div>
-                <div className="py-2 px-4 w-full rounded-lg bg-Neutral-100 text-Primary-20 shadow-[0px_0px_10px_5px_rgba(149,146,146,.25)] font-semibold text-center ">
+                <div className="py-2 w-full rounded-lg bg-Neutral-100 text-Primary-20 shadow-[0px_0px_10px_5px_rgba(149,146,146,.25)] font-semibold text-center ">
                   Selasa
                 </div>
-                <div className="py-2 px-4 w-full rounded-lg bg-Neutral-100 text-Primary-20 shadow-[0px_0px_10px_5px_rgba(149,146,146,.25)] font-semibold text-center ">
+                <div className="py-2 w-full rounded-lg bg-Neutral-100 text-Primary-20 shadow-[0px_0px_10px_5px_rgba(149,146,146,.25)] font-semibold text-center ">
                   rabu
                 </div>
-                <div className="py-2 px-4 w-full rounded-lg bg-Neutral-100 text-Primary-20 shadow-[0px_0px_10px_5px_rgba(149,146,146,.25)] font-semibold text-center ">
+                <div className="py-2 w-full rounded-lg bg-Neutral-100 text-Primary-20 shadow-[0px_0px_10px_5px_rgba(149,146,146,.25)] font-semibold text-center ">
                   Kamis
                 </div>
-                <div className="py-2 px-4 w-full rounded-lg bg-Neutral-100 text-Primary-20 shadow-[0px_0px_10px_5px_rgba(149,146,146,.25)] font-semibold text-center ">
+                <div className="py-2 w-full rounded-lg bg-Neutral-100 text-Primary-20 shadow-[0px_0px_10px_5px_rgba(149,146,146,.25)] font-semibold text-center ">
                   Jumat
                 </div>
-                <div className="py-2 px-4 w-full rounded-lg bg-Neutral-100 text-Primary-20 shadow-[0px_0px_10px_5px_rgba(149,146,146,.25)] font-semibold text-center ">
+                <div className="py-2 w-full rounded-lg bg-Neutral-100 text-Primary-20 shadow-[0px_0px_10px_5px_rgba(149,146,146,.25)] font-semibold text-center ">
                   Sabtu
                 </div>
-                <div className="py-2 px-4 w-full rounded-lg bg-Neutral-100 text-Primary-20 shadow-[0px_0px_10px_5px_rgba(149,146,146,.25)] font-semibold text-center ">
+                <div className="py-2 w-full rounded-lg bg-Neutral-100 text-Primary-20 shadow-[0px_0px_10px_5px_rgba(149,146,146,.25)] font-semibold text-center ">
                   Minggu
                 </div>
               </div>
-              {sesi?.map((item: any) => {
-                const hari_senin = senin?.find(
-                  (hari_senin) => hari_senin.sesi?.nama_sesi === item.nama_sesi
-                );
+              <div className="flex flex-col h-full gap-4 overflow-y-scroll scrollbar pr-2">
+                {sesi?.map((item: any) => {
+                  const hari_senin = senin?.find(
+                    (hari_senin) =>
+                      hari_senin.sesi?.nama_sesi === item.nama_sesi
+                  );
 
-                const hari_selasa = selasa?.find(
-                  (hari_selasa) => hari_selasa.sesi.nama_sesi === item.nama_sesi
-                );
+                  const hari_selasa = selasa?.find(
+                    (hari_selasa) =>
+                      hari_selasa.sesi.nama_sesi === item.nama_sesi
+                  );
 
-                const hari_rabu = rabu?.find(
-                  (hari_rabu) => hari_rabu.sesi.nama_sesi === item.nama_sesi
-                );
+                  const hari_rabu = rabu?.find(
+                    (hari_rabu) => hari_rabu.sesi.nama_sesi === item.nama_sesi
+                  );
 
-                const hari_kamis = kamis?.find(
-                  (hari_kamis) => hari_kamis.sesi.nama_sesi === item.nama_sesi
-                );
+                  const hari_kamis = kamis?.find(
+                    (hari_kamis) => hari_kamis.sesi.nama_sesi === item.nama_sesi
+                  );
 
-                const hari_jumat = jumat?.find(
-                  (hari_jumat) => hari_jumat.sesi.nama_sesi === item.nama_sesi
-                );
+                  const hari_jumat = jumat?.find(
+                    (hari_jumat) => hari_jumat.sesi.nama_sesi === item.nama_sesi
+                  );
 
-                const hari_sabtu = sabtu?.find(
-                  (hari_sabtu) => hari_sabtu.sesi.nama_sesi === item.nama_sesi
-                );
+                  const hari_sabtu = sabtu?.find(
+                    (hari_sabtu) => hari_sabtu.sesi.nama_sesi === item.nama_sesi
+                  );
 
-                const hari_minggu = minggu?.find(
-                  (hari_minggu) => hari_minggu.sesi.nama_sesi === item.nama_sesi
-                );
+                  const hari_minggu = minggu?.find(
+                    (hari_minggu) =>
+                      hari_minggu.sesi.nama_sesi === item.nama_sesi
+                  );
 
-                return (
-                  <div
-                    key={item.id}
-                    className="flex justify-between h-full gap-4"
-                  >
-                    <div className="py-2 px-4 bg-Primary-20 rounded-lg h-full text-Primary-90 font-bold w-full flex flex-col items-center justify-center shadow-[0px_0px_10px_5px_rgba(149,146,146,.25)]">
-                      <div className="flex flex-col justify-center items-center ">
-                        {item.nama_sesi}
-                        <div className="text-xs">
-                          {item.jam_mulai} - {item.jam_selesai}
+                  return (
+                    <div key={item.id} className="flex justify-between gap-4">
+                      <div className="bg-Primary-20 rounded-lg h-48 text-Primary-90 font-bold w-full flex flex-col items-center justify-center shadow-[0px_0px_10px_5px_rgba(149,146,146,.25)]">
+                        <div className="flex flex-col justify-center items-center ">
+                          {item.nama_sesi}
+                          <div className="text-xs">
+                            {item.jam_mulai} - {item.jam_selesai}
+                          </div>
                         </div>
                       </div>
+                      {hari_senin ? (
+                        <div className="bg-Tertiary-50 rounded-lg h-full text-Tertiary-90 font-bold w-full flex items-center justify-center shadow-[0px_0px_10px_5px_rgba(149,146,146,.25)] relative">
+                          <ItemJadwal
+                            key={hari_senin.id}
+                            nama_mapel={hari_senin.mapel.nama_mapel}
+                            kelompok={hari_senin.kelompok.nama_kelompok}
+                            nama_tentor={hari_senin.user.name}
+                            onClick={() => {
+                              setSeninModal(hari_senin);
+                            }}
+                            onDelete={() => {
+                              setSeninModalDelete(hari_senin);
+                            }}
+                          />
+                        </div>
+                      ) : (
+                        <div className="bg-Error-40 rounded-lg h-full text-Error-90 font-bold w-full flex items-center justify-center text-center shadow-[0px_0px_10px_5px_rgba(149,146,146,.25)] flex-col relative">
+                          <ItemJadwalBelumTerisi
+                            onClick={() => {
+                              setSeninModalCreate(item.id);
+                            }}
+                          />
+                        </div>
+                      )}
+                      {hari_selasa ? (
+                        <div className="bg-Tertiary-50 rounded-lg h-full text-Tertiary-90 font-bold w-full flex items-center justify-center shadow-[0px_0px_10px_5px_rgba(149,146,146,.25)] relative">
+                          <ItemJadwal
+                            key={hari_selasa.id}
+                            nama_mapel={hari_selasa.mapel.nama_mapel}
+                            kelompok={hari_selasa.kelompok.nama_kelompok}
+                            nama_tentor={hari_selasa.user.name}
+                            onClick={() => {
+                              setSelasaModal(hari_selasa);
+                            }}
+                            onDelete={() => {
+                              setSelasaModalDelete(hari_selasa);
+                            }}
+                          />
+                        </div>
+                      ) : (
+                        <div className="bg-Error-40 rounded-lg h-full text-Error-90 font-bold w-full flex items-center justify-center text-center shadow-[0px_0px_10px_5px_rgba(149,146,146,.25)] relative">
+                          <ItemJadwalBelumTerisi
+                            onClick={() => {
+                              setSelasaModalCreate(item.id);
+                            }}
+                          />
+                        </div>
+                      )}
+                      {hari_rabu ? (
+                        <div className="bg-Tertiary-50 rounded-lg h-full text-Tertiary-90 font-bold w-full flex items-center justify-center shadow-[0px_0px_10px_5px_rgba(149,146,146,.25)] relative">
+                          <ItemJadwal
+                            key={hari_rabu.id}
+                            nama_mapel={hari_rabu.mapel.nama_mapel}
+                            kelompok={hari_rabu.kelompok.nama_kelompok}
+                            nama_tentor={hari_rabu.user.name}
+                            onClick={() => {
+                              setRabuModal(hari_rabu);
+                            }}
+                            onDelete={() => {
+                              setRabuModalDelete(hari_rabu);
+                            }}
+                          />
+                        </div>
+                      ) : (
+                        <div className="bg-Error-40 rounded-lg h-full text-Error-90 font-bold w-full flex items-center justify-center text-center shadow-[0px_0px_10px_5px_rgba(149,146,146,.25)] relative">
+                          <ItemJadwalBelumTerisi
+                            onClick={() => {
+                              setRabuModalCreate(item.id);
+                            }}
+                          />
+                        </div>
+                      )}
+                      {hari_kamis ? (
+                        <div className="bg-Tertiary-50 text-Tertiary-90 rounded-lg h-full w-full flex items-center shadow-[0px_0px_10px_5px_rgba(149,146,146,.25)] relative">
+                          <ItemJadwal
+                            key={hari_kamis.id}
+                            nama_mapel={hari_kamis.mapel.nama_mapel}
+                            kelompok={hari_kamis.kelompok.nama_kelompok}
+                            nama_tentor={hari_kamis.user.name}
+                            onClick={() => {
+                              setKamisModal(hari_kamis);
+                            }}
+                            onDelete={() => {
+                              setKamisModalDelete(hari_kamis);
+                            }}
+                          />
+                        </div>
+                      ) : (
+                        <div className="bg-Error-40 rounded-lg h-full text-Error-90 font-bold w-full flex items-center justify-center text-center shadow-[0px_0px_10px_5px_rgba(149,146,146,.25)] relative">
+                          <ItemJadwalBelumTerisi
+                            onClick={() => {
+                              setKamisModalCreate(item.id);
+                            }}
+                          />
+                        </div>
+                      )}
+                      {hari_jumat ? (
+                        <div className="bg-Tertiary-50 rounded-lg h-full text-Tertiary-90 font-bold w-full flex items-center justify-center shadow-[0px_0px_10px_5px_rgba(149,146,146,.25)] relative">
+                          <ItemJadwal
+                            key={hari_jumat.id}
+                            nama_mapel={hari_jumat.mapel.nama_mapel}
+                            kelompok={hari_jumat.kelompok.nama_kelompok}
+                            nama_tentor={hari_jumat.user.name}
+                            onClick={() => {
+                              setJumatModal(hari_jumat);
+                            }}
+                            onDelete={() => {
+                              setJumatModalDelete(hari_jumat);
+                            }}
+                          />
+                        </div>
+                      ) : (
+                        <div className="bg-Error-40 rounded-lg h-full text-Error-90 font-bold w-full flex items-center justify-center text-center shadow-[0px_0px_10px_5px_rgba(149,146,146,.25)] relative">
+                          <ItemJadwalBelumTerisi
+                            onClick={() => {
+                              setJumatModalCreate(item.id);
+                            }}
+                          />
+                        </div>
+                      )}
+                      {hari_sabtu ? (
+                        <div className="bg-Tertiary-50 rounded-lg h-full text-Tertiary-90 font-bold w-full flex items-center justify-center shadow-[0px_0px_10px_5px_rgba(149,146,146,.25)] relative">
+                          <ItemJadwal
+                            key={hari_sabtu.id}
+                            nama_mapel={hari_sabtu.mapel.nama_mapel}
+                            kelompok={hari_sabtu.kelompok.nama_kelompok}
+                            nama_tentor={hari_sabtu.user.name}
+                            onClick={() => {
+                              setSabtuModal(hari_sabtu);
+                            }}
+                            onDelete={() => {
+                              setSabtuModalDelete(hari_sabtu);
+                            }}
+                          />
+                        </div>
+                      ) : (
+                        <div className="bg-Error-40 rounded-lg h-full text-Error-90 font-bold w-full flex items-center justify-center text-center shadow-[0px_0px_10px_5px_rgba(149,146,146,.25)] relative">
+                          <ItemJadwalBelumTerisi
+                            onClick={() => {
+                              setSabtuModalCreate(item.id);
+                            }}
+                          />
+                        </div>
+                      )}
+                      {hari_minggu ? (
+                        <div className="bg-Tertiary-50 rounded-lg h-full text-Tertiary-90 font-bold w-full flex items-center justify-center shadow-[0px_0px_10px_5px_rgba(149,146,146,.25)] relative">
+                          <ItemJadwal
+                            key={hari_minggu.id}
+                            nama_mapel={hari_minggu.mapel.nama_mapel}
+                            kelompok={hari_minggu.kelompok.nama_kelompok}
+                            nama_tentor={hari_minggu.user.name}
+                            onClick={() => {
+                              setMingguModal(hari_minggu);
+                            }}
+                            onDelete={() => {
+                              setMingguModalDelete(hari_minggu);
+                            }}
+                          />
+                        </div>
+                      ) : (
+                        <div className="bg-Error-40 rounded-lg h-full text-Error-90 font-bold w-full flex items-center justify-center text-center shadow-[0px_0px_10px_5px_rgba(149,146,146,.25)] relative">
+                          <ItemJadwalBelumTerisi
+                            onClick={() => {
+                              setMingguModalCreate(item.id);
+                            }}
+                          />
+                        </div>
+                      )}
                     </div>
-                    {hari_senin ? (
-                      <div className="py-2 px-4 bg-Tertiary-50 rounded-lg h-full text-Tertiary-90 font-bold w-full flex items-center justify-center shadow-[0px_0px_10px_5px_rgba(149,146,146,.25)] relative">
-                        <ItemJadwal
-                          key={hari_senin.id}
-                          nama_mapel={hari_senin.mapel.nama_mapel}
-                          kelompok={hari_senin.kelompok.nama_kelompok}
-                          nama_tentor={hari_senin.user.name}
-                          onClick={() => {
-                            setSeninModal(hari_senin);
-                          }}
-                          onDelete={() => {
-                            setSeninModalDelete(hari_senin);
-                          }}
-                        />
-                      </div>
-                    ) : (
-                      <div className="py-2 px-4 bg-Error-40 rounded-lg h-full text-Error-90 font-bold w-full flex items-center justify-center text-center shadow-[0px_0px_10px_5px_rgba(149,146,146,.25)] flex-col relative">
-                        <ItemJadwalBelumTerisi
-                          onClick={() => {
-                            setSeninModalCreate(item.id);
-                          }}
-                        />
-                      </div>
-                    )}
-                    {hari_selasa ? (
-                      <div className="py-2 px-4 bg-Tertiary-50 rounded-lg h-full text-Tertiary-90 font-bold w-full flex items-center justify-center shadow-[0px_0px_10px_5px_rgba(149,146,146,.25)] relative">
-                        <ItemJadwal
-                          key={hari_selasa.id}
-                          nama_mapel={hari_selasa.mapel.nama_mapel}
-                          kelompok={hari_selasa.kelompok.nama_kelompok}
-                          nama_tentor={hari_selasa.user.name}
-                          onClick={() => {
-                            setSelasaModal(hari_selasa);
-                          }}
-                          onDelete={() => {
-                            setSelasaModalDelete(hari_selasa);
-                          }}
-                        />
-                      </div>
-                    ) : (
-                      <div className="py-2 px-4 bg-Error-40 rounded-lg h-full text-Error-90 font-bold w-full flex items-center justify-center text-center shadow-[0px_0px_10px_5px_rgba(149,146,146,.25)] relative">
-                        <ItemJadwalBelumTerisi
-                          onClick={() => {
-                            setSelasaModalCreate(item.id);
-                          }}
-                        />
-                      </div>
-                    )}
-                    {hari_rabu ? (
-                      <div className="py-2 px-4 bg-Tertiary-50 rounded-lg h-full text-Tertiary-90 font-bold w-full flex items-center justify-center shadow-[0px_0px_10px_5px_rgba(149,146,146,.25)] relative">
-                        <ItemJadwal
-                          key={hari_rabu.id}
-                          nama_mapel={hari_rabu.mapel.nama_mapel}
-                          kelompok={hari_rabu.kelompok.nama_kelompok}
-                          nama_tentor={hari_rabu.user.name}
-                          onClick={() => {
-                            setRabuModal(hari_rabu);
-                          }}
-                          onDelete={() => {
-                            setRabuModalDelete(hari_rabu);
-                          }}
-                        />
-                      </div>
-                    ) : (
-                      <div className="py-2 px-4 bg-Error-40 rounded-lg h-full text-Error-90 font-bold w-full flex items-center justify-center text-center shadow-[0px_0px_10px_5px_rgba(149,146,146,.25)] relative">
-                        <ItemJadwalBelumTerisi
-                          onClick={() => {
-                            setRabuModalCreate(item.id);
-                          }}
-                        />
-                      </div>
-                    )}
-                    {hari_kamis ? (
-                      <div className="py-2 px-4 bg-Tertiary-50 text-Tertiary-90 rounded-lg h-full w-full flex items-center shadow-[0px_0px_10px_5px_rgba(149,146,146,.25)] relative">
-                        <ItemJadwal
-                          key={hari_kamis.id}
-                          nama_mapel={hari_kamis.mapel.nama_mapel}
-                          kelompok={hari_kamis.kelompok.nama_kelompok}
-                          nama_tentor={hari_kamis.user.name}
-                          onClick={() => {
-                            setKamisModal(hari_kamis);
-                          }}
-                          onDelete={() => {
-                            setKamisModalDelete(hari_kamis);
-                          }}
-                        />
-                      </div>
-                    ) : (
-                      <div className="py-2 px-4 bg-Error-40 rounded-lg h-full text-Error-90 font-bold w-full flex items-center justify-center text-center shadow-[0px_0px_10px_5px_rgba(149,146,146,.25)] relative">
-                        <ItemJadwalBelumTerisi
-                          onClick={() => {
-                            setKamisModalCreate(item.id);
-                          }}
-                        />
-                      </div>
-                    )}
-                    {hari_jumat ? (
-                      <div className="py-2 px-4 bg-Tertiary-50 rounded-lg h-full text-Tertiary-90 font-bold w-full flex items-center justify-center shadow-[0px_0px_10px_5px_rgba(149,146,146,.25)] relative">
-                        <ItemJadwal
-                          key={hari_jumat.id}
-                          nama_mapel={hari_jumat.mapel.nama_mapel}
-                          kelompok={hari_jumat.kelompok.nama_kelompok}
-                          nama_tentor={hari_jumat.user.name}
-                          onClick={() => {
-                            setJumatModal(hari_jumat);
-                          }}
-                          onDelete={() => {
-                            setJumatModalDelete(hari_jumat);
-                          }}
-                        />
-                      </div>
-                    ) : (
-                      <div className="py-2 px-4 bg-Error-40 rounded-lg h-full text-Error-90 font-bold w-full flex items-center justify-center text-center shadow-[0px_0px_10px_5px_rgba(149,146,146,.25)] relative">
-                        <ItemJadwalBelumTerisi
-                          onClick={() => {
-                            setJumatModalCreate(item.id);
-                          }}
-                        />
-                      </div>
-                    )}
-                    {hari_sabtu ? (
-                      <div className="py-2 px-4 bg-Tertiary-50 rounded-lg h-full text-Tertiary-90 font-bold w-full flex items-center justify-center shadow-[0px_0px_10px_5px_rgba(149,146,146,.25)] relative">
-                        <ItemJadwal
-                          key={hari_sabtu.id}
-                          nama_mapel={hari_sabtu.mapel.nama_mapel}
-                          kelompok={hari_sabtu.kelompok.nama_kelompok}
-                          nama_tentor={hari_sabtu.user.name}
-                          onClick={() => {
-                            setSabtuModal(hari_sabtu);
-                          }}
-                          onDelete={() => {
-                            setSabtuModalDelete(hari_sabtu);
-                          }}
-                        />
-                      </div>
-                    ) : (
-                      <div className="py-2 px-4 bg-Error-40 rounded-lg h-full text-Error-90 font-bold w-full flex items-center justify-center text-center shadow-[0px_0px_10px_5px_rgba(149,146,146,.25)] relative">
-                        <ItemJadwalBelumTerisi
-                          onClick={() => {
-                            setSabtuModalCreate(item.id);
-                          }}
-                        />
-                      </div>
-                    )}
-                    {hari_minggu ? (
-                      <div className="py-2 px-4 bg-Tertiary-50 rounded-lg h-full text-Tertiary-90 font-bold w-full flex items-center justify-center shadow-[0px_0px_10px_5px_rgba(149,146,146,.25)] relative">
-                        <ItemJadwal
-                          key={hari_minggu.id}
-                          nama_mapel={hari_minggu.mapel.nama_mapel}
-                          kelompok={hari_minggu.kelompok.nama_kelompok}
-                          nama_tentor={hari_minggu.user.name}
-                          onClick={() => {
-                            setMingguModal(hari_minggu);
-                          }}
-                          onDelete={() => {
-                            setMingguModalDelete(hari_minggu);
-                          }}
-                        />
-                      </div>
-                    ) : (
-                      <div className="py-2 px-4 bg-Error-40 rounded-lg h-full text-Error-90 font-bold w-full flex items-center justify-center text-center shadow-[0px_0px_10px_5px_rgba(149,146,146,.25)] relative">
-                        <ItemJadwalBelumTerisi
-                          onClick={() => {
-                            setMingguModalCreate(item.id);
-                          }}
-                        />
-                      </div>
-                    )}
-                  </div>
-                );
-              })}
+                  );
+                })}
+              </div>
             </div>
           </div>
         </div>

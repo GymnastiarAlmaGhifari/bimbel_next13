@@ -1,5 +1,9 @@
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
+## This App is deployed using Docker
+
+[Linear Next](https://hub.docker.com/r/yoganovaindra/linear-next)
+
 ## Getting Started
 
 First, run the development server:
