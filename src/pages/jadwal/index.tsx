@@ -12,7 +12,13 @@ import { mutate } from "swr";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { IoIosArrowDown, IoIosArrowUp, IoIosAdd } from "react-icons/io";
 import { ModalDetail, ModalSucces } from "@/pages/components/modal/Modal";
-import Senin from "./Edit/senin";
+import SeninEdit from "./Edit/senin";
+import KamisEdit from "./Edit/kamis";
+import RabuEdit from "./Edit/rabu";
+import JumatEdit from "./Edit/jumat";
+import SabtuEdit from "./Edit/sabtu";
+import MingguEdit from "./Edit/minggu";
+import SelasaEdit from "./Edit/selasa";
 
 
 interface Jadwal {
@@ -582,7 +588,7 @@ const Jadwal: FC<Jadwal> = () => {
             setSeninModal(null);
           }}
         >
-          <Senin
+          <SeninEdit
             jadwalId={seninModal.id}
             data={seninModal}
             idRuang={selectedRuangIdPass}
@@ -602,7 +608,7 @@ const Jadwal: FC<Jadwal> = () => {
             setKamisModal(null);
           }}
         >
-          <Kamis
+          <KamisEdit
             jadwalId={kamisModal.id}
             data={kamisModal}
             idRuang={selectedRuangIdPass}
@@ -623,7 +629,7 @@ const Jadwal: FC<Jadwal> = () => {
             setRabuModal(null);
           }}
         >
-          <Rabu
+          <RabuEdit
             jadwalId={rabuModal.id}
             data={rabuModal}
             idRuang={selectedRuangIdPass}
@@ -644,7 +650,7 @@ const Jadwal: FC<Jadwal> = () => {
             setJumatModal(null);
           }}
         >
-          <Jumat
+          <JumatEdit
             jadwalId={jumatModal.id}
             data={jumatModal}
             idRuang={selectedRuangIdPass}
@@ -665,7 +671,7 @@ const Jadwal: FC<Jadwal> = () => {
             setSabtuModal(null);
           }}
         >
-          <Sabtu
+          <SabtuEdit
             jadwalId={sabtuModal.id}
             data={sabtuModal}
             idRuang={selectedRuangIdPass}
@@ -687,7 +693,7 @@ const Jadwal: FC<Jadwal> = () => {
             setMingguModal(null);
           }}
         >
-          <Minggu
+          <MingguEdit
             jadwalId={mingguModal.id}
             data={mingguModal}
             idRuang={selectedRuangIdPass}
@@ -707,7 +713,7 @@ const Jadwal: FC<Jadwal> = () => {
             setSelasaModal(null);
           }}
         >
-          <Selasa
+          <SelasaEdit
             jadwalId={selasaModal.id}
             data={selasaModal}
             idRuang={selectedRuangIdPass}
