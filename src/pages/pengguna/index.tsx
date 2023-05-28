@@ -11,6 +11,7 @@ import UserCard from "../components/card/CardPengguna";
 import { useSession } from "next-auth/react";
 import UserEditGambar from "./edit/editgambar";
 import Search from "../components/Search";
+import DeletePengguna from "./delete";
 
 interface User {
   id: string;
@@ -77,6 +78,9 @@ const User: FC<User> = () => {
 
   const [selected, setSelected] = useState<User | null>(null);
 
+  // delete selected
+  const [selecteDelete, setSelecteDelete] = useState<User | null>(null);
+
   useEffect(() => {
     if (error) {
     }
@@ -140,6 +144,11 @@ const User: FC<User> = () => {
                             onEdit={() => {
                               setSelected(user);
                             }}
+                            onHapus={
+                              () => {
+                                setSelecteDelete(user);
+                              }
+                            }
                           />
                         ))
                       )}
@@ -168,6 +177,12 @@ const User: FC<User> = () => {
                             onEdit={() => {
                               setSelected(user);
                             }}
+                            onHapus={
+                              () => {
+                                setSelecteDelete(user);
+                              }
+                            }
+
                           />
                         ))
                       )}
@@ -204,6 +219,26 @@ const User: FC<User> = () => {
         </ModalSucces>
       )}
 
+      {/* modal hapus */}
+      {selecteDelete && (
+        <ModalDetail
+          titleModal="Hapus Pengguna"
+          onClose={() => setSelecteDelete(null)}
+          silang
+          center
+          wAuto
+        >
+          <DeletePengguna
+            idPengguna={selecteDelete.id}
+            onClose={() => setSelecteDelete(null)}
+            onSuccess={() => {
+              setShowSuccess(true);
+            }}
+            data={selecteDelete}
+          />
+        </ModalDetail>
+      )}
+
       {/* modal create */}
       {showCreate && (
         <ModalDetail
@@ -218,23 +253,6 @@ const User: FC<User> = () => {
           />
         </ModalDetail>
       )}
-
-      {/* modal edit gambar */}
-      {/* {selectedGambar && (
-        <ModalDetail
-          titleModal="Edit Gambar"
-          onClose={() => setSelectedGambar(null)}
-        >
-          <UserEditGambar
-            userId={selectedGambar.id}
-            onClose={() => setSelectedGambar(null)}
-            onSucsess={() => {
-              setShowSuccess(true);
-            }}
-            data={selectedGambar}
-          />
-        </ModalDetail>
-      )} */}
     </div>
   );
 };

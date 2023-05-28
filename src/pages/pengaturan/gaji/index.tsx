@@ -14,7 +14,6 @@ import {
   ModalHapus,
   ModalSucces,
 } from "@/pages/components/modal/Modal";
-import CreateGaji from "./create";
 import GajiEdit from "./edit";
 import RekeningEdit from "./editRekening";
 
@@ -46,10 +45,6 @@ const Gaji: FC<GajiProps> = () => {
     {}
   );
 
-  const [showDelete, setShowDelete] = useState<GajiProps | null>(null);
-
-  const [showCreate, setShowCreate] = useState(false);
-
   const [showSuccess, setShowSuccess] = useState(false);
 
   const [selectedGaji, setSelectedGaji] = useState<GajiProps | null>(null);
@@ -67,10 +62,6 @@ const Gaji: FC<GajiProps> = () => {
     };
   }, [showSuccess]);
 
-  // const onClose = () => {
-  //   setSelectedKelas(null);
-  // };
-
   return (
     <div className="flex flex-row h-screen font-mulish">
       <Sidebar />
@@ -87,16 +78,6 @@ const Gaji: FC<GajiProps> = () => {
                     <h1 className="text-xl font-semibold text-Primary-10">
                       Gaji
                     </h1>
-                    <Button
-                      type="button"
-                      brColor="border-Tertiary-50"
-                      textColor="text-Tertiary-50"
-                      bgColor="bg-Tertiary-50"
-                      label="Tambah"
-                      icon={IoIosAdd}
-                      onClick={() => setShowCreate(true)}
-                      outlined
-                    />
                   </div>
                   <div className="flex flex-col gap-4 h-full overflow-y-auto scrollbar-thin scrollbar-track-Neutral-100 scrollbar-thumb-Primary-40 scrollbar-rounded-lg pr-2">
                     {gaji ? (
@@ -158,17 +139,6 @@ const Gaji: FC<GajiProps> = () => {
           </div>
         </div>
       </div>
-      {showCreate && (
-        <ModalDetail
-          titleModal="Tambah Gaji"
-          onClose={() => setShowCreate(false)}
-        >
-          <CreateGaji
-            onClose={() => setShowCreate(false)}
-            onSucsess={() => setShowSuccess(true)}
-          />
-        </ModalDetail>
-      )}
       {showSuccess && (
         <ModalSucces label="POOP" onClose={() => setShowSuccess(false)}>
           <div className="">oawkowkao</div>
