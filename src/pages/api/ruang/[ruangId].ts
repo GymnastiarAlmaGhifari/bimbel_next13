@@ -38,5 +38,26 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             console.error(error);
             res.status(500).json({ message: "Error updating ruang" });
         }
+    } else if (req.method === "DELETE") {
+        try {
+            const delrelation = await prisma.ruang.update({
+                where: { id: ruangId },
+                data: {
+                    jadwal_details: {
+                        deleteMany: {},
+                    },
+                },
+            });
+
+            const ruang = await prisma.ruang.delete({
+                where: { id: ruangId },
+            });
+
+            res.status(200).json(ruang);
+        }
+        catch (error) {
+            console.error(error);
+            res.status(500).json({ message: "Error deleting ruang" });
+        }
     }
 }
