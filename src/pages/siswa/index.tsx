@@ -32,6 +32,9 @@ interface Siswa {
 }
 
 const Siswa: FC<Siswa> = () => {
+  useEffect(() => {
+    document.title = "Bimbel Linear";
+  });
   const { data: session, status } = useSession();
 
   const [inputValue, setInputValue] = useState<string>("");

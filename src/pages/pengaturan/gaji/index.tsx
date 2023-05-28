@@ -31,6 +31,9 @@ interface RekeningProps {
 }
 
 const Gaji: FC<GajiProps> = () => {
+  useEffect(() => {
+    document.title = "Bimbel Linear";
+  });
   const { data: gaji, error: errorgaji } = useSWR<GajiProps[]>(
     "/api/setgaji",
     fetcher,
@@ -167,11 +170,7 @@ const Gaji: FC<GajiProps> = () => {
         </ModalDetail>
       )}
       {showSuccess && (
-        <ModalSucces
-
-          label="POOP"
-          onClose={() => setShowSuccess(false)}
-        >
+        <ModalSucces label="POOP" onClose={() => setShowSuccess(false)}>
           <div className="">oawkowkao</div>
         </ModalSucces>
       )}

@@ -25,17 +25,20 @@ interface Pembayaran {
   status: string;
   nota: string;
   user: {
-    name: string
-  }
+    name: string;
+  };
   siswa: {
-    nama: string
-    image: string
-  }
+    nama: string;
+    image: string;
+  };
 }
 
 const Pembayaran: FC<Pembayaran> = () => {
-
-  const { data: pembayaran, error } = useSWR('/api/tagihan', fetcher)
+  const {
+    data: pembayaran,
+    error,
+    isLoading,
+  } = useSWR("/api/tagihan", fetcher);
 
   // state shownota
   const [showNota, setShowNota] = useState<Pembayaran | null>(null);
@@ -43,7 +46,9 @@ const Pembayaran: FC<Pembayaran> = () => {
   // create
   const [showCreate, setShowCreate] = useState<boolean>(false);
 
-  const [AcceptPembayaran, setAcceptPembayaran] = useState<Pembayaran | null>(null);
+  const [AcceptPembayaran, setAcceptPembayaran] = useState<Pembayaran | null>(
+    null
+  );
 
   return (
     <div className="flex flex-row h-screen font-mulish">
@@ -66,7 +71,9 @@ const Pembayaran: FC<Pembayaran> = () => {
                   <>
                     {pembayaran.length === 0 ? (
                       <div className="flex flex-col justify-center items-center">
-                        <p className="text-2xl font-bold text-Neutral-600">Data Kosong</p>
+                        <p className="text-2xl font-bold text-Neutral-600">
+                          Data Kosong
+                        </p>
                         <p className="text-Neutral-500">PP</p>
                       </div>
                     ) : (
@@ -84,16 +91,14 @@ const Pembayaran: FC<Pembayaran> = () => {
                             status={pembayaran?.status}
                             tanggal_approve={pembayaran?.tanggal_approve}
                             tanggal_bayar={pembayaran?.tanggal_bayar}
-                            tanggal_jatuh_tempo={pembayaran?.tanggal_jatuh_tempo}
+                            tanggal_jatuh_tempo={
+                              pembayaran?.tanggal_jatuh_tempo
+                            }
                             tanggal_tagihan={pembayaran?.tanggal_tagihan}
                             gambar={pembayaran?.siswa.image}
                             tahun={pembayaran?.Tahun}
-                            onClick={() =>
-                              setShowNota(pembayaran)
-                            }
-                            onAccept={() =>
-                              setAcceptPembayaran(pembayaran)
-                            }
+                            onClick={() => setShowNota(pembayaran)}
+                            onAccept={() => setAcceptPembayaran(pembayaran)}
                           />
                         ))}
                       </>
@@ -103,66 +108,60 @@ const Pembayaran: FC<Pembayaran> = () => {
                   <>
                     {error ? (
                       <div className="flex flex-col justify-center items-center">
-                        <p className="text-2xl font-bold text-Neutral-600">Data Kosong</p>
-                        <p className="text-Neutral-500">Silahkan tambahkan data siswa</p>
+                        <p className="text-2xl font-bold text-Neutral-600">
+                          Data Kosong
+                        </p>
+                        <p className="text-Neutral-500">
+                          Silahkan tambahkan data siswa
+                        </p>
                       </div>
                     ) : (
                       <div className="flex flex-col justify-center items-center">
-                        <p className="text-2xl font-bold text-Neutral-600">Loading...</p>
+                        <p className="text-2xl font-bold text-Neutral-600">
+                          Loading...
+                        </p>
                       </div>
-                    )
-                    }
+                    )}
                   </>
-                )
-                }
+                )}
               </div>
             </div>
           </div>
         </div>
       </div>
-      {
-        showNota && (
-          <ModalDetail
-            titleModal="Detail Tagihan"
-            onClose={() => setShowNota(null)}
-          >
-            <LihatNota
-              data={showNota}
-              onClose={() => setShowNota(null)}
-            />
-          </ModalDetail>
-        )
-      }
-      {
-        AcceptPembayaran && (
-          <ModalDetail
-            titleModal="Detail Tagihan"
+      {showNota && (
+        <ModalDetail
+          titleModal={`Nota Tagihan ${showNota.siswa.nama} pada ${showNota.Bulan} ${showNota.Tahun}`}
+          onClose={() => setShowNota(null)}
+        >
+          <LihatNota data={showNota} onClose={() => setShowNota(null)} />
+        </ModalDetail>
+      )}
+      {AcceptPembayaran && (
+        <ModalDetail
+          titleModal="Detail Tagihan"
+          onClose={() => setAcceptPembayaran(null)}
+        >
+          <Acc
+            idAcc={AcceptPembayaran.id}
+            data={AcceptPembayaran}
             onClose={() => setAcceptPembayaran(null)}
-          >
-            <Acc
-              idAcc={AcceptPembayaran.id}
-              data={AcceptPembayaran}
-              onClose={() => setAcceptPembayaran(null)}
             // onSucsess={() => {
             //   setShowSuccess(true);
             // }}
-            />
-          </ModalDetail>
-        )
-      }
-      {
-        showCreate && (
-          <ModalDetail
-            titleModal="Tambah Tagihan"
-            onClose={() => setShowCreate(false)}
-          >
-            <Create
-            // onClose={() => setShowCreate(false)}
-            />
-          </ModalDetail>
-        )
-      }
-
+          />
+        </ModalDetail>
+      )}
+      {showCreate && (
+        <ModalDetail
+          titleModal="Tambah Tagihan"
+          onClose={() => setShowCreate(false)}
+        >
+          <Create
+          // onClose={() => setShowCreate(false)}
+          />
+        </ModalDetail>
+      )}
     </div>
   );
 };

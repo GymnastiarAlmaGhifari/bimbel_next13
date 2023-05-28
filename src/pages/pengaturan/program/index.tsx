@@ -20,13 +20,16 @@ interface Program {
   tipe: string;
   Deskripsi: string;
   harga: number;
-  gambar: string;
+  img: string;
   nama_kelas: string;
   createdAt: Date;
   updatedAt: Date;
 }
 
 const Program: FC<Program> = () => {
+  useEffect(() => {
+    document.title = "Bimbel Linear";
+  });
   const { data: program, error } = useSWR<Program[]>(
     "/api/program",
     fetcher,
@@ -126,7 +129,7 @@ const Program: FC<Program> = () => {
                           kelas={item.kelas.nama_kelas}
                           harga={item.harga}
                           onEdit={() => setSelectedProgram(item)}
-                          gambar={item?.gambar}
+                          gambar={item?.img}
                         />
                       ))
                     )}

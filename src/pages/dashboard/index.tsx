@@ -14,18 +14,28 @@ import UserCard from "../components/card/CardPengguna";
 import InfoDashboard from "../components/InfoDashboard";
 import CardDashboard from "../components/card/CardDashboard";
 
-
 const Dashboard = () => {
+  useEffect(() => {
+    document.title = "Bimbel Linear";
+  });
 
   const session = useSession();
 
-  const { data: dashboard, error, isLoading } = useSWR(`/api/dashboard?role=${session.data?.user.role}&user_id=${session.data?.user.id}`, fetcher, {});
+  const {
+    data: dashboard,
+    error,
+    isLoading,
+  } = useSWR(
+    `/api/dashboard?role=${session.data?.user.role}&user_id=${session.data?.user.id}`,
+    fetcher,
+    {}
+  );
   const router = useRouter();
   const backDashboard = () => {
     router.push("/dashboard");
   };
   return (
-    <div className="flex flex-row h-full w-full font-mulish" >
+    <div className="flex flex-row h-full w-full font-mulish">
       <Sidebar />
 
       <div className="w-full h-screen flex flex-col ">
@@ -34,27 +44,34 @@ const Dashboard = () => {
           <InfoDashboard
             tentor={
               isLoading ? (
-                <div className="animate-pulse h-10 w-10 bg-Neutral-100 rounded-full">loading</div>
+                <div className="animate-pulse h-10 w-10 bg-Neutral-100 rounded-full">
+                  loading
+                </div>
               ) : (
                 dashboard?.total_tentor
               )
             }
             siswa={
               isLoading ? (
-                <div className="animate-pulse h-10 w-10 bg-Neutral-100 rounded-full">loading</div>
+                <div className="animate-pulse h-10 w-10 bg-Neutral-100 rounded-full">
+                  loading
+                </div>
               ) : (
-
                 dashboard?.total_siswa
               )
             }
-            dana={isLoading ? (
-              <div className="animate-pulse h-10 w-10 bg-Neutral-100 rounded-full">loading</div>
-            ) : (dashboard?.total_tagihan._sum.jumlah_tagihan)}
+            dana={
+              isLoading ? (
+                <div className="animate-pulse h-10 w-10 bg-Neutral-100 rounded-full">
+                  loading
+                </div>
+              ) : (
+                dashboard?.total_tagihan._sum.jumlah_tagihan
+              )
+            }
           />
           <div className="flex flex-col h-full bg-Neutral-100 py-4 gap-4 rounded-lg overflow-auto">
-            <HeadTable
-              noAdd
-              label="Overview Jadwal" />
+            <HeadTable noAdd label="Overview Jadwal" />
             <div className="flex flex-col scrollbar rounded-bl-lg rounded-br-lg p-4 gap-4 overflow-y-auto h-full ">
               {/* maping dashboard */}
 
@@ -76,13 +93,12 @@ const Dashboard = () => {
                     />
                   ))}
                 </div>
-              )
-              }
+              )}
             </div>
           </div>{" "}
         </div>
       </div>
-    </div >
+    </div>
   );
 };
 

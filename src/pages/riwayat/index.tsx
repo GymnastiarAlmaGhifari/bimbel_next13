@@ -1,13 +1,16 @@
-import React from 'react'
-import Sidebar from '../components/Sidebar'
+import React, { useEffect } from "react";
+import Sidebar from "../components/Sidebar";
 
 const Riwayat = () => {
-    return (
-        <div>
-            <h1>Riwayat</h1>
-            <Sidebar />
-        </div>
-    )
-}
+  useEffect(() => {
+    document.title = "Bimbel Linear";
+  });
+  return (
+    <div>
+      <h1>Riwayat</h1>
+      <Sidebar />
+    </div>
+  );
+};
 
-export default Riwayat
+export default Riwayat;
