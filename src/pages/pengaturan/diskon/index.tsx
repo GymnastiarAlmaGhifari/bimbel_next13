@@ -4,12 +4,15 @@ import NavbarPengaturan from "@/pages/components/NavbarPengaturan";
 import Sidebar from "@/pages/components/Sidebar";
 import Button from "@/pages/components/buttons/Button";
 import Image from "next/image";
-import React from "react";
+import React, { useEffect } from "react";
 import { IoMdCloud, IoMdCloudUpload } from "react-icons/io";
 
 interface DiskonProps {}
 
 const Diskon = ({}) => {
+  useEffect(() => {
+    document.title = "Bimbel Linear";
+  });
   return (
     <div className="flex flex-row h-screen font-mulish">
       <Sidebar />

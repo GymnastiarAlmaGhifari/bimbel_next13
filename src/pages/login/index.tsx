@@ -2,11 +2,14 @@
 
 import { signIn, useSession } from "next-auth/react";
 import Router from "next/router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Input from "../components/inputs/Input";
 import Button from "../components/buttons/Button";
 
 const Login = () => {
+  useEffect(() => {
+    document.title = "Bimbel Linear";
+  });
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);

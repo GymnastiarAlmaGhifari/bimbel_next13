@@ -21,6 +21,9 @@ interface Kelas {
 }
 
 const Kelas: FC<Kelas> = () => {
+  useEffect(() => {
+    document.title = "Bimbel Linear";
+  });
   const { data: kelas, error } = useSWR<Kelas[]>("/api/kelas", fetcher, {});
 
   const [selectedKelas, setSelectedKelas] = useState<Kelas | null>(null);

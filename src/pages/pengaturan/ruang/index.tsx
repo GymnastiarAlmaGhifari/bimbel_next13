@@ -25,6 +25,9 @@ interface Props {
 }
 
 const Ruang: FC<Props> = () => {
+  useEffect(() => {
+    document.title = "Bimbel Linear";
+  });
   const { data: ruang, error } = useSWR<Ruang[]>("/api/ruang", fetcher, {});
 
   const [selectedRuang, setSelectedRuang] = useState<Ruang | null>(null);
@@ -97,7 +100,6 @@ const Ruang: FC<Props> = () => {
                 onChange={handleInputChange}
               />
               <div className="flex flex-col rounded-bl-lg rounded-br-lg p-4 gap-4 overflow-y-auto scrollbar-thin scrollbar-track-Neutral-100 scrollbar-thumb-Primary-40 scrollbar-rounded-lg scrollbar">
-
                 {filteredRuang ? (
                   <>
                     {filteredRuang.length === 0 ? (

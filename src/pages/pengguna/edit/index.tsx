@@ -1,6 +1,5 @@
 import { FC, useEffect, useRef, useState } from "react";
 import axios from "axios";
-import { mutate } from "swr";
 import { SubmitHandler, useForm } from "react-hook-form";
 import Input from "@/pages/components/inputs/Input";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -9,12 +8,22 @@ import Button from "@/pages/components/buttons/Button";
 import { IoMdCloudUpload, IoIosArrowUp, IoIosArrowDown } from "react-icons/io";
 import Image from "next/image";
 import { useSession } from "next-auth/react";
+import useSWR, { mutate } from "swr";
+import fetcher from "@/libs/fetcher";
 
 interface UserEditProps {
   userId: string;
   data: any;
   onClose: () => void;
   onSucsess: () => void;
+}
+
+interface Mapel {
+  id: string;
+  nama_mapel: string;
+  kelas: {
+    id: string;
+  };
 }
 
 const schema = yup.object().shape({
@@ -24,6 +33,7 @@ const schema = yup.object().shape({
     .min(3, "judul minimal 3 karakter"),
   email: yup.string().required(),
   role: yup.string(),
+  mapel: yup.string().required(),
   nomor_telepon: yup.string().required().max(13, "maksimal 13 karakter"),
   lulusan: yup.string().max(13, "maksimal 13 karakter"),
   alamat: yup.string().required(),
@@ -43,7 +53,14 @@ const UserEdit: FC<UserEditProps> = ({ userId, onClose, onSucsess, data }) => {
 
   const [isListOpen, setIsListOpen] = useState(false);
 
+  const [isListOpenMapel, setIsListOpenMapel] = useState(false);
+
   const { data: session } = useSession();
+  const { data: mapel, error: errorMapel } = useSWR<Mapel[]>(
+    "api/mapel",
+    fetcher,
+    {}
+  );
 
   const {
     register,
@@ -65,6 +82,7 @@ const UserEdit: FC<UserEditProps> = ({ userId, onClose, onSucsess, data }) => {
         !componentRef.current.contains(event.target)
       ) {
         setIsListOpen(false);
+        setIsListOpenMapel(false);
       }
     };
 
@@ -96,13 +114,38 @@ const UserEdit: FC<UserEditProps> = ({ userId, onClose, onSucsess, data }) => {
     }
   };
 
+  const [checkValue, setCheckValue] = useState<string>("");
+  const [checkValueUser, setCheckValueUser] = useState<string>("");
+
+
   const toggleList = () => {
     setIsListOpen(!isListOpen);
+  };
+
+  const toggleListMapel = () => {
+    setIsListOpenMapel(!isListOpenMapel);
+  };
+
+  let filteredMapel = mapel;
+
+  if (checkValue) {
+    filteredMapel = mapel?.filter((mapelItem) => {
+      return mapelItem.kelas.id === checkValue; // Add 'return' statement
+    });
+  }
+
+  const handleCheckChangeUser = (value: string) => {
+    setCheckValueUser(value);
   };
 
   const selectRole = (role: string) => {
     setValue("role", role);
     setIsListOpen(false);
+  };
+
+  const selectMapel = (mapel: string) => {
+    setValue("mapel", mapel);
+    setIsListOpenMapel(false);
   };
 
   const getRoleLabel = (value: string) => {
@@ -124,6 +167,7 @@ const UserEdit: FC<UserEditProps> = ({ userId, onClose, onSucsess, data }) => {
           name,
           email,
           role,
+          mapel,
           nomor_telepon,
           universitas: lulusan,
           alamat,
@@ -156,6 +200,7 @@ const UserEdit: FC<UserEditProps> = ({ userId, onClose, onSucsess, data }) => {
           name,
           email,
           role,
+          mapel,
           nomor_telepon,
           universitas: lulusan,
           alamat,
@@ -332,6 +377,60 @@ const UserEdit: FC<UserEditProps> = ({ userId, onClose, onSucsess, data }) => {
             </div>
             {errors.role && (
               <span className="text-red-500">{errors.role.message}</span>
+            )}
+          </div>
+          <div className="flex flex-col gap-1 w-full">
+            <label htmlFor="" className="text-sm text-Primary-10">
+              Mapel
+            </label>
+
+            <div className="relative flex flex-col gap-2">
+              <button
+                type="button"
+                className={` w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${
+                  isListOpenMapel
+                    ? "border-[2px] border-Primary-50 bg-Primary-95"
+                    : "bg-Neutral-95"
+                }`}
+                onClick={toggleListMapel}
+              >
+                {/* buat label */}
+                {watch("mapel") ? (
+                  mapel?.find((mapelItem) => mapelItem.id === watch("mapel"))
+                    ?.nama_mapel
+                ) : (
+                  <span className="text-Neutral-300">Pilih Mapel</span>
+                )}
+                {isListOpenMapel ? <IoIosArrowUp /> : <IoIosArrowDown />}
+              </button>
+              {isListOpenMapel && (
+                <ul
+                  className="absolute w-full top-[44px] z-10 bg-Neutral-100 border-[2px] border-Primary-50 rounded-xl py-2 px-2 outline-none appearance-none flex flex-col gap-1"
+                  ref={componentRef}
+                >
+                  {filteredMapel?.map((mapelItem) => (
+                    <li key={mapelItem.id}>
+                      <button
+                        type="button"
+                        className={`w-full text-left px-2 py-1 rounded-full ${
+                          watch("mapel") === mapelItem.id
+                            ? "text-Primary-90 bg-Primary-20"
+                            : "text-Primary-20 hover:bg-Primary-95"
+                        }`}
+                        onClick={() => {
+                          selectMapel(mapelItem.id);
+                          handleCheckChangeUser(mapelItem.id);
+                        }}
+                      >
+                        {mapelItem.nama_mapel}
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+            {errors.mapel && (
+              <span className="text-red-500">{errors.mapel.message}</span>
             )}
           </div>
           <Input

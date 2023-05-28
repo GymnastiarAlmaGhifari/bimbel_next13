@@ -71,7 +71,7 @@ const Create: FC<UserCreateProps> = ({ onClose, onSucsess }) => {
 
   const selectMapel = (mapel: string) => {
     setValue("mapel", mapel);
-    setIsListOpenRole(false);
+    setIsListOpenMapel(false);
   };
 
   const roleOptions = [

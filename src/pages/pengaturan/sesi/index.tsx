@@ -12,7 +12,6 @@ import Navbar from "@/pages/components/Navbar";
 import NavbarPengaturan from "@/pages/components/NavbarPengaturan";
 import Create from "./create";
 
-
 interface Sesi {
   id: string;
   nama_sesi: string;
@@ -23,6 +22,9 @@ interface Sesi {
 }
 
 const Sesi: FC<Sesi> = () => {
+  useEffect(() => {
+    document.title = "Bimbel Linear";
+  });
   const { data: sesi, error } = useSWR<Sesi[]>("/api/sesi", fetcher, {});
 
   const [selectedSesi, setSelectedSesi] = useState<Sesi | null>(null);
@@ -65,7 +67,6 @@ const Sesi: FC<Sesi> = () => {
     };
   }, [showSuccess]);
 
-
   useEffect(() => {
     if (error) {
     }
@@ -90,41 +91,40 @@ const Sesi: FC<Sesi> = () => {
           <div className="flex flex-col h-full p-4 gap-4 bg-Neutral-100 rounded-lg overflow-auto">
             <NavbarPengaturan />
             <div className="flex flex-col h-full bg-Neutral-100 py-4 gap-4 rounded-lg overflow-auto">
-              <HeadTable label="Sesi"
+              <HeadTable
+                label="Sesi"
                 onClick={() => setShowCreate(true)}
                 onChange={handleInputChange}
-
               />
               <div className="flex flex-col rounded-bl-lg rounded-br-lg p-4 gap-4 overflow-y-auto scrollbar-thin scrollbar-track-Neutral-100 scrollbar-thumb-Primary-40 scrollbar-rounded-lg scrollbar ">
-                {
-                  filteredSesi ? (
-                    <>
-                      {filteredSesi.length === 0 ? (
-                        <div className="flex flex-col items-center justify-center">
-                          <h1 className="text-2xl font-bold text-gray-500">
-                            Program tidak ditemukan
-                          </h1>
-                          <p className="text-sm text-gray-500">
-                            Program yang anda cari tidak ditemukan
-                          </p>
-                        </div>
-                      ) : (
-                        filteredSesi.map((sesi) => (
-                          <CardSesi
-                            nama_sesi={sesi.nama_sesi}
-                            mulai_sesi={sesi.jam_mulai}
-                            selesai_sesi={sesi.jam_selesai}
-                            key={sesi.id}
-                            onClick={() => {
-                              setSelectedSesi(sesi);
-                            }}
-                          />
-                        ))
-                      )}
-                    </>
-                  ) : (
-                    <p>Loading...</p>
-                  )}
+                {filteredSesi ? (
+                  <>
+                    {filteredSesi.length === 0 ? (
+                      <div className="flex flex-col items-center justify-center">
+                        <h1 className="text-2xl font-bold text-gray-500">
+                          Program tidak ditemukan
+                        </h1>
+                        <p className="text-sm text-gray-500">
+                          Program yang anda cari tidak ditemukan
+                        </p>
+                      </div>
+                    ) : (
+                      filteredSesi.map((sesi) => (
+                        <CardSesi
+                          nama_sesi={sesi.nama_sesi}
+                          mulai_sesi={sesi.jam_mulai}
+                          selesai_sesi={sesi.jam_selesai}
+                          key={sesi.id}
+                          onClick={() => {
+                            setSelectedSesi(sesi);
+                          }}
+                        />
+                      ))
+                    )}
+                  </>
+                ) : (
+                  <p>Loading...</p>
+                )}
                 {selectedSesi && (
                   <ModalDetail titleModal="Edit Sesi" onClose={onClose}>
                     <SesiEdit

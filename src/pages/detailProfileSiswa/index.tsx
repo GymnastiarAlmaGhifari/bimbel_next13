@@ -3,6 +3,7 @@ import Sidebar from "../components/Sidebar";
 import Navbar from "../components/Navbar";
 import Button from "../components/buttons/Button";
 import { MdModeEdit } from "react-icons/md";
+import { useEffect } from "react";
 
 interface DetailProfileSiswaProps {
   nama_siswa: string;
@@ -17,6 +18,9 @@ interface DetailProfileSiswaProps {
 }
 
 export default function DetailProfileSiswa() {
+  useEffect(() => {
+    document.title = "Bimbel Linear";
+  });
   return (
     <div className="flex flex-row h-screen">
       <Sidebar />

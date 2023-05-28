@@ -21,13 +21,20 @@ interface ModulProps {
     nama_mapel: string;
     kelas: {
       nama_kelas: string;
-    }
-  }
+    };
+  };
 }
 
 const Modul: FC<ModulProps> = () => {
+  useEffect(() => {
+    document.title = "Bimbel Linear";
+  });
 
-  const { data: modul, error } = useSWR<ModulProps[]>("/api/modul", fetcher, {});
+  const { data: modul, error } = useSWR<ModulProps[]>(
+    "/api/modul",
+    fetcher,
+    {}
+  );
 
   const [showCreate, setShowCreate] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
@@ -51,14 +58,13 @@ const Modul: FC<ModulProps> = () => {
         <Navbar />
         <div className="h-full p-5 bg-Neutral-95 overflow-auto ">
           <div className="flex flex-col h-full bg-Neutral-100 py-4 gap-4 rounded-lg overflow-auto">
-            <HeadTable label="Modul"
+            <HeadTable
+              label="Modul"
               onClick={() => {
                 setShowCreate(true);
-              }
-              }
+              }}
             />
             <div className="flex flex-col rounded-bl-lg rounded-br-lg p-4 gap-4 overflow-y-auto scrollbar">
-
               {modul ? (
                 <>
                   {modul.length === 0 ? (
@@ -77,13 +83,14 @@ const Modul: FC<ModulProps> = () => {
                         url={modul.url}
                         tingkatan={modul.mapel.kelas.nama_kelas}
                         goPdf={() => {
-                          window.open("/api/modul/pdf?modul=" + modul.url, "_blank");
-                        }
-                        }
+                          window.open(
+                            "/api/modul/pdf?modul=" + modul.url,
+                            "_blank"
+                          );
+                        }}
                         onEdit={() => {
                           setSelectedEdit(modul);
-                        }
-                        }
+                        }}
                       />
                     ))
                   )}
@@ -121,26 +128,21 @@ const Modul: FC<ModulProps> = () => {
         </ModalDetail>
       )}
 
-      {
-        selectedEdit && (
-          <ModalDetail
-            titleModal="Edit Modul"
+      {selectedEdit && (
+        <ModalDetail
+          titleModal="Edit Modul"
+          onClose={() => setSelectedEdit(null)}
+        >
+          <EditModul
             onClose={() => setSelectedEdit(null)}
-          >
-            <EditModul
-              onClose={() => setSelectedEdit(null)}
-              onSucces={
-                () => {
-                  setShowSuccess(true);
-                }
-              }
-              data={selectedEdit}
-              modulId={selectedEdit.id}
-            />
-          </ModalDetail>
-        )
-
-      }
+            onSucces={() => {
+              setShowSuccess(true);
+            }}
+            data={selectedEdit}
+            modulId={selectedEdit.id}
+          />
+        </ModalDetail>
+      )}
     </div>
   );
 };
