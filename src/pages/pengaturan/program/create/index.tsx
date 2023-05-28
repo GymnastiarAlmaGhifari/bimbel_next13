@@ -126,7 +126,6 @@ const CreateProgram: FC<RuangCreateProps> = ({ onClose, onSucsess }) => {
           img: image,
         });
 
-        console.log("jaskjdhkjasnhd", response.data.id);
 
         const programId = response.data.id;
 
