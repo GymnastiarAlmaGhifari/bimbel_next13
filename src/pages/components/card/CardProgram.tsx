@@ -26,12 +26,13 @@ const CardProgram: FC<CardProgramProps> = ({
   mapel_ajar,
   onEdit,
 }) => {
-
   const formattedHarga = harga
-    ? harga.toLocaleString("id-ID", {
-      style: "currency",
-      currency: "IDR",
-    }).replace(",00", "")
+    ? harga
+        .toLocaleString("id-ID", {
+          style: "currency",
+          currency: "IDR",
+        })
+        .replace(",00", "")
     : "";
 
   return (
@@ -50,9 +51,7 @@ const CardProgram: FC<CardProgramProps> = ({
           <h3 className="text-sm text-Neutral-30">
             Mata Pelajaran yang Diajar
           </h3>
-          <span className="font-bold text-Primary-10">
-            {mapel_ajar}
-          </span>
+          <span className="font-bold text-Primary-10">{mapel_ajar}</span>
         </div>
       </div>
       <div className="flex justify-between">
@@ -74,15 +73,15 @@ const CardProgram: FC<CardProgramProps> = ({
         <span className="font-bold text-Primary-10">{formattedHarga}</span>
       </div>
       <div className="flex flex-col gap-1">
-        <h3 className="text-sm text-Neutral-30">gambar</h3>
-        <Image
-          src={"/api/user/img?img=" + gambar ? "/api/user/img?img=" + gambar : "/upload/img/user/default.png"}
-          alt="Megachan"
-          width={100}
-          height={100}
-          className="rounded-full w-full h-full object-cover"
-          loader={({ src }) => `${src}?cache-control=no-store`}
-        />
+        <div className="flex flex-col gap-6 w-[400px] bg-red-500 rounded-lg">
+          <Image
+            src={"/img/user/default.png"}
+            alt="Gambar"
+            width={200}
+            height={200}
+            className="rounded-lg"
+          />
+        </div>
       </div>
       <div className="w-full h-[1px] bg-Neutral-70"></div>
       <div className="flex justify-end">
