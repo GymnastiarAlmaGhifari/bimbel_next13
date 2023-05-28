@@ -52,9 +52,6 @@ interface User {
     id: string;
     name: string;
     mapel_id: string;
-    mapel: {
-        nama_mapel: string;
-    }
 }
 
 const schema = yup.object().shape({
@@ -84,7 +81,7 @@ const schema = yup.object().shape({
 
 type FormData = yup.InferType<typeof schema>;
 
-const Senin: FC<Senin> = ({ jadwalId, data, onClose, onSucsess, idRuang }) => {
+const CreateSenin: FC<Senin> = ({ jadwalId, data, onClose, onSucsess, idRuang }) => {
     const { data: kelompok, error: errorKelompok } = useSWR<Kelompok[]>(
         "api/kelompok",
         fetcher,
@@ -146,8 +143,6 @@ const Senin: FC<Senin> = ({ jadwalId, data, onClose, onSucsess, idRuang }) => {
     const [selectedOption, setSelectedOption] = useState<Kelompok | null>(null);
     const [debouncedValue, setDebouncedValue] = useState<string>("");
 
-
-
     watch("kelompokCheck");
     watch("userCheck");
 
@@ -204,7 +199,6 @@ const Senin: FC<Senin> = ({ jadwalId, data, onClose, onSucsess, idRuang }) => {
 
     const handleCheckChange = (value: string) => {
         setCheckValue(value);
-
     };
 
     const toggleListSesi = () => {
@@ -240,28 +234,18 @@ const Senin: FC<Senin> = ({ jadwalId, data, onClose, onSucsess, idRuang }) => {
 
     useEffect(() => {
         setValue("ruang", idRuang);
-        if (data) {
-            setSelectedOption(data.kelompok);
-            setValue("kelompokCheck", data.kelompok?.id);
-            setSelectedOptionUser(data.user);
-            setValue("userCheck", data.user?.id);
-            setValue("sesi", data.sesi?.id);
-            setValue("mapel", data.mapel?.id);
+        setValue("sesi", data);
+        setValue("hari", "SENIN");
 
-            // set handleCheckChange untuk filter mapel
-            if (mapel?.length && mapel[0]?.kelas?.id) {
-                setCheckValue(mapel[0].kelas.id);
-            } else if (kelompok?.length && kelompok[0]?.program?.kelas_id) {
-                setCheckValue(kelompok[0].program.kelas_id);
-            }
-            // set handleCheckChangeUser untuk filter User
-            if (user?.length && user[0]?.mapel_id) {
-                setCheckValueUser(user[0].mapel_id);
-            } else if (user?.length && user[0]?.mapel_id) {
-                setCheckValueUser(user[0].mapel_id);
-            }
-        }
-    }, [kelompok, setValue, data, mapel, idRuang, user]);
+    }, [setValue, data, idRuang]);
+
+    const [kelompokTerpilih, setKelompokTerpilih] = useState(
+        ""
+    );
+
+    const [tentorTerpilih, setTentorTerpilih] = useState(
+        ""
+    );
 
     const onSubmit: SubmitHandler<FormData> = async (data) => {
         let { kelompokCheck } = data;
@@ -288,17 +272,18 @@ const Senin: FC<Senin> = ({ jadwalId, data, onClose, onSucsess, idRuang }) => {
         setIsLoading(true);
 
         try {
-            const response = await axios.put(
-                `/api/jadwaldetail/${jadwalId}`,
+            const response = await axios.post(
+                `/api/jadwaldetail`,
                 payload
             );
             console.log(response.data);
 
-            mutate(`/api/jadwaldetail/${jadwalId}`);
-            mutate(`/api/jadwal/hari?hari=SENIN&ruang_id=${idRuang}`, undefined);
-            mutate(`/api/jadwal/hari?hari=SENIN&ruang_id=${ruang}`, undefined);
-            mutate(`/api/jadwal/hari?hari=SENIN&ruang_id=${idRuang}`);
-            mutate(`/api/jadwal/hari?hari=SENIN&ruang_id=${ruang}`);
+            mutate(`/api/jadwaldetail/`);
+            // undifened
+            mutate(`/api/jadwal/hari?hari=${hari}&ruang_id=${ruang}`, undefined);
+            // not undefined
+            mutate(`/api/jadwal/hari?hari=${hari}&ruang_id=${ruang}`);
+
 
             onSucsess();
             onClose();
@@ -307,21 +292,47 @@ const Senin: FC<Senin> = ({ jadwalId, data, onClose, onSucsess, idRuang }) => {
         } finally {
             setIsLoading(false);
         }
-
     };
-
 
     const getHariLabel = (value: any) => {
         const option = hariOptions.find((option) => option.value === value);
         return option ? option.label : "";
     };
+
     return (
-        <form onSubmit={handleSubmit(onSubmit)} className="w-[1000px]">
-            <h1 className="mb-4 font-semibold capitalize">{jadwalId}</h1>
+        <form onSubmit={handleSubmit(onSubmit)} className="w-max">
             <div className="flex flex-row justify-between items-center w-full">
                 <div className="flex flex-row items-center w-full">
                     <div className="flex flex-col gap-4 w-full">
-                        <div className=" flex gap-4">
+                        <div className="flex flex-row gap-3 items-center">
+                            <p className="font-semibold text-lg text-Primary-20">
+                                Pilih Kelompok
+                            </p>
+                            {
+                                kelompokTerpilih === "" ? (
+                                    <>
+                                        <span className="bg-Neutral-70 w-[1px] h-8"></span>
+                                        <h1 className="font-semibold capitalize text-lg text-Primary-99 inline-block py-1 px-4 bg-Primary-40 rounded-lg">
+                                            Kelompok Belum Dipilih
+                                        </h1>
+                                    </>
+
+                                ) : (
+                                    <>
+                                        <span className="bg-Neutral-70 w-[1px] h-8"></span>
+                                        <p className="font-semibold text-lg text-Primary-20">Terpilih</p>
+                                        <h1 className="font-semibold capitalize text-lg text-Primary-99 inline-block py-1 px-4 bg-Primary-40 rounded-lg">
+                                            {
+                                                kelompokTerpilih
+                                            }
+                                        </h1>
+                                    </>
+                                )
+                            }
+
+
+                        </div>
+                        <div className="grid grid-cols-6 gap-4 min-h-max h-36 overflow-y-scroll scrollbar pr-2">
                             {kelompok && kelompok.length > 0 ? (
                                 kelompok.map((item: Kelompok) => (
                                     <CardJadwalKelompok
@@ -329,7 +340,7 @@ const Senin: FC<Senin> = ({ jadwalId, data, onClose, onSucsess, idRuang }) => {
                                         type="checkbox"
                                         value={item.id}
                                         checked={selectedOption?.id === item.id}
-                                        register={{ ...register('kelompokCheck') }}
+                                        register={{ ...register("kelompokCheck") }}
                                         onChange={() => {
                                             if (selectedOption?.id === item.id) {
                                                 return;
@@ -339,13 +350,13 @@ const Senin: FC<Senin> = ({ jadwalId, data, onClose, onSucsess, idRuang }) => {
                                             );
                                             setValue("kelompokCheck", item.id);
                                             handleCheckChange(item.program.kelas_id);
+                                            setKelompokTerpilih(item.nama_kelompok);
                                         }}
                                         setValue={setValue}
                                         getValues={getValues}
                                         groupName="kelompokCheck"
                                         label={item.nama_kelompok}
                                         nomor_telepon={item.program.nama_program}
-
                                     />
                                 ))
                             ) : (
@@ -418,11 +429,11 @@ const Senin: FC<Senin> = ({ jadwalId, data, onClose, onSucsess, idRuang }) => {
                                             : "bg-Neutral-95"
                                             }`}
                                         onClick={toggleListSesi}
+                                        defaultValue={data}
                                     >
                                         {/* buat label */}
                                         {watch("sesi") ? (
-                                            sesi?.find((sesiItem) => sesiItem.id === watch("sesi"))
-                                                ?.nama_sesi
+                                            sesi?.find((sesiItem) => sesiItem.id === watch("sesi"))?.nama_sesi
                                         ) : (
                                             <span className="text-Neutral-300">Pilih Sesi</span>
                                         )}
@@ -479,10 +490,10 @@ const Senin: FC<Senin> = ({ jadwalId, data, onClose, onSucsess, idRuang }) => {
                                         onClick={toggleListRuang}
                                         defaultValue={idRuang}
                                     >
-                                        {/* buat label */}
                                         {watch("ruang") ? (
-                                            ruang?.find((ruangItem) => ruangItem.id === watch("ruang"))
-                                                ?.nama_ruang
+                                            ruang?.find(
+                                                (ruangItem) => ruangItem.id === watch("ruang")
+                                            )?.nama_ruang
                                         ) : (
                                             <span className="text-Neutral-300">Pilih Ruang</span>
                                         )}
@@ -576,34 +587,62 @@ const Senin: FC<Senin> = ({ jadwalId, data, onClose, onSucsess, idRuang }) => {
                                 )}
                             </div>
                         </div>
-                        <p className="font-semibold text-lg text-Primary-20">
-                            Pilih Tentor
-                        </p>
-                        {filteredUser?.map((item: User) => (
-                            <CardAnggotaJadwal
-                                key={item.id}
-                                id={item.id}
-                                value={item.id}
-                                checked={selectedOptionUser?.id === item.id}
-                                {...register("userCheck")}
-                                onChange={() => {
-                                    if (selectedOptionUser?.id === item.id) {
-                                        // Jika item yang dipilih adalah yang saat ini dipilih, tidak melakukan apa-apa
-                                        return;
-                                    }
-                                    setSelectedOptionUser(
-                                        selectedOptionUser?.id === item.id ? null : item
-                                    );
-                                    setValue("userCheck", item.id);
-                                }}
-                                setValue={setValue}
-                                getValues={getValues}
-                                groupName="kelompokCheck"
-                                label={item.name}
-                                nomor_telepon={item.mapel?.nama_mapel}
-                            />
-                        ))}
-                        {errors.kelompokCheck && <p>{errors.kelompokCheck.message}</p>}
+                        <div className="flex flex-col gap-4">
+                            <div className="flex flex-row gap-3 items-center">
+                                <p className="font-semibold text-lg text-Primary-20">
+                                    Pilih Kelompok
+                                </p>
+                                {
+                                    tentorTerpilih === "" ? (
+                                        <>
+                                            <span className="bg-Neutral-70 w-[1px] h-8"></span>
+                                            <h1 className="font-semibold capitalize text-lg text-Primary-99 inline-block py-1 px-4 bg-Primary-40 rounded-lg">
+                                                Tentor Belum Dipilih
+                                            </h1>
+                                        </>
+
+                                    ) : (
+                                        <>
+                                            <span className="bg-Neutral-70 w-[1px] h-8"></span>
+                                            <p className="font-semibold text-lg text-Primary-20">Terpilih</p>
+                                            <h1 className="font-semibold capitalize text-lg text-Primary-99 inline-block py-1 px-4 bg-Primary-40 rounded-lg">
+                                                {
+                                                    tentorTerpilih
+                                                }
+                                            </h1>
+                                        </>
+                                    )
+                                }
+                            </div>
+                            <div className="grid grid-cols-6 gap-4 min-h-max h-80 pr-2  overflow-y-scroll scrollbar">
+                                {filteredUser?.map((item: User) => (
+                                    <CardAnggotaJadwal
+                                        key={item.id}
+                                        id={item.id}
+                                        value={item.id}
+                                        checked={selectedOptionUser?.id === item.id}
+                                        {...register("userCheck")}
+                                        onChange={() => {
+                                            if (selectedOptionUser?.id === item.id) {
+                                                // Jika item yang dipilih adalah yang saat ini dipilih, tidak melakukan apa-apa
+                                                return;
+                                            }
+                                            setSelectedOptionUser(
+                                                selectedOptionUser?.id === item.id ? null : item
+                                            );
+                                            setValue("userCheck", item.id);
+                                            setTentorTerpilih(item.name);
+                                        }}
+                                        setValue={setValue}
+                                        getValues={getValues}
+                                        groupName="kelompokCheck"
+                                        label={item.name}
+                                        nomor_telepon={item.mapel_id}
+                                    />
+                                ))}
+                                {errors.kelompokCheck && <p>{errors.kelompokCheck.message}</p>}
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -627,8 +666,8 @@ const Senin: FC<Senin> = ({ jadwalId, data, onClose, onSucsess, idRuang }) => {
                     withBgColor
                 />
             </div>
-        </form >
+        </form>
     );
 };
 
-export default Senin;
+export default CreateSenin;

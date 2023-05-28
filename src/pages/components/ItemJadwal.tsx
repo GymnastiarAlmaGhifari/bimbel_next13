@@ -4,10 +4,11 @@ import Button from "./buttons/Button";
 import { IoIosAdd } from "react-icons/io";
 
 type ItemJadwalTerisiProps = {
-  hari: string;
+  nama_mapel: string;
   kelompok: string;
   nama_tentor: string;
   onClick?: () => void;
+  onDelete?: () => void;
 };
 type ItemJadwalBelumTerisiProps = {
   onClick?: () => void;
@@ -17,44 +18,26 @@ const ItemJadwalTerisi: FC<ItemJadwalTerisiProps> = ({
   kelompok,
   nama_tentor,
   onClick,
-  hari,
+  onDelete,
+  nama_mapel,
 }) => {
   return (
     <div className="flex flex-col justify-center w-full h-full">
-      <div className="h-full w-full flex flex-col gap-2">
-        <div className="flex justify-between">
-          <p className="text-Tertiary-90 font-bold">{hari}</p>
-          <p className="text-Tertiary-90 font-bold">{kelompok}</p>
+      <div className="h-full w-full flex flex-col gap-1">
+        <h1>kelompok</h1>
+        <p className="text-Tertiary-99 font-bold text-[18px]">{kelompok}</p>
+        <h1>tentor</h1>
+        <p className="text-Tertiary-99 font-bold text-[18px]">{nama_tentor}</p>
+        <h1>mapel</h1>
+        <p className="text-Tertiary-99 font-bold text-[18px]">{nama_mapel}</p>
+        <div className="flex flex-col justify-end items-end absolute bottom-2 right-2 gap-2">
+          <button className="text-Tertiary-99 hover:text-Tertiary-40" onClick={onClick}>
+            <MdModeEdit size={28} />
+          </button>
+          <button className="text-Tertiary-99 hover:text-Error-40" onClick={onDelete}>
+            <MdDelete size={28} />
+          </button>
         </div>
-        <p className="text-Tertiary-90 font-bold">{nama_tentor}</p>
-      </div>
-      <div className="flex absolute bottom-2 right-2 gap-2">
-        {/* <Button
-          bgColor="bg-Neutral-100"
-          brColor=""
-          label=""
-          noLabel
-          textColor="text-Tertiary-90"
-          icon={MdDelete}
-          type={"button"}
-          // onClick={onClick}
-        /> */}
-        <button className="hover:text-Error-40" onClick={onClick}>
-          <MdDelete size={24} />
-        </button>
-        <button className="hover:text-Tertiary-40" onClick={onClick}>
-          <MdModeEdit size={24} />
-        </button>
-        {/* <Button
-          bgColor="bg-Neutral-100"
-          brColor=""
-          label=""
-          noLabel
-          textColor="text-Tertiary-90"
-          type={"button"}
-          icon={MdModeEdit}
-          // onClick={onClick}
-        /> */}
       </div>
     </div>
   );

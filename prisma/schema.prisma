@@ -30,25 +30,25 @@ model User {
   tagihans          tagihan[]
 }
 
-model lokasi {
-  id String @id @default(cuid())
-  nama_lokasi String
-  detail String?
-  latitude Float
-  longitude Float
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
+// model lokasi {
+//   id String @id @default(cuid())
+//   nama_lokasi String
+//   detail String?
+//   latitude Float
+//   longitude Float
+//   createdAt DateTime @default(now())
+//   updatedAt DateTime @updatedAt
+// }
 
-model Books{
-    id String @id @default(cuid())
-    title String
-    author String
-    description String
-    price Int
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-}
+// model Books{
+//     id String @id @default(cuid())
+//     title String
+//     author String
+//     description String
+//     price Int
+//     createdAt DateTime @default(now())
+//     updatedAt DateTime @updatedAt
+// }
 
 model jadwal_detail{
   id String @id @default(cuid())
@@ -225,6 +225,14 @@ model rekening {
   id String @id @default(cuid())
   nama_rekening String
   nomor_rekening String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model diskon {
+  id String @id @default(cuid())
+  nama_diskon String
+  banner String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
