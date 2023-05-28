@@ -1,5 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import prisma from "@/libs/prismadb";
+import { format } from "date-fns";
+import { Bulan } from "@prisma/client";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     let programId = req.query.programId;
@@ -7,6 +9,40 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     if (Array.isArray(programId)) {
         programId = programId[0];
     }
+
+    const now = new Date();
+    const month = now.getMonth();
+    const year = now.getFullYear();
+    const day = now.getDay();
+
+    const dayname = [
+        "MINGGU",
+        "SENIN",
+        "SELASA",
+        "RABU",
+        "KAMIS",
+        "JUMAT",
+        "SABTU",
+    ];
+
+    const hari = dayname[day];
+
+    const monthNames = [
+        "JANUARI",
+        "FEBRUARI",
+        "MARET",
+        "APRIL",
+        "MEI",
+        "JUNI",
+        "JULI",
+        "AGUSTUS",
+        "SEPTEMBER",
+        "OKTOBER",
+        "NOVEMBER",
+        "DESEMBER",
+    ];
+
+    const currentMonthName = monthNames[month];
 
     if (req.method === "POST") {
         try {
@@ -31,12 +67,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                             const tagihan = await prisma.tagihan.create({
                                 data: {
                                     siswa_id: siswa[i].id,
-                                    tanggal_tagihan: req.body.tanggal_tagihan,
+                                    tanggal_tagihan: format(new Date(Date.now()), 'dd-MM-yyyy'),
                                     tanggal_jatuh_tempo: req.body.tanggal_jatuh_tempo,
-                                    Bulan: req.body.Bulan,
-                                    Tahun: req.body.Tahun,
+                                    Bulan: currentMonthName as Bulan,
+                                    Tahun: year,
                                     jumlah_tagihan: req.body.jumlah_tagihan,
-                                    status: req.body.status,
+                                    status: "BELUM_BAYAR",
 
                                 },
                             });
