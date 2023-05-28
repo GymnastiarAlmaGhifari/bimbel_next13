@@ -44,7 +44,6 @@ const User: FC<User> = () => {
     };
   }, [inputValue]);
 
-
   const { data: users, error } = useSWR<User[]>(`/api/user`, fetcher, {});
 
   let filteredUsers = users;
@@ -106,7 +105,6 @@ const User: FC<User> = () => {
           <div className="flex flex-col h-full bg-Neutral-100 py-4 gap-4 rounded-lg overflow-auto">
             <HeadTable
               label="Pengguna"
-              role
               onClick={() => {
                 setShowCreate(true);
               }}
