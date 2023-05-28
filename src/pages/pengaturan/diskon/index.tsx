@@ -24,6 +24,8 @@ const Diskon = ({ }) => {
 
   const [selectedDiskonEdit, setSelectedDiskonEdit] = useState<DiskonProps | null>(null);
 
+
+
   const { data: diskon, error, isLoading } = useSWR<DiskonProps[]>(
     "/api/diskon",
     fetcher,
@@ -33,11 +35,21 @@ const Diskon = ({ }) => {
 
   const [showSuccess, setShowSuccess] = useState(false);
 
-  const Diskon = ({ }) => {
-    useEffect(() => {
-      document.title = "Bimbel Linear";
-    });
-  }
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      setShowSuccess(false);
+    }, 1000);
+
+    return () => {
+      clearTimeout(timeoutId);
+    };
+  }, [showSuccess]);
+
+
+  useEffect(() => {
+    document.title = "Bimbel Linear";
+  });
+
   return (
     <div className="flex flex-row h-screen font-mulish">
       <Sidebar />
@@ -98,7 +110,17 @@ const Diskon = ({ }) => {
             titleModal="Edit Diskon"
             onClose={() => setSelectedDiskonEdit(null)}
           >
-            <EditDiskon />
+            <EditDiskon
+              onClose={() => setSelectedDiskonEdit(null)}
+              onSuccess={
+                () => {
+                  // success
+                  setShowSuccess(true);
+                }
+              }
+              data={selectedDiskonEdit}
+              diskonId={selectedDiskonEdit.id}
+            />
           </ModalDetail>
         )
       }
