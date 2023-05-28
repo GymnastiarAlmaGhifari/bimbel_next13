@@ -38,5 +38,16 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             console.error(error);
             res.status(500).json({ message: "Error updating setgaji" });
         }
+    } else if (req.method === "DELETE") {
+        try {
+            const setgaji = await prisma.setgaji.delete({
+                where: { id: setgajiId },
+            });
+
+            res.status(200).json(setgaji);
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ message: "Error deleting setgaji" });
+        }
     }
 }
