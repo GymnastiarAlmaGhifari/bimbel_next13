@@ -1,12 +1,9 @@
 import { FC, useEffect, useRef, useState } from "react";
 import axios, { AxiosError } from "axios";
 import { mutate } from "swr";
-import {
-  SubmitHandler,
-  useForm
-} from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import Input from "@/pages/components/inputs/Input";
-import { yupResolver } from '@hookform/resolvers/yup';
+import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import Button from "@/pages/components/buttons/Button";
 import useSWR from "swr";
@@ -28,7 +25,7 @@ const schema = yup.object().shape({
   tipe: yup.string().required("Pilih Tipe Terlebih Dahulu"),
   kelas_id: yup.string().required("Pilih Kelas Terlebih Dahulu"),
   Deskripsi: yup.string(),
-  harga: yup.string().required('Amount is required'),
+  harga: yup.string().required("Amount is required"),
   image: yup.mixed().required(),
 });
 
@@ -36,9 +33,11 @@ type FormData = yup.InferType<typeof schema> & {
   image: FileList;
 };
 
-
 const CreateProgram: FC<RuangCreateProps> = ({ onClose, onSucsess }) => {
-  const { data: kelas, error: errorprogram } = useSWR<any[]>("/api/kelas", fetcher);
+  const { data: kelas, error: errorprogram } = useSWR<any[]>(
+    "/api/kelas",
+    fetcher
+  );
   const [previewImage, setPreviewImage] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -54,12 +53,13 @@ const CreateProgram: FC<RuangCreateProps> = ({ onClose, onSucsess }) => {
   });
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
-    const { nama_program, level, tipe, kelas_id, Deskripsi, harga, image } = data;
+    const { nama_program, level, tipe, kelas_id, Deskripsi, harga, image } =
+      data;
 
     setIsLoading(true); // Set loading state to true
     setError(null);
 
-    const rawHarga = parseInt(harga.replace(/\D/g, ""))
+    const rawHarga = parseInt(harga.replace(/\D/g, ""));
 
     const formData = new FormData();
     formData.append("image", data.image[0]);
@@ -72,12 +72,11 @@ const CreateProgram: FC<RuangCreateProps> = ({ onClose, onSucsess }) => {
         kelas_id,
         Deskripsi,
         harga: rawHarga,
-        img: image
+        img: image,
       });
 
       mutate("/api/program");
       onClose(); // Set loading state to false
-
     } catch (error: any) {
       console.error(error);
 
@@ -113,7 +112,6 @@ const CreateProgram: FC<RuangCreateProps> = ({ onClose, onSucsess }) => {
       onSucsess();
     }
   };
-
 
   const [isListOpenKelas, setIsListOpenKelas] = useState(false);
   const [isListOpenLevel, setIsListOpenLevel] = useState(false);
@@ -188,7 +186,9 @@ const CreateProgram: FC<RuangCreateProps> = ({ onClose, onSucsess }) => {
   };
 
   const formatRupiah = (e: any) => {
-    const rawValue = e.target.value.replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    const rawValue = e.target.value
+      .replace(/\D/g, "")
+      .replace(/\B(?=(\d{3})+(?!\d))/g, ".");
     const formattedValue = "Rp " + rawValue;
     setValue("harga", formattedValue);
   };
@@ -207,7 +207,7 @@ const CreateProgram: FC<RuangCreateProps> = ({ onClose, onSucsess }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5" >
+    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5">
       {/* Error message */}
       {error && <p className="text-red-500">{error}</p>}
       <Input
@@ -217,20 +217,23 @@ const CreateProgram: FC<RuangCreateProps> = ({ onClose, onSucsess }) => {
         register={{ ...register("nama_program") }}
         errors={errors}
       />
-      {errors.nama_program && <p className="text-red-500">{errors.nama_program.message}</p>}
+      {errors.nama_program && (
+        <p className="text-red-500">{errors.nama_program.message}</p>
+      )}
 
-      <div className="flex flex-col gap-6 w-[400px]">
-        {previewImage && (
-          <div className="">
+      <div className="flex flex-col gap-6 w-[300px] h-[300px] scale-100 overflow-clip bg-red-500">
+        <div className="h-full">
+          {previewImage && (
             <Image
               src={previewImage}
               alt="Gambar"
               width={200}
               height={200}
+              className="w-full h-full object-cover"
               loader={({ src }) => `${src}?cache-control=no-store`}
             />
-          </div>
-        )}
+          )}
+        </div>
         <div>
           <label
             htmlFor="image"
@@ -280,25 +283,30 @@ const CreateProgram: FC<RuangCreateProps> = ({ onClose, onSucsess }) => {
         <div className="relative flex flex-col gap-2">
           <button
             type="button"
-            className={` w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${isListOpenLevel
-              ? "border-[2px] border-Primary-50 bg-Primary-95"
-              : "bg-Neutral-95"
-              }`}
+            className={` w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${
+              isListOpenLevel
+                ? "border-[2px] border-Primary-50 bg-Primary-95"
+                : "bg-Neutral-95"
+            }`}
             onClick={toggleListLevel}
           >
-            {getLevelLabel(watch("level")) || ("Pilih Level")}
+            {getLevelLabel(watch("level")) || "Pilih Level"}
             {isListOpenLevel ? <IoIosArrowUp /> : <IoIosArrowDown />}
           </button>
           {isListOpenLevel && (
-            <ul className="absolute w-full top-[44px] z-10 bg-Neutral-100 border-[2px] border-Primary-50 rounded-xl py-2 px-2 outline-none appearance-none flex flex-col gap-1" ref={componentRef}>
+            <ul
+              className="absolute w-full top-[44px] z-10 bg-Neutral-100 border-[2px] border-Primary-50 rounded-xl py-2 px-2 outline-none appearance-none flex flex-col gap-1"
+              ref={componentRef}
+            >
               {levelOptions.map((option) => (
                 <li key={option.value}>
                   <button
                     type="button"
-                    className={`w-full text-left px-2 py-1 rounded-full ${watch("level") === option.value
-                      ? "text-Primary-90 bg-Primary-20"
-                      : "text-Primary-20 hover:bg-Primary-95"
-                      }`}
+                    className={`w-full text-left px-2 py-1 rounded-full ${
+                      watch("level") === option.value
+                        ? "text-Primary-90 bg-Primary-20"
+                        : "text-Primary-20 hover:bg-Primary-95"
+                    }`}
                     onClick={() => selectlevel(option.value)}
                   >
                     {option.label}
@@ -321,25 +329,30 @@ const CreateProgram: FC<RuangCreateProps> = ({ onClose, onSucsess }) => {
         <div className="relative flex flex-col gap-2">
           <button
             type="button"
-            className={` w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${isListOpenTipe
-              ? "border-[2px] border-Primary-50 bg-Primary-95"
-              : "bg-Neutral-95"
-              }`}
+            className={` w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${
+              isListOpenTipe
+                ? "border-[2px] border-Primary-50 bg-Primary-95"
+                : "bg-Neutral-95"
+            }`}
             onClick={toggleListTipe}
           >
-            {getTipeLabel(watch("tipe")) || ("Pilih Tipe")}
+            {getTipeLabel(watch("tipe")) || "Pilih Tipe"}
             {isListOpenTipe ? <IoIosArrowUp /> : <IoIosArrowDown />}
           </button>
           {isListOpenTipe && (
-            <ul className="absolute w-full top-[44px] z-10 bg-Neutral-100 border-[2px] border-Primary-50 rounded-xl py-2 px-2 outline-none appearance-none flex flex-col gap-1" ref={componentRef}>
+            <ul
+              className="absolute w-full top-[44px] z-10 bg-Neutral-100 border-[2px] border-Primary-50 rounded-xl py-2 px-2 outline-none appearance-none flex flex-col gap-1"
+              ref={componentRef}
+            >
               {tipeOptions.map((option) => (
                 <li key={option.value}>
                   <button
                     type="button"
-                    className={`w-full text-left px-2 py-1 rounded-full ${watch("tipe") === option.value
-                      ? "text-Primary-90 bg-Primary-20"
-                      : "text-Primary-20 hover:bg-Primary-95"
-                      }`}
+                    className={`w-full text-left px-2 py-1 rounded-full ${
+                      watch("tipe") === option.value
+                        ? "text-Primary-90 bg-Primary-20"
+                        : "text-Primary-20 hover:bg-Primary-95"
+                    }`}
                     onClick={() => selectTipe(option.value)}
                   >
                     {option.label}
@@ -362,10 +375,11 @@ const CreateProgram: FC<RuangCreateProps> = ({ onClose, onSucsess }) => {
         <div className="relative flex flex-col gap-2">
           <button
             type="button"
-            className={` w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${isListOpenKelas
-              ? "border-[2px] border-Primary-50 bg-Primary-95"
-              : "bg-Neutral-95"
-              }`}
+            className={` w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${
+              isListOpenKelas
+                ? "border-[2px] border-Primary-50 bg-Primary-95"
+                : "bg-Neutral-95"
+            }`}
             onClick={toggleListKelas}
           >
             {/* buat label */}
@@ -378,7 +392,10 @@ const CreateProgram: FC<RuangCreateProps> = ({ onClose, onSucsess }) => {
             {isListOpenKelas ? <IoIosArrowUp /> : <IoIosArrowDown />}
           </button>
           {isListOpenKelas && (
-            <ul className="absolute w-full top-[44px] z-10 bg-Neutral-100 border-[2px] border-Primary-50 rounded-xl py-2 px-2 outline-none appearance-none flex flex-col gap-1" ref={componentRef}>
+            <ul
+              className="absolute w-full top-[44px] z-10 bg-Neutral-100 border-[2px] border-Primary-50 rounded-xl py-2 px-2 outline-none appearance-none flex flex-col gap-1"
+              ref={componentRef}
+            >
               {error ? (
                 <li>Error fetching data</li>
               ) : !kelas ? (
@@ -390,10 +407,11 @@ const CreateProgram: FC<RuangCreateProps> = ({ onClose, onSucsess }) => {
                   <li key={kelasItem.id}>
                     <button
                       type="button"
-                      className={`w-full text-left px-2 py-1 rounded-full ${watch("kelas_id") === kelasItem.id
-                        ? "text-Primary-90 bg-Primary-20"
-                        : "text-Primary-20 hover:bg-Primary-95"
-                        }`}
+                      className={`w-full text-left px-2 py-1 rounded-full ${
+                        watch("kelas_id") === kelasItem.id
+                          ? "text-Primary-90 bg-Primary-20"
+                          : "text-Primary-20 hover:bg-Primary-95"
+                      }`}
                       onClick={() => selectKelas(kelasItem.id)}
                     >
                       {kelasItem.nama_kelas}
@@ -420,12 +438,9 @@ const CreateProgram: FC<RuangCreateProps> = ({ onClose, onSucsess }) => {
           onChange={formatRupiah}
         />
       </div>
-      {
-        errors.harga && (
-          <span className="text-red-500">{errors.harga.message}</span>
-
-        )
-      }
+      {errors.harga && (
+        <span className="text-red-500">{errors.harga.message}</span>
+      )}
       <div className="flex flex-col gap-2">
         <label htmlFor="" className="text-sm text-Primary-10">
           Deskripsi
@@ -440,7 +455,7 @@ const CreateProgram: FC<RuangCreateProps> = ({ onClose, onSucsess }) => {
       </div>
 
       {/* Buat selected berisi SUPER ADMIN dan TENTOR */}
-      < div className="flex flex-row justify-end" >
+      <div className="flex flex-row justify-end">
         <Button
           type="submit"
           bgColor="bg-Tertiary-50"
