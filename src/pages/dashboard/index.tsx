@@ -19,7 +19,7 @@ const Dashboard = () => {
 
   const session = useSession();
 
-  const { data: dashboard, error } = useSWR(`/api/dashboard?role=${session.data?.user.role}&user_id=${session.data?.user.id}`, fetcher, {});
+  const { data: dashboard, error, isLoading } = useSWR(`/api/dashboard?role=${session.data?.user.role}&user_id=${session.data?.user.id}`, fetcher, {});
   const router = useRouter();
   const backDashboard = () => {
     router.push("/dashboard");
@@ -32,16 +32,52 @@ const Dashboard = () => {
         <Navbar />
         <div className="flex flex-col gap-2 h-full p-5 bg-Neutral-95 overflow-auto">
           <InfoDashboard
-            tentor={dashboard?.total_tentor}
-            siswa={dashboard?.total_siswa}
-            dana={dashboard?.total_tagihan._sum.jumlah_tagihan}
+            tentor={
+              isLoading ? (
+                <div className="animate-pulse h-10 w-10 bg-Neutral-100 rounded-full">loading</div>
+              ) : (
+                dashboard?.total_tentor
+              )
+            }
+            siswa={
+              isLoading ? (
+                <div className="animate-pulse h-10 w-10 bg-Neutral-100 rounded-full">loading</div>
+              ) : (
+
+                dashboard?.total_siswa
+              )
+            }
+            dana={isLoading ? (
+              <div className="animate-pulse h-10 w-10 bg-Neutral-100 rounded-full">loading</div>
+            ) : (dashboard?.total_tagihan._sum.jumlah_tagihan)}
           />
           <div className="flex flex-col h-full bg-Neutral-100 py-4 gap-4 rounded-lg overflow-auto">
-            <HeadTable label="Overview Jadwal" />
+            <HeadTable
+              noAdd
+              label="Overview Jadwal" />
             <div className="flex flex-col scrollbar rounded-bl-lg rounded-br-lg p-4 gap-4 overflow-y-auto h-full ">
-              <CardDashboard />
-              <CardDashboard />
-              <CardDashboard />
+              {/* maping dashboard */}
+
+              {isLoading ? (
+                <div className="flex flex-col justify-center items-center h-full">
+                  <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-Primary-100"></div>
+                  <p className="text-Primary-100">Loading...</p>
+                </div>
+              ) : (
+                <div className="flex flex-col gap-4">
+                  {dashboard?.jadwal.map((index: any) => (
+                    <CardDashboard
+                      key={index}
+                      nama_kelompok={index?.kelompok.nama_kelompok}
+                      nama_mapel={index?.mapel.nama_mapel}
+                      nama_tentor={index?.user.name}
+                      nama_sesi={index?.sesi.nama_sesi}
+                      nama_program={index?.kelompok.program.nama_program}
+                    />
+                  ))}
+                </div>
+              )
+              }
             </div>
           </div>{" "}
         </div>
