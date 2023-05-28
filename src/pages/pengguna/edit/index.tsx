@@ -160,8 +160,7 @@ const UserEdit: FC<UserEditProps> = ({ userId, onClose, onSucsess, data }) => {
           universitas: lulusan,
           alamat,
         });
-        await axios.put(`/api/user/userimg/${userId}`, {
-        });
+        await axios.put(`/api/user/userimg/${userId}`, {});
         mutate("/api/user");
         mutate(`/api/userimg`);
         mutate(`/api/user/getadmin`);
@@ -178,21 +177,22 @@ const UserEdit: FC<UserEditProps> = ({ userId, onClose, onSucsess, data }) => {
     data?.role === "SUPER"
       ? "SUPER ADMIN"
       : data?.role === "ADMIN"
-        ? "ADMIN"
-        : data?.role === "TENTOR"
-          ? "TENTOR"
-          : "Pilih peran";
+      ? "ADMIN"
+      : data?.role === "TENTOR"
+      ? "TENTOR"
+      : "Pilih peran";
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex gap-10">
-      <div className="flex flex-col gap-6 w-[400px]">
+      <div className="flex flex-col gap-6 overflow-clip scale-100 w-[400px]">
         {previewImage ? (
-          <div className="">
+          <div className="w-full">
             <Image
               src={previewImage}
               alt="Gambar"
               width={200}
               height={200}
+              className="w-full h-full object-cover"
               loader={({ src }) => `${src}?cache-control=no-store`}
             />
           </div>
@@ -205,6 +205,7 @@ const UserEdit: FC<UserEditProps> = ({ userId, onClose, onSucsess, data }) => {
               alt="Gambar"
               width={200}
               height={200}
+              className="w-full h-full object-cover"
               loader={({ src }) => `${src}?cache-control=no-store`}
             />
           </div>
@@ -277,10 +278,11 @@ const UserEdit: FC<UserEditProps> = ({ userId, onClose, onSucsess, data }) => {
             <div className="relative flex flex-col gap-2">
               <button
                 type="button"
-                className={` w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${isListOpen
-                  ? "border-[2px] border-Primary-50 bg-Primary-95"
-                  : "bg-Neutral-95"
-                  }`}
+                className={` w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${
+                  isListOpen
+                    ? "border-[2px] border-Primary-50 bg-Primary-95"
+                    : "bg-Neutral-95"
+                }`}
                 onClick={toggleList}
               >
                 {getRoleLabel(roleLabel)}
@@ -291,40 +293,40 @@ const UserEdit: FC<UserEditProps> = ({ userId, onClose, onSucsess, data }) => {
                   className="absolute w-full top-[44px] z-10 bg-Neutral-100 border-[2px] border-Primary-50 rounded-xl py-2 px-2 outline-none appearance-none flex flex-col gap-1"
                   ref={componentRef}
                 >
-                  {session?.user?.role === "SUPER" && (
+                  {session?.user?.role === "SUPER" &&
                     roleOptions.map((option) => (
                       <li key={option.value}>
                         <button
                           type="button"
-                          className={`w-full text-left px-2 py-1 rounded-full ${watch("role") === option.value
-                            ? "text-Primary-90 bg-Primary-20"
-                            : "text-Primary-20 hover:bg-Primary-95"
-                            }`}
+                          className={`w-full text-left px-2 py-1 rounded-full ${
+                            watch("role") === option.value
+                              ? "text-Primary-90 bg-Primary-20"
+                              : "text-Primary-20 hover:bg-Primary-95"
+                          }`}
                           onClick={() => selectRole(option.value)}
                         >
                           {option.label}
                         </button>
                       </li>
-                    ))
-                  )}
-                  {session?.user?.role === "ADMIN" && (
+                    ))}
+                  {session?.user?.role === "ADMIN" &&
                     roleOptions
                       .filter((option) => option.value !== "SUPER")
                       .map((option) => (
                         <li key={option.value}>
                           <button
                             type="button"
-                            className={`w-full text-left px-2 py-1 rounded-full ${watch("role") === option.value
-                              ? "text-Primary-90 bg-Primary-20"
-                              : "text-Primary-20 hover:bg-Primary-95"
-                              }`}
+                            className={`w-full text-left px-2 py-1 rounded-full ${
+                              watch("role") === option.value
+                                ? "text-Primary-90 bg-Primary-20"
+                                : "text-Primary-20 hover:bg-Primary-95"
+                            }`}
                             onClick={() => selectRole(option.value)}
                           >
                             {option.label}
                           </button>
                         </li>
-                      ))
-                  )}
+                      ))}
                 </ul>
               )}
             </div>

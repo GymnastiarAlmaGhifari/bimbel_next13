@@ -3,91 +3,74 @@ import prisma from "@/libs/prismadb";
 import { Bulan, Hari } from "@prisma/client";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-    const role = req.query.role;
-    let user_id = req.query.user_id;
+  const role = req.query.role;
+  let user_id = req.query.user_id;
 
-    if (Array.isArray(user_id)) {
-        user_id = user_id[0];
-    }
+  if (Array.isArray(user_id)) {
+    user_id = user_id[0];
+  }
 
-    const now = new Date();
-    const month = now.getMonth();
-    const year = now.getFullYear();
-    const day = now.getDay();
+  const now = new Date();
+  const month = now.getMonth();
+  const year = now.getFullYear();
+  const day = now.getDay();
 
-    const dayname = [
-        "MINGGU",
-        "SENIN",
-        "SELASA",
-        "RABU",
-        "KAMIS",
-        "JUMAT",
-        "SABTU",
-    ];
+  const dayname = ["MINGGU", "SENIN", "SELASA", "RABU", "KAMIS", "JUMAT", "SABTU"];
 
-    const hari = dayname[day];
+  const hari = dayname[day];
 
-    const monthNames = [
-        "JANUARI",
-        "FEBRUARI",
-        "MARET",
-        "APRIL",
-        "MEI",
-        "JUNI",
-        "JULI",
-        "AGUSTUS",
-        "SEPTEMBER",
-        "OKTOBER",
-        "NOVEMBER",
-        "DESEMBER",
-    ];
+  const monthNames = ["JANUARI", "FEBRUARI", "MARET", "APRIL", "MEI", "JUNI", "JULI", "AGUSTUS", "SEPTEMBER", "OKTOBER", "NOVEMBER", "DESEMBER"];
 
-    const currentMonthName = monthNames[month];
+  const currentMonthName = monthNames[month];
 
-    if (role === "SUPER") {
+  if (role === "SUPER") {
+    if (req.method === "GET") {
+      try {
+        const total_tentor = await prisma.user.count({
+          where: {
+            role: "TENTOR",
+          },
+        });
+        const total_siswa = await prisma.user.count();
+        const total_tagihan = await prisma.tagihan.aggregate({
+          _sum: {
+            jumlah_tagihan: true,
+          },
+          where: {
+            status: "LUNAS",
+            Bulan: {
+              in: [currentMonthName as Bulan],
+            },
+            Tahun: year,
+          },
+        });
 
-        if (req.method === "GET") {
-            try {
-                const total_tentor = await prisma.user.count({
-                    where: {
-                        role: "TENTOR",
-                    },
-                });
-                const total_siswa = await prisma.user.count();
-                const total_tagihan = await prisma.tagihan.aggregate({
-                    _sum: {
-                        jumlah_tagihan: true,
-                    },
-                    where: {
-                        status: "LUNAS",
-                        Bulan: {
-                            in: [currentMonthName as Bulan],
-                        },
-                        Tahun: year,
-                    },
-                });
+        const jadwal = await prisma.jadwal_detail.findMany({
+          where: {
+            hari: {
+              in: [hari as Hari],
+            },
+            user_id: user_id,
+          },
+          include: {
+            kelompok: {
+              include: {
+                program: true,
+              },
+            },
+            sesi: true,
+            mapel: true,
+            ruang: true,
+            user: true,
+          },
+        });
 
-                const jadwal = await prisma.jadwal_detail.findMany({
-                    where: {
-                        hari: {
-                            in: [hari as Hari],
-                        },
-                        user_id: user_id,
-                    },
-                    include: {
-                        kelompok: true,
-                        sesi: true,
-                        mapel: true,
-                        ruang: true,
-                    },
-                });
-
-                const response = {
-                    total_tentor,
-                    total_siswa,
-                    total_tagihan,
-                    jadwal,
-                };
+        const response = {
+          total_tentor,
+          total_siswa,
+          total_tagihan,
+          jadwal,
+        };
 
                 return res.status(200).json(response);
             }

@@ -12,14 +12,8 @@ import { mutate } from "swr";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { IoIosArrowDown, IoIosArrowUp, IoIosAdd } from "react-icons/io";
 import { ModalDetail, ModalSucces } from "@/pages/components/modal/Modal";
-import Senin from "./modal/senin/edit/senin";
-import Selasa from "./modal/selasa";
-import Rabu from "./modal/rabu";
-import Kamis from "./modal/kamis";
-import Jumat from "./modal/jumat";
-import Sabtu from "./modal/sabtu";
-import Minggu from "./modal/minggu";
-import CreateSenin from "./modal/senin/create";
+import Senin from "./Edit/senin";
+
 
 interface Jadwal {
   id: string;
@@ -31,6 +25,10 @@ interface Jadwal {
   ruang_id: string;
   createdAt: string;
   updatedAt: string;
+  kelompok: {
+    id: string;
+    nama_kelompok: string;
+  }
   sesi: {
     id: string;
     nama_sesi: string;
@@ -109,15 +107,9 @@ const Jadwal: FC<Jadwal> = () => {
     }
   }, [ruang, setValue]);
 
-  // const handleRuangChange = async (
-  //   event: React.ChangeEvent<HTMLSelectElement>
-  // ) => {
-  //   const ruangId = event.target.value;
-  //   setselectRuang(ruangId);
-  // };
-
   const [listOpenRuang, setIsListOpenRuang] = useState(false);
   const componentRef = useRef<HTMLUListElement>(null);
+  const [selectNamaRuang, setSelectNamaRuang] = useState("");
 
   useEffect(() => {
     // Menangani klik di luar komponen
@@ -154,9 +146,14 @@ const Jadwal: FC<Jadwal> = () => {
   //   setSelectedRuangIdPass(ruang_id);
   // }, [ruang_id]);
 
+
   useEffect(() => {
     setSelectedRuangIdPass(selectedRuangId);
-  }, [selectedRuangId]);
+    if (ruang && ruang.length > 0) {
+      setSelectNamaRuang(ruang[0].nama_ruang)
+    }
+  }, [selectedRuangId, selectNamaRuang]);
+
 
   const {
     data: sesi,
@@ -286,13 +283,27 @@ const Jadwal: FC<Jadwal> = () => {
   }, [showSuccess]);
 
   // useState untuk modal create jadwal perhari
-  const [seninModalCreate, setSeninModalCreate] = useState(false);
+  const [seninModalCreate, setSeninModalCreate] = useState(null);
+  const [selasaModalCreate, setSelasaModalCreate] = useState(null);
+  const [rabuModalCreate, setRabuModalCreate] = useState(null);
+  const [kamisModalCreate, setKamisModalCreate] = useState(null);
+  const [jumatModalCreate, setJumatModalCreate] = useState(null);
+  const [sabtuModalCreate, setSabtuModalCreate] = useState(null);
+  const [mingguModalCreate, setMingguModalCreate] = useState(null);
+
+
+  // useState untuk modal delete jadwal perhari
+  const [seninModalDelete, setSeninModalDelete] = useState<Jadwal | null>(null);
+  const [selasaModalDelete, setSelasaModalDelete] = useState<Jadwal | null>(null);
+  const [rabuModalDelete, setRabuModalDelete] = useState<Jadwal | null>(null);
+  const [kamisModalDelete, setKamisModalDelete] = useState<Jadwal | null>(null);
+  const [jumatModalDelete, setJumatModalDelete] = useState<Jadwal | null>(null);
+  const [sabtuModalDelete, setSabtuModalDelete] = useState<Jadwal | null>(null);
+  const [mingguModalDelete, setMingguModalDelete] = useState<Jadwal | null>(null);
 
   // state simpan id ruang dengan variable berbeda
   const [selectedRuangIdPass, setSelectedRuangIdPass] = useState("");
   // const nama ruang selected
-  const [selectedRuang, setSelectedRuang] = useState("");
-
   return (
     <div className="flex flex-row h-screen font-mulish">
       <Sidebar />
@@ -306,11 +317,10 @@ const Jadwal: FC<Jadwal> = () => {
                 <div className="flex flex-col w-52 relative">
                   <button
                     type="button"
-                    className={`w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${
-                      listOpenRuang
-                        ? "border-[2px] border-Primary-50 bg-Primary-95"
-                        : "bg-Neutral-95"
-                    }`}
+                    className={`w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${listOpenRuang
+                      ? "border-[2px] border-Primary-50 bg-Primary-95"
+                      : "bg-Neutral-95"
+                      }`}
                     onClick={toggleListRuang}
                   >
                     {
@@ -334,13 +344,13 @@ const Jadwal: FC<Jadwal> = () => {
                         ruang.map((ruang) => (
                           <li key={ruang.id}>
                             <button
-                              className={`w-full text-left px-4 py-1 rounded-full ${
-                                watch("ruang_id") === ruang.id
-                                  ? "text-Primary-90 bg-Primary-20"
-                                  : "text-Primary-20 hover:bg-Primary-95"
-                              }`}
+                              className={`w-full text-left px-4 py-1 rounded-full ${watch("ruang_id") === ruang.id
+                                ? "text-Primary-90 bg-Primary-20"
+                                : "text-Primary-20 hover:bg-Primary-95"
+                                }`}
                               onClick={() => {
                                 selectRuang(ruang.id);
+                                setSelectNamaRuang(ruang.nama_ruang)
                                 console.log(ruang.id);
                               }}
                             >
@@ -433,11 +443,14 @@ const Jadwal: FC<Jadwal> = () => {
                       <div className="py-2 px-4 bg-Tertiary-50 rounded-lg h-full text-Tertiary-90 font-bold w-full flex items-center justify-center shadow-[0px_0px_10px_5px_rgba(149,146,146,.25)] relative">
                         <ItemJadwal
                           key={hari_senin.id}
-                          hari="sadawd"
-                          kelompok={hari_senin.sesi.nama_sesi}
+                          nama_mapel={hari_senin.mapel.nama_mapel}
+                          kelompok={hari_senin.kelompok.nama_kelompok}
                           nama_tentor={hari_senin.user.name}
                           onClick={() => {
                             setSeninModal(hari_senin);
+                          }}
+                          onDelete={() => {
+                            setSeninModalDelete(hari_senin)
                           }}
                         />
                       </div>
@@ -445,7 +458,9 @@ const Jadwal: FC<Jadwal> = () => {
                       <div className="py-2 px-4 bg-Error-40 rounded-lg h-full text-Error-90 font-bold w-full flex items-center justify-center text-center shadow-[0px_0px_10px_5px_rgba(149,146,146,.25)] flex-col relative">
                         <ItemJadwalBelumTerisi
                           onClick={() => {
-                            setSeninModalCreate(true);
+                            setSeninModalCreate(
+                              item.id,
+                            );
                           }}
                         />
                       </div>
@@ -454,8 +469,8 @@ const Jadwal: FC<Jadwal> = () => {
                       <div className="py-2 px-4 bg-Tertiary-50 rounded-lg h-full text-Tertiary-90 font-bold w-full flex items-center justify-center shadow-[0px_0px_10px_5px_rgba(149,146,146,.25)] relative">
                         <ItemJadwal
                           key={hari_selasa.id}
-                          hari="sadawd"
-                          kelompok={hari_selasa.sesi.nama_sesi}
+                          nama_mapel={hari_selasa.mapel.nama_mapel}
+                          kelompok={hari_selasa.kelompok.nama_kelompok}
                           nama_tentor={hari_selasa.user.name}
                           onClick={() => {
                             setSelasaModal(hari_selasa);
@@ -471,8 +486,8 @@ const Jadwal: FC<Jadwal> = () => {
                       <div className="py-2 px-4 bg-Tertiary-50 rounded-lg h-full text-Tertiary-90 font-bold w-full flex items-center justify-center shadow-[0px_0px_10px_5px_rgba(149,146,146,.25)] relative">
                         <ItemJadwal
                           key={hari_rabu.id}
-                          hari="sadawd"
-                          kelompok={hari_rabu.sesi.nama_sesi}
+                          nama_mapel={hari_rabu.mapel.nama_mapel}
+                          kelompok={hari_rabu.kelompok.nama_kelompok}
                           nama_tentor={hari_rabu.user.name}
                           onClick={() => {
                             setRabuModal(hari_rabu);
@@ -488,8 +503,8 @@ const Jadwal: FC<Jadwal> = () => {
                       <div className="py-2 px-4 bg-Tertiary-50 text-Tertiary-90 rounded-lg h-full w-full flex items-center shadow-[0px_0px_10px_5px_rgba(149,146,146,.25)] relative">
                         <ItemJadwal
                           key={hari_kamis.id}
-                          hari="sadawd"
-                          kelompok={hari_kamis.sesi.nama_sesi}
+                          nama_mapel={hari_kamis.mapel.nama_mapel}
+                          kelompok={hari_kamis.kelompok.nama_kelompok}
                           nama_tentor={hari_kamis.user.name}
                           onClick={() => {
                             setKamisModal(hari_kamis);
@@ -505,8 +520,8 @@ const Jadwal: FC<Jadwal> = () => {
                       <div className="py-2 px-4 bg-Tertiary-50 rounded-lg h-full text-Tertiary-90 font-bold w-full flex items-center justify-center shadow-[0px_0px_10px_5px_rgba(149,146,146,.25)] relative">
                         <ItemJadwal
                           key={hari_jumat.id}
-                          hari="sadawd"
-                          kelompok={hari_jumat.sesi.nama_sesi}
+                          nama_mapel={hari_jumat.mapel.nama_mapel}
+                          kelompok={hari_jumat.kelompok.nama_kelompok}
                           nama_tentor={hari_jumat.user.name}
                           onClick={() => {
                             setJumatModal(hari_jumat);
@@ -522,8 +537,8 @@ const Jadwal: FC<Jadwal> = () => {
                       <div className="py-2 px-4 bg-Tertiary-50 rounded-lg h-full text-Tertiary-90 font-bold w-full flex items-center justify-center shadow-[0px_0px_10px_5px_rgba(149,146,146,.25)] relative">
                         <ItemJadwal
                           key={hari_sabtu.id}
-                          hari="sadawd"
-                          kelompok={hari_sabtu.sesi.nama_sesi}
+                          nama_mapel={hari_sabtu.mapel.nama_mapel}
+                          kelompok={hari_sabtu.kelompok.nama_kelompok}
                           nama_tentor={hari_sabtu.user.name}
                           onClick={() => {
                             setSabtuModal(hari_sabtu);
@@ -539,8 +554,8 @@ const Jadwal: FC<Jadwal> = () => {
                       <div className="py-2 px-4 bg-Tertiary-50 rounded-lg h-full text-Tertiary-90 font-bold w-full flex items-center justify-center shadow-[0px_0px_10px_5px_rgba(149,146,146,.25)] relative">
                         <ItemJadwal
                           key={hari_minggu.id}
-                          hari="sadawd"
-                          kelompok={hari_minggu.sesi.nama_sesi}
+                          nama_mapel={hari_minggu.mapel.nama_mapel}
+                          kelompok={hari_minggu.kelompok.nama_kelompok}
                           nama_tentor={hari_minggu.user.name}
                           onClick={() => {
                             setMingguModal(hari_minggu);
@@ -562,7 +577,7 @@ const Jadwal: FC<Jadwal> = () => {
       {seninModal ? (
         <ModalDetail
           wAuto
-          titleModal="Detail Jadwal"
+          titleModal="Edit Jadwal"
           onClose={() => {
             setSeninModal(null);
           }}
@@ -581,114 +596,400 @@ const Jadwal: FC<Jadwal> = () => {
         </ModalDetail>
       ) : kamisModal ? (
         <ModalDetail
-          titleModal="Detail Jadwal"
+          wAuto
+          titleModal="Edit Jadwal"
           onClose={() => {
             setKamisModal(null);
           }}
         >
-          <div className="">
-            test
-            {kamisModal.sesi.nama_sesi}
-            <Kamis />
-          </div>
+          <Kamis
+            jadwalId={kamisModal.id}
+            data={kamisModal}
+            idRuang={selectedRuangIdPass}
+            onClose={() => {
+              setKamisModal(null);
+            }}
+            onSucsess={() => {
+              setShowSuccess(true);
+            }}
+          />
         </ModalDetail>
+
       ) : rabuModal ? (
         <ModalDetail
-          titleModal="Detail Jadwal"
+          wAuto
+          titleModal="Edit Jadwal"
           onClose={() => {
             setRabuModal(null);
           }}
         >
-          <div className="">
-            test
-            {rabuModal.sesi.nama_sesi}
-            <Rabu />
-          </div>
+          <Rabu
+            jadwalId={rabuModal.id}
+            data={rabuModal}
+            idRuang={selectedRuangIdPass}
+            onClose={() => {
+              setRabuModal(null);
+            }}
+            onSucsess={() => {
+              setShowSuccess(true);
+            }}
+          />
         </ModalDetail>
       ) : jumatModal ? (
+
         <ModalDetail
-          titleModal="Detail Jadwal"
+          wAuto
+          titleModal="Edit Jadwal"
           onClose={() => {
             setJumatModal(null);
           }}
         >
-          <div className="">
-            test
-            {jumatModal.sesi.nama_sesi}
-            <Jumat />
-          </div>
+          <Jumat
+            jadwalId={jumatModal.id}
+            data={jumatModal}
+            idRuang={selectedRuangIdPass}
+            onClose={() => {
+              setJumatModal(null);
+            }}
+            onSucsess={() => {
+              setShowSuccess(true);
+            }}
+          />
         </ModalDetail>
       ) : sabtuModal ? (
+
         <ModalDetail
-          titleModal="Detail Jadwal"
+          wAuto
+          titleModal="Edit Jadwal"
           onClose={() => {
             setSabtuModal(null);
           }}
         >
-          <div className="">
-            test
-            {sabtuModal.sesi.nama_sesi}
-            <Sabtu />
-          </div>
+          <Sabtu
+            jadwalId={sabtuModal.id}
+            data={sabtuModal}
+            idRuang={selectedRuangIdPass}
+            onClose={() => {
+              setSabtuModal(null);
+            }}
+            onSucsess={() => {
+              setShowSuccess(true);
+            }}
+          />
         </ModalDetail>
+
       ) : mingguModal ? (
+
         <ModalDetail
-          titleModal="Detail Jadwal"
+          wAuto
+          titleModal="Edit Jadwal"
           onClose={() => {
             setMingguModal(null);
           }}
         >
-          <div className="">
-            test
-            {mingguModal.sesi.nama_sesi}
-            <Minggu />
-          </div>
+          <Minggu
+            jadwalId={mingguModal.id}
+            data={mingguModal}
+            idRuang={selectedRuangIdPass}
+            onClose={() => {
+              setMingguModal(null);
+            }}
+            onSucsess={() => {
+              setShowSuccess(true);
+            }}
+          />
         </ModalDetail>
       ) : selasaModal ? (
         <ModalDetail
-          titleModal="Detail Jadwal"
+          wAuto
+          titleModal="Edit Jadwal"
           onClose={() => {
             setSelasaModal(null);
           }}
         >
-          <div className="">
-            test
-            {selasaModal.sesi.nama_sesi}
-            <Jumat />
-          </div>
+          <Selasa
+            jadwalId={selasaModal.id}
+            data={selasaModal}
+            idRuang={selectedRuangIdPass}
+            onClose={() => {
+              setSelasaModal(null);
+            }}
+            onSucsess={() => {
+              setShowSuccess(true);
+            }}
+          />
         </ModalDetail>
       ) : (
         <div></div>
       )}
       {showSuccess && (
         <ModalSucces label="POOP" onClose={() => setShowSuccess(false)}>
-          {/* <div className="flex flex-col items-center justify-center">
-            <h1 className=" font-bold text-green-500">Berhasil</h1>
-            <p className="text-sm text-gray-500">
-              {selected?.name}Data berhasil diubah
-            </p>
-          </div> */}
         </ModalSucces>
       )}
       {seninModalCreate ? (
         <ModalDetail
           wAuto
-          titleModal="Tambah Jadwal (Hari) (Sesi)"
+          titleModal="Tambah Jadwal"
           onClose={() => {
-            setSeninModalCreate(false);
+            setSeninModalCreate(null);
           }}
         >
           <CreateSenin
-            data={""}
-            idRuang=""
+            data={seninModalCreate}
+            idRuang={selectedRuangIdPass}
             jadwalId=""
-            onClose={() => setSeninModalCreate(false)}
-            onSucsess={() => {}}
+            onClose={() => setSeninModalCreate(null)}
+            onSucsess={() => { }}
           />
         </ModalDetail>
       ) : (
-        <div></div>
+        selasaModalCreate ? (
+          <ModalDetail
+            wAuto
+            titleModal="Tambah Jadwal"
+            onClose={() => {
+              setSeninModalCreate(null);
+            }}
+          >
+            <CreateSenin
+              data={seninModalCreate}
+              idRuang={selectedRuangIdPass}
+              jadwalId=""
+              onClose={() => setSeninModalCreate(null)}
+              onSucsess={() => { }}
+            />
+          </ModalDetail>
+        ) : (
+          rabuModalCreate ? (
+            <ModalDetail
+              wAuto
+              titleModal="Tambah Jadwal"
+              onClose={() => {
+                setSeninModalCreate(null);
+              }}
+            >
+              <CreateSenin
+                data={seninModalCreate}
+                idRuang={selectedRuangIdPass}
+                jadwalId=""
+                onClose={() => setSeninModalCreate(null)}
+                onSucsess={() => { }}
+              />
+            </ModalDetail>
+          ) : (
+            kamisModalCreate ? (
+              <ModalDetail
+                wAuto
+                titleModal="Tambah Jadwal"
+                onClose={() => {
+                  setSeninModalCreate(null);
+                }}
+              >
+                <CreateSenin
+                  data={seninModalCreate}
+                  idRuang={selectedRuangIdPass}
+                  jadwalId=""
+                  onClose={() => setSeninModalCreate(null)}
+                  onSucsess={() => { }}
+                />
+              </ModalDetail>
+            ) : (
+              jumatModalCreate ? (
+                <ModalDetail
+                  wAuto
+                  titleModal="Tambah Jadwal"
+                  onClose={() => {
+                    setSeninModalCreate(null);
+                  }}
+                >
+                  <CreateSenin
+                    data={seninModalCreate}
+                    idRuang={selectedRuangIdPass}
+                    jadwalId=""
+                    onClose={() => setSeninModalCreate(null)}
+                    onSucsess={() => { }}
+                  />
+                </ModalDetail>
+              ) : (
+                sabtuModalCreate ? (
+                  <ModalDetail
+                    wAuto
+                    titleModal="Tambah Jadwal"
+                    onClose={() => {
+                      setSeninModalCreate(null);
+                    }}
+                  >
+                    <CreateSenin
+                      data={seninModalCreate}
+                      idRuang={selectedRuangIdPass}
+                      jadwalId=""
+                      onClose={() => setSeninModalCreate(null)}
+                      onSucsess={() => { }}
+                    />
+                  </ModalDetail>
+                ) : (
+                  mingguModalCreate ? (
+                    <ModalDetail
+                      wAuto
+                      titleModal="Tambah Jadwal"
+                      onClose={() => {
+                        setSeninModalCreate(null);
+                      }}
+                    >
+                      <CreateSenin
+                        data={seninModalCreate}
+                        idRuang={selectedRuangIdPass}
+                        jadwalId=""
+                        onClose={() => setSeninModalCreate(null)}
+                        onSucsess={() => { }}
+                      />
+                    </ModalDetail>
+                  ) : (
+                    <div></div>
+                  )
+                )
+              )
+            )
+          )
+        )
       )}
+
+      {
+        seninModalDelete ? (
+          <ModalDetail
+            titleModal="Hapus Jadwal"
+            onClose={() => {
+              setSeninModalDelete(null);
+            }}
+          >
+            <DeleteSenin
+              hari={seninModalDelete.hari}
+              ruang={selectNamaRuang}
+              sesi={seninModalDelete.sesi.nama_sesi}
+              idRuang={selectedRuangIdPass}
+              jadwalId={seninModalDelete.id}
+              onClose={() => setSeninModalDelete(null)}
+              onSuccess={() => { }}
+            />
+          </ModalDetail>
+        ) : (
+          selasaModalDelete ? (
+            <ModalDetail
+              titleModal="Hapus Jadwal"
+              onClose={() => {
+                setSeninModalDelete(null);
+              }}
+            >
+              <DeleteSenin
+                hari={seninModalDelete.hari}
+                ruang={selectNamaRuang}
+                sesi={seninModalDelete.sesi.nama_sesi}
+                idRuang={selectedRuangIdPass}
+                jadwalId={seninModalDelete.id}
+                onClose={() => setSeninModalDelete(null)}
+                onSuccess={() => { }}
+              />
+            </ModalDetail>
+          ) : (
+            rabuModalDelete ? (
+              <ModalDetail
+                titleModal="Hapus Jadwal"
+                onClose={() => {
+                  setSeninModalDelete(null);
+                }}
+              >
+                <DeleteSenin
+                  hari={seninModalDelete.hari}
+                  ruang={selectNamaRuang}
+                  sesi={seninModalDelete.sesi.nama_sesi}
+                  idRuang={selectedRuangIdPass}
+                  jadwalId={seninModalDelete.id}
+                  onClose={() => setSeninModalDelete(null)}
+                  onSuccess={() => { }}
+                />
+              </ModalDetail>
+            ) : (
+              kamisModalDelete ? (
+                <ModalDetail
+                  titleModal="Hapus Jadwal"
+                  onClose={() => {
+                    setSeninModalDelete(null);
+                  }}
+                >
+                  <DeleteSenin
+                    hari={seninModalDelete.hari}
+                    ruang={selectNamaRuang}
+                    sesi={seninModalDelete.sesi.nama_sesi}
+                    idRuang={selectedRuangIdPass}
+                    jadwalId={seninModalDelete.id}
+                    onClose={() => setSeninModalDelete(null)}
+                    onSuccess={() => { }}
+                  />
+                </ModalDetail>
+              ) : (
+                jumatModalDelete ? (
+                  <ModalDetail
+                    titleModal="Hapus Jadwal"
+                    onClose={() => {
+                      setSeninModalDelete(null);
+                    }}
+                  >
+                    <DeleteSenin
+                      hari={seninModalDelete.hari}
+                      ruang={selectNamaRuang}
+                      sesi={seninModalDelete.sesi.nama_sesi}
+                      idRuang={selectedRuangIdPass}
+                      jadwalId={seninModalDelete.id}
+                      onClose={() => setSeninModalDelete(null)}
+                      onSuccess={() => { }}
+                    />
+                  </ModalDetail>
+                ) : (
+                  sabtuModalDelete ? (
+                    <ModalDetail
+                      titleModal="Hapus Jadwal"
+                      onClose={() => {
+                        setSeninModalDelete(null);
+                      }}
+                    >
+                      <DeleteSenin
+                        hari={seninModalDelete.hari}
+                        ruang={selectNamaRuang}
+                        sesi={seninModalDelete.sesi.nama_sesi}
+                        idRuang={selectedRuangIdPass}
+                        jadwalId={seninModalDelete.id}
+                        onClose={() => setSeninModalDelete(null)}
+                        onSuccess={() => { }}
+                      />
+                    </ModalDetail>
+                  ) : (
+                    mingguModalDelete ? (
+                      <ModalDetail
+                        titleModal="Hapus Jadwal"
+                        onClose={() => {
+                          setSeninModalDelete(null);
+                        }}
+                      >
+                        <DeleteSenin
+                          hari={seninModalDelete.hari}
+                          ruang={selectNamaRuang}
+                          sesi={seninModalDelete.sesi.nama_sesi}
+                          idRuang={selectedRuangIdPass}
+                          jadwalId={seninModalDelete.id}
+                          onClose={() => setSeninModalDelete(null)}
+                          onSuccess={() => { }}
+                        />
+                      </ModalDetail>
+                    ) : (
+                      <div></div>
+                    )
+                  )
+                )
+              )
+            )
+          )
+        )
+      }
     </div>
   );
 };
