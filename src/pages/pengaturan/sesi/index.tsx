@@ -11,6 +11,7 @@ import Sidebar from "@/pages/components/Sidebar";
 import Navbar from "@/pages/components/Navbar";
 import NavbarPengaturan from "@/pages/components/NavbarPengaturan";
 import Create from "./create";
+import DeleteSesi from "./delete";
 
 interface Sesi {
   id: string;
@@ -28,6 +29,9 @@ const Sesi: FC<Sesi> = () => {
   const { data: sesi, error } = useSWR<Sesi[]>("/api/sesi", fetcher, {});
 
   const [selectedSesi, setSelectedSesi] = useState<Sesi | null>(null);
+  const [selectedSesiDelete, setSelectedSesiDelete] = useState<Sesi | null>(
+    null
+  );
 
   const [showCreate, setShowCreate] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
@@ -118,6 +122,9 @@ const Sesi: FC<Sesi> = () => {
                           onClick={() => {
                             setSelectedSesi(sesi);
                           }}
+                          onDelete={() => {
+                            setSelectedSesiDelete(sesi);
+                          }}
                         />
                       ))
                     )}
@@ -165,6 +172,27 @@ const Sesi: FC<Sesi> = () => {
                     />
                   </ModalDetail>
                 )}
+
+                {/* modal delete */}
+                {selectedSesiDelete && (
+                  <ModalDetail
+                    titleModal="Hapus Sesi"
+                    onClose={() => setSelectedSesiDelete(null)}
+                    silang
+                    center
+                    wAuto
+                  >
+                    <DeleteSesi
+                      idSesi={selectedSesiDelete.id}
+                      onClose={() => setSelectedSesiDelete(null)}
+                      onSuccess={() => {
+                        setShowSuccess(true);
+                      }}
+                      data={selectedSesiDelete}
+                    />
+                  </ModalDetail>
+                )}
+
               </div>
             </div>
           </div>

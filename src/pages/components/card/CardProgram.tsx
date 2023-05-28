@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 import Button from "../buttons/Button";
-import { MdModeEdit } from "react-icons/md";
+import { MdDelete, MdModeEdit } from "react-icons/md";
 import Image from "next/image";
 
 type CardProgramProps = {
@@ -13,6 +13,7 @@ type CardProgramProps = {
   harga: number;
   gambar?: string;
   onEdit: () => void;
+  onDelete: () => void;
 };
 
 const CardProgram: FC<CardProgramProps> = ({
@@ -22,6 +23,7 @@ const CardProgram: FC<CardProgramProps> = ({
   deskripsi,
   tipe,
   harga,
+  onDelete,
   gambar,
   mapel_ajar,
   onEdit,
@@ -91,9 +93,18 @@ const CardProgram: FC<CardProgramProps> = ({
       <div className="flex justify-end">
         <Button
           type="button"
+          bgColor="bg-Error-50"
+          brColor=""
+          label="Hapus Program"
+          textColor="text-Error-50"
+          icon={MdDelete}
+          onClick={onDelete}
+        />
+        <Button
+          type="button"
           bgColor="bg-Tertiary-50"
           brColor=""
-          label="Edit Program"
+          label="Edit Ruang"
           textColor="text-Tertiary-50"
           icon={MdModeEdit}
           onClick={onEdit}

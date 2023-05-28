@@ -161,7 +161,14 @@ const Kelas: FC<Kelas> = () => {
                   </ModalDetail>
                 )}
                 {showDelete && (
-                  <ModalHapus onClose={() => setShowDelete(null)}>
+                  <ModalDetail
+                    titleModal="Hapus Kelas"
+                    wAuto
+                    silang
+                    center
+                    onClose={() => setShowDelete(null)}
+
+                  >
                     <DeleteKelas
                       data={showDelete}
                       onClose={() => setShowDelete(null)}
@@ -170,7 +177,7 @@ const Kelas: FC<Kelas> = () => {
                       }}
                       kelasId={showDelete.id}
                     />
-                  </ModalHapus>
+                  </ModalDetail>
                 )}
               </div>
             </div>

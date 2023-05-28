@@ -12,6 +12,8 @@ interface ModalDetailProps {
   // titleModal: string atau buatmenjadi agim ${titleModal}
   titleModal: string;
   wAuto?: boolean;
+  silang?: boolean;
+  center?: boolean;
 }
 interface ModalProps {
   // children: React.ReactNode
@@ -38,6 +40,7 @@ const Modal: FC<ModalProps> = ({ isVisible, onClose, children }) => {
       <div className="fixed inset-0 bg-black bg-opacity-25 backdrop-blur-sm flex justify-center items-center">
         <div className="w-[600px] flex flex-col">
           {/* onClose button */}
+
 
           <button className="self-end mr-4 mt-4" onClick={onClose}>
             <svg
@@ -82,6 +85,8 @@ export const ModalDetail: FC<ModalDetailProps> = ({
   wAuto,
   onClose,
   titleModal,
+  silang,
+  center
 }) => {
   return (
     <Dialog open={true} onClose={() => { }} className="relative z-50">
@@ -92,21 +97,36 @@ export const ModalDetail: FC<ModalDetailProps> = ({
             }`}
         >
           <div className="flex flex-col">
-            <div className="flex justify-between">
-              <h1 className="text-xl font-bold text-Primary-10">
-                {titleModal}
-              </h1>
-              <Button
-                type="button"
-                bgColor="bg-Neutral-90"
-                brColor=""
-                label=""
-                icon={IoIosClose}
-                noLabel
-                textColor="text-Neutral-30"
-                onClick={onClose}
-              />
-            </div>
+            {center ? (
+              <div className="flex justify-center">
+                <h1 className="text-xl font-bold text-Primary-10">
+                  {titleModal}
+                </h1>
+              </div>
+            ) : (
+              <div className="flex justify-between">
+                <h1 className="text-xl font-bold text-Primary-10">
+                  {titleModal}
+                </h1>
+                {silang ? (
+                  <>
+                  </>
+                ) : (
+                  <Button
+                    type="button"
+                    bgColor="bg-Neutral-90"
+                    brColor=""
+                    label=""
+                    icon={IoIosClose}
+                    noLabel
+                    textColor="text-Neutral-30"
+                    onClick={onClose}
+                  />
+                )
+                }
+
+              </div>
+            )}
           </div>
           <div>{children}</div>
 

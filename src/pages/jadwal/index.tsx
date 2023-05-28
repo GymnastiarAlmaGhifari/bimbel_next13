@@ -164,16 +164,12 @@ const Jadwal: FC<Jadwal> = () => {
     setSelectedRuangIdPass(ruang_id);
   };
 
-  // useEffect(() => {
-  //   setSelectedRuangIdPass(ruang_id);
-  // }, [ruang_id]);
-
   useEffect(() => {
     setSelectedRuangIdPass(selectedRuangId);
     if (ruang && ruang.length > 0) {
       setSelectNamaRuang(ruang[0].nama_ruang);
     }
-  }, [selectedRuangId, selectNamaRuang]);
+  }, [selectedRuangId, selectNamaRuang, ruang]);
 
   const {
     data: sesi,
@@ -340,11 +336,10 @@ const Jadwal: FC<Jadwal> = () => {
                 <div className="flex flex-col w-52 relative">
                   <button
                     type="button"
-                    className={`w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${
-                      listOpenRuang
-                        ? "border-[2px] border-Primary-50 bg-Primary-95"
-                        : "bg-Neutral-95"
-                    }`}
+                    className={`w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${listOpenRuang
+                      ? "border-[2px] border-Primary-50 bg-Primary-95"
+                      : "bg-Neutral-95"
+                      }`}
                     onClick={toggleListRuang}
                   >
                     {
@@ -368,11 +363,10 @@ const Jadwal: FC<Jadwal> = () => {
                         ruang.map((ruang) => (
                           <li key={ruang.id}>
                             <button
-                              className={`w-full text-left px-4 py-1 rounded-full ${
-                                watch("ruang_id") === ruang.id
-                                  ? "text-Primary-90 bg-Primary-20"
-                                  : "text-Primary-20 hover:bg-Primary-95"
-                              }`}
+                              className={`w-full text-left px-4 py-1 rounded-full ${watch("ruang_id") === ruang.id
+                                ? "text-Primary-90 bg-Primary-20"
+                                : "text-Primary-20 hover:bg-Primary-95"
+                                }`}
                               onClick={() => {
                                 selectRuang(ruang.id);
                                 setSelectNamaRuang(ruang.nama_ruang);
@@ -800,7 +794,7 @@ const Jadwal: FC<Jadwal> = () => {
             idRuang={selectedRuangIdPass}
             jadwalId=""
             onClose={() => setSeninModalCreate(null)}
-            onSucsess={() => {}}
+            onSucsess={() => { }}
           />
         </ModalDetail>
       ) : selasaModalCreate ? (
@@ -816,7 +810,7 @@ const Jadwal: FC<Jadwal> = () => {
             idRuang={selectedRuangIdPass}
             jadwalId=""
             onClose={() => setSelasaModalCreate(null)}
-            onSucsess={() => {}}
+            onSucsess={() => { }}
           />
         </ModalDetail>
       ) : rabuModalCreate ? (
@@ -832,7 +826,7 @@ const Jadwal: FC<Jadwal> = () => {
             idRuang={selectedRuangIdPass}
             jadwalId=""
             onClose={() => setRabuModalCreate(null)}
-            onSucsess={() => {}}
+            onSucsess={() => { }}
           />
         </ModalDetail>
       ) : kamisModalCreate ? (
@@ -848,7 +842,7 @@ const Jadwal: FC<Jadwal> = () => {
             idRuang={selectedRuangIdPass}
             jadwalId=""
             onClose={() => setKamisModalCreate(null)}
-            onSucsess={() => {}}
+            onSucsess={() => { }}
           />
         </ModalDetail>
       ) : jumatModalCreate ? (
@@ -864,7 +858,7 @@ const Jadwal: FC<Jadwal> = () => {
             idRuang={selectedRuangIdPass}
             jadwalId=""
             onClose={() => setJumatModalCreate(null)}
-            onSucsess={() => {}}
+            onSucsess={() => { }}
           />
         </ModalDetail>
       ) : sabtuModalCreate ? (
@@ -880,7 +874,7 @@ const Jadwal: FC<Jadwal> = () => {
             idRuang={selectedRuangIdPass}
             jadwalId=""
             onClose={() => setSabtuModalCreate(null)}
-            onSucsess={() => {}}
+            onSucsess={() => { }}
           />
         </ModalDetail>
       ) : mingguModalCreate ? (
@@ -896,7 +890,7 @@ const Jadwal: FC<Jadwal> = () => {
             idRuang={selectedRuangIdPass}
             jadwalId=""
             onClose={() => setMingguModalCreate(null)}
-            onSucsess={() => {}}
+            onSucsess={() => { }}
           />
         </ModalDetail>
       ) : (
@@ -917,7 +911,7 @@ const Jadwal: FC<Jadwal> = () => {
             idRuang={selectedRuangIdPass}
             jadwalId={seninModalDelete.id}
             onClose={() => setSeninModalDelete(null)}
-            onSuccess={() => {}}
+            onSuccess={() => { }}
           />
         </ModalDetail>
       ) : selasaModalDelete ? (
@@ -934,7 +928,7 @@ const Jadwal: FC<Jadwal> = () => {
             idRuang={selectedRuangIdPass}
             jadwalId={selasaModalDelete.id}
             onClose={() => setSelasaModalDelete(null)}
-            onSuccess={() => {}}
+            onSuccess={() => { }}
           />
         </ModalDetail>
       ) : rabuModalDelete ? (
@@ -951,7 +945,7 @@ const Jadwal: FC<Jadwal> = () => {
             idRuang={selectedRuangIdPass}
             jadwalId={rabuModalDelete.id}
             onClose={() => setRabuModalDelete(null)}
-            onSuccess={() => {}}
+            onSuccess={() => { }}
           />
         </ModalDetail>
       ) : kamisModalDelete ? (
@@ -968,7 +962,7 @@ const Jadwal: FC<Jadwal> = () => {
             idRuang={selectedRuangIdPass}
             jadwalId={kamisModalDelete.id}
             onClose={() => setKamisModalDelete(null)}
-            onSuccess={() => {}}
+            onSuccess={() => { }}
           />
         </ModalDetail>
       ) : jumatModalDelete ? (
@@ -985,7 +979,7 @@ const Jadwal: FC<Jadwal> = () => {
             idRuang={selectedRuangIdPass}
             jadwalId={jumatModalDelete.id}
             onClose={() => setJumatModalDelete(null)}
-            onSuccess={() => {}}
+            onSuccess={() => { }}
           />
         </ModalDetail>
       ) : sabtuModalDelete ? (
@@ -1002,7 +996,7 @@ const Jadwal: FC<Jadwal> = () => {
             idRuang={selectedRuangIdPass}
             jadwalId={sabtuModalDelete.id}
             onClose={() => setSabtuModalDelete(null)}
-            onSuccess={() => {}}
+            onSuccess={() => { }}
           />
         </ModalDetail>
       ) : mingguModalDelete ? (
@@ -1019,7 +1013,7 @@ const Jadwal: FC<Jadwal> = () => {
             idRuang={selectedRuangIdPass}
             jadwalId={mingguModalDelete.id}
             onClose={() => setMingguModalDelete(null)}
-            onSuccess={() => {}}
+            onSuccess={() => { }}
           />
         </ModalDetail>
       ) : (
