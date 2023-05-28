@@ -238,6 +238,7 @@ const Senin: FC<Senin> = ({ jadwalId, data, onClose, onSucsess, idRuang }) => {
 
   useEffect(() => {
     setValue("ruang", idRuang);
+    setValue("hari", "SENIN");
     if (data) {
       setSelectedOption(data.kelompok);
       setValue("kelompokCheck", data.kelompok?.id);
@@ -245,6 +246,9 @@ const Senin: FC<Senin> = ({ jadwalId, data, onClose, onSucsess, idRuang }) => {
       setValue("userCheck", data.user?.id);
       setValue("sesi", data.sesi?.id);
       setValue("mapel", data.mapel?.id);
+
+      setKelompokTerpilih(data.kelompok?.nama_kelompok);
+      setTentorTerpilih(data.user?.name);
 
       // set handleCheckChange untuk filter mapel
       if (mapel?.length && mapel[0]?.kelas?.id) {
@@ -260,6 +264,15 @@ const Senin: FC<Senin> = ({ jadwalId, data, onClose, onSucsess, idRuang }) => {
       }
     }
   }, [kelompok, setValue, data, mapel, idRuang, user]);
+
+  const [kelompokTerpilih, setKelompokTerpilih] = useState(
+    ""
+  );
+
+  const [tentorTerpilih, setTentorTerpilih] = useState(
+    ""
+  );
+
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     let { kelompokCheck } = data;
@@ -293,10 +306,15 @@ const Senin: FC<Senin> = ({ jadwalId, data, onClose, onSucsess, idRuang }) => {
       console.log(response.data);
 
       mutate(`/api/jadwaldetail/${jadwalId}`);
+
+      // undefined 
       mutate(`/api/jadwal/hari?hari=SENIN&ruang_id=${idRuang}`, undefined);
-      mutate(`/api/jadwal/hari?hari=SENIN&ruang_id=${ruang}`, undefined);
+      mutate(`/api/jadwal/hari?hari=${hari}&ruang_id=${ruang}`, undefined);
+      // not undefined
       mutate(`/api/jadwal/hari?hari=SENIN&ruang_id=${idRuang}`);
-      mutate(`/api/jadwal/hari?hari=SENIN&ruang_id=${ruang}`);
+      mutate(`/api/jadwal/hari?hari=${hari}&ruang_id=${ruang}`);
+
+      // mutate hari sebelum diubah
 
       onSucsess();
       onClose();
@@ -313,11 +331,23 @@ const Senin: FC<Senin> = ({ jadwalId, data, onClose, onSucsess, idRuang }) => {
   };
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="w-max">
-      <h1 className="mb-4 font-semibold capitalize">{jadwalId}</h1>
       <div className="flex flex-row justify-between items-center w-full">
         <div className="flex flex-row items-center w-full">
-          <div className="flex flex-col gap-4 w-full">
-            <div className="grid grid-cols-6 gap-4">
+          <div className="flex flex-col gap-4">
+            <div className="flex flex-row gap-3 items-center">
+              <p className="font-semibold text-lg text-Primary-20">
+                Pilih Kelompok
+              </p>
+              <span className="bg-Neutral-70 w-[1px] h-8"></span>
+              <p className="font-semibold text-lg text-Primary-20">Terpilih</p>
+              <h1 className="font-semibold capitalize text-lg text-Primary-99 inline-block py-1 px-4 bg-Primary-40 rounded-lg">
+                {
+                  kelompokTerpilih
+                }
+              </h1>
+            </div>
+            <div className="grid grid-cols-6 gap-4 min-h-max h-36 overflow-y-scroll scrollbar pr-2">
+
               {kelompok && kelompok.length > 0 ? (
                 kelompok.map((item: Kelompok) => (
                   <CardJadwalKelompok
@@ -335,6 +365,8 @@ const Senin: FC<Senin> = ({ jadwalId, data, onClose, onSucsess, idRuang }) => {
                       );
                       setValue("kelompokCheck", item.id);
                       handleCheckChange(item.program.kelas_id);
+
+                      setKelompokTerpilih(item.nama_kelompok);
                     }}
                     setValue={setValue}
                     getValues={getValues}
@@ -358,7 +390,6 @@ const Senin: FC<Senin> = ({ jadwalId, data, onClose, onSucsess, idRuang }) => {
                 <label htmlFor="" className="text-sm text-Primary-10">
                   Hari
                 </label>
-
                 <div className="relative flex flex-col gap-2">
                   <button
                     type="button"
@@ -573,10 +604,17 @@ const Senin: FC<Senin> = ({ jadwalId, data, onClose, onSucsess, idRuang }) => {
               </div>
             </div>
             <div className="flex flex-col gap-4">
-              <p className="font-semibold text-lg text-Primary-20">
-                Pilih Tentor
-              </p>
-              <div className="grid grid-cols-6 gap-4">
+              <div className="flex flex-row gap-3 items-center">
+                <p className="font-semibold text-lg text-Primary-20">
+                  Pilih Tentor
+                </p>
+                <span className="bg-Neutral-70 w-[1px] h-8"></span>
+                <p className="font-semibold text-lg text-Primary-20">Terpilih</p>
+                <h1 className="font-semibold capitalize text-lg text-Primary-99 inline-block py-1 px-4 bg-Primary-40 rounded-lg">
+                  {tentorTerpilih}
+                </h1>
+              </div>
+              <div className="grid grid-cols-6 gap-4 min-h-max h-80 pr-2  overflow-y-scroll scrollbar">
                 {filteredUser?.map((item: User) => (
                   <CardAnggotaJadwal
                     key={item.id}
@@ -593,6 +631,7 @@ const Senin: FC<Senin> = ({ jadwalId, data, onClose, onSucsess, idRuang }) => {
                         selectedOptionUser?.id === item.id ? null : item
                       );
                       setValue("userCheck", item.id);
+                      setTentorTerpilih(item?.name);
                     }}
                     setValue={setValue}
                     getValues={getValues}
@@ -603,12 +642,13 @@ const Senin: FC<Senin> = ({ jadwalId, data, onClose, onSucsess, idRuang }) => {
                 ))}
                 {errors.kelompokCheck && <p>{errors.kelompokCheck.message}</p>}
               </div>
+
             </div>
           </div>
         </div>
       </div>
 
-      <div className="flex justify-end gap-4">
+      <div className="flex justify-end gap-4 mt-6" >
         <Button
           center
           bgColor="bg-Neutral-70"

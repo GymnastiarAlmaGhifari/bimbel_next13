@@ -60,6 +60,7 @@ const CreateKelompok: FC<CreateKelompokProps> = ({ onClose, onSucsess }) => {
       mutate("/api/kelompok");
       mutate("/api/program");
       onClose(); // Set loading state to false
+      onSucsess();
     } catch (error: any) {
       console.error(error);
 
@@ -92,7 +93,6 @@ const CreateKelompok: FC<CreateKelompokProps> = ({ onClose, onSucsess }) => {
       }
     } finally {
       setIsLoading(false);
-      onSucsess();
     }
   };
 
@@ -124,9 +124,8 @@ const CreateKelompok: FC<CreateKelompokProps> = ({ onClose, onSucsess }) => {
           autoComplete="program_id"
           {...register("program_id")}
           defaultValue=""
-          className={`mt-1 block w-full py-2 px-3 border rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm ${
-            errors.program_id ? "border-red-500" : "border-gray-300"
-          }`}
+          className={`mt-1 block w-full py-2 px-3 border rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm ${errors.program_id ? "border-red-500" : "border-gray-300"
+            }`}
         >
           <option value="">Pilih program</option>
           {program?.map((program) => (

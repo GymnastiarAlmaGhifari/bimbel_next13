@@ -47,12 +47,16 @@ const CardJadwalKelompok: FC<CardJadwalKelompokProps> = ({
 
   return (
     <div onClick={handleCheck}>
+
       <div
-        className={`flex flex-col gap-2 p-2 border-[2px] ${
-          check ? "border-Primary-40" : ""
-        } w-52 rounded-lg items-center bg-Neutral-100`}
+        className={`flex flex-col gap-2 p-2 border-[2px] ${check ? "border-Primary-40" : ""
+          } w-52 rounded-lg items-center bg-Neutral-100 h-max`}
       >
-        <div className="flex justify-end w-full ">
+        <div className="flex justify-between w-full ">
+          <div className="flex-col gap-3">
+            <p className="font-bold ">{label}</p>
+            <p className="text-sm ">{nomor_telepon}</p>
+          </div>
           <input
             type={type}
             id={id}
@@ -64,9 +68,8 @@ const CardJadwalKelompok: FC<CardJadwalKelompokProps> = ({
           />
           <label htmlFor="id">
             <div
-              className={`p-1 h-6 w-6 rounded-full ${
-                check ? "bg-Primary-40" : "bg-Neutral-95"
-              }`}
+              className={`p-1 h-6 w-6 rounded-full ${check ? "bg-Primary-40" : "bg-Neutral-95"
+                }`}
               onClick={handleCheck}
             >
               {check ? (
@@ -76,10 +79,7 @@ const CardJadwalKelompok: FC<CardJadwalKelompokProps> = ({
               )}
             </div>
           </label>
-        </div>
-        <div className="">
-          <p className="font-bold text-center">{label}</p>
-          <p className="text-sm text-center">{nomor_telepon}</p>
+
         </div>
       </div>
     </div>
