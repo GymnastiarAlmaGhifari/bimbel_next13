@@ -56,7 +56,6 @@ const CreateProgram: FC<RuangCreateProps> = ({ onClose, onSucsess }) => {
     const { nama_program, level, tipe, kelas_id, Deskripsi, harga, image } =
       data;
 
-    setIsLoading(true); // Set loading state to true
     setError(null);
 
     const rawHarga = parseInt(harga.replace(/\D/g, ""));
@@ -64,53 +63,116 @@ const CreateProgram: FC<RuangCreateProps> = ({ onClose, onSucsess }) => {
     const formData = new FormData();
     formData.append("image", data.image[0]);
 
-    try {
-      await axios.post(`/api/program`, {
-        nama_program,
-        tipe,
-        level,
-        kelas_id,
-        Deskripsi,
-        harga: rawHarga,
-        img: image,
-      });
 
-      mutate("/api/program");
-      onClose(); // Set loading state to false
-    } catch (error: any) {
-      console.error(error);
+    if (!image || image.length === 0) {
+      try {
+        const response = await axios.post(`/api/program`, {
+          nama_program,
+          tipe,
+          level,
+          kelas_id,
+          Deskripsi,
+          harga: rawHarga,
+        });
 
-      if (axios.isAxiosError(error)) {
-        const axiosError = error as AxiosError;
-        if (axiosError.response) {
-          console.log("Response data:", axiosError.response.data);
-          console.log("Response status:", axiosError.response.status);
+        console.log("jaskjdhkjasnhd", response.data);
 
-          const responseData = axiosError.response.data as { message: string };
+        mutate("/api/program");
+        onClose(); // Set loading state to false
+      } catch (error: any) {
+        console.error(error);
 
-          // Extract the main error message from the response data
-          const errorMessage = responseData.message;
+        if (axios.isAxiosError(error)) {
+          const axiosError = error as AxiosError;
+          if (axiosError.response) {
+            console.log("Response data:", axiosError.response.data);
+            console.log("Response status:", axiosError.response.status);
 
-          setError(`An error occurred: ${errorMessage}`);
-        } else if (axiosError.request) {
-          console.log("No response received:", axiosError.request);
+            const responseData = axiosError.response.data as { message: string };
 
-          const request = axiosError.request.toString();
-          setError(`No response received: ${request}`);
+            // Extract the main error message from the response data
+            const errorMessage = responseData.message;
+
+            setError(`An error occurred: ${errorMessage}`);
+          } else if (axiosError.request) {
+            console.log("No response received:", axiosError.request);
+
+            const request = axiosError.request.toString();
+            setError(`No response received: ${request}`);
+          } else {
+            console.log("Error setting up the request:", axiosError.message);
+
+            const request = axiosError.message.toString();
+            setError(`Error setting up the request: ${request}`);
+          }
         } else {
-          console.log("Error setting up the request:", axiosError.message);
-
-          const request = axiosError.message.toString();
-          setError(`Error setting up the request: ${request}`);
+          console.log("Error:", error.message);
+          setError("An unknown error occurred.");
         }
-      } else {
-        console.log("Error:", error.message);
-        setError("An unknown error occurred.");
+      } finally {
+        setIsLoading(false);
+        onSucsess();
       }
-    } finally {
-      setIsLoading(false);
-      onSucsess();
     }
+    else {
+      try {
+        const response = await axios.post(`/api/program`, {
+          nama_program,
+          tipe,
+          level,
+          kelas_id,
+          Deskripsi,
+          harga: rawHarga,
+          img: image,
+        });
+
+
+        const programId = response.data.id;
+
+        await axios.post(`/api/program/imgup`, formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            from: programId,
+          },
+        });
+
+        mutate("/api/program");
+        onClose(); // Set loading state to false
+      } catch (error: any) {
+        console.error(error);
+
+        if (axios.isAxiosError(error)) {
+          const axiosError = error as AxiosError;
+          if (axiosError.response) {
+            console.log("Response data:", axiosError.response.data);
+            console.log("Response status:", axiosError.response.status);
+
+            const responseData = axiosError.response.data as { message: string };
+
+            // Extract the main error message from the response data
+            const errorMessage = responseData.message;
+
+            setError(`An error occurred: ${errorMessage}`);
+          } else if (axiosError.request) {
+            console.log("No response received:", axiosError.request);
+
+            const request = axiosError.request.toString();
+            setError(`No response received: ${request}`);
+          } else {
+            console.log("Error setting up the request:", axiosError.message);
+
+            const request = axiosError.message.toString();
+            setError(`Error setting up the request: ${request}`);
+          }
+        } else {
+          console.log("Error:", error.message);
+          setError("An unknown error occurred.");
+        }
+      } finally {
+        setIsLoading(false);
+        onSucsess();
+      }
+    };
   };
 
   const [isListOpenKelas, setIsListOpenKelas] = useState(false);
@@ -207,23 +269,14 @@ const CreateProgram: FC<RuangCreateProps> = ({ onClose, onSucsess }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5">
-      {/* Error message */}
+    <form onSubmit={handleSubmit(onSubmit)} className="flex gap-10">
       {error && <p className="text-red-500">{error}</p>}
-      <Input
-        id="nama_program"
-        label="Nama Program"
-        type="text"
-        register={{ ...register("nama_program") }}
-        errors={errors}
-      />
-      {errors.nama_program && (
-        <p className="text-red-500">{errors.nama_program.message}</p>
-      )}
-
-      <div className="flex flex-col gap-6 w-[300px] h-[300px] scale-100 overflow-clip bg-red-500">
-        <div className="h-full">
-          {previewImage && (
+      <div className="flex flex-col gap-6 overflow-clip scale-100 w-[400px]">
+        {previewImage ? (
+          <div className="w-full">
+            <h1>
+              Gambar Program Landing Page
+            </h1>
             <Image
               src={previewImage}
               alt="Gambar"
@@ -232,12 +285,16 @@ const CreateProgram: FC<RuangCreateProps> = ({ onClose, onSucsess }) => {
               className="w-full h-full object-cover"
               loader={({ src }) => `${src}?cache-control=no-store`}
             />
-          )}
-        </div>
+          </div>
+        ) : (
+          <h1 className="-pt-2">
+            Pilih Gambar Program Landing Page
+          </h1>
+        )}
         <div>
           <label
             htmlFor="image"
-            className="bg-Primary-40 text-white px-4 py-2 rounded cursor-pointer flex items-center justify-center space-x-2 rounded-full bg-opacity-90 hover:bg-opacity-100"
+            className="bg-Primary-40 text-white px-4 py-2 mt-4 rounded cursor-pointer flex items-center justify-center space-x-2 rounded-full bg-opacity-90 hover:bg-opacity-100"
           >
             <IoMdCloudUpload size={24} />
             <span className="font-semibold">Choose File</span>
@@ -274,199 +331,209 @@ const CreateProgram: FC<RuangCreateProps> = ({ onClose, onSucsess }) => {
           )}
         </div>
       </div>
-
-      <div className="flex flex-col gap-2">
-        <label htmlFor="" className="text-sm text-Primary-10">
-          Level
-        </label>
-
-        <div className="relative flex flex-col gap-2">
-          <button
-            type="button"
-            className={` w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${
-              isListOpenLevel
-                ? "border-[2px] border-Primary-50 bg-Primary-95"
-                : "bg-Neutral-95"
-            }`}
-            onClick={toggleListLevel}
-          >
-            {getLevelLabel(watch("level")) || "Pilih Level"}
-            {isListOpenLevel ? <IoIosArrowUp /> : <IoIosArrowDown />}
-          </button>
-          {isListOpenLevel && (
-            <ul
-              className="absolute w-full top-[44px] z-10 bg-Neutral-100 border-[2px] border-Primary-50 rounded-xl py-2 px-2 outline-none appearance-none flex flex-col gap-1"
-              ref={componentRef}
-            >
-              {levelOptions.map((option) => (
-                <li key={option.value}>
-                  <button
-                    type="button"
-                    className={`w-full text-left px-2 py-1 rounded-full ${
-                      watch("level") === option.value
-                        ? "text-Primary-90 bg-Primary-20"
-                        : "text-Primary-20 hover:bg-Primary-95"
-                    }`}
-                    onClick={() => selectlevel(option.value)}
-                  >
-                    {option.label}
-                  </button>
-                </li>
-              ))}
-            </ul>
+      {/* Error message */}
+      <div className="flex flex-col gap-10 w-full">
+        <div className="flex flex-col gap-4 w-full">
+          <Input
+            id="nama_program"
+            label="Nama Program"
+            type="text"
+            register={{ ...register("nama_program") }}
+            errors={errors}
+          />
+          {errors.nama_program && (
+            <p className="text-red-500">{errors.nama_program.message}</p>
           )}
-        </div>
-        {errors.level && (
-          <span className="text-red-500">{errors.level.message}</span>
-        )}
-      </div>
 
-      <div className="flex flex-col gap-2">
-        <label htmlFor="" className="text-sm text-Primary-10">
-          Tipe
-        </label>
 
-        <div className="relative flex flex-col gap-2">
-          <button
-            type="button"
-            className={` w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${
-              isListOpenTipe
-                ? "border-[2px] border-Primary-50 bg-Primary-95"
-                : "bg-Neutral-95"
-            }`}
-            onClick={toggleListTipe}
-          >
-            {getTipeLabel(watch("tipe")) || "Pilih Tipe"}
-            {isListOpenTipe ? <IoIosArrowUp /> : <IoIosArrowDown />}
-          </button>
-          {isListOpenTipe && (
-            <ul
-              className="absolute w-full top-[44px] z-10 bg-Neutral-100 border-[2px] border-Primary-50 rounded-xl py-2 px-2 outline-none appearance-none flex flex-col gap-1"
-              ref={componentRef}
-            >
-              {tipeOptions.map((option) => (
-                <li key={option.value}>
-                  <button
-                    type="button"
-                    className={`w-full text-left px-2 py-1 rounded-full ${
-                      watch("tipe") === option.value
-                        ? "text-Primary-90 bg-Primary-20"
-                        : "text-Primary-20 hover:bg-Primary-95"
-                    }`}
-                    onClick={() => selectTipe(option.value)}
-                  >
-                    {option.label}
-                  </button>
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>
-        {errors.tipe && (
-          <span className="text-red-500">{errors.tipe.message}</span>
-        )}
-      </div>
+          <div className="flex flex-col gap-2">
+            <label htmlFor="" className="text-sm text-Primary-10">
+              Level
+            </label>
 
-      <div className="flex flex-col gap-2">
-        <label htmlFor="" className="text-sm text-Primary-10">
-          Kelas
-        </label>
-
-        <div className="relative flex flex-col gap-2">
-          <button
-            type="button"
-            className={` w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${
-              isListOpenKelas
-                ? "border-[2px] border-Primary-50 bg-Primary-95"
-                : "bg-Neutral-95"
-            }`}
-            onClick={toggleListKelas}
-          >
-            {/* buat label */}
-            {watch("kelas_id") ? (
-              kelas?.find((kelasItem) => kelasItem.id === watch("kelas_id"))
-                ?.nama_kelas
-            ) : (
-              <span className="text-Neutral-300">Pilih Kelas</span>
-            )}
-            {isListOpenKelas ? <IoIosArrowUp /> : <IoIosArrowDown />}
-          </button>
-          {isListOpenKelas && (
-            <ul
-              className="absolute w-full top-[44px] z-10 bg-Neutral-100 border-[2px] border-Primary-50 rounded-xl py-2 px-2 outline-none appearance-none flex flex-col gap-1"
-              ref={componentRef}
-            >
-              {error ? (
-                <li>Error fetching data</li>
-              ) : !kelas ? (
-                <li>Loading...</li>
-              ) : kelas.length === 0 ? (
-                <li>No classes available</li>
-              ) : (
-                kelas.map((kelasItem) => (
-                  <li key={kelasItem.id}>
-                    <button
-                      type="button"
-                      className={`w-full text-left px-2 py-1 rounded-full ${
-                        watch("kelas_id") === kelasItem.id
+            <div className="relative flex flex-col gap-2">
+              <button
+                type="button"
+                className={` w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${isListOpenLevel
+                  ? "border-[2px] border-Primary-50 bg-Primary-95"
+                  : "bg-Neutral-95"
+                  }`}
+                onClick={toggleListLevel}
+              >
+                {getLevelLabel(watch("level")) || "Pilih Level"}
+                {isListOpenLevel ? <IoIosArrowUp /> : <IoIosArrowDown />}
+              </button>
+              {isListOpenLevel && (
+                <ul
+                  className="absolute w-full top-[44px] z-10 bg-Neutral-100 border-[2px] border-Primary-50 rounded-xl py-2 px-2 outline-none appearance-none flex flex-col gap-1"
+                  ref={componentRef}
+                >
+                  {levelOptions.map((option) => (
+                    <li key={option.value}>
+                      <button
+                        type="button"
+                        className={`w-full text-left px-2 py-1 rounded-full ${watch("level") === option.value
                           ? "text-Primary-90 bg-Primary-20"
                           : "text-Primary-20 hover:bg-Primary-95"
-                      }`}
-                      onClick={() => selectKelas(kelasItem.id)}
-                    >
-                      {kelasItem.nama_kelas}
-                    </button>
-                  </li>
-                ))
+                          }`}
+                        onClick={() => selectlevel(option.value)}
+                      >
+                        {option.label}
+                      </button>
+                    </li>
+                  ))}
+                </ul>
               )}
-            </ul>
+            </div>
+            {errors.level && (
+              <span className="text-red-500">{errors.level.message}</span>
+            )}
+          </div>
+
+          <div className="flex flex-col gap-2">
+            <label htmlFor="" className="text-sm text-Primary-10">
+              Tipe
+            </label>
+
+            <div className="relative flex flex-col gap-2">
+              <button
+                type="button"
+                className={` w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${isListOpenTipe
+                  ? "border-[2px] border-Primary-50 bg-Primary-95"
+                  : "bg-Neutral-95"
+                  }`}
+                onClick={toggleListTipe}
+              >
+                {getTipeLabel(watch("tipe")) || "Pilih Tipe"}
+                {isListOpenTipe ? <IoIosArrowUp /> : <IoIosArrowDown />}
+              </button>
+              {isListOpenTipe && (
+                <ul
+                  className="absolute w-full top-[44px] z-10 bg-Neutral-100 border-[2px] border-Primary-50 rounded-xl py-2 px-2 outline-none appearance-none flex flex-col gap-1"
+                  ref={componentRef}
+                >
+                  {tipeOptions.map((option) => (
+                    <li key={option.value}>
+                      <button
+                        type="button"
+                        className={`w-full text-left px-2 py-1 rounded-full ${watch("tipe") === option.value
+                          ? "text-Primary-90 bg-Primary-20"
+                          : "text-Primary-20 hover:bg-Primary-95"
+                          }`}
+                        onClick={() => selectTipe(option.value)}
+                      >
+                        {option.label}
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+            {errors.tipe && (
+              <span className="text-red-500">{errors.tipe.message}</span>
+            )}
+          </div>
+
+          <div className="flex flex-col gap-2">
+            <label htmlFor="" className="text-sm text-Primary-10">
+              Kelas
+            </label>
+
+            <div className="relative flex flex-col gap-2">
+              <button
+                type="button"
+                className={` w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${isListOpenKelas
+                  ? "border-[2px] border-Primary-50 bg-Primary-95"
+                  : "bg-Neutral-95"
+                  }`}
+                onClick={toggleListKelas}
+              >
+                {/* buat label */}
+                {watch("kelas_id") ? (
+                  kelas?.find((kelasItem) => kelasItem.id === watch("kelas_id"))
+                    ?.nama_kelas
+                ) : (
+                  <span className="text-Neutral-300">Pilih Kelas</span>
+                )}
+                {isListOpenKelas ? <IoIosArrowUp /> : <IoIosArrowDown />}
+              </button>
+              {isListOpenKelas && (
+                <ul
+                  className="absolute w-full top-[44px] z-10 bg-Neutral-100 border-[2px] border-Primary-50 rounded-xl py-2 px-2 outline-none appearance-none flex flex-col gap-1"
+                  ref={componentRef}
+                >
+                  {error ? (
+                    <li>Error fetching data</li>
+                  ) : !kelas ? (
+                    <li>Loading...</li>
+                  ) : kelas.length === 0 ? (
+                    <li>No classes available</li>
+                  ) : (
+                    kelas.map((kelasItem) => (
+                      <li key={kelasItem.id}>
+                        <button
+                          type="button"
+                          className={`w-full text-left px-2 py-1 rounded-full ${watch("kelas_id") === kelasItem.id
+                            ? "text-Primary-90 bg-Primary-20"
+                            : "text-Primary-20 hover:bg-Primary-95"
+                            }`}
+                          onClick={() => selectKelas(kelasItem.id)}
+                        >
+                          {kelasItem.nama_kelas}
+                        </button>
+                      </li>
+                    ))
+                  )}
+                </ul>
+              )}
+            </div>
+            {errors.kelas_id && (
+              <span className="text-red-500">{errors.kelas_id.message}</span>
+            )}
+          </div>
+
+          {/* harga */}
+          <div className="flex flex-col gap-2">
+            <Input
+              type="text"
+              id="harga"
+              label="Harga"
+              register={{ ...register("harga") }}
+              errors={errors}
+              onChange={formatRupiah}
+            />
+          </div>
+          {errors.harga && (
+            <span className="text-red-500">{errors.harga.message}</span>
           )}
+          <div className="flex flex-col gap-2">
+            <label htmlFor="" className="text-sm text-Primary-10">
+              Deskripsi
+            </label>
+            <textarea
+              className="w-full h-20 px-4 py-2 rounded-xl outline-none bg-Neutral-95"
+              {...register("Deskripsi", { required: "Deskripsi harus diisi" })}
+            />
+            {errors.Deskripsi && (
+              <span className="text-red-500">{errors.Deskripsi.message}</span>
+            )}
+          </div>
         </div>
-        {errors.kelas_id && (
-          <span className="text-red-500">{errors.kelas_id.message}</span>
-        )}
-      </div>
-
-      {/* harga */}
-      <div className="flex flex-col gap-2">
-        <Input
-          type="text"
-          id="harga"
-          label="Harga"
-          register={{ ...register("harga") }}
-          errors={errors}
-          onChange={formatRupiah}
-        />
-      </div>
-      {errors.harga && (
-        <span className="text-red-500">{errors.harga.message}</span>
-      )}
-      <div className="flex flex-col gap-2">
-        <label htmlFor="" className="text-sm text-Primary-10">
-          Deskripsi
-        </label>
-        <textarea
-          className="w-full h-20 px-4 py-2 rounded-xl outline-none bg-Neutral-95"
-          {...register("Deskripsi", { required: "Deskripsi harus diisi" })}
-        />
-        {errors.Deskripsi && (
-          <span className="text-red-500">{errors.Deskripsi.message}</span>
-        )}
-      </div>
-
-      {/* Buat selected berisi SUPER ADMIN dan TENTOR */}
-      <div className="flex flex-row justify-end">
-        <Button
-          type="submit"
-          bgColor="bg-Tertiary-50"
-          brColor=""
-          label="Konfirmasi"
-          textColor="text-Neutral-100"
-          withBgColor
-        />
+        {/* Buat selected berisi SUPER ADMIN dan TENTOR */}
+        <div className="flex flex-row justify-end">
+          <Button
+            type="submit"
+            bgColor="bg-Tertiary-50"
+            brColor=""
+            label="Konfirmasi"
+            textColor="text-Neutral-100"
+            withBgColor
+          />
+        </div>
       </div>
     </form>
   );
 };
+
 
 export default CreateProgram;

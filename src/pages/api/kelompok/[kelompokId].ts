@@ -51,5 +51,28 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       console.error(error);
       res.status(500).json({ message: "Error updating kelompok" });
     }
+  } else if (req.method === "DELETE") {
+    try {
+      const delrelation = await prisma.kelompok.update({
+        where: { id: kelompokId },
+        data: {
+          detail_jadwal: {
+            deleteMany: {},
+          },
+          Siswa: {
+            set: [],
+          },
+        },
+      });
+
+      const deletedKelompok = await prisma.kelompok.delete({
+        where: { id: kelompokId },
+      });
+
+      res.status(200).json(deletedKelompok);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: "Error deleting kelompok", error });
+    }
   }
 }

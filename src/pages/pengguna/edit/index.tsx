@@ -1,5 +1,5 @@
 import { FC, useEffect, useRef, useState } from "react";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { SubmitHandler, useForm } from "react-hook-form";
 import Input from "@/pages/components/inputs/Input";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -175,8 +175,36 @@ const UserEdit: FC<UserEditProps> = ({ userId, onClose, onSucsess, data }) => {
         mutate(`/api/user/noimg/${userId}`);
         mutate(`/api/user`);
         mutate(`/api/user/getadmin`);
-      } catch (error) {
+      } catch (error: any) {
         console.error(error);
+
+        if (axios.isAxiosError(error)) {
+          const axiosError = error as AxiosError;
+          if (axiosError.response) {
+            console.log("Response data:", axiosError.response.data);
+            console.log("Response status:", axiosError.response.status);
+
+            const responseData = axiosError.response.data as { message: string };
+
+            // Extract the main error message from the response data
+            const errorMessage = responseData.message;
+
+            setError(`An error occurred: ${errorMessage}`);
+          } else if (axiosError.request) {
+            console.log("No response received:", axiosError.request);
+
+            const request = axiosError.request.toString();
+            setError(`No response received: ${request}`);
+          } else {
+            console.log("Error setting up the request:", axiosError.message);
+
+            const request = axiosError.message.toString();
+            setError(`Error setting up the request: ${request}`);
+          }
+        } else {
+          console.log("Error:", error.message);
+          setError("An unknown error occurred.");
+        }
       } finally {
         setIsLoading(false);
         onClose();
@@ -209,8 +237,36 @@ const UserEdit: FC<UserEditProps> = ({ userId, onClose, onSucsess, data }) => {
         mutate("/api/user");
         mutate(`/api/userimg`);
         mutate(`/api/user/getadmin`);
-      } catch (error) {
+      } catch (error: any) {
         console.error(error);
+
+        if (axios.isAxiosError(error)) {
+          const axiosError = error as AxiosError;
+          if (axiosError.response) {
+            console.log("Response data:", axiosError.response.data);
+            console.log("Response status:", axiosError.response.status);
+
+            const responseData = axiosError.response.data as { message: string };
+
+            // Extract the main error message from the response data
+            const errorMessage = responseData.message;
+
+            setError(`An error occurred: ${errorMessage}`);
+          } else if (axiosError.request) {
+            console.log("No response received:", axiosError.request);
+
+            const request = axiosError.request.toString();
+            setError(`No response received: ${request}`);
+          } else {
+            console.log("Error setting up the request:", axiosError.message);
+
+            const request = axiosError.message.toString();
+            setError(`Error setting up the request: ${request}`);
+          }
+        } else {
+          console.log("Error:", error.message);
+          setError("An unknown error occurred.");
+        }
       } finally {
         setIsLoading(false);
         onClose();
@@ -222,13 +278,14 @@ const UserEdit: FC<UserEditProps> = ({ userId, onClose, onSucsess, data }) => {
     data?.role === "SUPER"
       ? "SUPER ADMIN"
       : data?.role === "ADMIN"
-      ? "ADMIN"
-      : data?.role === "TENTOR"
-      ? "TENTOR"
-      : "Pilih peran";
+        ? "ADMIN"
+        : data?.role === "TENTOR"
+          ? "TENTOR"
+          : "Pilih peran";
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex gap-10">
+      {error && <p className="text-red-500">{error}</p>}
       <div className="flex flex-col gap-6 overflow-clip scale-100 w-[400px]">
         {previewImage ? (
           <div className="w-full">
@@ -323,11 +380,10 @@ const UserEdit: FC<UserEditProps> = ({ userId, onClose, onSucsess, data }) => {
             <div className="relative flex flex-col gap-2">
               <button
                 type="button"
-                className={` w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${
-                  isListOpen
-                    ? "border-[2px] border-Primary-50 bg-Primary-95"
-                    : "bg-Neutral-95"
-                }`}
+                className={` w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${isListOpen
+                  ? "border-[2px] border-Primary-50 bg-Primary-95"
+                  : "bg-Neutral-95"
+                  }`}
                 onClick={toggleList}
               >
                 {getRoleLabel(roleLabel)}
@@ -343,11 +399,10 @@ const UserEdit: FC<UserEditProps> = ({ userId, onClose, onSucsess, data }) => {
                       <li key={option.value}>
                         <button
                           type="button"
-                          className={`w-full text-left px-2 py-1 rounded-full ${
-                            watch("role") === option.value
-                              ? "text-Primary-90 bg-Primary-20"
-                              : "text-Primary-20 hover:bg-Primary-95"
-                          }`}
+                          className={`w-full text-left px-2 py-1 rounded-full ${watch("role") === option.value
+                            ? "text-Primary-90 bg-Primary-20"
+                            : "text-Primary-20 hover:bg-Primary-95"
+                            }`}
                           onClick={() => selectRole(option.value)}
                         >
                           {option.label}
@@ -361,11 +416,10 @@ const UserEdit: FC<UserEditProps> = ({ userId, onClose, onSucsess, data }) => {
                         <li key={option.value}>
                           <button
                             type="button"
-                            className={`w-full text-left px-2 py-1 rounded-full ${
-                              watch("role") === option.value
-                                ? "text-Primary-90 bg-Primary-20"
-                                : "text-Primary-20 hover:bg-Primary-95"
-                            }`}
+                            className={`w-full text-left px-2 py-1 rounded-full ${watch("role") === option.value
+                              ? "text-Primary-90 bg-Primary-20"
+                              : "text-Primary-20 hover:bg-Primary-95"
+                              }`}
                             onClick={() => selectRole(option.value)}
                           >
                             {option.label}
@@ -387,11 +441,10 @@ const UserEdit: FC<UserEditProps> = ({ userId, onClose, onSucsess, data }) => {
             <div className="relative flex flex-col gap-2">
               <button
                 type="button"
-                className={` w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${
-                  isListOpenMapel
-                    ? "border-[2px] border-Primary-50 bg-Primary-95"
-                    : "bg-Neutral-95"
-                }`}
+                className={` w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${isListOpenMapel
+                  ? "border-[2px] border-Primary-50 bg-Primary-95"
+                  : "bg-Neutral-95"
+                  }`}
                 onClick={toggleListMapel}
               >
                 {/* buat label */}
@@ -412,11 +465,10 @@ const UserEdit: FC<UserEditProps> = ({ userId, onClose, onSucsess, data }) => {
                     <li key={mapelItem.id}>
                       <button
                         type="button"
-                        className={`w-full text-left px-2 py-1 rounded-full ${
-                          watch("mapel") === mapelItem.id
-                            ? "text-Primary-90 bg-Primary-20"
-                            : "text-Primary-20 hover:bg-Primary-95"
-                        }`}
+                        className={`w-full text-left px-2 py-1 rounded-full ${watch("mapel") === mapelItem.id
+                          ? "text-Primary-90 bg-Primary-20"
+                          : "text-Primary-20 hover:bg-Primary-95"
+                          }`}
                         onClick={() => {
                           selectMapel(mapelItem.id);
                           handleCheckChangeUser(mapelItem.id);

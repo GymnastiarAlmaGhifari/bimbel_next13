@@ -15,7 +15,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           Deskripsi,
         },
       });
-      res.status(201).json({ message: "Data berhasil disimpan", data: result });
+
+      const update = await prisma.program.update({
+        where: { id: result.id },
+        data: {
+          img: result.id + ".jpg",
+        },
+      });
+      res.status(201).json(update);
     } catch (error) {
       res.status(400).json({ message: "Data gagal disimpan", error });
     }

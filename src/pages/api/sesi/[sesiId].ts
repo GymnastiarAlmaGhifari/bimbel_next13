@@ -51,5 +51,25 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       console.error(error);
       res.status(500).json({ message: "Error updating sesi" });
     }
+  } else if (req.method === "DELETE") {
+    try {
+      const delrelation = await prisma.sesi.update({
+        where: { id: sesiId },
+        data: {
+          jadwal_details: {
+            deleteMany: {},
+          },
+        },
+      });
+
+      const sesi = await prisma.sesi.delete({
+        where: { id: sesiId },
+      });
+
+      res.status(200).json(sesi);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: "Error deleting sesi" });
+    }
   }
 }
