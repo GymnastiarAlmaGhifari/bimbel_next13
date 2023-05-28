@@ -37,6 +37,18 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
   } else if (req.method === "DELETE") {
     try {
+      const delrelation = await prisma.kelas.update({
+        where: { id: kelasId },
+        data: {
+          programs: {
+            deleteMany: {},
+          },
+          mapels: {
+            deleteMany: {},
+          },
+        },
+      });
+      
       const deletedKelas = await prisma.kelas.delete({
         where: { id: kelasId },
       });

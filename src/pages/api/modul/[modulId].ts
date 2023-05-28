@@ -19,5 +19,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     } catch (error) {
       res.status(400).json({ message: "Data gagal diupdate", error });
     }
+  } else if (req.method === "DELETE") {
+    try {
+      const deletedModul = await prisma.module.delete({
+        where: { id },
+      });
+
+      res.status(200).json({ message: "Data berhasil dihapus", data: deletedModul });
+    } catch (error) {
+      res.status(400).json({ message: "Data gagal dihapus", error });
+    }
   }
 }
