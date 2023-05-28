@@ -49,6 +49,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                     jadwal_details: {
                         set: [],
                     },
+                    modules: {
+                        deleteMany: {},
+                    },
                 },
             });
 

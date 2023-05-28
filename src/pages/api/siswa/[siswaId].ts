@@ -22,12 +22,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
   } else if (req.method === "DELETE") {
     try {
-      const delrelation = await prisma.siswa.update({
-        where: { id: siswaId },
-        data: {
-        },
-      });
-
       const siswa = await prisma.siswa.delete({
         where: { id: siswaId },
       });
