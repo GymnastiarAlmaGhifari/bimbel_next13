@@ -12,7 +12,7 @@ import { HiOutlineCheck } from "react-icons/hi";
 import CardAnggotaJadwal from "@/pages/components/card/CardAnggotaJadwal";
 import CardJadwalKelompok from "@/pages/components/card/CardJadwalKelompok";
 
-interface Senin {
+interface SelasaEdit {
     jadwalId: string;
     data: any;
     idRuang: string;
@@ -85,7 +85,7 @@ const schema = yup.object().shape({
 
 type FormData = yup.InferType<typeof schema>;
 
-const Senin: FC<Senin> = ({ jadwalId, data, onClose, onSucsess, idRuang }) => {
+const SelasaEdit: FC<SelasaEdit> = ({ jadwalId, data, onClose, onSucsess, idRuang }) => {
     const { data: kelompok, error: errorKelompok } = useSWR<Kelompok[]>(
         "api/kelompok",
         fetcher,
@@ -238,7 +238,7 @@ const Senin: FC<Senin> = ({ jadwalId, data, onClose, onSucsess, idRuang }) => {
 
     useEffect(() => {
         setValue("ruang", idRuang);
-        setValue("hari", "SENIN");
+        setValue("hari", "SELASA");
         if (data) {
             setSelectedOption(data.kelompok);
             setValue("kelompokCheck", data.kelompok?.id);
@@ -308,10 +308,10 @@ const Senin: FC<Senin> = ({ jadwalId, data, onClose, onSucsess, idRuang }) => {
             mutate(`/api/jadwaldetail/${jadwalId}`);
 
             // undefined 
-            mutate(`/api/jadwal/hari?hari=SENIN&ruang_id=${idRuang}`, undefined);
+            mutate(`/api/jadwal/hari?hari=SELASA&ruang_id=${idRuang}`, undefined);
             mutate(`/api/jadwal/hari?hari=${hari}&ruang_id=${ruang}`, undefined);
             // not undefined
-            mutate(`/api/jadwal/hari?hari=SENIN&ruang_id=${idRuang}`);
+            mutate(`/api/jadwal/hari?hari=SELASA&ruang_id=${idRuang}`);
             mutate(`/api/jadwal/hari?hari=${hari}&ruang_id=${ruang}`);
 
             // mutate hari sebelum diubah
@@ -401,7 +401,7 @@ const Senin: FC<Senin> = ({ jadwalId, data, onClose, onSucsess, idRuang }) => {
                                     >
                                         {/* isi dari watch {hari} dan isi dengan data.hari */}
                                         <span className="text-Neutral-300">
-                                            {getHariLabel(watch("hari")) || "Senin" || "Pilih Hari"}
+                                            {getHariLabel(watch("hari")) || "Selasa" || "Pilih Hari"}
                                             {/* {getHariLabel(watch("hari")) || data?.hari || "Pilih Hari"} */}
                                         </span>
                                         {isListOpenHari ? <IoIosArrowUp /> : <IoIosArrowDown />}
@@ -671,4 +671,4 @@ const Senin: FC<Senin> = ({ jadwalId, data, onClose, onSucsess, idRuang }) => {
     );
 };
 
-export default Senin;
+export default SelasaEdit;
