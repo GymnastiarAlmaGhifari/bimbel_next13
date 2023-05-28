@@ -12,7 +12,7 @@ import { HiOutlineCheck } from "react-icons/hi";
 import CardAnggotaJadwal from "@/pages/components/card/CardAnggotaJadwal";
 import CardJadwalKelompok from "@/pages/components/card/CardJadwalKelompok";
 
-interface Senin {
+interface Jumat {
     jadwalId: string;
     data: any;
     idRuang: string;
@@ -81,7 +81,7 @@ const schema = yup.object().shape({
 
 type FormData = yup.InferType<typeof schema>;
 
-const CreateSenin: FC<Senin> = ({ jadwalId, data, onClose, onSucsess, idRuang }) => {
+const CreateJumat: FC<Jumat> = ({ jadwalId, data, onClose, onSucsess, idRuang }) => {
     const { data: kelompok, error: errorKelompok } = useSWR<Kelompok[]>(
         "api/kelompok",
         fetcher,
@@ -235,7 +235,7 @@ const CreateSenin: FC<Senin> = ({ jadwalId, data, onClose, onSucsess, idRuang })
     useEffect(() => {
         setValue("ruang", idRuang);
         setValue("sesi", data);
-        setValue("hari", "SENIN");
+        setValue("hari", "JUMAT");
 
     }, [setValue, data, idRuang]);
 
@@ -386,7 +386,7 @@ const CreateSenin: FC<Senin> = ({ jadwalId, data, onClose, onSucsess, idRuang })
                                     >
                                         {/* isi dari watch {hari} dan isi dengan data.hari */}
                                         <span className="text-Neutral-300">
-                                            {getHariLabel(watch("hari")) || "Senin" || "Pilih Hari"}
+                                            {getHariLabel(watch("hari")) || "Jumat" || "Pilih Hari"}
                                             {/* {getHariLabel(watch("hari")) || data?.hari || "Pilih Hari"} */}
                                         </span>
                                         {isListOpenHari ? <IoIosArrowUp /> : <IoIosArrowDown />}
@@ -670,4 +670,4 @@ const CreateSenin: FC<Senin> = ({ jadwalId, data, onClose, onSucsess, idRuang })
     );
 };
 
-export default CreateSenin;
+export default CreateJumat;
