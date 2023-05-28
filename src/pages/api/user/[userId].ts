@@ -46,5 +46,25 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       console.error(error);
       res.status(500).json({ message: "Error loading kelas" });
     }
+  } else if (req.method === "DELETE") {
+    try {
+      const users = await prisma.user.update({
+        where: { id: userId },
+        data: {
+          jadwal_details: {
+            deleteMany: {},
+          }
+        }
+      });
+
+      const deleted = await prisma.user.delete({
+        where: { id: userId },
+      });
+
+      res.status(200).json(users);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: "Error deleting kelas" });
+    }
   }
 }
