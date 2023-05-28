@@ -35,7 +35,7 @@ const Dashboard: FC<Dashboard> = () => {
         <div className="flex flex-col gap-2 h-full p-5 bg-Neutral-95 overflow-auto">
           <InfoDashboard />
           <div className="flex flex-col h-full bg-Neutral-100 py-4 gap-4 rounded-lg overflow-auto">
-            <HeadTable label="Overview Jadwal" />
+            <HeadTable label="Overview Jadwal" noAdd noSearch />
             <div className="flex flex-col scrollbar rounded-bl-lg rounded-br-lg p-4 gap-4 overflow-y-auto scrollbar h-full ">
               <CardDashboard />
               <CardDashboard />

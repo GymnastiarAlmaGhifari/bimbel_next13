@@ -1,17 +1,26 @@
 import { FC, useEffect, useRef, useState } from "react";
 import axios, { AxiosError } from "axios";
-import { mutate } from "swr";
 import { SubmitHandler, useForm } from "react-hook-form";
 import Input from "@/pages/components/inputs/Input";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import fetcher from "@/libs/fetcher";
 import Button from "@/pages/components/buttons/Button";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import { useSession } from "next-auth/react";
+import useSWR, { mutate } from "swr";
 
 interface UserCreateProps {
   onClose: () => void;
   onSucsess: () => void;
+}
+
+interface Mapel {
+  id: string;
+  nama_mapel: string;
+  kelas: {
+    id: string;
+  };
 }
 
 const schema = yup.object().shape({
@@ -22,6 +31,7 @@ const schema = yup.object().shape({
   password: yup.string().required(),
   email: yup.string().required(),
   role: yup.string().required(),
+  mapel: yup.string().required(),
   nomor_telepon: yup.string().required().max(13, "maksimal 13 karakter"),
   lulusan: yup.string(),
   alamat: yup.string().required(),
@@ -33,9 +43,16 @@ const Create: FC<UserCreateProps> = ({ onClose, onSucsess }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isListOpenRole, setIsListOpenRole] = useState(false);
+  const [isListOpenMapel, setIsListOpenMapel] = useState(false);
+
   const componentRef = useRef<HTMLUListElement>(null);
 
   const { data: session } = useSession();
+  const { data: mapel, error: errorMapel } = useSWR<Mapel[]>(
+    "api/mapel",
+    fetcher,
+    {}
+  );
 
   const {
     register,
@@ -51,6 +68,12 @@ const Create: FC<UserCreateProps> = ({ onClose, onSucsess }) => {
     setValue("role", role);
     setIsListOpenRole(false);
   };
+
+  const selectMapel = (mapel: string) => {
+    setValue("mapel", mapel);
+    setIsListOpenRole(false);
+  };
+
   const roleOptions = [
     { value: "SUPER", label: "Super Admin" },
     { value: "ADMIN", label: "Admin" },
@@ -65,6 +88,7 @@ const Create: FC<UserCreateProps> = ({ onClose, onSucsess }) => {
         !componentRef.current.contains(event.target)
       ) {
         setIsListOpenRole(false);
+        setIsListOpenMapel(false);
       }
     };
 
@@ -75,10 +99,29 @@ const Create: FC<UserCreateProps> = ({ onClose, onSucsess }) => {
     return () => {
       document.removeEventListener("mousedown", handleOutsideClick);
     };
-  }, [setIsListOpenRole, componentRef]);
+  }, [setIsListOpenRole, setIsListOpenMapel, componentRef]);
+
+  const [checkValue, setCheckValue] = useState<string>("");
+  const [checkValueUser, setCheckValueUser] = useState<string>("");
 
   const toggleListRole = () => {
     setIsListOpenRole(!isListOpenRole);
+  };
+
+  const toggleListMapel = () => {
+    setIsListOpenMapel(!isListOpenMapel);
+  };
+
+  let filteredMapel = mapel;
+
+  if (checkValue) {
+    filteredMapel = mapel?.filter((mapelItem) => {
+      return mapelItem.kelas.id === checkValue; // Add 'return' statement
+    });
+  }
+
+  const handleCheckChangeUser = (value: string) => {
+    setCheckValueUser(value);
   };
 
   const getRoleLabel = (value: string) => {
@@ -87,7 +130,7 @@ const Create: FC<UserCreateProps> = ({ onClose, onSucsess }) => {
   };
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
-    const { name, email, password, role, nomor_telepon, alamat } = data;
+    const { name, email, password, mapel, role, nomor_telepon, alamat } = data;
 
     setIsLoading(true); // Set loading state to true
     setError(null);
@@ -99,6 +142,7 @@ const Create: FC<UserCreateProps> = ({ onClose, onSucsess }) => {
         password,
         role,
         nomor_telepon,
+        mapel,
         alamat,
       });
 
@@ -181,10 +225,11 @@ const Create: FC<UserCreateProps> = ({ onClose, onSucsess }) => {
         <div className="relative flex flex-col gap-2">
           <button
             type="button"
-            className={` w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${isListOpenRole
-              ? "border-[2px] border-Primary-50 bg-Primary-95"
-              : "bg-Neutral-95"
-              }`}
+            className={` w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${
+              isListOpenRole
+                ? "border-[2px] border-Primary-50 bg-Primary-95"
+                : "bg-Neutral-95"
+            }`}
             onClick={toggleListRole}
           >
             {getRoleLabel(watch("role")) || "Pilih Role"}
@@ -195,40 +240,40 @@ const Create: FC<UserCreateProps> = ({ onClose, onSucsess }) => {
               className="absolute w-full top-[44px] z-10 bg-Neutral-100 border-[2px] border-Primary-50 rounded-xl py-2 px-2 outline-none appearance-none flex flex-col gap-1"
               ref={componentRef}
             >
-              {session?.user?.role === "SUPER" && (
+              {session?.user?.role === "SUPER" &&
                 roleOptions.map((option) => (
                   <li key={option.value}>
                     <button
                       type="button"
-                      className={`w-full text-left px-2 py-1 rounded-full ${watch("role") === option.value
-                        ? "text-Primary-90 bg-Primary-20"
-                        : "text-Primary-20 hover:bg-Primary-95"
-                        }`}
+                      className={`w-full text-left px-2 py-1 rounded-full ${
+                        watch("role") === option.value
+                          ? "text-Primary-90 bg-Primary-20"
+                          : "text-Primary-20 hover:bg-Primary-95"
+                      }`}
                       onClick={() => selectrole(option.value)}
                     >
                       {option.label}
                     </button>
                   </li>
-                ))
-              )}
-              {session?.user?.role === "ADMIN" && (
+                ))}
+              {session?.user?.role === "ADMIN" &&
                 roleOptions
                   .filter((option) => option.value !== "SUPER")
                   .map((option) => (
                     <li key={option.value}>
                       <button
                         type="button"
-                        className={`w-full text-left px-2 py-1 rounded-full ${watch("role") === option.value
-                          ? "text-Primary-90 bg-Primary-20"
-                          : "text-Primary-20 hover:bg-Primary-95"
-                          }`}
+                        className={`w-full text-left px-2 py-1 rounded-full ${
+                          watch("role") === option.value
+                            ? "text-Primary-90 bg-Primary-20"
+                            : "text-Primary-20 hover:bg-Primary-95"
+                        }`}
                         onClick={() => selectrole(option.value)}
                       >
                         {option.label}
                       </button>
                     </li>
-                  ))
-              )}
+                  ))}
             </ul>
           )}
         </div>
@@ -236,7 +281,60 @@ const Create: FC<UserCreateProps> = ({ onClose, onSucsess }) => {
           <span className="text-red-500">{errors.role.message}</span>
         )}
       </div>
+      <div className="flex flex-col gap-1 w-full">
+        <label htmlFor="" className="text-sm text-Primary-10">
+          Mapel
+        </label>
 
+        <div className="relative flex flex-col gap-2">
+          <button
+            type="button"
+            className={` w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${
+              isListOpenMapel
+                ? "border-[2px] border-Primary-50 bg-Primary-95"
+                : "bg-Neutral-95"
+            }`}
+            onClick={toggleListMapel}
+          >
+            {/* buat label */}
+            {watch("mapel") ? (
+              mapel?.find((mapelItem) => mapelItem.id === watch("mapel"))
+                ?.nama_mapel
+            ) : (
+              <span className="text-Neutral-300">Pilih Mapel</span>
+            )}
+            {isListOpenMapel ? <IoIosArrowUp /> : <IoIosArrowDown />}
+          </button>
+          {isListOpenMapel && (
+            <ul
+              className="absolute w-full top-[44px] z-10 bg-Neutral-100 border-[2px] border-Primary-50 rounded-xl py-2 px-2 outline-none appearance-none flex flex-col gap-1"
+              ref={componentRef}
+            >
+              {filteredMapel?.map((mapelItem) => (
+                <li key={mapelItem.id}>
+                  <button
+                    type="button"
+                    className={`w-full text-left px-2 py-1 rounded-full ${
+                      watch("mapel") === mapelItem.id
+                        ? "text-Primary-90 bg-Primary-20"
+                        : "text-Primary-20 hover:bg-Primary-95"
+                    }`}
+                    onClick={() => {
+                      selectMapel(mapelItem.id);
+                      handleCheckChangeUser(mapelItem.id);
+                    }}
+                  >
+                    {mapelItem.nama_mapel}
+                  </button>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+        {errors.mapel && (
+          <span className="text-red-500">{errors.mapel.message}</span>
+        )}
+      </div>
       <Input
         id="nomor_telepon"
         label="Nomor Telepon"
