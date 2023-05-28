@@ -33,6 +33,19 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             console.error(error);
             res.status(500).json({ message: "Error updating diskon" });
         }
+    } else if (req.method === "DELETE") {
+        try {
+            const diskon = await prisma.diskon.delete({
+                where: {
+                    id: id,
+                },
+            });
+
+            res.status(200).json(diskon);
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ message: "Error deleting diskon" });
+        }
     } else {
         res.status(405).json({ message: "Method not allowed" });
     }
