@@ -33,10 +33,11 @@ const Diskon = ({ }) => {
 
   const [showSuccess, setShowSuccess] = useState(false);
 
-const Diskon = ({}) => {
-  useEffect(() => {
-    document.title = "Bimbel Linear";
-  });
+  const Diskon = ({ }) => {
+    useEffect(() => {
+      document.title = "Bimbel Linear";
+    });
+  }
   return (
     <div className="flex flex-row h-screen font-mulish">
       <Sidebar />

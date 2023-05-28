@@ -1,6 +1,5 @@
 import { FC, useEffect, useRef, useState } from "react";
 import axios, { AxiosError } from "axios";
-import { mutate } from "swr";
 import { SubmitHandler, useForm } from "react-hook-form";
 import Input from "@/pages/components/inputs/Input";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -442,11 +441,10 @@ const UserEdit: FC<UserEditProps> = ({ userId, onClose, onSucsess, data }) => {
             <div className="relative flex flex-col gap-2">
               <button
                 type="button"
-                className={` w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${
-                  isListOpenMapel
-                    ? "border-[2px] border-Primary-50 bg-Primary-95"
-                    : "bg-Neutral-95"
-                }`}
+                className={` w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${isListOpenMapel
+                  ? "border-[2px] border-Primary-50 bg-Primary-95"
+                  : "bg-Neutral-95"
+                  }`}
                 onClick={toggleListMapel}
               >
                 {/* buat label */}
@@ -467,11 +465,10 @@ const UserEdit: FC<UserEditProps> = ({ userId, onClose, onSucsess, data }) => {
                     <li key={mapelItem.id}>
                       <button
                         type="button"
-                        className={`w-full text-left px-2 py-1 rounded-full ${
-                          watch("mapel") === mapelItem.id
-                            ? "text-Primary-90 bg-Primary-20"
-                            : "text-Primary-20 hover:bg-Primary-95"
-                        }`}
+                        className={`w-full text-left px-2 py-1 rounded-full ${watch("mapel") === mapelItem.id
+                          ? "text-Primary-90 bg-Primary-20"
+                          : "text-Primary-20 hover:bg-Primary-95"
+                          }`}
                         onClick={() => {
                           selectMapel(mapelItem.id);
                           handleCheckChangeUser(mapelItem.id);
