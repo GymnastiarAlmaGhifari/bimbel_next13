@@ -27,6 +27,9 @@ interface Program {
 }
 
 const Program: FC<Program> = () => {
+  useEffect(() => {
+    document.title = "Bimbel Linear";
+  });
   const { data: program, error } = useSWR<Program[]>(
     "/api/program",
     fetcher,

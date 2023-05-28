@@ -29,6 +29,9 @@ interface User {
 }
 
 const User: FC<User> = () => {
+  useEffect(() => {
+    document.title = "Bimbel Linear";
+  });
   const { data: session, status } = useSession();
 
   const [inputValue, setInputValue] = useState<string>("");
@@ -44,7 +47,11 @@ const User: FC<User> = () => {
     };
   }, [inputValue]);
 
-  const { data: users, error } = useSWR<User[]>(`/api/user`, fetcher, {});
+  const {
+    data: users,
+    error,
+    isLoading: superload,
+  } = useSWR<User[]>(`/api/user`, fetcher, {});
 
   let filteredUsers = users;
 
@@ -54,11 +61,11 @@ const User: FC<User> = () => {
     );
   }
 
-  const { data: admin, error: erroradmin } = useSWR<User[]>(
-    "/api/user/getadmin",
-    fetcher,
-    {}
-  );
+  const {
+    data: admin,
+    error: erroradmin,
+    isLoading: adminload,
+  } = useSWR<User[]>("/api/user/getadmin", fetcher, {});
 
   let filteredAdmin = admin;
 
@@ -115,12 +122,14 @@ const User: FC<User> = () => {
             <div className="flex flex-col rounded-bl-lg rounded-br-lg p-4 gap-4 overflow-y-auto scrollbar">
               {session?.user.role === "SUPER" && (
                 <>
-                  {filteredUsers ? (
+                  {superload ? (
+                    <p>Loading...</p>
+                  ) : (
                     <>
-                      {filteredUsers.length === 0 ? (
+                      {filteredUsers?.length === 0 ? (
                         <p>Tidak ditemukan pengguna.</p>
                       ) : (
-                        filteredUsers.map((user) => (
+                        filteredUsers?.map((user) => (
                           <UserCard
                             key={user.id}
                             nama_user={user.name}
@@ -135,20 +144,20 @@ const User: FC<User> = () => {
                         ))
                       )}
                     </>
-                  ) : (
-                    <p>Loading...</p>
                   )}
                 </>
               )}
 
               {session?.user.role === "ADMIN" && (
                 <>
-                  {filteredAdmin ? (
+                  {adminload ? (
+                    <p>Loading...</p>
+                  ) : (
                     <>
-                      {filteredAdmin.length === 0 ? (
+                      {filteredAdmin?.length === 0 ? (
                         <p>Tidak ditemukan pengguna.</p>
                       ) : (
-                        filteredAdmin.map((user) => (
+                        filteredAdmin?.map((user) => (
                           <UserCard
                             key={user.id}
                             nama_user={user.name}
@@ -163,8 +172,6 @@ const User: FC<User> = () => {
                         ))
                       )}
                     </>
-                  ) : (
-                    <p>Loading...</p>
                   )}
                 </>
               )}

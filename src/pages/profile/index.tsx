@@ -3,8 +3,12 @@ import Sidebar from "../components/Sidebar";
 import Navbar from "../components/Navbar";
 import Button from "../components/buttons/Button";
 import { MdModeEdit } from "react-icons/md";
+import { useEffect } from "react";
 
 export default function Profile() {
+  useEffect(() => {
+    document.title = "Bimbel Linear";
+  });
   return (
     <div className="flex flex-row h-screen font-mulish">
       <Sidebar />

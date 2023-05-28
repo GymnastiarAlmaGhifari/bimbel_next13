@@ -9,8 +9,12 @@ import Diskon from "./landingPage/Diskon";
 import Login from "./landingPage/Login";
 import NavbarLanding from "./landingPage/NavbarLanding";
 import Footer from "./landingPage/Footer";
+import { useEffect } from "react";
 
 export default function Home() {
+  useEffect(() => {
+    document.title = "Bimbel Linear";
+  });
   const consolLogAgim = () => {
     console.log("Agim");
   };

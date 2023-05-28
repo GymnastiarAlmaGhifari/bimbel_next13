@@ -29,6 +29,9 @@ interface Kelompok {
 }
 
 const Kelompok: FC<Kelompok> = () => {
+  useEffect(() => {
+    document.title = "Bimbel Linear";
+  });
   const [inputValue, setInputValue] = useState<string>("");
   const [debouncedValue, setDebouncedValue] = useState<string>("");
 
@@ -178,7 +181,7 @@ const Kelompok: FC<Kelompok> = () => {
           titleModal="Tambah Pengguna"
           onClose={() => setShowCreate(false)}
         >
-          <CreateKelompok
+          <CreateKelompok 
             onClose={() => setShowCreate(false)}
             onSucsess={() => {
               setShowSuccess(true);
