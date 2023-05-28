@@ -11,6 +11,7 @@ import CreateMapel from "./create";
 import Sidebar from "@/pages/components/Sidebar";
 import Navbar from "@/pages/components/Navbar";
 import NavbarPengaturan from "@/pages/components/NavbarPengaturan";
+import DeleteMapel from "./delete";
 
 interface Mapel {
   kelas: any;
@@ -28,6 +29,9 @@ const Mapel: FC<Mapel> = () => {
   const { data: mapel, error } = useSWR<Mapel[]>("/api/mapel", fetcher, {});
 
   const [selectedMapel, setSelectedMapel] = useState<Mapel | null>(null);
+  const [selectedMapelDelete, setSelectedMapelDelete] = useState<Mapel | null>(
+    null
+  );
 
   // open modal create
   const [showCreate, setShowCreate] = useState(false);
@@ -116,6 +120,7 @@ const Mapel: FC<Mapel> = () => {
                           nama_kelas={item.kelas?.nama_kelas}
                           nama_mapel={item.nama_mapel}
                           onClick={() => setSelectedMapel(item)}
+                          onDelete={() => setSelectedMapelDelete(item)}
                         />
                       ))
                     )}
@@ -163,6 +168,28 @@ const Mapel: FC<Mapel> = () => {
                     />
                   </ModalDetail>
                 )}
+                {
+                  // modal delete
+                  selectedMapelDelete && (
+                    <ModalDetail
+                      titleModal="Hapus Mapel"
+                      onClose={() => setSelectedMapelDelete(null)}
+                      silang
+                      wAuto
+                      center
+                    >
+                      <DeleteMapel
+                        idMapel={selectedMapelDelete.id}
+                        onClose={() => setSelectedMapelDelete(null)}
+                        onSuccess={() => {
+                          setShowSuccess(true);
+                        }
+                        }
+                        data={selectedMapelDelete}
+                      />
+                    </ModalDetail>
+                  )
+                }
               </div>
             </div>
           </div>

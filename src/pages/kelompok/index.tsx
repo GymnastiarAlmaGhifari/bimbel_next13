@@ -67,6 +67,8 @@ const Kelompok: FC<Kelompok> = () => {
   const [selectedJadwal, setSelectedJadwal] = useState<Kelompok | null>(null);
   const [selectedDetail, setSelectedDetail] = useState<Kelompok | null>(null);
 
+
+
   useEffect(() => {
     if (error) {
     }
@@ -181,7 +183,7 @@ const Kelompok: FC<Kelompok> = () => {
           titleModal="Tambah Pengguna"
           onClose={() => setShowCreate(false)}
         >
-          <CreateKelompok 
+          <CreateKelompok
             onClose={() => setShowCreate(false)}
             onSucsess={() => {
               setShowSuccess(true);
@@ -231,14 +233,8 @@ const Kelompok: FC<Kelompok> = () => {
           onClose={() => setSelectedDetail(null)}
         >
           <DetailSiswa
-            alamat=""
-            email=""
-            hp_ortu=""
-            kelas=""
-            kelompok=""
-            nama=""
-            nomor_telepon=""
-            sekolah=""
+            idKelompok={selectedDetail.id}
+            onClose={() => setSelectedDetail(null)}
           />
         </ModalDetail>
       )}

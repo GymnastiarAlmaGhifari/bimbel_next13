@@ -11,6 +11,7 @@ import CreateProgram from "./create";
 import Sidebar from "@/pages/components/Sidebar";
 import Navbar from "@/pages/components/Navbar";
 import NavbarPengaturan from "@/pages/components/NavbarPengaturan";
+import DeleteMapel from "./delete";
 
 interface Program {
   kelas: any;
@@ -62,6 +63,8 @@ const Program: FC<Program> = () => {
   };
 
   const [selectedProgram, setSelectedProgram] = useState<Program | null>(null);
+
+  const [selectedProgramDelete, setSelectedProgramDelete] = useState<Program | null>(null);
 
   const [showCreate, setShowCreate] = useState(false);
 
@@ -130,6 +133,7 @@ const Program: FC<Program> = () => {
                           harga={item.harga}
                           onEdit={() => setSelectedProgram(item)}
                           gambar={item?.img}
+                          onDelete={() => setSelectedProgramDelete(item)}
                         />
                       ))
                     )}
@@ -177,6 +181,28 @@ const Program: FC<Program> = () => {
                     />
                   </ModalDetail>
                 )}
+
+                {/* modal delete */}
+                {selectedProgramDelete && (
+                  <ModalDetail
+                    titleModal="Hapus Program"
+                    onClose={() => setSelectedProgramDelete(null)}
+                    wAuto
+                    silang
+                    center
+                  >
+                    <DeleteMapel
+                      data={selectedProgramDelete}
+                      idProgram={selectedProgramDelete.id}
+                      onClose={() => setSelectedProgramDelete(null)}
+                      onSuccess={() => {
+                        setShowSuccess(true);
+                      }}
+
+                    />
+                  </ModalDetail>
+                )}
+
               </div>
             </div>
           </div>
