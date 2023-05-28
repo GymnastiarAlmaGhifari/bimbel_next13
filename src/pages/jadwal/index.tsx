@@ -502,7 +502,7 @@ const Jadwal: FC<Jadwal> = () => {
                       <div className="py-2 px-4 bg-Error-40 rounded-lg h-full text-Error-90 font-bold w-full flex items-center justify-center text-center shadow-[0px_0px_10px_5px_rgba(149,146,146,.25)] relative">
                         <ItemJadwalBelumTerisi
                           onClick={() => {
-                            setSeninModalCreate(item.id);
+                            setSelasaModalCreate(item.id);
                           }}
                         />
                       </div>
@@ -526,8 +526,9 @@ const Jadwal: FC<Jadwal> = () => {
                       <div className="py-2 px-4 bg-Error-40 rounded-lg h-full text-Error-90 font-bold w-full flex items-center justify-center text-center shadow-[0px_0px_10px_5px_rgba(149,146,146,.25)] relative">
                         <ItemJadwalBelumTerisi
                           onClick={() => {
-                            setSeninModalCreate(item.id);
+                            setRabuModalCreate(item.id);
                           }}
+
                         />
                       </div>
                     )}
@@ -550,7 +551,7 @@ const Jadwal: FC<Jadwal> = () => {
                       <div className="py-2 px-4 bg-Error-40 rounded-lg h-full text-Error-90 font-bold w-full flex items-center justify-center text-center shadow-[0px_0px_10px_5px_rgba(149,146,146,.25)] relative">
                         <ItemJadwalBelumTerisi
                           onClick={() => {
-                            setSeninModalCreate(item.id);
+                            setKamisModalCreate(item.id);
                           }}
                         />
                       </div>
@@ -574,7 +575,7 @@ const Jadwal: FC<Jadwal> = () => {
                       <div className="py-2 px-4 bg-Error-40 rounded-lg h-full text-Error-90 font-bold w-full flex items-center justify-center text-center shadow-[0px_0px_10px_5px_rgba(149,146,146,.25)] relative">
                         <ItemJadwalBelumTerisi
                           onClick={() => {
-                            setSeninModalCreate(item.id);
+                            setJumatModalCreate(item.id);
                           }}
                         />
                       </div>
@@ -598,7 +599,7 @@ const Jadwal: FC<Jadwal> = () => {
                       <div className="py-2 px-4 bg-Error-40 rounded-lg h-full text-Error-90 font-bold w-full flex items-center justify-center text-center shadow-[0px_0px_10px_5px_rgba(149,146,146,.25)] relative">
                         <ItemJadwalBelumTerisi
                           onClick={() => {
-                            setSeninModalCreate(item.id);
+                            setSabtuModalCreate(item.id);
                           }}
                         />
                       </div>
@@ -622,7 +623,7 @@ const Jadwal: FC<Jadwal> = () => {
                       <div className="py-2 px-4 bg-Error-40 rounded-lg h-full text-Error-90 font-bold w-full flex items-center justify-center text-center shadow-[0px_0px_10px_5px_rgba(149,146,146,.25)] relative">
                         <ItemJadwalBelumTerisi
                           onClick={() => {
-                            setSeninModalCreate(item.id);
+                            setMingguModalCreate(item.id);
                           }}
                         />
                       </div>
