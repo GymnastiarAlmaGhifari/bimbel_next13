@@ -13,7 +13,6 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { IoIosArrowDown, IoIosArrowUp, IoIosAdd } from "react-icons/io";
 import { ModalDetail, ModalSucces } from "@/pages/components/modal/Modal";
 import Senin from "./Edit/senin";
-import CreateSenin from "./Create/senin";
 
 
 interface Jadwal {
