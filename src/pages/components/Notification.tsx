@@ -94,7 +94,7 @@ const Notification: FC<NotificationProps> = ({ onClose }) => {
               onClick={onClose}
             />
           </div>
-          <div className="flex flex-col h-96 overflow-y-auto scrollbar">
+          <div className="flex flex-col min-h-max max-h-96 overflow-y-auto scrollbar">
             {notification ? (
               <>
                 {notification.length === 0 ? (
