@@ -173,15 +173,7 @@ const MapelEdit: FC<MapelEditProps> = ({ mapelId, onClose, data }) => {
           )}
         </div>
       </div>
-      <div className="flex flex-row justify-between">
-        <Button
-          bgColor="bg-Error-50"
-          brColor=""
-          label="Hapus Pengguna"
-          textColor="text-Neutral-100"
-          type="button"
-          withBgColor
-        />
+      <div className="flex flex-row justify-end">
         <Button
           bgColor="bg-Tertiary-50"
           brColor=""

@@ -25,5 +25,23 @@ export default withAuth(
 );
 
 export const config = {
-  matcher: ["/dashboard", "/pembayaran", "/siswa", "/kelompok", "/pengguna", "/profile", "/pengaturan", "/riwayat", "/api/modul/pdf"],
+  matcher: [
+    "/dashboard",
+    "/pembayaran",
+    "/siswa",
+    "/kelompok",
+    "/pengguna",
+    "/profile",
+    "/riwayat",
+
+    "/pengaturan/program",
+    "/pengaturan/kelas",
+    "/pengaturan/ruang",
+    "/pengaturan/mapel",
+    "/pengaturan/sesi",
+    "/pengaturan/gaji",
+    "/pengaturan/diskon",
+
+    "/api/modul/pdf",
+  ],
 };
