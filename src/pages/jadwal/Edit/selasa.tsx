@@ -147,6 +147,12 @@ const SelasaEdit: FC<SelasaEdit> = ({ jadwalId, data, onClose, onSucsess, idRuan
     const [selectedOption, setSelectedOption] = useState<Kelompok | null>(null);
     const [debouncedValue, setDebouncedValue] = useState<string>("");
 
+        const { data: jadwalIdData, error: errorJadwalId } = useSWR(
+        `/api/jadwaldetail/${jadwalId}`,
+        fetcher,
+        {}
+    );
+
     watch("kelompokCheck");
     watch("userCheck");
 
@@ -250,18 +256,19 @@ const SelasaEdit: FC<SelasaEdit> = ({ jadwalId, data, onClose, onSucsess, idRuan
             setKelompokTerpilih(data.kelompok?.nama_kelompok);
             setTentorTerpilih(data.user?.name);
 
-            // set handleCheckChange untuk filter mapel
-            if (mapel?.length && mapel[0]?.kelas?.id) {
-                setCheckValue(mapel[0].kelas.id);
-            } else if (kelompok?.length && kelompok[0]?.program?.kelas_id) {
-                setCheckValue(kelompok[0].program.kelas_id);
-            }
-            // set handleCheckChangeUser untuk filter User
-            if (user?.length && user[0]?.mapel_id) {
-                setCheckValueUser(user[0].mapel_id);
-            } else if (user?.length && user[0]?.mapel_id) {
-                setCheckValueUser(user[0].mapel_id);
-            }
+// set handleCheckChange untuk filter mapel
+if (mapel?.length && jadwalIdData?.kelompok.program.kelas_id) {
+    setCheckValue(jadwalIdData?.kelompok.program.kelas_id);
+} else  {
+    setCheckValue(jadwalIdData?.kelompok.program.kelas_id);
+}
+
+// set handleCheckChangeUser untuk filter User
+if (user?.length && jadwalIdData?.mapel_id) {
+    setCheckValueUser(jadwalIdData?.mapel_id);
+} else if (user?.length && jadwalIdData?.mapel_id) {
+    setCheckValueUser(jadwalIdData?.mapel_id);
+}
         }
     }, [kelompok, setValue, data, mapel, idRuang, user]);
 
