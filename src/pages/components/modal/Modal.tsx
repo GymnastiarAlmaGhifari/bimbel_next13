@@ -41,7 +41,6 @@ const Modal: FC<ModalProps> = ({ isVisible, onClose, children }) => {
         <div className="w-[600px] flex flex-col">
           {/* onClose button */}
 
-
           <button className="self-end mr-4 mt-4" onClick={onClose}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -69,7 +68,7 @@ export default Modal;
 
 export const ModalHapus: FC<ModalHapusProps> = ({ children, onClose }) => {
   return (
-    <Dialog open={true} onClose={() => { }} className="relative z-50">
+    <Dialog open={true} onClose={() => {}} className="relative z-50">
       <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
       <div className="fixed inset-0 flex items-center justify-center">
         <Dialog.Panel className="h-auto bg-Neutral-100 py-4 px-6 rounded-xl flex flex-col gap-4 w-1/4">
@@ -86,15 +85,16 @@ export const ModalDetail: FC<ModalDetailProps> = ({
   onClose,
   titleModal,
   silang,
-  center
+  center,
 }) => {
   return (
-    <Dialog open={true} onClose={() => { }} className="relative z-50">
+    <Dialog open={true} onClose={() => {}} className="relative z-50">
       <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
       <div className="fixed inset-0 flex items-center justify-center">
         <Dialog.Panel
-          className={`h-auto bg-Neutral-100 py-4 px-6 rounded-xl flex flex-col gap-4 ${wAuto ? "w-max" : "w-1/2"
-            }`}
+          className={`h-auto bg-Neutral-100 py-4 px-6 rounded-xl flex flex-col gap-4 ${
+            wAuto ? "w-max" : "w-1/2"
+          }`}
         >
           <div className="flex flex-col">
             {center ? (
@@ -109,8 +109,7 @@ export const ModalDetail: FC<ModalDetailProps> = ({
                   {titleModal}
                 </h1>
                 {silang ? (
-                  <>
-                  </>
+                  <></>
                 ) : (
                   <Button
                     type="button"
@@ -122,9 +121,7 @@ export const ModalDetail: FC<ModalDetailProps> = ({
                     textColor="text-Neutral-30"
                     onClick={onClose}
                   />
-                )
-                }
-
+                )}
               </div>
             )}
           </div>
@@ -147,9 +144,7 @@ export const ModalSucces: FC<ModalSuccesProps> = ({
       <div className="p-2 bg-Primary-40 rounded-full text-Neutral-100">
         <HiOutlineCheck size={30} />
       </div>
-      <div className="">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Officiis, rem.
-      </div>
+      <div className="">Berhasil!!!</div>
     </div>
     // </div>
   );

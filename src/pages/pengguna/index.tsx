@@ -204,7 +204,7 @@ const User: FC<User> = () => {
 
       {/* buat modal dari getname  */}
       {showSuccess && (
-        <ModalSucces label="POOP" onClose={() => setShowSuccess(false)}>
+        <ModalSucces label="" onClose={() => setShowSuccess(false)}>
           {/* <div className="flex flex-col items-center justify-center">
             <h1 className=" font-bold text-green-500">Berhasil</h1>
             <p className="text-sm text-gray-500">

@@ -38,6 +38,7 @@ const DeleteJumat: FC<DeleteJumatProps> = ({
       console.log(error);
     } finally {
       setIsLoading(true); // Set loading state to true
+      onSuccess();
     }
   };
 
@@ -47,7 +48,7 @@ const DeleteJumat: FC<DeleteJumatProps> = ({
         Apakah Anda yakin untuk menghapus jadwal pada hari{" "}
         <span className="font-semibold">{hari}</span>, dengan sesi{" "}
         <span className="font-semibold">{sesi}</span>
-        ,dan pada ruang <span className="font-semibold">{ruang}</span> secara
+        , dan pada ruang <span className="font-semibold">{ruang}</span> secara
         permanen?
       </p>
       <div className="flex gap-4">
@@ -62,20 +63,25 @@ const DeleteJumat: FC<DeleteJumatProps> = ({
           widthAuto
         />
         <button onClick={onSubmit} disabled={isLoading} className="w-full">
-          {isLoading ? (
-            "Deleting..."
-          ) : (
-            <Button
-              bgColor="bg-Error-50"
-              center
-              withBgColor
-              brColor=""
-              label="Delete"
-              textColor="text-Neutral-100"
-              type="button"
-              widthAuto
-            />
-          )}
+          <Button
+            bgColor="bg-Error-50"
+            center
+            withBgColor
+            brColor=""
+            label={
+              isLoading ? (
+                <div className="flex gap-2 items-center">
+                  <div className="inline-block h-4 w-4 animate-spin rounded-full border-[3px] border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_3s_linear_infinite]"></div>
+                  <span>Loading</span>
+                </div>
+              ) : (
+                "Hapus"
+              )
+            }
+            textColor="text-Neutral-100"
+            type="button"
+            widthAuto
+          />
         </button>
       </div>
     </div>

@@ -98,6 +98,7 @@ const CreateSiswa: FC<UserCreateProps> = ({ onClose, onSucsess }) => {
       }
     } finally {
       setIsLoading(false);
+      onSucsess()
     }
   };
 

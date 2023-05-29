@@ -535,6 +535,15 @@ const UserEdit: FC<UserEditProps> = ({ userId, onClose, onSucsess, data }) => {
         <div className="flex flex-row justify-end gap-4">
           <Button
             center
+            bgColor="bg-Neutral-70"
+            brColor=""
+            label="Batal"
+            textColor="text-Neutral-30"
+            type="button"
+            onClick={onClose}
+          />
+          <Button
+            center
             type="submit"
             bgColor="bg-Tertiary-50"
             brColor=""

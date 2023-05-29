@@ -99,7 +99,7 @@ const Notification: FC<NotificationProps> = ({ onClose }) => {
               <>
                 {notification.length === 0 ? (
                   <div className="flex flex-col items-center justify-center h-full">
-                    <h1 className="text-2xl font-bold text-Neutral-20">
+                    <h1 className="font-bold text-Neutral-20">
                       Tidak Ada Notifikasi
                     </h1>
                   </div>

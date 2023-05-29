@@ -145,6 +145,7 @@ const EditModul: FC<MapelEdit> = ({ onClose, onSucces, data, modulId }) => {
       } finally {
         setIsLoading(false);
         onClose();
+        onSucces();
       }
     } else {
       console.log("ada file");
@@ -213,6 +214,7 @@ const EditModul: FC<MapelEdit> = ({ onClose, onSucces, data, modulId }) => {
       } finally {
         setIsLoading(false);
         onClose();
+        onSucces();
       }
     }
   };

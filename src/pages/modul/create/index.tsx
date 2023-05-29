@@ -159,6 +159,7 @@ const Create: FC<CreateModul> = ({ onClose, onSucsess }) => {
       }
     } finally {
       setIsLoading(false);
+      onSucsess();
     }
   };
 

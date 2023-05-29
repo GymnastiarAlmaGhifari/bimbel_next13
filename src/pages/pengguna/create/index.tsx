@@ -182,6 +182,7 @@ const Create: FC<UserCreateProps> = ({ onClose, onSucsess }) => {
       }
     } finally {
       setIsLoading(false);
+      onSucsess();
     }
   };
 
