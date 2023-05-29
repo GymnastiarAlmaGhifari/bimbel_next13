@@ -30,11 +30,11 @@ const CardProgram: FC<CardProgramProps> = ({
 }) => {
   const formattedHarga = harga
     ? harga
-      .toLocaleString("id-ID", {
-        style: "currency",
-        currency: "IDR",
-      })
-      .replace(",00", "")
+        .toLocaleString("id-ID", {
+          style: "currency",
+          currency: "IDR",
+        })
+        .replace(",00", "")
     : "";
 
   return (
@@ -75,19 +75,23 @@ const CardProgram: FC<CardProgramProps> = ({
         <span className="font-bold text-Primary-10">{formattedHarga}</span>
       </div>
       <div className="flex flex-col gap-1">
-        {gambar ? (
-          <div className="flex flex-col gap-6 w-[400px] rounded-lg">
+        <h3 className="text-sm text-Neutral-30">Gambar</h3>
+
+        <div className="flex flex-col border w-[400px] h-[200px] items-center  justify-center rounded-lg overflow-clip">
+          {gambar ? (
             <Image
-              src={"/api/program/img?img=" + gambar || "/img/program/default.png"}
+              src={
+                "/api/program/img?img=" + gambar || "/img/program/default.png"
+              }
               alt="Gambar"
               width={200}
               height={200}
-              className="rounded-lg"
+              className="rounded-lg bg-cover "
             />
-          </div>
-        ) : (
-          <h1>Tidak Ada Gambar</h1>
-        )}
+          ) : (
+            <h1>Tidak Ada Gambar</h1>
+          )}
+        </div>
       </div>
       <div className="w-full h-[1px] bg-Neutral-70"></div>
       <div className="flex justify-end">
@@ -104,7 +108,7 @@ const CardProgram: FC<CardProgramProps> = ({
           type="button"
           bgColor="bg-Tertiary-50"
           brColor=""
-          label="Edit Ruang"
+          label="Edit Program"
           textColor="text-Tertiary-50"
           icon={MdModeEdit}
           onClick={onEdit}

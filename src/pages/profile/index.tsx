@@ -8,6 +8,7 @@ import useSWR from "swr";
 import fetcher from "@/libs/fetcher";
 import { useSession } from "next-auth/react";
 import { ModalDetail } from "../components/modal/Modal";
+import EditProfile from "./edit";
 
 interface Profile {
   id: string;
@@ -69,7 +70,7 @@ const Profile: FC<Profile> = () => {
                           <h1 className="font-bold text-Primary-10 text-lg">
                             {profile?.name}
                           </h1>
-                          <h2 className="inline-block py-2 py-2 px-4 bg-Primary-50 text-Primary-10 rounded-full font-semibold w-full text-center">
+                          <h2 className="inline-block py-2 px-4 bg-Primary-50 text-Primary-10 rounded-full font-semibold w-full text-center">
                             Admin
                           </h2>
                         </div>
@@ -98,7 +99,7 @@ const Profile: FC<Profile> = () => {
                               <div className="flex flex-col gap-1">
                                 <h3 className="text-sm text-Neutral-30">Alamat</h3>
                                 <span className="font-bold text-Primary-10">
-                                  {profile?.alamat}
+                                  {profile?.alamat ? profile?.alamat : "-"}
                                 </span>
                               </div>
                             </div>
@@ -144,10 +145,16 @@ const Profile: FC<Profile> = () => {
               {
                 edit && (
                   <ModalDetail
-                    id={edit}
-                    onClose={() => setEdit(null)}
+                  titleModal="Edit Profile"
+                  onClose={() => setEdit(null)}   
+                  >
+                  <EditProfile
                     data={profile}
+                    onClose={() => setEdit(null)}
+                    onSucsess={() => setEdit(null)}
+                    userId={edit}
                   />
+                  </ModalDetail>
                 )
 
               }
