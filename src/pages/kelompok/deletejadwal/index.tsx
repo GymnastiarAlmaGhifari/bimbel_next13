@@ -3,23 +3,23 @@ import axios from "axios";
 import Button from "@/pages/components/buttons/Button";
 import { mutate } from "swr";
 
-interface DeleteSiswaProps {
-    idSiswa: string;
+interface DeleteJadwalProps {
+    idJadwal: string;
     onClose: () => void;
     onSuccess: () => void;
     data?: any;
-
+    kelompokId?: string;
 }
-const DeleteSiswa: FC<DeleteSiswaProps> = ({ idSiswa, onClose, onSuccess, data,  }) => {
+const DeleteJadwal: FC<DeleteJadwalProps> = ({ idJadwal, onClose, onSuccess, data, kelompokId }) => {
 
     const [isLoading, setIsLoading] = useState(false);
 
     const onSubmit = async () => {
         setIsLoading(true); // Set loading state to true
         try {
-            await axios.delete(`/api/siswa/${idSiswa}`);
-            mutate("/api/siswa");
-
+            await axios.delete(`/api/jadwaldetail/${idJadwal}`);
+            mutate(`/api/jadwaldetail/${idJadwal}`);
+            mutate(`/api/kelompok/jadwal/${kelompokId}`);
 
             onSuccess();
             onClose();
@@ -28,13 +28,14 @@ const DeleteSiswa: FC<DeleteSiswaProps> = ({ idSiswa, onClose, onSuccess, data, 
         } finally {
             setIsLoading(true); // Set loading state to true
         }
+        
     };
 
 
     return (
         <div className="flex flex-col gap-6">
             <p className="text-center">
-                Apakah Anda yakin untuk menghapus pengguna <span className="font-semibold">{data?.name}</span>? <br /> proses akan menghapus semua data yang berhubungan dengan pengguna ini
+                Apakah Anda yakin untuk menghapus jadwal <span className="font-semibold">{data?.name}</span>dari kelompok ini? 
             </p>
             <div className="flex gap-4">
                 <Button
@@ -68,4 +69,4 @@ const DeleteSiswa: FC<DeleteSiswaProps> = ({ idSiswa, onClose, onSuccess, data, 
     )
 }
 
-export default DeleteSiswa
+export default DeleteJadwal
