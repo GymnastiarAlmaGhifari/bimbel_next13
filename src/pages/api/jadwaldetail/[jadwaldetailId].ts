@@ -13,6 +13,17 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     try {
       const jadwaldetail = await prisma.jadwal_detail.findUnique({
         where: { id: jadwaldetailId },
+        include: {
+          kelompok: {
+            include: {
+              program: true,
+            },
+          },
+          sesi: true,
+          mapel: true,
+          ruang: true,
+          user: true,
+        },
       });
 
       if (!jadwaldetail) {
@@ -26,19 +37,19 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
   } else if (req.method === "PUT") {
     try {
-      const getjadwaldetail = await prisma.jadwal_detail.findMany({
-        where: {
-          hari: {
-            in: [req.body.hari as Hari],
-          },
-          sesi_id: req.body.sesi_id,
-          ruang_id: req.body.ruang_id,
-        },
-      });
+      // const getjadwaldetail = await prisma.jadwal_detail.findMany({
+      //   where: {
+      //     hari: {
+      //       in: [req.body.hari as Hari],
+      //     },
+      //     sesi_id: req.body.sesi_id,
+      //     ruang_id: req.body.ruang_id,
+      //   },
+      // });
 
-      if (getjadwaldetail.length > 0) {
-        return res.status(401).json({ message: "Jadwal sudah dipakai " + getjadwaldetail[0].id });
-      }
+      // if (getjadwaldetail.length > 0) {
+      //   return res.status(401).json({ message: "Jadwal sudah dipakai " + getjadwaldetail[0].id });
+      // }
 
       const gettentor = await prisma.user.findUnique({
         where: { id: req.body.user_id },
