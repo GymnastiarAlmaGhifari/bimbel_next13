@@ -67,15 +67,14 @@ export default function NavbarLanding() {
             fill="white"
           />
         </svg>
-        <button onClick={openHandler} className="">
+        {/* <button onClick={openHandler} className="">
           {openNavbar ? (
             <AiOutlineClose className="text-Neutral-100" size={24} />
           ) : (
             <HiOutlineMenuAlt4 className="text-Neutral-100 " size={24} />
           )}
-        </button>
+        </button> */}
       </div>
-      {openNavbar ? (
         <div className="flex gap-4 flex-col lg:flex-row">
           <div className="flex gap-2 flex-col lg:flex-row">
             <ButtonNavbar label="Home" goTo="Home" />
@@ -91,9 +90,9 @@ export default function NavbarLanding() {
             Login Untuk Admin
           </Link>
         </div>
-      ) : (
+      {/* ) : (
         ""
-      )}
+      )} */}
     </nav>
   );
 }

@@ -1,4 +1,3 @@
-
 import { yupResolver } from "@hookform/resolvers/yup";
 import React, { FC, useEffect, useRef, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -63,8 +62,12 @@ const schema = yup.object().shape({
 
 type FormData = yup.InferType<typeof schema>;
 
-const TambahJadwal: FC<TambahJadwalProps> = ({ onClose, onSucsess, kelompokId, data }) => {
-
+const TambahJadwal: FC<TambahJadwalProps> = ({
+  onClose,
+  onSucsess,
+  kelompokId,
+  data,
+}) => {
   const { data: sesi, error: errorSesi } = useSWR<Sesi[]>(
     "api/sesi",
     fetcher,
@@ -86,7 +89,6 @@ const TambahJadwal: FC<TambahJadwalProps> = ({ onClose, onSucsess, kelompokId, d
     {}
   );
 
-
   const [isListOpenHari, setIsListOpenHari] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -95,7 +97,6 @@ const TambahJadwal: FC<TambahJadwalProps> = ({ onClose, onSucsess, kelompokId, d
   const [isListOpenRuang, setIsListOpenRuang] = useState(false);
   const [isListOpenMapel, setIsListOpenMapel] = useState(false);
   const componentRef = useRef<HTMLUListElement>(null);
-
 
   const {
     register,
@@ -198,7 +199,6 @@ const TambahJadwal: FC<TambahJadwalProps> = ({ onClose, onSucsess, kelompokId, d
     setIsListOpenMapel(false);
   };
 
-
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     const { sesi, mapel, ruang, hari } = data;
 
@@ -223,7 +223,6 @@ const TambahJadwal: FC<TambahJadwalProps> = ({ onClose, onSucsess, kelompokId, d
       await axios.post(`/api/jadwaldetail/`, {
         ...payload,
       });
-
 
       mutate(`/api/jadwaldetail/`, undefined);
       mutate(`/api/kelompok/jadwal/${kelompokId}`, undefined);
@@ -269,7 +268,7 @@ const TambahJadwal: FC<TambahJadwalProps> = ({ onClose, onSucsess, kelompokId, d
   };
 
   return (
-    <form className="flex flex-col gap-4" onSubmit={handleSubmit(onSubmit)} >
+    <form className="flex flex-col gap-4" onSubmit={handleSubmit(onSubmit)}>
       {error && (
         <div className="text-red-500 text-sm font-semibold">{error}</div>
       )}
@@ -281,10 +280,11 @@ const TambahJadwal: FC<TambahJadwalProps> = ({ onClose, onSucsess, kelompokId, d
         <div className="relative flex flex-col gap-2">
           <button
             type="button"
-            className={` w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${isListOpenHari
-              ? "border-[2px] border-Primary-50 bg-Primary-95"
-              : "bg-Neutral-95"
-              }`}
+            className={` w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${
+              isListOpenHari
+                ? "border-[2px] border-Primary-50 bg-Primary-95"
+                : "bg-Neutral-95"
+            }`}
             onClick={toggleListHari}
           >
             {getHariLabel(watch("hari")) || "Pilih Hari"}
@@ -299,10 +299,11 @@ const TambahJadwal: FC<TambahJadwalProps> = ({ onClose, onSucsess, kelompokId, d
                 <li key={option.value}>
                   <button
                     type="button"
-                    className={`w-full text-left px-2 py-1 rounded-full ${watch("hari") === option.value
-                      ? "text-Primary-90 bg-Primary-20"
-                      : "text-Primary-20 hover:bg-Primary-95"
-                      }`}
+                    className={`w-full text-left px-2 py-1 rounded-full ${
+                      watch("hari") === option.value
+                        ? "text-Primary-90 bg-Primary-20"
+                        : "text-Primary-20 hover:bg-Primary-95"
+                    }`}
                     onClick={() => selectHari(option.value)}
                   >
                     {option.label}
@@ -325,10 +326,11 @@ const TambahJadwal: FC<TambahJadwalProps> = ({ onClose, onSucsess, kelompokId, d
           <div className="relative flex flex-col gap-2">
             <button
               type="button"
-              className={` w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${isListOpenHari
-                ? "border-[2px] border-Primary-50 bg-Primary-95"
-                : "bg-Neutral-95"
-                }`}
+              className={` w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${
+                isListOpenHari
+                  ? "border-[2px] border-Primary-50 bg-Primary-95"
+                  : "bg-Neutral-95"
+              }`}
               onClick={toggleListSesi}
             >
               {watch("sesi") ? (
@@ -354,10 +356,11 @@ const TambahJadwal: FC<TambahJadwalProps> = ({ onClose, onSucsess, kelompokId, d
                     <li key={option.id}>
                       <button
                         type="button"
-                        className={`w-full text-left px-2 py-1 rounded-full ${watch("hari") === option.id
-                          ? "text-Primary-90 bg-Primary-20"
-                          : "text-Primary-20 hover:bg-Primary-95"
-                          }`}
+                        className={`w-full text-left px-2 py-1 rounded-full ${
+                          watch("hari") === option.id
+                            ? "text-Primary-90 bg-Primary-20"
+                            : "text-Primary-20 hover:bg-Primary-95"
+                        }`}
                         onClick={() => selectSesi(option.id)}
                       >
                         {option.nama_sesi}
@@ -380,10 +383,11 @@ const TambahJadwal: FC<TambahJadwalProps> = ({ onClose, onSucsess, kelompokId, d
           <div className="relative flex flex-col gap-2">
             <button
               type="button"
-              className={` w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${isListOpenHari
-                ? "border-[2px] border-Primary-50 bg-Primary-95"
-                : "bg-Neutral-95"
-                }`}
+              className={` w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${
+                isListOpenHari
+                  ? "border-[2px] border-Primary-50 bg-Primary-95"
+                  : "bg-Neutral-95"
+              }`}
               onClick={toggleListRuang}
             >
               {watch("ruang") ? (
@@ -409,10 +413,11 @@ const TambahJadwal: FC<TambahJadwalProps> = ({ onClose, onSucsess, kelompokId, d
                     <li key={option.id}>
                       <button
                         type="button"
-                        className={`w-full text-left px-2 py-1 rounded-full ${watch("ruang") === option.id
-                          ? "text-Primary-90 bg-Primary-20"
-                          : "text-Primary-20 hover:bg-Primary-95"
-                          }`}
+                        className={`w-full text-left px-2 py-1 rounded-full ${
+                          watch("ruang") === option.id
+                            ? "text-Primary-90 bg-Primary-20"
+                            : "text-Primary-20 hover:bg-Primary-95"
+                        }`}
                         onClick={() => selectRuang(option.id)}
                       >
                         {option.nama_ruang}
@@ -436,10 +441,11 @@ const TambahJadwal: FC<TambahJadwalProps> = ({ onClose, onSucsess, kelompokId, d
         <div className="relative flex flex-col gap-2">
           <button
             type="button"
-            className={` w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${isListOpenMapel
-              ? "border-[2px] border-Primary-50 bg-Primary-95"
-              : "bg-Neutral-95"
-              }`}
+            className={` w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${
+              isListOpenMapel
+                ? "border-[2px] border-Primary-50 bg-Primary-95"
+                : "bg-Neutral-95"
+            }`}
             onClick={toggleListMapel}
           >
             {watch("mapel") ? (
@@ -461,20 +467,19 @@ const TambahJadwal: FC<TambahJadwalProps> = ({ onClose, onSucsess, kelompokId, d
               ) : mapel.length === 0 ? (
                 <li>No Data Mapel</li>
               ) : (
-
                 mapel.map((option) => (
                   <li key={option.id}>
                     <button
                       type="button"
-                      className={`w-full text-left px-2 py-1 rounded-full ${watch("mapel") === option.id
-                        ? "text-Primary-90 bg-Primary-20"
-                        : "text-Primary-20 hover:bg-Primary-95"
-                        }`}
+                      className={`w-full text-left px-2 py-1 rounded-full ${
+                        watch("mapel") === option.id
+                          ? "text-Primary-90 bg-Primary-20"
+                          : "text-Primary-20 hover:bg-Primary-95"
+                      }`}
                       onClick={() => {
-                        selectMapel(option.id)
-                        handleCheckChangeUser(option.id)
-                      }
-                      }
+                        selectMapel(option.id);
+                        handleCheckChangeUser(option.id);
+                      }}
                     >
                       {option.nama_mapel}
                     </button>
@@ -532,7 +537,16 @@ const TambahJadwal: FC<TambahJadwalProps> = ({ onClose, onSucsess, kelompokId, d
           type="submit"
           bgColor="bg-Tertiary-50"
           brColor=""
-          label="Konfirmasi"
+          label={
+            isLoading ? (
+              <div className="flex gap-2 items-center">
+                <div className="inline-block h-4 w-4 animate-spin rounded-full border-[3px] border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_3s_linear_infinite]"></div>
+                <span>Loading</span>
+              </div>
+            ) : (
+              "Konfirmasi"
+            )
+          }
           textColor="text-Neutral-100"
           withBgColor
         />

@@ -85,7 +85,13 @@ const schema = yup.object().shape({
 
 type FormData = yup.InferType<typeof schema>;
 
-const SeninEdit: FC<SeninEdit> = ({ jadwalId, data, onClose, onSucsess, idRuang }) => {
+const SeninEdit: FC<SeninEdit> = ({
+  jadwalId,
+  data,
+  onClose,
+  onSucsess,
+  idRuang,
+}) => {
   const { data: kelompok, error: errorKelompok } = useSWR<Kelompok[]>(
     "api/kelompok",
     fetcher,
@@ -151,9 +157,9 @@ const SeninEdit: FC<SeninEdit> = ({ jadwalId, data, onClose, onSucsess, idRuang 
     `/api/jadwaldetail/${jadwalId}`,
     fetcher,
     {}
-);
+  );
 
-console.log("jadawalId", jadwalId);
+  console.log("jadawalId", jadwalId);
 
   watch("kelompokCheck");
   watch("userCheck");
@@ -258,30 +264,25 @@ console.log("jadawalId", jadwalId);
       setKelompokTerpilih(data.kelompok?.nama_kelompok);
       setTentorTerpilih(data.user?.name);
 
-// set handleCheckChange untuk filter mapel
-if (mapel?.length && jadwalIdData?.kelompok.program.kelas_id) {
-  setCheckValue(jadwalIdData?.kelompok.program.kelas_id);
-} else  {
-  setCheckValue(jadwalIdData?.kelompok.program.kelas_id);
-}
+      // set handleCheckChange untuk filter mapel
+      if (mapel?.length && jadwalIdData?.kelompok.program.kelas_id) {
+        setCheckValue(jadwalIdData?.kelompok.program.kelas_id);
+      } else {
+        setCheckValue(jadwalIdData?.kelompok.program.kelas_id);
+      }
 
-// set handleCheckChangeUser untuk filter User
-if (user?.length && jadwalIdData?.mapel_id) {
-  setCheckValueUser(jadwalIdData?.mapel_id);
-} else if (user?.length && jadwalIdData?.mapel_id) {
-  setCheckValueUser(jadwalIdData?.mapel_id);
-}
+      // set handleCheckChangeUser untuk filter User
+      if (user?.length && jadwalIdData?.mapel_id) {
+        setCheckValueUser(jadwalIdData?.mapel_id);
+      } else if (user?.length && jadwalIdData?.mapel_id) {
+        setCheckValueUser(jadwalIdData?.mapel_id);
+      }
     }
   }, [kelompok, setValue, data, mapel, idRuang, user]);
 
-  const [kelompokTerpilih, setKelompokTerpilih] = useState(
-    ""
-  );
+  const [kelompokTerpilih, setKelompokTerpilih] = useState("");
 
-  const [tentorTerpilih, setTentorTerpilih] = useState(
-    ""
-  );
-
+  const [tentorTerpilih, setTentorTerpilih] = useState("");
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     let { kelompokCheck } = data;
@@ -316,7 +317,7 @@ if (user?.length && jadwalIdData?.mapel_id) {
 
       mutate(`/api/jadwaldetail/${jadwalId}`);
 
-      // undefined 
+      // undefined
       mutate(`/api/jadwal/hari?hari=SENIN&ruang_id=${idRuang}`, undefined);
       mutate(`/api/jadwal/hari?hari=${hari}&ruang_id=${ruang}`, undefined);
       // not undefined
@@ -331,6 +332,7 @@ if (user?.length && jadwalIdData?.mapel_id) {
       console.log(error);
     } finally {
       setIsLoading(false);
+      onSucsess();
     }
   };
 
@@ -350,13 +352,10 @@ if (user?.length && jadwalIdData?.mapel_id) {
               <span className="bg-Neutral-70 w-[1px] h-8"></span>
               <p className="font-semibold text-lg text-Primary-20">Terpilih</p>
               <h1 className="font-semibold capitalize text-lg text-Primary-99 inline-block py-1 px-4 bg-Primary-40 rounded-lg">
-                {
-                  kelompokTerpilih
-                }
+                {kelompokTerpilih}
               </h1>
             </div>
             <div className="grid grid-cols-6 gap-4 min-h-max h-36 overflow-y-scroll scrollbar pr-2">
-
               {kelompok && kelompok.length > 0 ? (
                 kelompok.map((item: Kelompok) => (
                   <CardJadwalKelompok
@@ -402,15 +401,18 @@ if (user?.length && jadwalIdData?.mapel_id) {
                 <div className="relative flex flex-col gap-2">
                   <button
                     type="button"
-                    className={` w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${isListOpenHari
-                      ? "border-[2px] border-Primary-50 bg-Primary-95"
-                      : "bg-Neutral-95"
-                      }`}
+                    className={` w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${
+                      isListOpenHari
+                        ? "border-[2px] border-Primary-50 bg-Primary-95"
+                        : "bg-Neutral-95"
+                    }`}
                     onClick={toggleListHari}
                   >
                     {/* isi dari watch {hari} dan isi dengan data.hari */}
                     <span className="text-Neutral-300">
-                      {getHariLabel(watch("hari")) || "SeninEdit" || "Pilih Hari"}
+                      {getHariLabel(watch("hari")) ||
+                        "SeninEdit" ||
+                        "Pilih Hari"}
                       {/* {getHariLabel(watch("hari")) || data?.hari || "Pilih Hari"} */}
                     </span>
                     {isListOpenHari ? <IoIosArrowUp /> : <IoIosArrowDown />}
@@ -424,10 +426,11 @@ if (user?.length && jadwalIdData?.mapel_id) {
                         <li key={option.value}>
                           <button
                             type="button"
-                            className={`w-full text-left px-2 py-1 rounded-full ${watch("hari") === option.value
-                              ? "text-Primary-90 bg-Primary-20"
-                              : "text-Primary-20 hover:bg-Primary-95"
-                              }`}
+                            className={`w-full text-left px-2 py-1 rounded-full ${
+                              watch("hari") === option.value
+                                ? "text-Primary-90 bg-Primary-20"
+                                : "text-Primary-20 hover:bg-Primary-95"
+                            }`}
                             onClick={() => selectHari(option.value)}
                           >
                             {option.label}
@@ -448,10 +451,11 @@ if (user?.length && jadwalIdData?.mapel_id) {
                 <div className="relative flex flex-col gap-1">
                   <button
                     type="button"
-                    className={` w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${isListOpenSesi
-                      ? "border-[2px] border-Primary-50 bg-Primary-95"
-                      : "bg-Neutral-95"
-                      }`}
+                    className={` w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${
+                      isListOpenSesi
+                        ? "border-[2px] border-Primary-50 bg-Primary-95"
+                        : "bg-Neutral-95"
+                    }`}
                     onClick={toggleListSesi}
                   >
                     {/* buat label */}
@@ -479,10 +483,11 @@ if (user?.length && jadwalIdData?.mapel_id) {
                           <li key={sesiItem.id}>
                             <button
                               type="button"
-                              className={`w-full text-left px-2 py-1 rounded-full ${watch("sesi") === sesiItem.id
-                                ? "text-Primary-90 bg-Primary-20"
-                                : "text-Primary-20 hover:bg-Primary-95"
-                                }`}
+                              className={`w-full text-left px-2 py-1 rounded-full ${
+                                watch("sesi") === sesiItem.id
+                                  ? "text-Primary-90 bg-Primary-20"
+                                  : "text-Primary-20 hover:bg-Primary-95"
+                              }`}
                               onClick={() => selectSesi(sesiItem.id)}
                             >
                               {sesiItem.nama_sesi}
@@ -507,10 +512,11 @@ if (user?.length && jadwalIdData?.mapel_id) {
                 <div className="relative flex flex-col gap-2 w-full">
                   <button
                     type="button"
-                    className={` w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${isListOpenRuang
-                      ? "border-[2px] border-Primary-50 bg-Primary-95"
-                      : "bg-Neutral-95"
-                      }`}
+                    className={` w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${
+                      isListOpenRuang
+                        ? "border-[2px] border-Primary-50 bg-Primary-95"
+                        : "bg-Neutral-95"
+                    }`}
                     onClick={toggleListRuang}
                     defaultValue={idRuang}
                   >
@@ -540,10 +546,11 @@ if (user?.length && jadwalIdData?.mapel_id) {
                           <li key={ruangItem.id}>
                             <button
                               type="button"
-                              className={`w-full text-left px-2 py-1 rounded-full ${watch("ruang") === ruangItem.id
-                                ? "text-Primary-90 bg-Primary-20"
-                                : "text-Primary-20 hover:bg-Primary-95"
-                                }`}
+                              className={`w-full text-left px-2 py-1 rounded-full ${
+                                watch("ruang") === ruangItem.id
+                                  ? "text-Primary-90 bg-Primary-20"
+                                  : "text-Primary-20 hover:bg-Primary-95"
+                              }`}
                               onClick={() => selectRuang(ruangItem.id)}
                             >
                               {ruangItem.nama_ruang}
@@ -566,10 +573,11 @@ if (user?.length && jadwalIdData?.mapel_id) {
                 <div className="relative flex flex-col gap-2">
                   <button
                     type="button"
-                    className={` w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${isListOpenMapel
-                      ? "border-[2px] border-Primary-50 bg-Primary-95"
-                      : "bg-Neutral-95"
-                      }`}
+                    className={` w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${
+                      isListOpenMapel
+                        ? "border-[2px] border-Primary-50 bg-Primary-95"
+                        : "bg-Neutral-95"
+                    }`}
                     onClick={toggleListMapel}
                   >
                     {/* buat label */}
@@ -591,10 +599,11 @@ if (user?.length && jadwalIdData?.mapel_id) {
                         <li key={mapelItem.id}>
                           <button
                             type="button"
-                            className={`w-full text-left px-2 py-1 rounded-full ${watch("mapel") === mapelItem.id
-                              ? "text-Primary-90 bg-Primary-20"
-                              : "text-Primary-20 hover:bg-Primary-95"
-                              }`}
+                            className={`w-full text-left px-2 py-1 rounded-full ${
+                              watch("mapel") === mapelItem.id
+                                ? "text-Primary-90 bg-Primary-20"
+                                : "text-Primary-20 hover:bg-Primary-95"
+                            }`}
                             onClick={() => {
                               selectMapel(mapelItem.id);
                               handleCheckChangeUser(mapelItem.id);
@@ -618,7 +627,9 @@ if (user?.length && jadwalIdData?.mapel_id) {
                   Pilih Tentor
                 </p>
                 <span className="bg-Neutral-70 w-[1px] h-8"></span>
-                <p className="font-semibold text-lg text-Primary-20">Terpilih</p>
+                <p className="font-semibold text-lg text-Primary-20">
+                  Terpilih
+                </p>
                 <h1 className="font-semibold capitalize text-lg text-Primary-99 inline-block py-1 px-4 bg-Primary-40 rounded-lg">
                   {tentorTerpilih}
                 </h1>
@@ -651,13 +662,12 @@ if (user?.length && jadwalIdData?.mapel_id) {
                 ))}
                 {errors.kelompokCheck && <p>{errors.kelompokCheck.message}</p>}
               </div>
-
             </div>
           </div>
         </div>
       </div>
 
-      <div className="flex justify-end gap-4 mt-6" >
+      <div className="flex justify-end gap-4 mt-6">
         <Button
           center
           bgColor="bg-Neutral-70"
@@ -671,7 +681,16 @@ if (user?.length && jadwalIdData?.mapel_id) {
           type="submit"
           bgColor="bg-Tertiary-50"
           brColor=""
-          label="Konfirmasi"
+          label={
+            isLoading ? (
+              <div className="flex gap-2 items-center">
+                <div className="inline-block h-4 w-4 animate-spin rounded-full border-[3px] border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_3s_linear_infinite]"></div>
+                <span>Loading</span>
+              </div>
+            ) : (
+              "Konfirmasi"
+            )
+          }
           textColor="text-Neutral-100"
           withBgColor
         />

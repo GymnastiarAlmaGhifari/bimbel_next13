@@ -216,7 +216,7 @@ const KelompokEdit: FC<UserEditProps> = ({
                   // label ketika loading true maka labelnya jadi loading
                   label={
                     isLoading ? (
-                      <div className="flex gap-1 items-center">
+                      <div className="flex gap-2 items-center">
                         <div className="inline-block h-4 w-4 animate-spin rounded-full border-[3px] border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_3s_linear_infinite]"></div>
                         <span>Loading</span>
                       </div>

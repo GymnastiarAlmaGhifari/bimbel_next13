@@ -188,12 +188,30 @@ const CreateDiskon: FC<CreateDiskon> = ({ onClose, onSuccess }) => {
             <p className="text-red-500">{errors.nama_diskon.message}</p>
           )}
         </div>
-        <div className="flex flex-row justify-end">
+        <div className="flex flex-row justify-end gap-4">
+          <Button
+            center
+            bgColor="bg-Neutral-70"
+            brColor=""
+            label="Batal"
+            textColor="text-Neutral-30"
+            type="button"
+            onClick={onClose}
+          />
           <Button
             type="submit"
             bgColor="bg-Tertiary-50"
             brColor=""
-            label="Konfirmasi"
+            label={
+              isLoading ? (
+                <div className="flex gap-2 items-center">
+                  <div className="inline-block h-4 w-4 animate-spin rounded-full border-[3px] border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_3s_linear_infinite]"></div>
+                  <span>Loading</span>
+                </div>
+              ) : (
+                "Konfirmasi"
+              )
+            }
             textColor="text-Neutral-100"
             withBgColor
           />

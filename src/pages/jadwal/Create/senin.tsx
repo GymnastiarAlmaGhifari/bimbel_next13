@@ -81,7 +81,13 @@ const schema = yup.object().shape({
 
 type FormData = yup.InferType<typeof schema>;
 
-const CreateSenin: FC<Senin> = ({ jadwalId, data, onClose, onSucsess, idRuang }) => {
+const CreateSenin: FC<Senin> = ({
+  jadwalId,
+  data,
+  onClose,
+  onSucsess,
+  idRuang,
+}) => {
   const { data: kelompok, error: errorKelompok } = useSWR<Kelompok[]>(
     "api/kelompok",
     fetcher,
@@ -236,16 +242,11 @@ const CreateSenin: FC<Senin> = ({ jadwalId, data, onClose, onSucsess, idRuang })
     setValue("ruang", idRuang);
     setValue("sesi", data);
     setValue("hari", "SENIN");
-
   }, [setValue, data, idRuang]);
 
-  const [kelompokTerpilih, setKelompokTerpilih] = useState(
-    ""
-  );
+  const [kelompokTerpilih, setKelompokTerpilih] = useState("");
 
-  const [tentorTerpilih, setTentorTerpilih] = useState(
-    ""
-  );
+  const [tentorTerpilih, setTentorTerpilih] = useState("");
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     let { kelompokCheck } = data;
@@ -272,10 +273,7 @@ const CreateSenin: FC<Senin> = ({ jadwalId, data, onClose, onSucsess, idRuang })
     setIsLoading(true);
 
     try {
-      const response = await axios.post(
-        `/api/jadwaldetail`,
-        payload
-      );
+      const response = await axios.post(`/api/jadwaldetail`, payload);
       console.log(response.data);
 
       mutate(`/api/jadwaldetail/`);
@@ -284,13 +282,13 @@ const CreateSenin: FC<Senin> = ({ jadwalId, data, onClose, onSucsess, idRuang })
       // not undefined
       mutate(`/api/jadwal/hari?hari=${hari}&ruang_id=${ruang}`);
 
-
       onSucsess();
       onClose();
     } catch (error) {
       console.log(error);
     } finally {
       setIsLoading(false);
+      onSucsess();
     }
   };
 
@@ -308,29 +306,24 @@ const CreateSenin: FC<Senin> = ({ jadwalId, data, onClose, onSucsess, idRuang })
               <p className="font-semibold text-lg text-Primary-20">
                 Pilih Kelompok
               </p>
-              {
-                kelompokTerpilih === "" ? (
-                  <>
-                    <span className="bg-Neutral-70 w-[1px] h-8"></span>
-                    <h1 className="font-semibold capitalize text-lg text-Primary-99 inline-block py-1 px-4 bg-Primary-40 rounded-lg">
-                      Kelompok Belum Dipilih
-                    </h1>
-                  </>
-
-                ) : (
-                  <>
-                    <span className="bg-Neutral-70 w-[1px] h-8"></span>
-                    <p className="font-semibold text-lg text-Primary-20">Terpilih</p>
-                    <h1 className="font-semibold capitalize text-lg text-Primary-99 inline-block py-1 px-4 bg-Primary-40 rounded-lg">
-                      {
-                        kelompokTerpilih
-                      }
-                    </h1>
-                  </>
-                )
-              }
-
-
+              {kelompokTerpilih === "" ? (
+                <>
+                  <span className="bg-Neutral-70 w-[1px] h-8"></span>
+                  <h1 className="font-semibold capitalize text-lg text-Primary-99 inline-block py-1 px-4 bg-Primary-40 rounded-lg">
+                    Kelompok Belum Dipilih
+                  </h1>
+                </>
+              ) : (
+                <>
+                  <span className="bg-Neutral-70 w-[1px] h-8"></span>
+                  <p className="font-semibold text-lg text-Primary-20">
+                    Terpilih
+                  </p>
+                  <h1 className="font-semibold capitalize text-lg text-Primary-99 inline-block py-1 px-4 bg-Primary-40 rounded-lg">
+                    {kelompokTerpilih}
+                  </h1>
+                </>
+              )}
             </div>
             <div className="grid grid-cols-6 gap-4 min-h-max h-36 overflow-y-scroll scrollbar pr-2">
               {kelompok && kelompok.length > 0 ? (
@@ -378,10 +371,11 @@ const CreateSenin: FC<Senin> = ({ jadwalId, data, onClose, onSucsess, idRuang })
                 <div className="relative flex flex-col gap-2">
                   <button
                     type="button"
-                    className={` w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${isListOpenHari
-                      ? "border-[2px] border-Primary-50 bg-Primary-95"
-                      : "bg-Neutral-95"
-                      }`}
+                    className={` w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${
+                      isListOpenHari
+                        ? "border-[2px] border-Primary-50 bg-Primary-95"
+                        : "bg-Neutral-95"
+                    }`}
                     onClick={toggleListHari}
                   >
                     {/* isi dari watch {hari} dan isi dengan data.hari */}
@@ -400,10 +394,11 @@ const CreateSenin: FC<Senin> = ({ jadwalId, data, onClose, onSucsess, idRuang })
                         <li key={option.value}>
                           <button
                             type="button"
-                            className={`w-full text-left px-2 py-1 rounded-full ${watch("hari") === option.value
-                              ? "text-Primary-90 bg-Primary-20"
-                              : "text-Primary-20 hover:bg-Primary-95"
-                              }`}
+                            className={`w-full text-left px-2 py-1 rounded-full ${
+                              watch("hari") === option.value
+                                ? "text-Primary-90 bg-Primary-20"
+                                : "text-Primary-20 hover:bg-Primary-95"
+                            }`}
                             onClick={() => selectHari(option.value)}
                           >
                             {option.label}
@@ -424,16 +419,18 @@ const CreateSenin: FC<Senin> = ({ jadwalId, data, onClose, onSucsess, idRuang })
                 <div className="relative flex flex-col gap-1">
                   <button
                     type="button"
-                    className={` w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${isListOpenSesi
-                      ? "border-[2px] border-Primary-50 bg-Primary-95"
-                      : "bg-Neutral-95"
-                      }`}
+                    className={` w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${
+                      isListOpenSesi
+                        ? "border-[2px] border-Primary-50 bg-Primary-95"
+                        : "bg-Neutral-95"
+                    }`}
                     onClick={toggleListSesi}
                     defaultValue={data}
                   >
                     {/* buat label */}
                     {watch("sesi") ? (
-                      sesi?.find((sesiItem) => sesiItem.id === watch("sesi"))?.nama_sesi
+                      sesi?.find((sesiItem) => sesiItem.id === watch("sesi"))
+                        ?.nama_sesi
                     ) : (
                       <span className="text-Neutral-300">Pilih Sesi</span>
                     )}
@@ -455,10 +452,11 @@ const CreateSenin: FC<Senin> = ({ jadwalId, data, onClose, onSucsess, idRuang })
                           <li key={sesiItem.id}>
                             <button
                               type="button"
-                              className={`w-full text-left px-2 py-1 rounded-full ${watch("sesi") === sesiItem.id
-                                ? "text-Primary-90 bg-Primary-20"
-                                : "text-Primary-20 hover:bg-Primary-95"
-                                }`}
+                              className={`w-full text-left px-2 py-1 rounded-full ${
+                                watch("sesi") === sesiItem.id
+                                  ? "text-Primary-90 bg-Primary-20"
+                                  : "text-Primary-20 hover:bg-Primary-95"
+                              }`}
                               onClick={() => selectSesi(sesiItem.id)}
                             >
                               {sesiItem.nama_sesi}
@@ -483,10 +481,11 @@ const CreateSenin: FC<Senin> = ({ jadwalId, data, onClose, onSucsess, idRuang })
                 <div className="relative flex flex-col gap-2 w-full">
                   <button
                     type="button"
-                    className={` w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${isListOpenRuang
-                      ? "border-[2px] border-Primary-50 bg-Primary-95"
-                      : "bg-Neutral-95"
-                      }`}
+                    className={` w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${
+                      isListOpenRuang
+                        ? "border-[2px] border-Primary-50 bg-Primary-95"
+                        : "bg-Neutral-95"
+                    }`}
                     onClick={toggleListRuang}
                     defaultValue={idRuang}
                   >
@@ -515,10 +514,11 @@ const CreateSenin: FC<Senin> = ({ jadwalId, data, onClose, onSucsess, idRuang })
                           <li key={ruangItem.id}>
                             <button
                               type="button"
-                              className={`w-full text-left px-2 py-1 rounded-full ${watch("ruang") === ruangItem.id
-                                ? "text-Primary-90 bg-Primary-20"
-                                : "text-Primary-20 hover:bg-Primary-95"
-                                }`}
+                              className={`w-full text-left px-2 py-1 rounded-full ${
+                                watch("ruang") === ruangItem.id
+                                  ? "text-Primary-90 bg-Primary-20"
+                                  : "text-Primary-20 hover:bg-Primary-95"
+                              }`}
                               onClick={() => selectRuang(ruangItem.id)}
                             >
                               {ruangItem.nama_ruang}
@@ -541,10 +541,11 @@ const CreateSenin: FC<Senin> = ({ jadwalId, data, onClose, onSucsess, idRuang })
                 <div className="relative flex flex-col gap-2">
                   <button
                     type="button"
-                    className={` w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${isListOpenMapel
-                      ? "border-[2px] border-Primary-50 bg-Primary-95"
-                      : "bg-Neutral-95"
-                      }`}
+                    className={` w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${
+                      isListOpenMapel
+                        ? "border-[2px] border-Primary-50 bg-Primary-95"
+                        : "bg-Neutral-95"
+                    }`}
                     onClick={toggleListMapel}
                   >
                     {/* buat label */}
@@ -566,10 +567,11 @@ const CreateSenin: FC<Senin> = ({ jadwalId, data, onClose, onSucsess, idRuang })
                         <li key={mapelItem.id}>
                           <button
                             type="button"
-                            className={`w-full text-left px-2 py-1 rounded-full ${watch("mapel") === mapelItem.id
-                              ? "text-Primary-90 bg-Primary-20"
-                              : "text-Primary-20 hover:bg-Primary-95"
-                              }`}
+                            className={`w-full text-left px-2 py-1 rounded-full ${
+                              watch("mapel") === mapelItem.id
+                                ? "text-Primary-90 bg-Primary-20"
+                                : "text-Primary-20 hover:bg-Primary-95"
+                            }`}
                             onClick={() => {
                               selectMapel(mapelItem.id);
                               handleCheckChangeUser(mapelItem.id);
@@ -592,27 +594,24 @@ const CreateSenin: FC<Senin> = ({ jadwalId, data, onClose, onSucsess, idRuang })
                 <p className="font-semibold text-lg text-Primary-20">
                   Pilih Kelompok
                 </p>
-                {
-                  tentorTerpilih === "" ? (
-                    <>
-                      <span className="bg-Neutral-70 w-[1px] h-8"></span>
-                      <h1 className="font-semibold capitalize text-lg text-Primary-99 inline-block py-1 px-4 bg-Primary-40 rounded-lg">
-                        Tentor Belum Dipilih
-                      </h1>
-                    </>
-
-                  ) : (
-                    <>
-                      <span className="bg-Neutral-70 w-[1px] h-8"></span>
-                      <p className="font-semibold text-lg text-Primary-20">Terpilih</p>
-                      <h1 className="font-semibold capitalize text-lg text-Primary-99 inline-block py-1 px-4 bg-Primary-40 rounded-lg">
-                        {
-                          tentorTerpilih
-                        }
-                      </h1>
-                    </>
-                  )
-                }
+                {tentorTerpilih === "" ? (
+                  <>
+                    <span className="bg-Neutral-70 w-[1px] h-8"></span>
+                    <h1 className="font-semibold capitalize text-lg text-Primary-99 inline-block py-1 px-4 bg-Primary-40 rounded-lg">
+                      Tentor Belum Dipilih
+                    </h1>
+                  </>
+                ) : (
+                  <>
+                    <span className="bg-Neutral-70 w-[1px] h-8"></span>
+                    <p className="font-semibold text-lg text-Primary-20">
+                      Terpilih
+                    </p>
+                    <h1 className="font-semibold capitalize text-lg text-Primary-99 inline-block py-1 px-4 bg-Primary-40 rounded-lg">
+                      {tentorTerpilih}
+                    </h1>
+                  </>
+                )}
               </div>
               <div className="grid grid-cols-6 gap-4 min-h-max h-80 pr-2  overflow-y-scroll scrollbar">
                 {filteredUser?.map((item: User) => (
@@ -661,7 +660,16 @@ const CreateSenin: FC<Senin> = ({ jadwalId, data, onClose, onSucsess, idRuang })
           type="submit"
           bgColor="bg-Tertiary-50"
           brColor=""
-          label="Konfirmasi"
+          label={
+            isLoading ? (
+              <div className="flex gap-2 items-center">
+                <div className="inline-block h-4 w-4 animate-spin rounded-full border-[3px] border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_3s_linear_infinite]"></div>
+                <span>Loading</span>
+              </div>
+            ) : (
+              "Konfirmasi"
+            )
+          }
           textColor="text-Neutral-100"
           withBgColor
         />

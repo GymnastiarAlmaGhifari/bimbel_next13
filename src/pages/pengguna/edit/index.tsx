@@ -117,7 +117,6 @@ const UserEdit: FC<UserEditProps> = ({ userId, onClose, onSucsess, data }) => {
   const [checkValue, setCheckValue] = useState<string>("");
   const [checkValueUser, setCheckValueUser] = useState<string>("");
 
-
   const toggleList = () => {
     setIsListOpen(!isListOpen);
   };
@@ -148,7 +147,6 @@ const UserEdit: FC<UserEditProps> = ({ userId, onClose, onSucsess, data }) => {
     setIsListOpenMapel(false);
   };
 
-
   const getRoleLabel = (value: string) => {
     const option = roleOptions.find((option) => option.value === value);
     return option ? option.label : "";
@@ -159,9 +157,9 @@ const UserEdit: FC<UserEditProps> = ({ userId, onClose, onSucsess, data }) => {
     setValue("mapel", data?.mapel?.id);
   }, [data, setValue]);
 
-
   const onSubmit: SubmitHandler<FormData> = async (data) => {
-    const { name, email, role, lulusan, nomor_telepon, mapel, alamat, image } = data;
+    const { name, email, role, lulusan, nomor_telepon, mapel, alamat, image } =
+      data;
 
     console.log(data);
     if (!image || image.length === 0) {
@@ -192,7 +190,9 @@ const UserEdit: FC<UserEditProps> = ({ userId, onClose, onSucsess, data }) => {
             console.log("Response data:", axiosError.response.data);
             console.log("Response status:", axiosError.response.status);
 
-            const responseData = axiosError.response.data as { message: string };
+            const responseData = axiosError.response.data as {
+              message: string;
+            };
 
             // Extract the main error message from the response data
             const errorMessage = responseData.message;
@@ -254,7 +254,9 @@ const UserEdit: FC<UserEditProps> = ({ userId, onClose, onSucsess, data }) => {
             console.log("Response data:", axiosError.response.data);
             console.log("Response status:", axiosError.response.status);
 
-            const responseData = axiosError.response.data as { message: string };
+            const responseData = axiosError.response.data as {
+              message: string;
+            };
 
             // Extract the main error message from the response data
             const errorMessage = responseData.message;
@@ -286,10 +288,10 @@ const UserEdit: FC<UserEditProps> = ({ userId, onClose, onSucsess, data }) => {
     data?.role === "SUPER"
       ? "SUPER ADMIN"
       : data?.role === "ADMIN"
-        ? "ADMIN"
-        : data?.role === "TENTOR"
-          ? "TENTOR"
-          : "Pilih peran";
+      ? "ADMIN"
+      : data?.role === "TENTOR"
+      ? "TENTOR"
+      : "Pilih peran";
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex gap-10">
@@ -388,10 +390,11 @@ const UserEdit: FC<UserEditProps> = ({ userId, onClose, onSucsess, data }) => {
             <div className="relative flex flex-col gap-2">
               <button
                 type="button"
-                className={` w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${isListOpen
-                  ? "border-[2px] border-Primary-50 bg-Primary-95"
-                  : "bg-Neutral-95"
-                  }`}
+                className={` w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${
+                  isListOpen
+                    ? "border-[2px] border-Primary-50 bg-Primary-95"
+                    : "bg-Neutral-95"
+                }`}
                 onClick={toggleList}
               >
                 {getRoleLabel(watch("role") ?? "") || roleLabel}
@@ -407,10 +410,11 @@ const UserEdit: FC<UserEditProps> = ({ userId, onClose, onSucsess, data }) => {
                       <li key={option.value}>
                         <button
                           type="button"
-                          className={`w-full text-left px-2 py-1 rounded-full ${watch("role") === option.value
-                            ? "text-Primary-90 bg-Primary-20"
-                            : "text-Primary-20 hover:bg-Primary-95"
-                            }`}
+                          className={`w-full text-left px-2 py-1 rounded-full ${
+                            watch("role") === option.value
+                              ? "text-Primary-90 bg-Primary-20"
+                              : "text-Primary-20 hover:bg-Primary-95"
+                          }`}
                           onClick={() => selectRole(option.value)}
                         >
                           {option.label}
@@ -424,10 +428,11 @@ const UserEdit: FC<UserEditProps> = ({ userId, onClose, onSucsess, data }) => {
                         <li key={option.value}>
                           <button
                             type="button"
-                            className={`w-full text-left px-2 py-1 rounded-full ${watch("role") === option.value
-                              ? "text-Primary-90 bg-Primary-20"
-                              : "text-Primary-20 hover:bg-Primary-95"
-                              }`}
+                            className={`w-full text-left px-2 py-1 rounded-full ${
+                              watch("role") === option.value
+                                ? "text-Primary-90 bg-Primary-20"
+                                : "text-Primary-20 hover:bg-Primary-95"
+                            }`}
                             onClick={() => selectRole(option.value)}
                           >
                             {option.label}
@@ -449,17 +454,17 @@ const UserEdit: FC<UserEditProps> = ({ userId, onClose, onSucsess, data }) => {
             <div className="relative flex flex-col gap-2">
               <button
                 type="button"
-                className={` w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${isListOpenMapel
-                  ? "border-[2px] border-Primary-50 bg-Primary-95"
-                  : "bg-Neutral-95"
-                  }`}
+                className={` w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${
+                  isListOpenMapel
+                    ? "border-[2px] border-Primary-50 bg-Primary-95"
+                    : "bg-Neutral-95"
+                }`}
                 onClick={toggleListMapel}
               >
                 {/* buat label */}
                 {watch("mapel") ? (
-                  mapel?.find(
-                    (mapelItem) => mapelItem.id === watch("mapel")
-                  )?.nama_mapel
+                  mapel?.find((mapelItem) => mapelItem.id === watch("mapel"))
+                    ?.nama_mapel
                 ) : (
                   <span className="text-Neutral-300">Pilih Kelas</span>
                 )}
@@ -481,10 +486,11 @@ const UserEdit: FC<UserEditProps> = ({ userId, onClose, onSucsess, data }) => {
                       <li key={mapelItem.id}>
                         <button
                           type="button"
-                          className={`w-full text-left px-2 py-1 rounded-full ${watch("mapel") === mapelItem.id
-                            ? "text-Primary-90 bg-Primary-20"
-                            : "text-Primary-20 hover:bg-Primary-95"
-                            }`}
+                          className={`w-full text-left px-2 py-1 rounded-full ${
+                            watch("mapel") === mapelItem.id
+                              ? "text-Primary-90 bg-Primary-20"
+                              : "text-Primary-20 hover:bg-Primary-95"
+                          }`}
                           onClick={() => selectMapel(mapelItem.id)}
                         >
                           {mapelItem.nama_mapel}
@@ -529,13 +535,22 @@ const UserEdit: FC<UserEditProps> = ({ userId, onClose, onSucsess, data }) => {
         <div className="flex flex-row justify-end gap-4">
           <Button
             center
+            bgColor="bg-Neutral-70"
+            brColor=""
+            label="Batal"
+            textColor="text-Neutral-30"
+            type="button"
+            onClick={onClose}
+          />
+          <Button
+            center
             type="submit"
             bgColor="bg-Tertiary-50"
             brColor=""
             // label ketika loading true maka labelnya jadi loading
             label={
               isLoading ? (
-                <div className="flex gap-1 items-center">
+                <div className="flex gap-2 items-center">
                   <div className="inline-block h-4 w-4 animate-spin rounded-full border-[3px] border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_3s_linear_infinite]"></div>
                   <span>Loading</span>
                 </div>

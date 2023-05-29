@@ -101,15 +101,6 @@ const CardSiswa: FC<CardSiswaProps> = ({
         </div>
         <div className="flex flex-row gap-3">
           <Button
-            type="button"
-            bgColor="bg-Tertiary-50"
-            brColor=""
-            label="Edit Siswa"
-            textColor="text-Tertiary-50"
-            icon={MdModeEdit}
-            onClick={onEdit}
-          />
-          <Button
             bgColor="bg-Error-50"
             brColor=""
             label="Hapus Siswa"
@@ -117,6 +108,15 @@ const CardSiswa: FC<CardSiswaProps> = ({
             type="button"
             icon={MdDelete}
             onClick={onDelete}
+          />
+          <Button
+            type="button"
+            bgColor="bg-Tertiary-50"
+            brColor=""
+            label="Edit Siswa"
+            textColor="text-Tertiary-50"
+            icon={MdModeEdit}
+            onClick={onEdit}
           />
         </div>
       </div>
