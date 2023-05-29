@@ -141,7 +141,7 @@ const NavbarPengaturan = (props: Props) => {
               </Link>
             </li>
 
-            <li>
+            {/* <li>
               <Link href="/pengaturan/gaji">
                 <button
                   className={`${router.pathname === "/pengaturan/gaji"
@@ -152,7 +152,7 @@ const NavbarPengaturan = (props: Props) => {
                   Gaji dan Rekening
                 </button>
               </Link>
-            </li>
+            </li> */}
             <li>
               <Link href="/pengaturan/diskon">
                 <button
