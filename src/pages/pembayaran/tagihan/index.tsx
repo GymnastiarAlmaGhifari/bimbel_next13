@@ -60,11 +60,13 @@ const Pembayaran: FC<Pembayaran> = () => {
             <NavbarPembayaran />
             <div className="flex flex-col h-full bg-Neutral-100 py-4 gap-4 rounded-lg overflow-auto">
               <HeadTable
-                bulanPembayaran
-                tahunPembayaran
+                noSearch
                 label="Tagihan"
                 riwayat
                 onClick={() => setShowCreate(true)}
+                onHistory={() => {
+
+                }}
               />
               <div className="flex flex-col rounded-bl-lg rounded-br-lg p-4 gap-4 overflow-y-auto scrollbar">
                 {pembayaran ? (
@@ -146,9 +148,9 @@ const Pembayaran: FC<Pembayaran> = () => {
             idAcc={AcceptPembayaran.id}
             data={AcceptPembayaran}
             onClose={() => setAcceptPembayaran(null)}
-            // onSucsess={() => {
-            //   setShowSuccess(true);
-            // }}
+          // onSucsess={() => {
+          //   setShowSuccess(true);
+          // }}
           />
         </ModalDetail>
       )}
@@ -158,7 +160,14 @@ const Pembayaran: FC<Pembayaran> = () => {
           onClose={() => setShowCreate(false)}
         >
           <Create
-          // onClose={() => setShowCreate(false)}
+            onClose={
+              () => setShowCreate(false)
+            }
+            onSucsess={
+              () => {
+
+              }
+            }
           />
         </ModalDetail>
       )}

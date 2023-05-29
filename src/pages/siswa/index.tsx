@@ -10,6 +10,7 @@ import { useSession } from "next-auth/react";
 import EditSiswa from "./edit";
 import CreateSiswa from "./create";
 import DetailSiswa from "./detail";
+import DeleteSiswa from "./delete.tsx";
 
 interface Siswa {
   id: string;
@@ -187,12 +188,31 @@ const Siswa: FC<Siswa> = () => {
       )}
 
       {selectedDetail && (
-        <ModalDetail titleModal="Detail Siswa" onClose={backSiswa}>
+        <ModalDetail titleModal="Detail Siswa" onClose={backSiswa}
+          wAuto
+        >
           <DetailSiswa
-            idKelompok={
-              selectedDetail.kelompok_id ? selectedDetail.kelompok_id : ""
-            }
-            onClose={backSiswa}
+          idSiswa={selectedDetail.id}
+          onClose={
+            () => setSelectedDetail(null)
+          }
+          
+          />
+        </ModalDetail>
+      )}
+            {selectedDelete && (
+        <ModalDetail titleModal="DeleselectedDelete Siswa" onClose={backSiswa}
+          center silang wAuto
+        >
+          <DeleteSiswa
+              idSiswa={selectedDelete.id}
+              onClose={
+                () => setSelectedDelete(null)
+              }
+              onSuccess={
+                () => setShowSuccess(true)
+              }
+              data={selectedDelete}
           />
         </ModalDetail>
       )}

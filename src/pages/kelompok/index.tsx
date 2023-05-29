@@ -103,7 +103,6 @@ const Kelompok: FC<Kelompok> = () => {
         <div className="h-full p-5 bg-Neutral-95 overflow-auto">
           <div className="flex flex-col h-full bg-Neutral-100 py-4 gap-4 rounded-lg overflow-auto">
             <HeadTable
-              filterKelompok
               label="Kelompok"
               onClick={() => {
                 setShowCreate(true);

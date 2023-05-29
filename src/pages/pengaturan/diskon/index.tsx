@@ -13,6 +13,7 @@ import fetcher from "@/libs/fetcher";
 import EditDiskon from "./edit";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
+import DeleteDiskon from "./delete/delete";
 import { MdDelete, MdModeEdit } from "react-icons/md";
 
 interface DiskonProps {
@@ -26,6 +27,10 @@ const Diskon = ({}) => {
 
   const [selectedDiskonEdit, setSelectedDiskonEdit] =
     useState<DiskonProps | null>(null);
+
+    const [selectedDiskonDelete, setSelectedDiskonDelete] =
+    useState<DiskonProps | null>(null);
+
 
   const {
     data: diskon,
@@ -131,32 +136,37 @@ const Diskon = ({}) => {
                           src={"/api/diskon/img?img=" + diskon.banner}
                         />
                       </div>
+                        
                       <div className="flex items-center justify-between px-4 py-2">
                         <h1 className="font-semibold text-Primary-20">
                           {diskon.nama_diskon}
                         </h1>
-                        <div className="flex justify-end gap-4">
-                          <Button
-                            type="button"
-                            bgColor="bg-Error-50"
-                            brColor=""
-                            label="Hapus Pengguna"
-                            textColor="text-Error-50"
-                            icon={MdDelete}
-                            // onClick={onHapus}
+                      <div className="flex flex-row gap-3">
+                        <Button
+                          bgColor="bg-Primary-40"
+                          withBgColor
+                          brColor=""
+                          textColor="text-Neutral-100"
+                          label="Edit Diskon"
+                          type={"button"}
+                          onClick={() => {
+                            setSelectedDiskonEdit(diskon);
+                          }}
                           />
-                          <Button
-                            bgColor="bg-Tertiary-50"
-                            brColor=""
-                            icon={MdModeEdit}
-                            textColor="text-Tertiary-50"
-                            label="Edit Diskon"
-                            type={"button"}
-                            onClick={() => {
-                              setSelectedDiskonEdit(diskon);
-                            }}
+                      </div>
+                      <div className="flex items-center justify-between px-4 py-2">
+                        <Button
+                          bgColor="bg-Error-40"
+                          withBgColor
+                          brColor=""
+                          textColor="text-Neutral-100"
+                          label="Delete Diskon"
+                          type={"button"}
+                          onClick={() => {
+                            setSelectedDiskonDelete(diskon);
+                          }}
                           />
-                        </div>
+                          </div>
                       </div>
                     </div>
                   ))
@@ -182,6 +192,26 @@ const Diskon = ({}) => {
           />
         </ModalDetail>
       )}
+
+      {selectedDiskonDelete && (
+        <ModalDetail
+          titleModal="Hapus Diskon"
+          onClose={() => setSelectedDiskonDelete(null)}
+          center
+        >
+          <DeleteDiskon
+            onClose={() => setSelectedDiskonDelete(null)}
+          onSucsess={() => {
+              // success
+              setShowSuccess(true);
+            }
+          }
+            data={selectedDiskonDelete}
+            diskonId={selectedDiskonDelete.id}
+          />
+        </ModalDetail>
+      )}
+
       {showCreate && (
         <ModalDetail
           titleModal="Tambah Diskon"

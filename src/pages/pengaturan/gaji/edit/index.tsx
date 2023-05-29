@@ -26,6 +26,7 @@ type FormData = yup.InferType<typeof schema>;
 const GajiEdit: FC<GajiEdit> = ({ gajiId, data, onClose, onSucsess }) => {
   const [isLoading, setIsLoading] = useState(false);
 
+
   const {
     register,
     handleSubmit,
@@ -61,9 +62,10 @@ const GajiEdit: FC<GajiEdit> = ({ gajiId, data, onClose, onSucsess }) => {
 
     setIsLoading(true);
 
-    const payload = {
-      jumlah_gaji: parseInt(data.gaji.replace(/\D/g, "")),
-    };
+        const payload = {
+            jumlah_gaji: parseInt(data.gaji.replace(/\D/g, "")),
+        };
+        
 
     console.log(payload);
     try {
