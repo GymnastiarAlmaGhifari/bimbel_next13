@@ -23,20 +23,7 @@ const Sidebar = () => {
   const activeStyleButtonSideBar =
     "text-Primary-90 bg-Primary-20 hover:bg-Primary-20 cursor-auto";
 
-  // let initialIsOpen = true;
-  // if (typeof window !== "undefined") {
-  //   const sidebarCollapsed = localStorage.getItem("sidebarCollapsed");
-  //   initialIsOpen = sidebarCollapsed === "true";
-  // }
 
-  // const [isOpen, setIsOpen] = useState(initialIsOpen);
-
-  // const toggleMenu = () => {
-  //   setIsOpen(!isOpen);
-  //   if (typeof window !== "undefined") {
-  //     localStorage.setItem("sidebarCollapsed", (!isOpen).toString());
-  //   }
-  // };
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const [isOpen, setIsOpen] = useState(false);
 
@@ -74,12 +61,6 @@ const Sidebar = () => {
             onClick={toggleMenu}
             className="rounded-l-full pl-1 text-Neutral-100 bg-gradient-to-b from-Tertiary-60 to-Primary-60 "
           >
-            {/* <svg width="19" height="32" className="translate-x-[-1px]">
-              <path
-                d="M13.992 10.5C1.42245 6.91278 1.01172 1 1.01172 1V31C1.01172 31 1.77636 26.5439 13.9842 23.5C20 22 20 12.2146 13.992 10.5Z"
-                fill="#"
-              />
-            </svg> */}
             {isOpen ? (
               <AiOutlineClose size={24} />
             ) : (
@@ -90,18 +71,51 @@ const Sidebar = () => {
 
         <nav className={`${isOpen ? "" : ""}  px-4 pt-5`}>
           <ul className="flex flex-col gap-3">
-            {session?.user.role === "SUPER" && (
+            {session?.user.role === "TENTOR" ? (
               <>
                 <li>
                   <Link href="/dashboard">
                     <button
-                      className={`${
-                        router.pathname === "/dashboard"
-                          ? activeStyleButtonSideBar
-                          : "hover:bg-Primary-90"
-                      } ${baseStyleButtonSideBar} ${
-                        isOpen ? "w-full" : "w-14 justify-center"
-                      }`}
+                      className={`${router.pathname === "/dashboard"
+                        ? activeStyleButtonSideBar
+                        : "hover:bg-Primary-90"
+                        } ${baseStyleButtonSideBar} ${isOpen ? "w-full" : "w-14 justify-center"
+                        }`}
+                    >
+                      <div>
+                        <BsFillPersonFill size={24} />
+                      </div>
+                      {isOpen ? "Home" : ""}
+                    </button>
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/jadwal">
+                    <button
+                      className={`${router.pathname === "/jadwal"
+                        ? activeStyleButtonSideBar
+                        : "hover:bg-Primary-90"
+                        } ${baseStyleButtonSideBar} ${isOpen ? "w-full" : "w-14 justify-center"
+                        }`}
+                    >
+                      <div>
+                        <BsFillPersonFill size={24} />
+                      </div>
+                      {isOpen ? "About" : ""}
+                    </button>
+                  </Link>
+                </li>
+              </>
+            ) : (
+              <>
+                <li>
+                  <Link href="/dashboard">
+                    <button
+                      className={`${router.pathname === "/dashboard"
+                        ? activeStyleButtonSideBar
+                        : "hover:bg-Primary-90"
+                        } ${baseStyleButtonSideBar} ${isOpen ? "w-full" : "w-14 justify-center"
+                        }`}
                     >
                       <div className="">
                         <AiFillHome size={24} />
@@ -113,13 +127,11 @@ const Sidebar = () => {
                 <li>
                   <Link href="/jadwal">
                     <button
-                      className={`${
-                        router.pathname === "/jadwal"
-                          ? activeStyleButtonSideBar
-                          : "hover:bg-Primary-90"
-                      } ${baseStyleButtonSideBar} ${
-                        isOpen ? "w-full" : "w-14 justify-center"
-                      }`}
+                      className={`${router.pathname === "/jadwal"
+                        ? activeStyleButtonSideBar
+                        : "hover:bg-Primary-90"
+                        } ${baseStyleButtonSideBar} ${isOpen ? "w-full" : "w-14 justify-center"
+                        }`}
                     >
                       <div>
                         <BsCalendar size={24} />
@@ -131,13 +143,11 @@ const Sidebar = () => {
                 <li>
                   <Link href="/pengguna">
                     <button
-                      className={`${
-                        router.pathname === "/pengguna"
-                          ? activeStyleButtonSideBar
-                          : "hover:bg-Primary-90"
-                      } ${baseStyleButtonSideBar} ${
-                        isOpen ? "w-full" : "w-14 justify-center"
-                      }`}
+                      className={`${router.pathname === "/pengguna"
+                        ? activeStyleButtonSideBar
+                        : "hover:bg-Primary-90"
+                        } ${baseStyleButtonSideBar} ${isOpen ? "w-full" : "w-14 justify-center"
+                        }`}
                     >
                       <div>
                         <BsFillPersonFill size={24} />
@@ -149,15 +159,13 @@ const Sidebar = () => {
                 <li>
                   <Link href="/pembayaran/tagihan">
                     <button
-                      className={`${
-                        router.pathname === "/pembayaran/gaji" ||
+                      className={`${router.pathname === "/pembayaran/gaji" ||
                         router.pathname === "/pembayaran/tagihan" ||
                         router.pathname === "/pembayaran/riwayatPembayaran"
-                          ? activeStyleButtonSideBar
-                          : "hover:bg-Primary-90"
-                      } ${baseStyleButtonSideBar} ${
-                        isOpen ? "w-full" : "w-14 justify-center"
-                      }`}
+                        ? activeStyleButtonSideBar
+                        : "hover:bg-Primary-90"
+                        } ${baseStyleButtonSideBar} ${isOpen ? "w-full" : "w-14 justify-center"
+                        }`}
                     >
                       <div>
                         <MdPayment size={24} />
@@ -169,13 +177,11 @@ const Sidebar = () => {
                 <li>
                   <Link href="/siswa">
                     <button
-                      className={`${
-                        router.pathname === "/siswa"
-                          ? activeStyleButtonSideBar
-                          : "hover:bg-Primary-90"
-                      } ${baseStyleButtonSideBar} ${
-                        isOpen ? "w-full" : "w-14 justify-center"
-                      }`}
+                      className={`${router.pathname === "/siswa"
+                        ? activeStyleButtonSideBar
+                        : "hover:bg-Primary-90"
+                        } ${baseStyleButtonSideBar} ${isOpen ? "w-full" : "w-14 justify-center"
+                        }`}
                     >
                       <div>
                         <IoMdSchool size={24} />
@@ -187,13 +193,11 @@ const Sidebar = () => {
                 <li>
                   <Link href="/kelompok">
                     <button
-                      className={`${
-                        router.pathname === "/kelompok"
-                          ? activeStyleButtonSideBar
-                          : "hover:bg-Primary-90"
-                      } ${baseStyleButtonSideBar} ${
-                        isOpen ? "w-full" : "w-14 justify-center"
-                      }`}
+                      className={`${router.pathname === "/kelompok"
+                        ? activeStyleButtonSideBar
+                        : "hover:bg-Primary-90"
+                        } ${baseStyleButtonSideBar} ${isOpen ? "w-full" : "w-14 justify-center"
+                        }`}
                     >
                       <div>
                         <MdPeopleAlt size={24} />
@@ -205,13 +209,11 @@ const Sidebar = () => {
                 <li>
                   <Link href="/modul">
                     <button
-                      className={`${
-                        router.pathname === "/modul"
-                          ? activeStyleButtonSideBar
-                          : "hover:bg-Primary-90"
-                      } ${baseStyleButtonSideBar} ${
-                        isOpen ? "w-full" : "w-14 justify-center"
-                      }`}
+                      className={`${router.pathname === "/modul"
+                        ? activeStyleButtonSideBar
+                        : "hover:bg-Primary-90"
+                        } ${baseStyleButtonSideBar} ${isOpen ? "w-full" : "w-14 justify-center"
+                        }`}
                     >
                       <div>
                         <MdLocalLibrary size={24} />
@@ -225,18 +227,16 @@ const Sidebar = () => {
                     <button
                       className={
                         // buatkan ketika menyala berada di pengaturan/prgram, pengaturan/module, dan pengaturan/sesi
-                        `${
-                          router.pathname === "/pengaturan/program" ||
+                        `${router.pathname === "/pengaturan/program" ||
                           router.pathname === "/pengaturan/ruang" ||
                           router.pathname === "/pengaturan/sesi" ||
                           router.pathname === "/pengaturan/mapel" ||
                           router.pathname === "/pengaturan/kelas" ||
                           router.pathname === "/pengaturan/gaji" ||
                           router.pathname === "/pengaturan/diskon"
-                            ? activeStyleButtonSideBar
-                            : "hover:bg-Primary-90"
-                        } ${baseStyleButtonSideBar} ${
-                          isOpen ? "w-full" : "w-14 justify-center"
+                          ? activeStyleButtonSideBar
+                          : "hover:bg-Primary-90"
+                        } ${baseStyleButtonSideBar} ${isOpen ? "w-full" : "w-14 justify-center"
                         }`
                       }
                     >
@@ -248,47 +248,10 @@ const Sidebar = () => {
                   </Link>
                 </li>
               </>
-            )}
-            {session?.user.role === "TENTOR" && (
-              <>
-                <li>
-                  <Link href="/dashboard">
-                    <button
-                      className={`${
-                        router.pathname === "/dashboard"
-                          ? activeStyleButtonSideBar
-                          : "hover:bg-Primary-90"
-                      } ${baseStyleButtonSideBar} ${
-                        isOpen ? "w-full" : "w-14 justify-center"
-                      }`}
-                    >
-                      <div>
-                        <BsFillPersonFill size={24} />
-                      </div>
-                      {isOpen ? "Home" : ""}
-                    </button>
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/jadwal">
-                    <button
-                      className={`${
-                        router.pathname === "/jadwal"
-                          ? activeStyleButtonSideBar
-                          : "hover:bg-Primary-90"
-                      } ${baseStyleButtonSideBar} ${
-                        isOpen ? "w-full" : "w-14 justify-center"
-                      }`}
-                    >
-                      <div>
-                        <BsFillPersonFill size={24} />
-                      </div>
-                      {isOpen ? "About" : ""}
-                    </button>
-                  </Link>
-                </li>
-              </>
-            )}
+            )
+
+            }
+
           </ul>
         </nav>
       </div>
