@@ -55,32 +55,44 @@ const KelasEdit: FC<KelasEditProps> = ({ kelasId, onClose, data }) => {
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5">
       <>
-        {isLoading && <div className="loader">Loading...</div>}
-
-        {!isLoading && (
-          <>
-            <Input
-              id="nama_kelas"
-              label="Nama Kelas"
-              errors={errors}
-              register={{ ...register("nama_kelas") }}
-              defaultValue={data?.nama_kelas ?? ""}
-            />
-            {errors.nama_kelas && (
-              <p className="text-red-500">{errors.nama_kelas.message}</p>
-            )}
-            <div className="flex flex-row justify-end">
-              <Button
-                type="submit"
-                bgColor="bg-Tertiary-50"
-                brColor=""
-                label="Konfirmasi"
-                textColor="text-Neutral-100"
-                withBgColor
-              />
-            </div>
-          </>
+        <Input
+          id="nama_kelas"
+          label="Nama Kelas"
+          errors={errors}
+          register={{ ...register("nama_kelas") }}
+          defaultValue={data?.nama_kelas ?? ""}
+        />
+        {errors.nama_kelas && (
+          <p className="text-red-500">{errors.nama_kelas.message}</p>
         )}
+        <div className="flex flex-row justify-end gap-4">
+          <Button
+            center
+            bgColor="bg-Neutral-70"
+            brColor=""
+            label="Batal"
+            textColor="text-Neutral-30"
+            type="button"
+            onClick={onClose}
+          />
+          <Button
+            type="submit"
+            bgColor="bg-Tertiary-50"
+            brColor=""
+            label={
+              isLoading ? (
+                <div className="flex gap-2 items-center">
+                  <div className="inline-block h-4 w-4 animate-spin rounded-full border-[3px] border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_3s_linear_infinite]"></div>
+                  <span>Loading</span>
+                </div>
+              ) : (
+                "Konfirmasi"
+              )
+            }
+            textColor="text-Neutral-100"
+            withBgColor
+          />
+        </div>
       </>
     </form>
   );

@@ -5,7 +5,7 @@ import Sidebar from "../components/Sidebar";
 import Navbar from "../components/Navbar";
 import HeadTable from "../components/HeadTable";
 import CardKelompok from "../components/card/CardKelompok";
-import { ModalDetail } from "../components/modal/Modal";
+import { ModalDetail, ModalSucces } from "../components/modal/Modal";
 import KelompokEdit from "./edit";
 import CreateKelompok from "./create";
 import Anggota from "./anggota";
@@ -66,8 +66,6 @@ const Kelompok: FC<Kelompok> = () => {
   const [selectedAnggota, setSelectedAnggota] = useState<Kelompok | null>(null);
   const [selectedJadwal, setSelectedJadwal] = useState<Kelompok | null>(null);
   const [selectedDetail, setSelectedDetail] = useState<Kelompok | null>(null);
-
-
 
   useEffect(() => {
     if (error) {
@@ -164,23 +162,19 @@ const Kelompok: FC<Kelompok> = () => {
 
       {/* buat modal dari getname  */}
       {showSuccess && (
-        <ModalDetail
-          titleModal="Edit Kelompok"
-          onClose={() => setShowSuccess(false)}
-        >
-          <div className="flex flex-col items-center justify-center">
-            <h1 className="text-2xl font-bold text-green-500">Berhasil</h1>
+        <ModalSucces label="" onClose={() => setShowSuccess(false)}>
+          {/* <div className="flex flex-col items-center justify-center">
+            <h1 className=" font-bold text-green-500">Berhasil</h1>
             <p className="text-sm text-gray-500">
-              {selected?.nama_kelompok}Data berhasil diubah
+              {selected?.name}Data berhasil diubah
             </p>
-          </div>
-        </ModalDetail>
+          </div> */}
+        </ModalSucces>
       )}
-
       {/* modal create */}
       {showCreate && (
         <ModalDetail
-          titleModal="Tambah Pengguna"
+          titleModal="Tambah Kelompok"
           onClose={() => setShowCreate(false)}
         >
           <CreateKelompok
@@ -226,8 +220,6 @@ const Kelompok: FC<Kelompok> = () => {
           />
         </ModalDetail>
       )}
-
-
     </div>
   );
 };

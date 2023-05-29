@@ -336,7 +336,6 @@ const Jadwal: FC<Jadwal> = () => {
                 <div className="flex flex-col w-52 relative">
                   <button
                     type="button"
-
                     className={`px-4 w-full h-10 text-left outline-none rounded-full flex justify-between items-center ${
                       listOpenRuang
                         ? "border-[2px] border-Primary-50 bg-Primary-95"
@@ -392,30 +391,30 @@ const Jadwal: FC<Jadwal> = () => {
                 )}
               </div>
             </div>
-            <div className="h-full flex flex-col gap-4 justify-between overflow-auto">
-              <div className="flex gap-4 w-full pr-4">
-                <div className="py-2 w-full rounded-lg bg-Neutral-100 text-Primary-20 shadow-[0px_0px_10px_5px_rgba(149,146,146,.25)] font-semibold text-center ">
+            <div className="h-full flex flex-col gap-4 justify-between overflow-auto pl-1">
+              <div className="flex gap-4 w-full pr-4 mt-2 ">
+                <div className="py-2 w-full rounded-lg bg-Neutral-100 text-Primary-20 font-semibold text-center ring-2 ring-Primary-40 ">
                   Hari
                 </div>
-                <div className="py-2 w-full rounded-lg bg-Neutral-100 text-Primary-20 shadow-[0px_0px_10px_5px_rgba(149,146,146,.25)] font-semibold text-center ">
+                <div className="py-2 w-full rounded-lg bg-Neutral-100 text-Primary-20 font-semibold text-center ring-2 ring-Primary-40">
                   Senin
                 </div>
-                <div className="py-2 w-full rounded-lg bg-Neutral-100 text-Primary-20 shadow-[0px_0px_10px_5px_rgba(149,146,146,.25)] font-semibold text-center ">
+                <div className="py-2 w-full rounded-lg bg-Neutral-100 text-Primary-20 font-semibold text-center ring-2 ring-Primary-40">
                   Selasa
                 </div>
-                <div className="py-2 w-full rounded-lg bg-Neutral-100 text-Primary-20 shadow-[0px_0px_10px_5px_rgba(149,146,146,.25)] font-semibold text-center ">
-                  rabu
+                <div className="py-2 w-full rounded-lg bg-Neutral-100 text-Primary-20  font-semibold text-center ring-2 ring-Primary-40">
+                  Rabu
                 </div>
-                <div className="py-2 w-full rounded-lg bg-Neutral-100 text-Primary-20 shadow-[0px_0px_10px_5px_rgba(149,146,146,.25)] font-semibold text-center ">
+                <div className="py-2 w-full rounded-lg bg-Neutral-100 text-Primary-20  font-semibold text-center ring-2 ring-Primary-40">
                   Kamis
                 </div>
-                <div className="py-2 w-full rounded-lg bg-Neutral-100 text-Primary-20 shadow-[0px_0px_10px_5px_rgba(149,146,146,.25)] font-semibold text-center ">
+                <div className="py-2 w-full rounded-lg bg-Neutral-100 text-Primary-20  font-semibold text-center ring-2 ring-Primary-40">
                   Jumat
                 </div>
-                <div className="py-2 w-full rounded-lg bg-Neutral-100 text-Primary-20 shadow-[0px_0px_10px_5px_rgba(149,146,146,.25)] font-semibold text-center ">
+                <div className="py-2 w-full rounded-lg bg-Neutral-100 text-Primary-20  font-semibold text-center ring-2 ring-Primary-40">
                   Sabtu
                 </div>
-                <div className="py-2 w-full rounded-lg bg-Neutral-100 text-Primary-20 shadow-[0px_0px_10px_5px_rgba(149,146,146,.25)] font-semibold text-center ">
+                <div className="py-2 w-full rounded-lg bg-Neutral-100 text-Primary-20  font-semibold text-center ring-2 ring-Primary-40">
                   Minggu
                 </div>
               </div>
@@ -453,7 +452,7 @@ const Jadwal: FC<Jadwal> = () => {
                   );
 
                   return (
-                    <div key={item.id} className="flex justify-between gap-4">
+                    <div key={item.id} className="flex justify-between gap-4 ">
                       <div className="bg-Primary-20 rounded-lg h-48 text-Primary-90 font-bold w-full flex flex-col items-center justify-center shadow-[0px_0px_10px_5px_rgba(149,146,146,.25)]">
                         <div className="flex flex-col justify-center items-center ">
                           {item.nama_sesi}
@@ -799,7 +798,7 @@ const Jadwal: FC<Jadwal> = () => {
             idRuang={selectedRuangIdPass}
             jadwalId=""
             onClose={() => setSeninModalCreate(null)}
-            onSucsess={() => { }}
+            onSucsess={() => {setShowSuccess(true);}}
           />
         </ModalDetail>
       ) : selasaModalCreate ? (
@@ -815,7 +814,7 @@ const Jadwal: FC<Jadwal> = () => {
             idRuang={selectedRuangIdPass}
             jadwalId=""
             onClose={() => setSelasaModalCreate(null)}
-            onSucsess={() => { }}
+            onSucsess={() => {setShowSuccess(true);}}
           />
         </ModalDetail>
       ) : rabuModalCreate ? (
@@ -831,7 +830,7 @@ const Jadwal: FC<Jadwal> = () => {
             idRuang={selectedRuangIdPass}
             jadwalId=""
             onClose={() => setRabuModalCreate(null)}
-            onSucsess={() => { }}
+            onSucsess={() => {setShowSuccess(true);}}
           />
         </ModalDetail>
       ) : kamisModalCreate ? (
@@ -847,7 +846,7 @@ const Jadwal: FC<Jadwal> = () => {
             idRuang={selectedRuangIdPass}
             jadwalId=""
             onClose={() => setKamisModalCreate(null)}
-            onSucsess={() => { }}
+            onSucsess={() => {setShowSuccess(true);}}
           />
         </ModalDetail>
       ) : jumatModalCreate ? (
@@ -863,7 +862,7 @@ const Jadwal: FC<Jadwal> = () => {
             idRuang={selectedRuangIdPass}
             jadwalId=""
             onClose={() => setJumatModalCreate(null)}
-            onSucsess={() => { }}
+            onSucsess={() => {setShowSuccess(true);}}
           />
         </ModalDetail>
       ) : sabtuModalCreate ? (
@@ -879,7 +878,7 @@ const Jadwal: FC<Jadwal> = () => {
             idRuang={selectedRuangIdPass}
             jadwalId=""
             onClose={() => setSabtuModalCreate(null)}
-            onSucsess={() => { }}
+            onSucsess={() => {setShowSuccess(true);}}
           />
         </ModalDetail>
       ) : mingguModalCreate ? (
@@ -895,7 +894,7 @@ const Jadwal: FC<Jadwal> = () => {
             idRuang={selectedRuangIdPass}
             jadwalId=""
             onClose={() => setMingguModalCreate(null)}
-            onSucsess={() => { }}
+            onSucsess={() => {setShowSuccess(true);}}
           />
         </ModalDetail>
       ) : (
@@ -904,6 +903,7 @@ const Jadwal: FC<Jadwal> = () => {
 
       {seninModalDelete ? (
         <ModalDetail
+          center
           titleModal="Hapus Jadwal"
           onClose={() => {
             setSeninModalDelete(null);
@@ -916,11 +916,12 @@ const Jadwal: FC<Jadwal> = () => {
             idRuang={selectedRuangIdPass}
             jadwalId={seninModalDelete.id}
             onClose={() => setSeninModalDelete(null)}
-            onSuccess={() => { }}
+            onSuccess={() => {setShowSuccess(true);}}
           />
         </ModalDetail>
       ) : selasaModalDelete ? (
         <ModalDetail
+          center
           titleModal="Hapus Jadwal"
           onClose={() => {
             setSelasaModalDelete(null);
@@ -933,11 +934,14 @@ const Jadwal: FC<Jadwal> = () => {
             idRuang={selectedRuangIdPass}
             jadwalId={selasaModalDelete.id}
             onClose={() => setSelasaModalDelete(null)}
-            onSuccess={() => { }}
+            onSuccess={() => {
+              setShowSuccess(true);
+            }}
           />
         </ModalDetail>
       ) : rabuModalDelete ? (
         <ModalDetail
+          center
           titleModal="Hapus Jadwal"
           onClose={() => {
             setRabuModalDelete(null);
@@ -950,11 +954,12 @@ const Jadwal: FC<Jadwal> = () => {
             idRuang={selectedRuangIdPass}
             jadwalId={rabuModalDelete.id}
             onClose={() => setRabuModalDelete(null)}
-            onSuccess={() => { }}
+            onSuccess={() => {setShowSuccess(true);}}
           />
         </ModalDetail>
       ) : kamisModalDelete ? (
         <ModalDetail
+          center
           titleModal="Hapus Jadwal"
           onClose={() => {
             setKamisModalDelete(null);
@@ -967,11 +972,12 @@ const Jadwal: FC<Jadwal> = () => {
             idRuang={selectedRuangIdPass}
             jadwalId={kamisModalDelete.id}
             onClose={() => setKamisModalDelete(null)}
-            onSuccess={() => { }}
+            onSuccess={() => {setShowSuccess(true);}}
           />
         </ModalDetail>
       ) : jumatModalDelete ? (
         <ModalDetail
+          center
           titleModal="Hapus Jadwal"
           onClose={() => {
             setJumatModalDelete(null);
@@ -984,11 +990,12 @@ const Jadwal: FC<Jadwal> = () => {
             idRuang={selectedRuangIdPass}
             jadwalId={jumatModalDelete.id}
             onClose={() => setJumatModalDelete(null)}
-            onSuccess={() => { }}
+            onSuccess={() => {setShowSuccess(true);}}
           />
         </ModalDetail>
       ) : sabtuModalDelete ? (
         <ModalDetail
+          center
           titleModal="Hapus Jadwal"
           onClose={() => {
             setSabtuModalDelete(null);
@@ -1001,11 +1008,14 @@ const Jadwal: FC<Jadwal> = () => {
             idRuang={selectedRuangIdPass}
             jadwalId={sabtuModalDelete.id}
             onClose={() => setSabtuModalDelete(null)}
-            onSuccess={() => { }}
+            onSuccess={() => {
+              setShowSuccess(true);
+            }}
           />
         </ModalDetail>
       ) : mingguModalDelete ? (
         <ModalDetail
+          center
           titleModal="Hapus Jadwal"
           onClose={() => {
             setMingguModalDelete(null);
@@ -1018,11 +1028,24 @@ const Jadwal: FC<Jadwal> = () => {
             idRuang={selectedRuangIdPass}
             jadwalId={mingguModalDelete.id}
             onClose={() => setMingguModalDelete(null)}
-            onSuccess={() => { }}
+            onSuccess={() => {
+              setShowSuccess(true);
+            }}
           />
         </ModalDetail>
       ) : (
         <div></div>
+      )}
+      {/* buat modal dari getname  */}
+      {showSuccess && (
+        <ModalSucces label="" onClose={() => setShowSuccess(false)}>
+          {/* <div className="flex flex-col items-center justify-center">
+            <h1 className=" font-bold text-green-500">Berhasil</h1>
+            <p className="text-sm text-gray-500">
+              {selected?.name}Data berhasil diubah
+            </p>
+          </div> */}
+        </ModalSucces>
       )}
     </div>
   );

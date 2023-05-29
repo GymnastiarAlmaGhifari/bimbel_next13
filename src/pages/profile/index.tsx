@@ -7,7 +7,7 @@ import React, { FC, useEffect, useState } from "react";
 import useSWR from "swr";
 import fetcher from "@/libs/fetcher";
 import { useSession } from "next-auth/react";
-import { ModalDetail } from "../components/modal/Modal";
+import { ModalDetail, ModalSucces } from "../components/modal/Modal";
 import EditProfile from "./edit";
 
 interface Profile {
@@ -26,16 +26,27 @@ const Profile: FC<Profile> = () => {
 
   const id = session?.data?.user.id;
 
-  const { data: profile, error, isLoading } = useSWR<Profile>(
-    `/api/user/${id}`,
-    fetcher,
-    {}
-  );
-
+  const {
+    data: profile,
+    error,
+    isLoading,
+  } = useSWR<Profile>(`/api/user/${id}`, fetcher, {});
 
   const [edit, setEdit] = useState<string | null>(null);
 
   const idProfil = profile?.id ?? null;
+
+  const [showSuccess, setShowSuccess] = useState(false);
+
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      setShowSuccess(false);
+    }, 2500);
+
+    return () => {
+      clearTimeout(timeoutId);
+    };
+  }, [showSuccess]);
 
   useEffect(() => {
     document.title = "Bimbel Linear";
@@ -76,95 +87,106 @@ const Profile: FC<Profile> = () => {
                           </h2>
                         </div>
                       </div>
-                      <div className="flex flex-col gap-5">
-                        <div className="h-full flex flex-col gap-5">
-                          <h1 className="font-bold text-Primary-20 text-xl">
-                            Detail Info
-                          </h1>
-                          <div className="flex gap-[120px]">
-                            <div className="flex flex-col gap-5">
-                              <div className="flex flex-col gap-1">
-                                <h3 className="text-sm text-Neutral-30">Email</h3>
-                                <span className="font-bold text-Primary-10">
-                                  {profile?.email}
-                                </span>
-                              </div>
-                              <div className="flex flex-col gap-1">
-                                <h3 className="text-sm text-Neutral-30">
-                                  No WA/Telp
-                                </h3>
-                                <span className="font-bold text-Primary-10">
-                                  {profile?.nomor_telepon}
-                                </span>
-                              </div>
-                              <div className="flex flex-col gap-1">
-                                <h3 className="text-sm text-Neutral-30">Alamat</h3>
-                                <span className="font-bold text-Primary-10">
-                                  {profile?.alamat ? profile?.alamat : "-"}
-                                </span>
-                              </div>
+                    </div>
+                    <div className="flex flex-col gap-5">
+                      <div className="h-full flex flex-col gap-5">
+                        <h1 className="font-bold text-Primary-20 text-xl">
+                          Detail Info
+                        </h1>
+                        <div className="flex gap-[120px]">
+                          <div className="flex flex-col gap-5">
+                            <div className="flex flex-col gap-1">
+                              <h3 className="text-sm text-Neutral-30">Email</h3>
+                              <span className="font-bold text-Primary-10">
+                                {profile?.email}
+                              </span>
                             </div>
-                            <div className="flex flex-col gap-5">
-                              <div className="flex flex-col gap-1">
-                                <h3 className="text-sm text-Neutral-30">Lulusan</h3>
-                                <span className="font-bold text-Primary-10">
-                                  {profile?.universitas ? profile?.universitas : "-"}
-                                </span>
-                              </div>
-                              <div className="flex flex-col gap-1">
-                                <h3 className="text-sm text-Neutral-30">
-                                  Mata Pelajaran
-                                </h3>
-                                <span className="font-bold text-Primary-10">
-                                  {
-                                    profile?.mata_pelajaran ? profile?.mata_pelajaran : "-"
-                                  }
-                                </span>
-                              </div>
+                            <div className="flex flex-col gap-1">
+                              <h3 className="text-sm text-Neutral-30">
+                                No WA/Telp
+                              </h3>
+                              <span className="font-bold text-Primary-10">
+                                {profile?.nomor_telepon}
+                              </span>
+                            </div>
+                            <div className="flex flex-col gap-1">
+                              <h3 className="text-sm text-Neutral-30">
+                                Alamat
+                              </h3>
+                              <span className="font-bold text-Primary-10">
+                                {profile?.alamat ? profile?.alamat : "-"}
+                              </span>
+                            </div>
+                          </div>
+                          <div className="flex flex-col gap-5">
+                            <div className="flex flex-col gap-1">
+                              <h3 className="text-sm text-Neutral-30">
+                                Lulusan
+                              </h3>
+                              <span className="font-bold text-Primary-10">
+                                {profile?.universitas
+                                  ? profile?.universitas
+                                  : "-"}
+                              </span>
+                            </div>
+                            <div className="flex flex-col gap-1">
+                              <h3 className="text-sm text-Neutral-30">
+                                Mata Pelajaran
+                              </h3>
+                              <span className="font-bold text-Primary-10">
+                                {profile?.mata_pelajaran
+                                  ? profile?.mata_pelajaran
+                                  : "-"}
+                              </span>
                             </div>
                           </div>
                         </div>
-                        <div className="flex justify-end">
-                          <Button
-                            bgColor="bg-Tertiary-50"
-                            brColor=""
-                            withBgColor
-                            label="Edit Profile"
-                            textColor="text-Neutral-100"
-                            type={"button"}
-                            icon={MdModeEdit}
-                            onClick={() => setEdit(
-                              idProfil ? idProfil : null
-                            )}
-                          />
-                        </div>
+                      </div>
+                      <div className="flex justify-end">
+                        <Button
+                          bgColor="bg-Tertiary-50"
+                          brColor=""
+                          withBgColor
+                          label="Edit Profile"
+                          textColor="text-Neutral-100"
+                          type={"button"}
+                          icon={MdModeEdit}
+                          onClick={() => setEdit(idProfil ? idProfil : null)}
+                        />
                       </div>
                     </div>
-                  )
-                }
+                  </div>
+                )}
               </div>
-              {
-                edit && (
-                  <ModalDetail
+              {edit && (
+                <ModalDetail
                   titleModal="Edit Profile"
-                  onClose={() => setEdit(null)}   
-                  >
+                  onClose={() => setEdit(null)}
+                >
                   <EditProfile
                     data={profile}
                     onClose={() => setEdit(null)}
                     onSucsess={() => setEdit(null)}
                     userId={edit}
                   />
-                  </ModalDetail>
-                )
-
-              }
+                </ModalDetail>
+              )}
+              {showSuccess && (
+                <ModalSucces label="" onClose={() => setShowSuccess(false)}>
+                  {/* <div className="flex flex-col items-center justify-center">
+            <h1 className=" font-bold text-green-500">Berhasil</h1>
+            <p className="text-sm text-gray-500">
+              {selected?.name}Data berhasil diubah
+            </p>
+          </div> */}
+                </ModalSucces>
+              )}
             </div>
           </div>
         </div>
       </div>
     </div>
   );
-}
+};
 
 export default Profile;

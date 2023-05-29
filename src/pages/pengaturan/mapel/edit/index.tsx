@@ -76,7 +76,6 @@ const MapelEdit: FC<MapelEditProps> = ({ mapelId, onClose, data }) => {
         !componentRef.current.contains(event.target)
       ) {
         setIsListOpenKelas(false);
-
       }
     };
 
@@ -126,10 +125,11 @@ const MapelEdit: FC<MapelEditProps> = ({ mapelId, onClose, data }) => {
           <div className="relative flex flex-col gap-2">
             <button
               type="button"
-              className={` w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${isListOpenKelas
-                ? "border-[2px] border-Primary-50 bg-Primary-95"
-                : "bg-Neutral-95"
-                }`}
+              className={` w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${
+                isListOpenKelas
+                  ? "border-[2px] border-Primary-50 bg-Primary-95"
+                  : "bg-Neutral-95"
+              }`}
               onClick={toggleListKelas}
             >
               {/* buat label */}
@@ -142,7 +142,10 @@ const MapelEdit: FC<MapelEditProps> = ({ mapelId, onClose, data }) => {
               {isListOpenKelas ? <IoIosArrowUp /> : <IoIosArrowDown />}
             </button>
             {isListOpenKelas && (
-              <ul className="absolute w-full top-[44px] z-10 bg-Neutral-100 border-[2px] border-Primary-50 rounded-xl py-2 px-2 outline-none appearance-none flex flex-col gap-1" ref={componentRef}>
+              <ul
+                className="absolute w-full top-[44px] z-10 bg-Neutral-100 border-[2px] border-Primary-50 rounded-xl py-2 px-2 outline-none appearance-none flex flex-col gap-1"
+                ref={componentRef}
+              >
                 {error ? (
                   <li>Error fetching data</li>
                 ) : !kelas ? (
@@ -154,10 +157,11 @@ const MapelEdit: FC<MapelEditProps> = ({ mapelId, onClose, data }) => {
                     <li key={kelasItem.id}>
                       <button
                         type="button"
-                        className={`w-full text-left px-2 py-1 rounded-full ${watch("kelas_id") === kelasItem.id
-                          ? "text-Primary-90 bg-Primary-20"
-                          : "text-Primary-20 hover:bg-Primary-95"
-                          }`}
+                        className={`w-full text-left px-2 py-1 rounded-full ${
+                          watch("kelas_id") === kelasItem.id
+                            ? "text-Primary-90 bg-Primary-20"
+                            : "text-Primary-20 hover:bg-Primary-95"
+                        }`}
                         onClick={() => selectKelas(kelasItem.id)}
                       >
                         {kelasItem.nama_kelas}
@@ -173,11 +177,29 @@ const MapelEdit: FC<MapelEditProps> = ({ mapelId, onClose, data }) => {
           )}
         </div>
       </div>
-      <div className="flex flex-row justify-end">
+      <div className="flex flex-row justify-end gap-4">
+        <Button
+          center
+          bgColor="bg-Neutral-70"
+          brColor=""
+          label="Batal"
+          textColor="text-Neutral-30"
+          type="button"
+          onClick={onClose}
+        />
         <Button
           bgColor="bg-Tertiary-50"
           brColor=""
-          label={isLoading ? "Loading..." : "Simpan"}
+          label={
+            isLoading ? (
+              <div className="flex gap-2 items-center">
+                <div className="inline-block h-4 w-4 animate-spin rounded-full border-[3px] border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_3s_linear_infinite]"></div>
+                <span>Loading</span>
+              </div>
+            ) : (
+              "Simpan"
+            )
+          }
           textColor="text-Neutral-100"
           type="submit"
           withBgColor

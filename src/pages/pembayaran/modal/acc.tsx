@@ -5,46 +5,58 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import Button from "@/pages/components/buttons/Button";
 
 interface Acc {
-    idAcc: string;
-    data: any;
-    onClose: () => void;
-    // onSuccess: () => void;
+  idAcc: string;
+  data: any;
+  onClose: () => void;
+  // onSuccess: () => void;
 }
 
 const Acc: FC<Acc> = ({ idAcc, data, onClose }) => {
-    return (
-        <div>
-            <div className="flex flex-col gap-4">
-                <div className="flex flex-col gap-2">
-                    <h1 className="text-2xl font-bold text-Neutral-900">Konfirmasi Pembayaran</h1>
-                    <p className="text-Neutral-500">Apakah anda yakin ingin mengkonfirmasi pembayaran ini?</p>
-                    <div className="flex flex-row justify-end gap-4">
-                        <Button
-                            center
-                            bgColor="bg-Neutral-70"
-                            brColor=""
-                            label="Batal"
-                            textColor="text-Neutral-30"
-                            type="button"
-                            onClick={onClose}
-                        />
-                        <Button
-                            center
-                            type="submit"
-                            bgColor="bg-Tertiary-50"
-                            brColor=""
-                            // label ketika loading true maka labelnya jadi loading
-                            // label={isLoading ? "Loading..." : "Simpan"}
-                            label="konfirmasi"
-                            textColor="text-Neutral-100"
-                            withBgColor
-                        // disabled={isLoading} // Disable the button when loading is true
-                        />
-                    </div>
-                </div>
-            </div>
-        </div>
-    )
-}
+  const [isLoading, setIsLoading] = useState(false);
 
-export default Acc
+  return (
+    <div>
+      <div className="flex flex-col gap-4">
+        <p className="text-Neutral-500">
+          Apakah anda yakin ingin mengkonfirmasi pembayaran ini?
+        </p>
+        <div className="flex flex-row justify-between gap-2">
+          <Button
+            widthAuto
+            center
+            bgColor="bg-Neutral-70"
+            brColor=""
+            label="Batal"
+            textColor="text-Neutral-30"
+            type="button"
+            onClick={onClose}
+          />
+          <Button
+            widthAuto
+            center
+            type="submit"
+            bgColor="bg-Tertiary-50"
+            brColor=""
+            // label ketika loading true maka labelnya jadi loading
+            // label={isLoading ? "Loading..." : "Simpan"}
+            label={
+              isLoading ? (
+                <div className="flex gap-2 items-center">
+                  <div className="inline-block h-4 w-4 animate-spin rounded-full border-[3px] border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_3s_linear_infinite]"></div>
+                  <span>Loading</span>
+                </div>
+              ) : (
+                "Konfirmasi"
+              )
+            }
+            textColor="text-Neutral-100"
+            withBgColor
+            // disabled={isLoading} // Disable the button when loading is true
+          />
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Acc;

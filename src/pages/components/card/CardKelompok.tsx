@@ -20,7 +20,6 @@ import DetailSiswa from "@/pages/siswa/detail";
 import DeleteSiswa from "@/pages/kelompok/rmanggota";
 import DeleteJadwal from "@/pages/kelompok/deletejadwal";
 
-
 interface CardKelompokProps {
   id?: string;
   nama_program: string;
@@ -136,18 +135,16 @@ const CardKelompok: FC<CardKelompokProps> = ({
     handleJadwalClick();
   };
 
-
-const [siswaIdDetail, setSiswaIdDetail] = useState(null); 
-const [siswaIdDelete, setSiswaIdDelete] = useState<siswa | null>(null);
-const [jadwalIdDelete, setJadwalIdDelete] = useState<siswa | null>(null);
-const [siswaHp, setSiswaHp] = useState(null);
+  const [siswaIdDetail, setSiswaIdDetail] = useState(null);
+  const [siswaIdDelete, setSiswaIdDelete] = useState<siswa | null>(null);
+  const [jadwalIdDelete, setJadwalIdDelete] = useState<siswa | null>(null);
+  const [siswaHp, setSiswaHp] = useState(null);
 
   const {
     data: siswa,
     error: siswaError,
     isLoading,
   } = useSWR(`/api/kelompok/siswa/${idKelompok}`, fetcher);
-
 
   const {
     data: jadwal,
@@ -157,7 +154,6 @@ const [siswaHp, setSiswaHp] = useState(null);
     shouldRetryOnError: false,
   });
 
-
   const whatsapp = "https://wa.me/62" + siswaHp + "?text=Hello";
   const openWhatsApp = () => {
     window.open(whatsapp);
@@ -165,8 +161,9 @@ const [siswaHp, setSiswaHp] = useState(null);
 
   return (
     <div
-      className={`flex flex-col bg-Neutral-100 shadow-[0px_2px_8px_-4px_rgba(0,0,0,.3)] rounded-lg py-5 px-4 gap-3 ${isExpandedDetails || isExpandedJadwal ? "h-max" : ""
-        }`}
+      className={`flex flex-col bg-Neutral-100 shadow-[0px_2px_8px_-4px_rgba(0,0,0,.3)] rounded-lg py-5 px-4 gap-3 ${
+        isExpandedDetails || isExpandedJadwal ? "h-max" : ""
+      }`}
     >
       <div className="flex justify-between">
         <h1 className=" text-Primary-10 font-bold capitalize">
@@ -176,9 +173,9 @@ const [siswaHp, setSiswaHp] = useState(null);
         <div className="flex flex-col">
           <div className="flex flex-col items-end gap-1 justify-center">
             <h3 className="text-sm text-Neutral-30">Jumlah Anggota</h3>
-            <span className="font-bold text-Primary-10">{
-              jumlah_siswa == 0 ? "Belum ada siswa" : jumlah_siswa
-            }</span>
+            <span className="font-bold text-Primary-10">
+              {jumlah_siswa == 0 ? "Belum ada siswa" : jumlah_siswa}
+            </span>
           </div>
         </div>
       </div>
@@ -198,9 +195,7 @@ const [siswaHp, setSiswaHp] = useState(null);
         <div className="flex flex-col items-end gap-1 justify-center">
           <h3 className="text-sm text-Neutral-30">Jumlah Jadwal</h3>
           <span className="font-bold text-Primary-10">
-            {
-              jumlah_jadwal == 0 ? "Belum ada jadwal" : jumlah_jadwal
-            }
+            {jumlah_jadwal == 0 ? "Belum ada jadwal" : jumlah_jadwal}
           </span>
         </div>
         {/* <h3 className="text-sm text-Neutral-30 font-bold">{level}</h3> */}
@@ -248,20 +243,20 @@ const [siswaHp, setSiswaHp] = useState(null);
           />
           <Button
             type="button"
-            bgColor="bg-Tertiary-50"
-            brColor=""
-            label="Edit Kelompok"
-            textColor="text-Tertiary-50"
-            icon={MdModeEdit}
-            onClick={onClick}
-          />
-          <Button
-            type="button"
             bgColor="bg-Error-50"
             brColor=""
             label="Hapus Kelompok"
             textColor="text-Error-50"
             icon={MdDelete}
+            // onClick={onClick}
+          />
+          <Button
+            type="button"
+            bgColor="bg-Tertiary-50"
+            brColor=""
+            label="Edit Kelompok"
+            textColor="text-Tertiary-50"
+            icon={MdModeEdit}
             onClick={onClick}
           />
         </div>
@@ -311,13 +306,11 @@ const [siswaHp, setSiswaHp] = useState(null);
                         textColor="text-Primary-40"
                         type="button"
                         icon={IoLogoWhatsapp}
-                        onClick={
-                          () => {
-                            setSiswaHp(student.nomor_telepon)
-                            console.log(student.nomor_telepon)
-                            openWhatsApp()
-                          }
-                        }
+                        onClick={() => {
+                          setSiswaHp(student.nomor_telepon);
+                          console.log(student.nomor_telepon);
+                          openWhatsApp();
+                        }}
                       />
                       <Button
                         bgColor="bg-Neutral-100"
@@ -327,11 +320,9 @@ const [siswaHp, setSiswaHp] = useState(null);
                         label="Info"
                         textColor="text-Tertiary-50"
                         type="button"
-                        onClick={
-                          () => {
-                            setSiswaIdDetail(student.id)
-                          }
-                        }
+                        onClick={() => {
+                          setSiswaIdDetail(student.id);
+                        }}
                         icon={MdOutlineInfo}
                       />
                       <Button
@@ -343,11 +334,9 @@ const [siswaHp, setSiswaHp] = useState(null);
                         textColor="text-Error-50"
                         type="button"
                         icon={MdDelete}
-                        onClick={
-                          () => {
-                            setSiswaIdDelete(student)
-                          }
-                        }
+                        onClick={() => {
+                          setSiswaIdDelete(student);
+                        }}
                       />
                     </div>
                   </div>
@@ -420,11 +409,9 @@ const [siswaHp, setSiswaHp] = useState(null);
                         textColor="text-Error-50"
                         type="button"
                         icon={MdDelete}
-                        onClick={
-                          () => {
-                            setJadwalIdDelete(item)
-                          }
-                        }
+                        onClick={() => {
+                          setJadwalIdDelete(item);
+                        }}
                       />
                     </div>
                   </div>
@@ -456,15 +443,13 @@ const [siswaHp, setSiswaHp] = useState(null);
           wAuto
         >
           <DeleteSiswa
-          idSiswa={siswaIdDelete.id}
-          onClose={() => setSiswaIdDelete(null)}
-          onSuccess={
-            () => {
-              setSiswaIdDelete(null)
-            }
-          }
-          data={siswaIdDelete}
-          kelompokId={idKelompok}
+            idSiswa={siswaIdDelete.id}
+            onClose={() => setSiswaIdDelete(null)}
+            onSuccess={() => {
+              setSiswaIdDelete(null);
+            }}
+            data={siswaIdDelete}
+            kelompokId={idKelompok}
           />
         </ModalDetail>
       )}
@@ -477,20 +462,16 @@ const [siswaHp, setSiswaHp] = useState(null);
           wAuto
         >
           <DeleteJadwal
-          idJadwal={jadwalIdDelete.id}
-          onClose={() => setJadwalIdDelete(null)}
-          onSuccess={
-            () => {
-              setJadwalIdDelete(null)
-            }
-          }
-          data={jadwalIdDelete} 
-          kelompokId={idKelompok}
+            idJadwal={jadwalIdDelete.id}
+            onClose={() => setJadwalIdDelete(null)}
+            onSuccess={() => {
+              setJadwalIdDelete(null);
+            }}
+            data={jadwalIdDelete}
+            kelompokId={idKelompok}
           />
         </ModalDetail>
       )}
-
-       
     </div>
   );
 };

@@ -130,7 +130,7 @@ const Pembayaran: FC<Pembayaran> = () => {
         </div>
       </div>
       {showNota && (
-        <ModalDetail
+        <ModalDetail silang
           titleModal={`Nota Tagihan ${showNota.siswa.nama} pada ${showNota.Bulan} ${showNota.Tahun}`}
           onClose={() => setShowNota(null)}
         >
@@ -138,8 +138,8 @@ const Pembayaran: FC<Pembayaran> = () => {
         </ModalDetail>
       )}
       {AcceptPembayaran && (
-        <ModalDetail
-          titleModal="Detail Tagihan"
+        <ModalDetail center wAuto
+          titleModal="Konfirmasi Pembayaran"
           onClose={() => setAcceptPembayaran(null)}
         >
           <Acc
