@@ -8,18 +8,18 @@ interface DeleteSiswaProps {
     onClose: () => void;
     onSuccess: () => void;
     data?: any;
-
+    kelompokId?: string;
 }
-const DeleteSiswa: FC<DeleteSiswaProps> = ({ idSiswa, onClose, onSuccess, data,  }) => {
+const DeleteSiswa: FC<DeleteSiswaProps> = ({ idSiswa, onClose, onSuccess, data, kelompokId }) => {
 
     const [isLoading, setIsLoading] = useState(false);
 
     const onSubmit = async () => {
         setIsLoading(true); // Set loading state to true
         try {
-            await axios.delete(`/api/siswa/${idSiswa}`);
-            mutate("/api/siswa");
-
+            await axios.delete(`/api/kelompok/rmsiswa/${idSiswa}`);
+            mutate(`/api/kelompok/rmsiswa/${idSiswa}`);
+            mutate(`/api/kelompok/siswa/${kelompokId}`);
 
             onSuccess();
             onClose();
@@ -28,13 +28,14 @@ const DeleteSiswa: FC<DeleteSiswaProps> = ({ idSiswa, onClose, onSuccess, data, 
         } finally {
             setIsLoading(true); // Set loading state to true
         }
+        console.log("idSiswa", idSiswa, "kelompokId", kelompokId);
     };
 
 
     return (
         <div className="flex flex-col gap-6">
             <p className="text-center">
-                Apakah Anda yakin untuk menghapus pengguna <span className="font-semibold">{data?.name}</span>? <br /> proses akan menghapus semua data yang berhubungan dengan pengguna ini
+                Apakah Anda yakin untuk mengeluarkan siswa <span className="font-semibold">{data?.name}</span>dari kelompok ini? 
             </p>
             <div className="flex gap-4">
                 <Button

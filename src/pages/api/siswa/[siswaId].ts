@@ -31,5 +31,16 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       console.error(error);
       res.status(500).json({ message: "Error deleting siswa" });
     }
+  } else if (req.method === "GET") {
+    try {
+      const siswa = await prisma.siswa.findUnique({
+        where: { id: siswaId },
+      });
+
+      res.status(200).json(siswa);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: "Error loading siswa" });
+    }
   }
 }

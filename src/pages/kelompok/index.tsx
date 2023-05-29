@@ -227,17 +227,7 @@ const Kelompok: FC<Kelompok> = () => {
         </ModalDetail>
       )}
 
-      {selectedDetail && (
-        <ModalDetail
-          titleModal="Detail Siswa"
-          onClose={() => setSelectedDetail(null)}
-        >
-          <DetailSiswa
-            idKelompok={selectedDetail.id}
-            onClose={() => setSelectedDetail(null)}
-          />
-        </ModalDetail>
-      )}
+
     </div>
   );
 };

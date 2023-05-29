@@ -50,7 +50,7 @@ const CardSiswa: FC<CardSiswaProps> = ({
                   ? "/api/siswa/img?img=" + gambar
                   : "/img/user/default.png"
               }
-              alt="Megachan"
+              alt="image"
               width={100}
               height={100}
               className="rounded-full w-full h-full object-cover"
