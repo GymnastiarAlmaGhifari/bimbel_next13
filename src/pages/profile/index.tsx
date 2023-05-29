@@ -33,7 +33,7 @@ export default function Profile() {
                       <h1 className="font-bold text-Primary-10 text-lg">
                         Agimul Karim
                       </h1>
-                      <h2 className="inline-block py-2 py-2 px-4 bg-Primary-50 text-Primary-10 rounded-full font-semibold w-full text-center">
+                      <h2 className="inline-block py-2 px-4 bg-Primary-50 text-Primary-10 rounded-full font-semibold w-full text-center">
                         Admin
                       </h2>
                     </div>

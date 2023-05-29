@@ -15,6 +15,11 @@ import Link from "next/link";
 import useSWR from "swr";
 import fetcher from "@/libs/fetcher";
 import Image from "next/image";
+import { ModalDetail } from "../modal/Modal";
+import DetailSiswa from "@/pages/siswa/detail";
+import DeleteSiswa from "@/pages/kelompok/rmanggota";
+import DeleteJadwal from "@/pages/kelompok/deletejadwal";
+
 
 interface CardKelompokProps {
   id?: string;
@@ -79,6 +84,17 @@ interface Jadwal {
   };
 }
 
+interface siswa {
+  id: string;
+  email: string;
+  name: string;
+  nomor_telepon: string;
+  alamat: string;
+  sekolah: string;
+  hp_ortu: string;
+  image: string;
+}
+
 const CardKelompok: FC<CardKelompokProps> = ({
   id,
   nama_kelompok,
@@ -120,11 +136,18 @@ const CardKelompok: FC<CardKelompokProps> = ({
     handleJadwalClick();
   };
 
+
+const [siswaIdDetail, setSiswaIdDetail] = useState(null); 
+const [siswaIdDelete, setSiswaIdDelete] = useState<siswa | null>(null);
+const [jadwalIdDelete, setJadwalIdDelete] = useState<siswa | null>(null);
+const [siswaHp, setSiswaHp] = useState(null);
+
   const {
     data: siswa,
     error: siswaError,
     isLoading,
   } = useSWR(`/api/kelompok/siswa/${idKelompok}`, fetcher);
+
 
   const {
     data: jadwal,
@@ -133,6 +156,12 @@ const CardKelompok: FC<CardKelompokProps> = ({
   } = useSWR<Jadwal[]>(`/api/kelompok/jadwal/${idKelompok}`, fetcher, {
     shouldRetryOnError: false,
   });
+
+
+  const whatsapp = "https://wa.me/62" + siswaHp + "?text=Hello";
+  const openWhatsApp = () => {
+    window.open(whatsapp);
+  };
 
   return (
     <div
@@ -254,7 +283,7 @@ const CardKelompok: FC<CardKelompokProps> = ({
                     <div className="flex gap-2 items-center">
                       <div className="w-10 h-10 rounded-full overflow-clip scale-100">
                         <Image
-                          src={`/img/siswa/${student.image}`}
+                          src={`/api/siswa/img?img=${student.image}`}
                           alt="profile"
                           width={30}
                           height={30}
@@ -282,6 +311,13 @@ const CardKelompok: FC<CardKelompokProps> = ({
                         textColor="text-Primary-40"
                         type="button"
                         icon={IoLogoWhatsapp}
+                        onClick={
+                          () => {
+                            setSiswaHp(student.nomor_telepon)
+                            console.log(student.nomor_telepon)
+                            openWhatsApp()
+                          }
+                        }
                       />
                       <Button
                         bgColor="bg-Neutral-100"
@@ -291,7 +327,11 @@ const CardKelompok: FC<CardKelompokProps> = ({
                         label="Info"
                         textColor="text-Tertiary-50"
                         type="button"
-                        onClick={onDetail}
+                        onClick={
+                          () => {
+                            setSiswaIdDetail(student.id)
+                          }
+                        }
                         icon={MdOutlineInfo}
                       />
                       <Button
@@ -303,6 +343,11 @@ const CardKelompok: FC<CardKelompokProps> = ({
                         textColor="text-Error-50"
                         type="button"
                         icon={MdDelete}
+                        onClick={
+                          () => {
+                            setSiswaIdDelete(student)
+                          }
+                        }
                       />
                     </div>
                   </div>
@@ -375,6 +420,11 @@ const CardKelompok: FC<CardKelompokProps> = ({
                         textColor="text-Error-50"
                         type="button"
                         icon={MdDelete}
+                        onClick={
+                          () => {
+                            setJadwalIdDelete(item)
+                          }
+                        }
                       />
                     </div>
                   </div>
@@ -386,6 +436,61 @@ const CardKelompok: FC<CardKelompokProps> = ({
           </div>
         )}
       </div>
+      {siswaIdDetail && (
+        <ModalDetail
+          titleModal="Detail Siswa"
+          onClose={() => setSiswaIdDetail(null)}
+        >
+          <DetailSiswa
+            idSiswa={siswaIdDetail}
+            onClose={() => setSiswaIdDetail(null)}
+          />
+        </ModalDetail>
+      )}
+      {siswaIdDelete && (
+        <ModalDetail
+          titleModal="Delete Siswa"
+          onClose={() => setSiswaIdDelete(null)}
+          center
+          silang
+          wAuto
+        >
+          <DeleteSiswa
+          idSiswa={siswaIdDelete.id}
+          onClose={() => setSiswaIdDelete(null)}
+          onSuccess={
+            () => {
+              setSiswaIdDelete(null)
+            }
+          }
+          data={siswaIdDelete}
+          kelompokId={idKelompok}
+          />
+        </ModalDetail>
+      )}
+      {jadwalIdDelete && (
+        <ModalDetail
+          titleModal="Delete Jadwal"
+          onClose={() => setJadwalIdDelete(null)}
+          center
+          silang
+          wAuto
+        >
+          <DeleteJadwal
+          idJadwal={jadwalIdDelete.id}
+          onClose={() => setJadwalIdDelete(null)}
+          onSuccess={
+            () => {
+              setJadwalIdDelete(null)
+            }
+          }
+          data={jadwalIdDelete} 
+          kelompokId={idKelompok}
+          />
+        </ModalDetail>
+      )}
+
+       
     </div>
   );
 };
