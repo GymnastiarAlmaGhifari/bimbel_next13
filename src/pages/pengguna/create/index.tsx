@@ -225,10 +225,11 @@ const Create: FC<UserCreateProps> = ({ onClose, onSucsess }) => {
         <div className="relative flex flex-col gap-2">
           <button
             type="button"
-            className={` w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${isListOpenRole
-              ? "border-[2px] border-Primary-50 bg-Primary-95"
-              : "bg-Neutral-95"
-              }`}
+            className={` w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${
+              isListOpenRole
+                ? "border-[2px] border-Primary-50 bg-Primary-95"
+                : "bg-Neutral-95"
+            }`}
             onClick={toggleListRole}
           >
             {getRoleLabel(watch("role")) || "Pilih Role"}
@@ -244,10 +245,11 @@ const Create: FC<UserCreateProps> = ({ onClose, onSucsess }) => {
                   <li key={option.value}>
                     <button
                       type="button"
-                      className={`w-full text-left px-2 py-1 rounded-full ${watch("role") === option.value
-                        ? "text-Primary-90 bg-Primary-20"
-                        : "text-Primary-20 hover:bg-Primary-95"
-                        }`}
+                      className={`w-full text-left px-2 py-1 rounded-full ${
+                        watch("role") === option.value
+                          ? "text-Primary-90 bg-Primary-20"
+                          : "text-Primary-20 hover:bg-Primary-95"
+                      }`}
                       onClick={() => selectrole(option.value)}
                     >
                       {option.label}
@@ -261,10 +263,11 @@ const Create: FC<UserCreateProps> = ({ onClose, onSucsess }) => {
                     <li key={option.value}>
                       <button
                         type="button"
-                        className={`w-full text-left px-2 py-1 rounded-full ${watch("role") === option.value
-                          ? "text-Primary-90 bg-Primary-20"
-                          : "text-Primary-20 hover:bg-Primary-95"
-                          }`}
+                        className={`w-full text-left px-2 py-1 rounded-full ${
+                          watch("role") === option.value
+                            ? "text-Primary-90 bg-Primary-20"
+                            : "text-Primary-20 hover:bg-Primary-95"
+                        }`}
                         onClick={() => selectrole(option.value)}
                       >
                         {option.label}
@@ -286,10 +289,11 @@ const Create: FC<UserCreateProps> = ({ onClose, onSucsess }) => {
         <div className="relative flex flex-col gap-2">
           <button
             type="button"
-            className={` w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${isListOpenMapel
-              ? "border-[2px] border-Primary-50 bg-Primary-95"
-              : "bg-Neutral-95"
-              }`}
+            className={` w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${
+              isListOpenMapel
+                ? "border-[2px] border-Primary-50 bg-Primary-95"
+                : "bg-Neutral-95"
+            }`}
             onClick={toggleListMapel}
           >
             {/* buat label */}
@@ -310,10 +314,11 @@ const Create: FC<UserCreateProps> = ({ onClose, onSucsess }) => {
                 <li key={mapelItem.id}>
                   <button
                     type="button"
-                    className={`w-full text-left px-2 py-1 rounded-full ${watch("mapel") === mapelItem.id
-                      ? "text-Primary-90 bg-Primary-20"
-                      : "text-Primary-20 hover:bg-Primary-95"
-                      }`}
+                    className={`w-full text-left px-2 py-1 rounded-full ${
+                      watch("mapel") === mapelItem.id
+                        ? "text-Primary-90 bg-Primary-20"
+                        : "text-Primary-20 hover:bg-Primary-95"
+                    }`}
                     onClick={() => {
                       selectMapel(mapelItem.id);
                       handleCheckChangeUser(mapelItem.id);
@@ -370,7 +375,7 @@ const Create: FC<UserCreateProps> = ({ onClose, onSucsess }) => {
           // label ketika loading true maka labelnya jadi loading
           label={
             isLoading ? (
-              <div className="flex gap-1 items-center">
+              <div className="flex gap-2 items-center">
                 <div className="inline-block h-4 w-4 animate-spin rounded-full border-[3px] border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_3s_linear_infinite]"></div>
                 <span>Loading</span>
               </div>

@@ -63,7 +63,6 @@ const CreateProgram: FC<RuangCreateProps> = ({ onClose, onSucsess }) => {
     const formData = new FormData();
     formData.append("image", data.image[0]);
 
-
     if (!image || image.length === 0) {
       try {
         const response = await axios.post(`/api/program`, {
@@ -88,7 +87,68 @@ const CreateProgram: FC<RuangCreateProps> = ({ onClose, onSucsess }) => {
             console.log("Response data:", axiosError.response.data);
             console.log("Response status:", axiosError.response.status);
 
-            const responseData = axiosError.response.data as { message: string };
+            const responseData = axiosError.response.data as {
+              message: string;
+            };
+
+            // Extract the main error message from the response data
+            const errorMessage = responseData.message;
+
+            setError(`An error occurred: ${errorMessage}`);
+          } else if (axiosError.request) {
+            console.log("No response received:", axiosError.request);
+
+            const request = axiosError.request.toString();
+            setError(`No response received: ${request}`);
+          } else {
+            console.log("Error setting up the request:", axiosError.message);
+
+            const request = axiosError.message.toString();
+            setError(`Error setting up the request: ${request}`);
+          }
+        } else {
+          console.log("Error:", error.message);
+          setError("An unknown error occurred.");
+        }
+      } finally {
+        setIsLoading(false);
+        onSucsess();
+      }
+    } else {
+      try {
+        const response = await axios.post(`/api/program`, {
+          nama_program,
+          tipe,
+          level,
+          kelas_id,
+          Deskripsi,
+          harga: rawHarga,
+          img: image,
+        });
+
+        const programId = response.data.id;
+
+        await axios.post(`/api/program/imgup`, formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            from: programId,
+          },
+        });
+
+        mutate("/api/program");
+        onClose(); // Set loading state to false
+      } catch (error: any) {
+        console.error(error);
+
+        if (axios.isAxiosError(error)) {
+          const axiosError = error as AxiosError;
+          if (axiosError.response) {
+            console.log("Response data:", axiosError.response.data);
+            console.log("Response status:", axiosError.response.status);
+
+            const responseData = axiosError.response.data as {
+              message: string;
+            };
 
             // Extract the main error message from the response data
             const errorMessage = responseData.message;
@@ -114,65 +174,6 @@ const CreateProgram: FC<RuangCreateProps> = ({ onClose, onSucsess }) => {
         onSucsess();
       }
     }
-    else {
-      try {
-        const response = await axios.post(`/api/program`, {
-          nama_program,
-          tipe,
-          level,
-          kelas_id,
-          Deskripsi,
-          harga: rawHarga,
-          img: image,
-        });
-
-
-        const programId = response.data.id;
-
-        await axios.post(`/api/program/imgup`, formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-            from: programId,
-          },
-        });
-
-        mutate("/api/program");
-        onClose(); // Set loading state to false
-      } catch (error: any) {
-        console.error(error);
-
-        if (axios.isAxiosError(error)) {
-          const axiosError = error as AxiosError;
-          if (axiosError.response) {
-            console.log("Response data:", axiosError.response.data);
-            console.log("Response status:", axiosError.response.status);
-
-            const responseData = axiosError.response.data as { message: string };
-
-            // Extract the main error message from the response data
-            const errorMessage = responseData.message;
-
-            setError(`An error occurred: ${errorMessage}`);
-          } else if (axiosError.request) {
-            console.log("No response received:", axiosError.request);
-
-            const request = axiosError.request.toString();
-            setError(`No response received: ${request}`);
-          } else {
-            console.log("Error setting up the request:", axiosError.message);
-
-            const request = axiosError.message.toString();
-            setError(`Error setting up the request: ${request}`);
-          }
-        } else {
-          console.log("Error:", error.message);
-          setError("An unknown error occurred.");
-        }
-      } finally {
-        setIsLoading(false);
-        onSucsess();
-      }
-    };
   };
 
   const [isListOpenKelas, setIsListOpenKelas] = useState(false);
@@ -273,23 +274,20 @@ const CreateProgram: FC<RuangCreateProps> = ({ onClose, onSucsess }) => {
       {error && <p className="text-red-500">{error}</p>}
       <div className="flex flex-col gap-6 overflow-clip scale-100 w-[400px]">
         {previewImage ? (
-          <div className="w-full">
-            <h1>
-              Gambar Program Landing Page
-            </h1>
+          <div className="w-full h-60 rounded-lg">
             <Image
               src={previewImage}
               alt="Gambar"
               width={200}
               height={200}
-              className="w-full h-full object-cover"
+              className="w-full h-full object-cover rounded-lg"
               loader={({ src }) => `${src}?cache-control=no-store`}
             />
           </div>
         ) : (
-          <h1 className="-pt-2">
-            Pilih Gambar Program Landing Page
-          </h1>
+          <div className="w-full h-60 border rounded-lg flex items-center justify-center">
+            <h1 className="-pt-2">Pilih Gambar Program Landing Page</h1>
+          </div>
         )}
         <div>
           <label
@@ -345,7 +343,6 @@ const CreateProgram: FC<RuangCreateProps> = ({ onClose, onSucsess }) => {
             <p className="text-red-500">{errors.nama_program.message}</p>
           )}
 
-
           <div className="flex flex-col gap-2">
             <label htmlFor="" className="text-sm text-Primary-10">
               Level
@@ -354,10 +351,11 @@ const CreateProgram: FC<RuangCreateProps> = ({ onClose, onSucsess }) => {
             <div className="relative flex flex-col gap-2">
               <button
                 type="button"
-                className={` w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${isListOpenLevel
-                  ? "border-[2px] border-Primary-50 bg-Primary-95"
-                  : "bg-Neutral-95"
-                  }`}
+                className={` w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${
+                  isListOpenLevel
+                    ? "border-[2px] border-Primary-50 bg-Primary-95"
+                    : "bg-Neutral-95"
+                }`}
                 onClick={toggleListLevel}
               >
                 {getLevelLabel(watch("level")) || "Pilih Level"}
@@ -372,10 +370,11 @@ const CreateProgram: FC<RuangCreateProps> = ({ onClose, onSucsess }) => {
                     <li key={option.value}>
                       <button
                         type="button"
-                        className={`w-full text-left px-2 py-1 rounded-full ${watch("level") === option.value
-                          ? "text-Primary-90 bg-Primary-20"
-                          : "text-Primary-20 hover:bg-Primary-95"
-                          }`}
+                        className={`w-full text-left px-2 py-1 rounded-full ${
+                          watch("level") === option.value
+                            ? "text-Primary-90 bg-Primary-20"
+                            : "text-Primary-20 hover:bg-Primary-95"
+                        }`}
                         onClick={() => selectlevel(option.value)}
                       >
                         {option.label}
@@ -398,10 +397,11 @@ const CreateProgram: FC<RuangCreateProps> = ({ onClose, onSucsess }) => {
             <div className="relative flex flex-col gap-2">
               <button
                 type="button"
-                className={` w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${isListOpenTipe
-                  ? "border-[2px] border-Primary-50 bg-Primary-95"
-                  : "bg-Neutral-95"
-                  }`}
+                className={` w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${
+                  isListOpenTipe
+                    ? "border-[2px] border-Primary-50 bg-Primary-95"
+                    : "bg-Neutral-95"
+                }`}
                 onClick={toggleListTipe}
               >
                 {getTipeLabel(watch("tipe")) || "Pilih Tipe"}
@@ -416,10 +416,11 @@ const CreateProgram: FC<RuangCreateProps> = ({ onClose, onSucsess }) => {
                     <li key={option.value}>
                       <button
                         type="button"
-                        className={`w-full text-left px-2 py-1 rounded-full ${watch("tipe") === option.value
-                          ? "text-Primary-90 bg-Primary-20"
-                          : "text-Primary-20 hover:bg-Primary-95"
-                          }`}
+                        className={`w-full text-left px-2 py-1 rounded-full ${
+                          watch("tipe") === option.value
+                            ? "text-Primary-90 bg-Primary-20"
+                            : "text-Primary-20 hover:bg-Primary-95"
+                        }`}
                         onClick={() => selectTipe(option.value)}
                       >
                         {option.label}
@@ -442,10 +443,11 @@ const CreateProgram: FC<RuangCreateProps> = ({ onClose, onSucsess }) => {
             <div className="relative flex flex-col gap-2">
               <button
                 type="button"
-                className={` w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${isListOpenKelas
-                  ? "border-[2px] border-Primary-50 bg-Primary-95"
-                  : "bg-Neutral-95"
-                  }`}
+                className={` w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${
+                  isListOpenKelas
+                    ? "border-[2px] border-Primary-50 bg-Primary-95"
+                    : "bg-Neutral-95"
+                }`}
                 onClick={toggleListKelas}
               >
                 {/* buat label */}
@@ -473,10 +475,11 @@ const CreateProgram: FC<RuangCreateProps> = ({ onClose, onSucsess }) => {
                       <li key={kelasItem.id}>
                         <button
                           type="button"
-                          className={`w-full text-left px-2 py-1 rounded-full ${watch("kelas_id") === kelasItem.id
-                            ? "text-Primary-90 bg-Primary-20"
-                            : "text-Primary-20 hover:bg-Primary-95"
-                            }`}
+                          className={`w-full text-left px-2 py-1 rounded-full ${
+                            watch("kelas_id") === kelasItem.id
+                              ? "text-Primary-90 bg-Primary-20"
+                              : "text-Primary-20 hover:bg-Primary-95"
+                          }`}
                           onClick={() => selectKelas(kelasItem.id)}
                         >
                           {kelasItem.nama_kelas}
@@ -520,12 +523,31 @@ const CreateProgram: FC<RuangCreateProps> = ({ onClose, onSucsess }) => {
           </div>
         </div>
         {/* Buat selected berisi SUPER ADMIN dan TENTOR */}
-        <div className="flex flex-row justify-end">
+        <div className="flex flex-row justify-end gap-4">
+          <Button
+            center
+            bgColor="bg-Neutral-70"
+            brColor=""
+            label="Batal"
+            textColor="text-Neutral-30"
+            type="button"
+            onClick={onClose}
+          />
           <Button
             type="submit"
+            disabled={isLoading}
             bgColor="bg-Tertiary-50"
             brColor=""
-            label="Konfirmasi"
+            label={
+              isLoading ? (
+                <div className="flex gap-2 items-center">
+                  <div className="inline-block h-4 w-4 animate-spin rounded-full border-[3px] border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_3s_linear_infinite]"></div>
+                  <span>Loading</span>
+                </div>
+              ) : (
+                "Konfirmasi"
+              )
+            }
             textColor="text-Neutral-100"
             withBgColor
           />
@@ -534,6 +556,5 @@ const CreateProgram: FC<RuangCreateProps> = ({ onClose, onSucsess }) => {
     </form>
   );
 };
-
 
 export default CreateProgram;

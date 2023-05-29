@@ -66,66 +66,69 @@ const SesiEdit: FC<SesiEditProps> = ({ sesiId, onClose, data }) => {
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5">
       <>
-        {isLoading && <div className="loader">Loading...</div>}
-
-        {!isLoading && (
-          <>
-            <div className="form-group flex flex-col gap-4">
-              <Input
-                id="nama_sesi"
-                label="Nama Sesi"
-                errors={errors}
-                register={{ ...register("nama_sesi") }}
-                defaultValue={data?.nama_sesi ?? ""}
-              />
-              <div className="flex gap-4">
-                {/* <TimePicker label="Jam Mulai" onTimeChange={handleTimeChange} />
+        <div className="form-group flex flex-col gap-4">
+          <Input
+            id="nama_sesi"
+            label="Nama Sesi"
+            errors={errors}
+            register={{ ...register("nama_sesi") }}
+            defaultValue={data?.nama_sesi ?? ""}
+          />
+          <div className="flex gap-4">
+            {/* <TimePicker label="Jam Mulai" onTimeChange={handleTimeChange} />
 
                   label="Jam Selesai"
                   onTimeChange={handleTimeChange}
                 /> */}
-              </div>
-              <Input
-                id="jam_mulai"
-                label="Jam Mulai"
-                type="time"
-                errors={errors}
-                register={{ ...register("jam_mulai") }}
-                defaultValue={data?.jam_mulai ?? ""}
-              />
-              <Input
-                id="jam_selesai"
-                label="Jam Selesai"
-                type="time"
-                errors={errors}
-                register={{ ...register("jam_selesai") }}
-                defaultValue={data?.jam_selesai ?? ""}
-              />
-            </div>
-            <div className="flex flex-row justify-end gap-4">
-              <Button
-                center
-                bgColor="bg-Neutral-70"
-                brColor=""
-                label="Batal"
-                textColor="text-Neutral-30"
-                type="button"
-                onClick={onClose}
-              />
-              <Button
-                bgColor="bg-Tertiary-50"
-                brColor=""
-                label="Konfirmasi"
-                textColor="text-Neutral-100"
-                type="submit"
-                withBgColor
-              />
-              {/* <button type="submit" className="btn btn-primary btn-block">
+          </div>
+          <Input
+            id="jam_mulai"
+            label="Jam Mulai"
+            type="time"
+            errors={errors}
+            register={{ ...register("jam_mulai") }}
+            defaultValue={data?.jam_mulai ?? ""}
+          />
+          <Input
+            id="jam_selesai"
+            label="Jam Selesai"
+            type="time"
+            errors={errors}
+            register={{ ...register("jam_selesai") }}
+            defaultValue={data?.jam_selesai ?? ""}
+          />
+        </div>
+        <div className="flex flex-row justify-end gap-4">
+          <Button
+            center
+            bgColor="bg-Neutral-70"
+            brColor=""
+            label="Batal"
+            textColor="text-Neutral-30"
+            type="button"
+            onClick={onClose}
+          />
+          <Button
+            bgColor="bg-Tertiary-50"
+            brColor=""
+            label={
+              isLoading ? (
+                <div className="flex gap-2 items-center">
+                  <div className="inline-block h-4 w-4 animate-spin rounded-full border-[3px] border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_3s_linear_infinite]"></div>
+                  <span>Loading</span>
+                </div>
+              ) : (
+                "Simpan"
+              )
+            }
+            textColor="text-Neutral-100"
+            type="submit"
+            withBgColor
+          />
+          {/* <button type="submit" className="btn btn-primary btn-block">
                 Simpan
               </button> */}
-            </div>
-          </>
-        )}
+        </div>
       </>
     </form>
   );

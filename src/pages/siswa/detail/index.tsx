@@ -51,7 +51,7 @@ const DetailSiswa: FC<DetailSiswaProps> = ({
 
   return (
     <div className="flex gap-10">
-      <div className="flex flex-col gap-6 w-[400px] bg-red-500 rounded-lg">
+      <div className="flex flex-col gap-6 w-[400px] border rounded-lg">
         <Image
           src={`/api/siswa/img?img=`+getSiswa?.image? getSiswa?.image : "/diskon1.jpg"}
           alt="Gambar"

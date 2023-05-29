@@ -155,7 +155,7 @@ const Kelompok: FC<Kelompok> = () => {
             kelompokId={selected.id}
             onClose={backKelompok}
             onSucsess={() => {
-              setShowSuccess(true);
+              setShowSuccess(true)
             }}
             data={selected}
           />
@@ -180,7 +180,7 @@ const Kelompok: FC<Kelompok> = () => {
       {/* modal create */}
       {showCreate && (
         <ModalDetail
-          titleModal="Tambah Pengguna"
+          titleModal="Tambah Kelompok"
           onClose={() => setShowCreate(false)}
         >
           <CreateKelompok

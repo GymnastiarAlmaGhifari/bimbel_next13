@@ -144,11 +144,9 @@ const User: FC<User> = () => {
                             onEdit={() => {
                               setSelected(user);
                             }}
-                            onHapus={
-                              () => {
-                                setSelecteDelete(user);
-                              }
-                            }
+                            onHapus={() => {
+                              setSelecteDelete(user);
+                            }}
                           />
                         ))
                       )}
@@ -177,12 +175,9 @@ const User: FC<User> = () => {
                             onEdit={() => {
                               setSelected(user);
                             }}
-                            onHapus={
-                              () => {
-                                setSelecteDelete(user);
-                              }
-                            }
-
+                            onHapus={() => {
+                              setSelecteDelete(user);
+                            }}
                           />
                         ))
                       )}
