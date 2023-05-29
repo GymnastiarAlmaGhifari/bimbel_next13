@@ -48,7 +48,7 @@ const CardPembayaranTagihan: FC<CardPembayaranTagihanProps> = ({
         <div className="flex items-center h-max w-auto gap-3">
           <div className="h-14 w-14">
             <Image
-              src={gambar ? gambar : "/img/user/default.png"}
+              src={`/api/siswa/img?img=` + gambar ? `/api/siswa/img?img=` + gambar : "/img/user/default.png"}
               alt="Megachan"
               width={100}
               height={100}
@@ -70,7 +70,7 @@ const CardPembayaranTagihan: FC<CardPembayaranTagihanProps> = ({
           <h3 className="text-sm text-Neutral-30">pembayaran</h3>
           <div className="flex flex-row">
             <span className="font-bold text-Primary-10 flex-col">
-              {tanggal_jatuh_tempo} - {tanggal_approve}
+              {tanggal_bayar ? tanggal_bayar : "Belum bayar"}
             </span>
           </div>
         </div>
@@ -80,11 +80,7 @@ const CardPembayaranTagihan: FC<CardPembayaranTagihanProps> = ({
           <h3 className="text-sm text-Neutral-30">Tanggal Batas Pembayaran</h3>
           <span className="font-bold text-Primary-10">{tanggal_tagihan}</span>
         </div>
-        <div className="flex flex-col items-center gap-1">
-          <h3 className="text-sm text-Neutral-30">rekening</h3>
-          <span className="font-bold text-Primary-10">
-          </span>
-        </div>
+
         <div className="flex flex-col items-center gap-1">
           <h3 className="text-sm text-Neutral-30">Periode Bulan</h3>
           <span className="font-bold text-Primary-10">
@@ -92,8 +88,8 @@ const CardPembayaranTagihan: FC<CardPembayaranTagihanProps> = ({
           </span>
         </div>
         <div className="flex flex-col items-end gap-1">
-          <h3 className="text-sm text-Neutral-30">Tanggal Dibayar</h3>
-          <span className="font-boldtext-Primary-10">{tanggal_bayar}</span>
+          <h3 className="text-sm text-Neutral-30">Tanggal Jatuh Tempo</h3>
+          <span className="font-boldtext-Primary-10">{tanggal_jatuh_tempo}</span>
           <h2 className="font-semibold text-Error-40">{jumlah_tagihan}</h2>
         </div>
       </div>

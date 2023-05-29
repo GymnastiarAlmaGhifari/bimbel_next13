@@ -21,6 +21,7 @@ interface HeadTableProps {
   noAdd?: boolean;
   label: string;
   onChange?: (value: string) => void;
+  onHistory?: () => void;
   nama_kelompok?: string;
 }
 
@@ -34,6 +35,7 @@ const HeadTable: React.FC<HeadTableProps> = ({
   bulanPembayaran,
   tahunPembayaran,
   onChange,
+  onHistory,
   noSearch,
   riwayat,
   nama_kelompok,
@@ -95,7 +97,7 @@ const HeadTable: React.FC<HeadTableProps> = ({
               bgColor="bg-Tertiary-50"
               label="Riwayat Pembayaran"
               icon={MdHistory}
-              onClick={onClick}
+              onClick={onHistory}
               outlined
             />
           </Link>

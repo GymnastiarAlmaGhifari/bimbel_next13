@@ -590,7 +590,7 @@ const CreateSenin: FC<Senin> = ({ jadwalId, data, onClose, onSucsess, idRuang })
             <div className="flex flex-col gap-4">
               <div className="flex flex-row gap-3 items-center">
                 <p className="font-semibold text-lg text-Primary-20">
-                  Pilih Kelompok
+                  Pilih User
                 </p>
                 {
                   tentorTerpilih === "" ? (
