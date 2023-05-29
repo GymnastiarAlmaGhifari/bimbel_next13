@@ -149,7 +149,7 @@ const Kelas: FC<Kelas> = () => {
                 {/* modal create */}
                 {showCreate && (
                   <ModalDetail
-                    titleModal="Tambah Pengguna"
+                    titleModal="Tambah Kelas"
                     onClose={() => setShowCreate(false)}
                   >
                     <CreateKelas

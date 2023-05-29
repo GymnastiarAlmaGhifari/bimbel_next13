@@ -13,6 +13,8 @@ import fetcher from "@/libs/fetcher";
 import EditDiskon from "./edit";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
+import DeleteDiskon from "./delete/delete";
+import { MdDelete, MdModeEdit } from "react-icons/md";
 
 interface DiskonProps {
   id: string;
@@ -25,6 +27,10 @@ const Diskon = ({}) => {
 
   const [selectedDiskonEdit, setSelectedDiskonEdit] =
     useState<DiskonProps | null>(null);
+
+    const [selectedDiskonDelete, setSelectedDiskonDelete] =
+    useState<DiskonProps | null>(null);
+
 
   const {
     data: diskon,
@@ -44,8 +50,6 @@ const Diskon = ({}) => {
     };
   }, [showSuccess]);
 
-
-
   const session = useSession();
 
   const router = useRouter();
@@ -54,51 +58,51 @@ const Diskon = ({}) => {
     document.title = "Bimbel Linear";
   });
 
-  if (session.data?.user.role === "ADMIN" ||
+  if (
+    session.data?.user.role === "ADMIN" ||
     session.data?.user.role === "TENTOR"
-  ) return (
-    <div className="flex flex-row h-screen font-mulish">
-      <Sidebar />
-      <div className="w-full flex flex-col">
-        <Navbar />
-        <div className="h-full p-5 bg-Neutral-95 overflow-auto">
-          <div className="flex flex-col h-full p-4 gap-4 bg-Neutral-100 rounded-lg overflow-auto">
-            <NavbarPengaturan />
-            {/* berikan tulisan hanya super admin yang bisa mengakses halaman ini silahkan kembali */}
-            <div className="flex flex-col items-center justify-center">
-              <h1 className="text-2xl font-bold text-gray-500">
-                Hanya Super Admin yang bisa mengakses halaman ini
-              </h1>
+  )
+    return (
+      <div className="flex flex-row h-screen font-mulish">
+        <Sidebar />
+        <div className="w-full flex flex-col">
+          <Navbar />
+          <div className="h-full p-5 bg-Neutral-95 overflow-auto">
+            <div className="flex flex-col h-full p-4 gap-4 bg-Neutral-100 rounded-lg overflow-auto">
+              <NavbarPengaturan />
+              {/* berikan tulisan hanya super admin yang bisa mengakses halaman ini silahkan kembali */}
+              <div className="flex flex-col items-center justify-center">
+                <h1 className="text-2xl font-bold text-gray-500">
+                  Hanya Super Admin yang bisa mengakses halaman ini
+                </h1>
 
-              {session.data?.user.role === "TENTOR" && (
-                <Button
-                  label="Kembali"
-                  bgColor="bg-Primary-100"
-                  textColor="text-white"
-                  brColor="border-transparent"
-                  type="button"
-                  onClick={() => router.push("/dashboard")}
-                />
-              )}
+                {session.data?.user.role === "TENTOR" && (
+                  <Button
+                    label="Kembali"
+                    bgColor="bg-Primary-100"
+                    textColor="text-white"
+                    brColor="border-transparent"
+                    type="button"
+                    onClick={() => router.push("/dashboard")}
+                  />
+                )}
 
-              {session.data?.user.role === "ADMIN" && (
-                <Button
-                  label="Kembali"
-                  bgColor="bg-Primary-100"
-                  textColor="text-white"
-                  brColor="border-transparent"
-                  type="button"
-                  onClick={() => router.push("/pengaturan/program")}
-                />
-              )}
-
-
+                {session.data?.user.role === "ADMIN" && (
+                  <Button
+                    label="Kembali"
+                    bgColor="bg-Primary-100"
+                    textColor="text-white"
+                    brColor="border-transparent"
+                    type="button"
+                    onClick={() => router.push("/pengaturan/program")}
+                  />
+                )}
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-  )
+    );
 
   return (
     <div className="flex flex-row h-screen font-mulish">
@@ -123,19 +127,21 @@ const Diskon = ({}) => {
                       key={diskon.id}
                       className="flex flex-col gap-2 w-full h-max rounded-lg border relative"
                     >
-                      <div className="w-full h-96 flex items-center justify-center rounded-lg overflow-clip">
+                      <div className="w-full h-96 flex items-center justify-center rounded-t-lg overflow-clip">
                         <Image
                           alt="Gambar"
                           width={200}
                           height={200}
-                          className="rounded-lg h-full w-full object-cover"
+                          className="rounded-t-lg h-full w-full object-cover"
                           src={"/api/diskon/img?img=" + diskon.banner}
                         />
                       </div>
+                        
                       <div className="flex items-center justify-between px-4 py-2">
                         <h1 className="font-semibold text-Primary-20">
                           {diskon.nama_diskon}
                         </h1>
+                      <div className="flex flex-row gap-3">
                         <Button
                           bgColor="bg-Primary-40"
                           withBgColor
@@ -146,7 +152,21 @@ const Diskon = ({}) => {
                           onClick={() => {
                             setSelectedDiskonEdit(diskon);
                           }}
-                        />
+                          />
+                      </div>
+                      <div className="flex items-center justify-between px-4 py-2">
+                        <Button
+                          bgColor="bg-Error-40"
+                          withBgColor
+                          brColor=""
+                          textColor="text-Neutral-100"
+                          label="Delete Diskon"
+                          type={"button"}
+                          onClick={() => {
+                            setSelectedDiskonDelete(diskon);
+                          }}
+                          />
+                          </div>
                       </div>
                     </div>
                   ))
@@ -172,6 +192,26 @@ const Diskon = ({}) => {
           />
         </ModalDetail>
       )}
+
+      {selectedDiskonDelete && (
+        <ModalDetail
+          titleModal="Hapus Diskon"
+          onClose={() => setSelectedDiskonDelete(null)}
+          center
+        >
+          <DeleteDiskon
+            onClose={() => setSelectedDiskonDelete(null)}
+          onSucsess={() => {
+              // success
+              setShowSuccess(true);
+            }
+          }
+            data={selectedDiskonDelete}
+            diskonId={selectedDiskonDelete.id}
+          />
+        </ModalDetail>
+      )}
+
       {showCreate && (
         <ModalDetail
           titleModal="Tambah Diskon"

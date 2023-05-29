@@ -48,16 +48,16 @@ const DetailSiswa: FC<DetailSiswaProps> = ({
     return <div>No data available.</div>;
   }
 
-
+  // flex flex-col gap-6 w-[400px] rounded-lg
   return (
     <div className="flex gap-10">
-      <div className="flex flex-col gap-6 w-[400px] bg-red-500 rounded-lg">
+      <div className="flex flex-col gap-6 w-[400px] border rounded-lg">
         <Image
-          src={`/api/siswa/img?img=`+getSiswa?.image? getSiswa?.image : "/diskon1.jpg"}
+          src={`/api/siswa/img?img=`+getSiswa?.image || "/api/siswa/img?img=placeholder.png"}
           alt="Gambar"
           width={200}
           height={200}
-          className="rounded-lg"
+          className="rounded-lg object-cover wf-full"
         />
       </div>
 

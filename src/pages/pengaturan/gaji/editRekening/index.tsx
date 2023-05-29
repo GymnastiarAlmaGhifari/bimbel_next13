@@ -83,14 +83,32 @@ const RekeningEdit: FC<RekeningEditProps> = ({
       {errors.nomor_rekening && (
         <p className="text-red-500">{errors.nomor_rekening.message}</p>
       )}
-      <div className="flex justify-end">
+      <div className="flex justify-end gap-4">
+        <Button
+          center
+          bgColor="bg-Neutral-70"
+          brColor=""
+          label="Batal"
+          textColor="text-Neutral-30"
+          type="button"
+          onClick={onClose}
+        />
         <Button
           center
           type="submit"
           bgColor="bg-Tertiary-50"
           brColor=""
           // label ketika loading true maka labelnya jadi loading
-          label={isLoading ? "Loading..." : "Simpan"}
+          label={
+            isLoading ? (
+              <div className="flex gap-2 items-center">
+                <div className="inline-block h-4 w-4 animate-spin rounded-full border-[3px] border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_3s_linear_infinite]"></div>
+                <span>Loading</span>
+              </div>
+            ) : (
+              "Simpan"
+            )
+          }
           textColor="text-Neutral-100"
           withBgColor
           disabled={isLoading} // Disable the button when loading is true

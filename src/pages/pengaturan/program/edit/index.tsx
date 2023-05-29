@@ -30,7 +30,7 @@ const schema = yup.object().shape({
   level: yup.string(),
   tipe: yup.string(),
   kelas_id: yup.string(),
-  harga: yup.string().required('Amount is required'),
+  harga: yup.string().required("Amount is required"),
   Deskripsi: yup.string(),
   image: yup.mixed().required(),
 });
@@ -39,9 +39,11 @@ type FormData = yup.InferType<typeof schema> & {
   image: FileList;
 };
 
-
 const ProgramEdit: FC<ProgramEditProps> = ({ programId, onClose, data }) => {
-  const { data: kelas, error: errorKelas } = useSWR<Kelas[]>("/api/kelas", fetcher);
+  const { data: kelas, error: errorKelas } = useSWR<Kelas[]>(
+    "/api/kelas",
+    fetcher
+  );
   const [isLoading, setIsLoading] = useState(false);
 
   const [previewImage, setPreviewImage] = useState<string | null>(null);
@@ -56,15 +58,15 @@ const ProgramEdit: FC<ProgramEditProps> = ({ programId, onClose, data }) => {
     resolver: yupResolver(schema),
   });
 
-
   const [error, setError] = useState<string | null>(null);
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
-    const { nama_program, level, tipe, kelas_id, harga, Deskripsi, image } = data;
+    const { nama_program, level, tipe, kelas_id, harga, Deskripsi, image } =
+      data;
 
     setIsLoading(true); // Set loading state to true
 
-    const rawHarga = parseInt(harga.replace(/\D/g, ""))
+    const rawHarga = parseInt(harga.replace(/\D/g, ""));
     const formData = new FormData();
     formData.append("image", data.image[0]);
     if (!image || image.length === 0) {
@@ -75,7 +77,7 @@ const ProgramEdit: FC<ProgramEditProps> = ({ programId, onClose, data }) => {
           tipe,
           kelas_id,
           harga: rawHarga,
-          Deskripsi
+          Deskripsi,
         });
         mutate("/api/program");
         mutate(`/api/program/${programId}`);
@@ -89,7 +91,9 @@ const ProgramEdit: FC<ProgramEditProps> = ({ programId, onClose, data }) => {
             console.log("Response data:", axiosError.response.data);
             console.log("Response status:", axiosError.response.status);
 
-            const responseData = axiosError.response.data as { message: string };
+            const responseData = axiosError.response.data as {
+              message: string;
+            };
 
             // Extract the main error message from the response data
             const errorMessage = responseData.message;
@@ -122,7 +126,7 @@ const ProgramEdit: FC<ProgramEditProps> = ({ programId, onClose, data }) => {
           tipe,
           kelas_id,
           harga: rawHarga,
-          Deskripsi
+          Deskripsi,
         });
         console.log("dengan gambar");
 
@@ -143,7 +147,9 @@ const ProgramEdit: FC<ProgramEditProps> = ({ programId, onClose, data }) => {
             console.log("Response data:", axiosError.response.data);
             console.log("Response status:", axiosError.response.status);
 
-            const responseData = axiosError.response.data as { message: string };
+            const responseData = axiosError.response.data as {
+              message: string;
+            };
 
             // Extract the main error message from the response data
             const errorMessage = responseData.message;
@@ -169,7 +175,6 @@ const ProgramEdit: FC<ProgramEditProps> = ({ programId, onClose, data }) => {
         onClose(); // Set loading state to false
       }
     }
-
   };
   const [isListOpenKelas, setIsListOpenKelas] = useState(false);
   const [isListOpenLevel, setIsListOpenLevel] = useState(false);
@@ -266,32 +271,35 @@ const ProgramEdit: FC<ProgramEditProps> = ({ programId, onClose, data }) => {
     data?.level === "PREMIUM"
       ? "PREMIUM"
       : data?.level === "REGULER"
-        ? "REGULER"
-        : "Pilih Level";
+      ? "REGULER"
+      : "Pilih Level";
 
   const tipeLabel =
     data?.tipe === "PRIVATE"
       ? "PRIVATE"
       : data?.tipe === "SEMI_PRIVATE"
-        ? "SEMI PRIVATE"
-        : data?.tipe === "KELOMPOK"
-          ? "KELOMPOK"
-          : "Pilih Tipe";
+      ? "SEMI PRIVATE"
+      : data?.tipe === "KELOMPOK"
+      ? "KELOMPOK"
+      : "Pilih Tipe";
 
   // format rupiah pada onchange yang replace(/\D/g,''); untuk menghilangkan selain angka serta buatkan titik setiap 3 digit angka
   const formatRupiah = (e: any) => {
-    const rawValue = e.target.value.replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    const rawValue = e.target.value
+      .replace(/\D/g, "")
+      .replace(/\B(?=(\d{3})+(?!\d))/g, ".");
     const formattedValue = "Rp " + rawValue;
     setValue("harga", formattedValue);
   };
 
   const formattedHarga = data?.harga
-    ? data?.harga.toLocaleString("id-ID", {
-      style: "currency",
-      currency: "IDR",
-    }).replace(",00", "")
+    ? data?.harga
+        .toLocaleString("id-ID", {
+          style: "currency",
+          currency: "IDR",
+        })
+        .replace(",00", "")
     : "";
-
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex gap-10">
@@ -299,9 +307,7 @@ const ProgramEdit: FC<ProgramEditProps> = ({ programId, onClose, data }) => {
       <div className="flex flex-col gap-6 overflow-clip scale-100 w-[400px]">
         {previewImage ? (
           <div className="w-full">
-            <h1>
-              Gambar Program Landing Page
-            </h1>
+            <h1>Gambar Program Landing Page</h1>
             <Image
               src={previewImage}
               alt="Gambar"
@@ -376,9 +382,7 @@ const ProgramEdit: FC<ProgramEditProps> = ({ programId, onClose, data }) => {
             register={{ ...register("nama_program") }}
           />
           {errors.nama_program && (
-            <span className="text-danger">
-              {errors.nama_program.message}
-            </span>
+            <span className="text-danger">{errors.nama_program.message}</span>
           )}
         </div>
 
@@ -390,10 +394,11 @@ const ProgramEdit: FC<ProgramEditProps> = ({ programId, onClose, data }) => {
           <div className="relative flex flex-col gap-2">
             <button
               type="button"
-              className={` w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${isListOpenLevel
-                ? "border-[2px] border-Primary-50 bg-Primary-95"
-                : "bg-Neutral-95"
-                }`}
+              className={` w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${
+                isListOpenLevel
+                  ? "border-[2px] border-Primary-50 bg-Primary-95"
+                  : "bg-Neutral-95"
+              }`}
               onClick={toggleListLevel}
             >
               {getLevelLabel(watch("level") ?? "") || levelLabel}
@@ -408,10 +413,11 @@ const ProgramEdit: FC<ProgramEditProps> = ({ programId, onClose, data }) => {
                   <li key={option.value}>
                     <button
                       type="button"
-                      className={`w-full text-left px-2 py-1 rounded-full ${watch("level") === option.value
-                        ? "text-Primary-90 bg-Primary-20"
-                        : "text-Primary-20 hover:bg-Primary-95"
-                        }`}
+                      className={`w-full text-left px-2 py-1 rounded-full ${
+                        watch("level") === option.value
+                          ? "text-Primary-90 bg-Primary-20"
+                          : "text-Primary-20 hover:bg-Primary-95"
+                      }`}
                       onClick={() => selectlevel(option.value)}
                     >
                       {option.label}
@@ -434,10 +440,11 @@ const ProgramEdit: FC<ProgramEditProps> = ({ programId, onClose, data }) => {
           <div className="relative flex flex-col gap-2">
             <button
               type="button"
-              className={` w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${isListOpenTipe
-                ? "border-[2px] border-Primary-50 bg-Primary-95"
-                : "bg-Neutral-95"
-                }`}
+              className={` w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${
+                isListOpenTipe
+                  ? "border-[2px] border-Primary-50 bg-Primary-95"
+                  : "bg-Neutral-95"
+              }`}
               onClick={toggleListTipe}
             >
               {getTipeLabel(watch("tipe") ?? "") || tipeLabel}
@@ -452,10 +459,11 @@ const ProgramEdit: FC<ProgramEditProps> = ({ programId, onClose, data }) => {
                   <li key={option.value}>
                     <button
                       type="button"
-                      className={`w-full text-left px-2 py-1 rounded-full ${watch("tipe") === option.value
-                        ? "text-Primary-90 bg-Primary-20"
-                        : "text-Primary-20 hover:bg-Primary-95"
-                        }`}
+                      className={`w-full text-left px-2 py-1 rounded-full ${
+                        watch("tipe") === option.value
+                          ? "text-Primary-90 bg-Primary-20"
+                          : "text-Primary-20 hover:bg-Primary-95"
+                      }`}
                       onClick={() => selectTipe(option.value)}
                     >
                       {option.label}
@@ -478,17 +486,17 @@ const ProgramEdit: FC<ProgramEditProps> = ({ programId, onClose, data }) => {
           <div className="relative flex flex-col gap-2">
             <button
               type="button"
-              className={` w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${isListOpenKelas
-                ? "border-[2px] border-Primary-50 bg-Primary-95"
-                : "bg-Neutral-95"
-                }`}
+              className={` w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${
+                isListOpenKelas
+                  ? "border-[2px] border-Primary-50 bg-Primary-95"
+                  : "bg-Neutral-95"
+              }`}
               onClick={toggleListKelas}
             >
               {/* buat label */}
               {watch("kelas_id") ? (
-                kelas?.find(
-                  (kelasItem) => kelasItem.id === watch("kelas_id")
-                )?.nama_kelas
+                kelas?.find((kelasItem) => kelasItem.id === watch("kelas_id"))
+                  ?.nama_kelas
               ) : (
                 <span className="text-Neutral-300">Pilih Kelas</span>
               )}
@@ -510,10 +518,11 @@ const ProgramEdit: FC<ProgramEditProps> = ({ programId, onClose, data }) => {
                     <li key={kelasItem.id}>
                       <button
                         type="button"
-                        className={`w-full text-left px-2 py-1 rounded-full ${watch("kelas_id") === kelasItem.id
-                          ? "text-Primary-90 bg-Primary-20"
-                          : "text-Primary-20 hover:bg-Primary-95"
-                          }`}
+                        className={`w-full text-left px-2 py-1 rounded-full ${
+                          watch("kelas_id") === kelasItem.id
+                            ? "text-Primary-90 bg-Primary-20"
+                            : "text-Primary-20 hover:bg-Primary-95"
+                        }`}
                         onClick={() => selectKelas(kelasItem.id)}
                       >
                         {kelasItem.nama_kelas}
@@ -543,11 +552,9 @@ const ProgramEdit: FC<ProgramEditProps> = ({ programId, onClose, data }) => {
           />
         </div>
 
-        {
-          errors.harga && (
-            <span className="text-red-500">{errors.harga.message}</span>
-          )
-        }
+        {errors.harga && (
+          <span className="text-red-500">{errors.harga.message}</span>
+        )}
 
         {/* deskripsi */}
         <div className="flex flex-col gap-2">
@@ -563,8 +570,6 @@ const ProgramEdit: FC<ProgramEditProps> = ({ programId, onClose, data }) => {
           )}
         </div>
 
-
-
         <div className="flex flex-row gap-4 justify-end">
           <Button
             center
@@ -576,9 +581,19 @@ const ProgramEdit: FC<ProgramEditProps> = ({ programId, onClose, data }) => {
             onClick={onClose}
           />
           <Button
+          disabled = {isLoading}
             bgColor="bg-Tertiary-50"
             brColor=""
-            label="Konfirmasi"
+            label={
+              isLoading ? (
+                <div className="flex gap-2 items-center">
+                  <div className="inline-block h-4 w-4 animate-spin rounded-full border-[3px] border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_3s_linear_infinite]"></div>
+                  <span>Loading</span>
+                </div>
+              ) : (
+                "Konfirmasi"
+              )
+            }
             textColor="text-Neutral-100"
             type="submit"
             withBgColor
@@ -591,6 +606,5 @@ const ProgramEdit: FC<ProgramEditProps> = ({ programId, onClose, data }) => {
     </form>
   );
 };
-
 
 export default ProgramEdit;

@@ -22,20 +22,18 @@ interface RiwayatPembayaran {
   status: string;
   nota: string;
   user: {
-    name: string
-  }
+    name: string;
+  };
   siswa: {
-    nama: string
-    image: string
-  }
+    nama: string;
+    image: string;
+  };
 }
 
 const RiwayatPembayaran: FC<RiwayatPembayaran> = () => {
-
-  const { data: riwayat, error } = useSWR('/api/tagihan/riwayat', fetcher)
+  const { data: riwayat, error } = useSWR("/api/tagihan/riwayat", fetcher);
 
   const [showNota, setShowNota] = useState<RiwayatPembayaran | null>(null);
-
 
   return (
     <div className="flex flex-row h-screen font-mulish">
@@ -50,7 +48,9 @@ const RiwayatPembayaran: FC<RiwayatPembayaran> = () => {
                 <>
                   {riwayat.length === 0 ? (
                     <div className="flex flex-col justify-center items-center">
-                      <p className="text-2xl font-bold text-Neutral-600">Data Kosong</p>
+                      <p className="text-2xl font-bold text-Neutral-600">
+                        Data Kosong
+                      </p>
                       <p className="text-Neutral-500">PP</p>
                     </div>
                   ) : (
@@ -72,9 +72,7 @@ const RiwayatPembayaran: FC<RiwayatPembayaran> = () => {
                           tanggal_tagihan={riwayat?.tanggal_tagihan}
                           gambar={riwayat?.siswa.image}
                           tahun={riwayat?.Tahun}
-                          onClick={() =>
-                            setShowNota(riwayat)
-                          }
+                          onClick={() => setShowNota(riwayat)}
                         />
                       ))}
                     </>
@@ -84,35 +82,34 @@ const RiwayatPembayaran: FC<RiwayatPembayaran> = () => {
                 <>
                   {error ? (
                     <div className="flex flex-col justify-center items-center">
-                      <p className="text-2xl font-bold text-Neutral-600">Data Kosong</p>
-                      <p className="text-Neutral-500">Silahkan tambahkan data siswa</p>
+                      <p className="text-2xl font-bold text-Neutral-600">
+                        Data Kosong
+                      </p>
+                      <p className="text-Neutral-500">
+                        Silahkan tambahkan data siswa
+                      </p>
                     </div>
                   ) : (
                     <div className="flex flex-col justify-center items-center">
-                      <p className="text-2xl font-bold text-Neutral-600">Loading...</p>
+                      <p className="text-2xl font-bold text-Neutral-600">
+                        Loading...
+                      </p>
                     </div>
-                  )
-                  }
+                  )}
                 </>
-              )
-              }
+              )}
             </div>
           </div>
         </div>
       </div>
-      {
-        showNota && (
-          <ModalDetail
-            titleModal="Detail Tagihan"
-            onClose={() => setShowNota(null)}
-          >
-            <LihatNota
-              data={showNota}
-              onClose={() => setShowNota(null)}
-            />
-          </ModalDetail>
-        )
-      }
+      {showNota && (
+        <ModalDetail
+          titleModal="Detail Tagihan"
+          onClose={() => setShowNota(null)}
+        >
+          <LihatNota data={showNota} onClose={() => setShowNota(null)} />
+        </ModalDetail>
+      )}
     </div>
   );
 };

@@ -2,8 +2,9 @@ import Image from "next/image";
 import { FC } from "react";
 import ButtonEdit from "../buttons/ButtonEdit";
 import Button from "../buttons/Button";
-import { MdModeEdit } from "react-icons/md";
+import { MdModeEdit, MdVisibility } from "react-icons/md";
 import Kelas from "@/pages/pengaturan/kelas";
+import { HiOutlineCheck } from "react-icons/hi";
 
 interface CardPembayaranTagihanProps {
   nama_siswa?: string;
@@ -62,8 +63,7 @@ const CardPembayaranTagihan: FC<CardPembayaranTagihanProps> = ({
               <h3 className="text-Neutral-30"> - {nota}</h3>
             </div>
             <h1 className=" text-Neutral-10 font-bold">user</h1>
-            <div className="flex flex-col  gap-1">
-            </div>
+            <div className="flex flex-col  gap-1"></div>
           </div>
         </div>
         <div className="flex flex-col items-end gap-1 justify-center">
@@ -80,7 +80,10 @@ const CardPembayaranTagihan: FC<CardPembayaranTagihanProps> = ({
           <h3 className="text-sm text-Neutral-30">Tanggal Batas Pembayaran</h3>
           <span className="font-bold text-Primary-10">{tanggal_tagihan}</span>
         </div>
-
+        <div className="flex flex-col items-center gap-1">
+          <h3 className="text-sm text-Neutral-30">rekening</h3>
+          <span className="font-bold text-Primary-10"></span>
+        </div>
         <div className="flex flex-col items-center gap-1">
           <h3 className="text-sm text-Neutral-30">Periode Bulan</h3>
           <span className="font-bold text-Primary-10">
@@ -96,40 +99,48 @@ const CardPembayaranTagihan: FC<CardPembayaranTagihanProps> = ({
 
       <div className="w-full h-[1px] bg-Neutral-30"></div>
       <div className="flex justify-between">
-        <h2 className="font-semibold text-Error-40">{status}</h2>
-        {
-          // if nota not null show button lihat nota
-          nota ? (
-            <>
-              <Button
-                type="button"
-                bgColor="bg-Tertiary-50"
-                brColor=""
-                label="Lihat Nota"
-                textColor="text-Tertiary-50"
-                icon={MdModeEdit}
-                onClick={onClick}
-              />
-            </>
+        <h2
+          className={`font-semibold ${
+            status == "LUNAS" ? "text-Primary-40" : ""
+          } ${status == "PENDING" ? "text-Secondary-50" : ""} `}
+        >
+          {status}
+        </h2>
+        <div className="flex gap-4 justify-end">
+          {
+            // if nota not null show button lihat nota
+            nota ? (
+              <>
+                <Button
+                  type="button"
+                  bgColor="bg-Tertiary-50"
+                  brColor=""
+                  label="Lihat Nota"
+                  textColor="text-Tertiary-50"
+                  icon={MdVisibility}
+                  onClick={onClick}
+                />
+              </>
+            ) : (
+              ""
+            )
+          }
+
+          {/* jika status tidak samadengan lunas */}
+          {status != "LUNAS" ? (
+            <Button
+              type="button"
+              bgColor="bg-Primary-50"
+              brColor=""
+              label="Terima Pembayaran"
+              textColor="text-Primary-40"
+              icon={HiOutlineCheck}
+              onClick={onAccept}
+            />
           ) : (
             ""
-          )
-        }
-
-        {/* jika status tidak samadengan lunas */}
-        {status != "LUNAS" ? (
-          <Button
-            type="button"
-            bgColor="bg-Primary-10"
-            brColor=""
-            label="Terima Pembayaran"
-            textColor="text-Primary-10"
-            icon={MdModeEdit}
-            onClick={onAccept}
-          />
-        ) : (
-          ""
-        )}
+          )}
+        </div>
       </div>
     </div>
   );

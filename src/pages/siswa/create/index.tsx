@@ -98,86 +98,107 @@ const CreateSiswa: FC<UserCreateProps> = ({ onClose, onSucsess }) => {
       }
     } finally {
       setIsLoading(false);
+      onSucsess()
     }
   };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5">
       {/* Error message */}
-      {error && <p className="text-red-500">{error}</p>}
-      <Input
-        id="nama"
-        label="Name"
-        type="text"
-        register={{ ...register("nama") }}
-        errors={errors}
-      />
-      {errors.nama && <p className="text-red-500">{errors.nama.message}</p>}
+      {error && <p className="text-Error-50 text-sm">{error}</p>}
+      <div className="flex flex-col gap-1">
+        <Input
+          id="nama"
+          label="Name"
+          type="text"
+          register={{ ...register("nama") }}
+          errors={errors}
+        />
+        {errors.nama && (
+          <p className="text-Error-50 text-sm">{errors.nama.message}</p>
+        )}
+      </div>
 
-      <Input
-        id="email"
-        label="Email"
-        type="email"
-        register={{ ...register("email") }}
-        errors={errors}
-      />
-      {errors.email && <p className="text-red-500">{errors.email.message}</p>}
+      <div className="flex flex-col gap-1">
+        <Input
+          id="email"
+          label="Email"
+          type="email"
+          register={{ ...register("email") }}
+          errors={errors}
+        />
+        {errors.email && (
+          <p className="text-Error-50 text-sm">{errors.email.message}</p>
+        )}
+      </div>
+      <div className="flex flex-col gap-1">
+        <Input
+          id="password"
+          label="Password"
+          type="password"
+          register={{ ...register("password") }}
+          errors={errors}
+        />
+        {errors.password && (
+          <p className="text-Error-50 text-sm">{errors.password.message}</p>
+        )}
+      </div>
+      <div className="flex flex-col gap-1">
+        <Input
+          id="nomor_telepon"
+          label="Nomor Telepon"
+          type="number"
+          register={{ ...register("nomor_telepon") }}
+          errors={errors}
+        />
+        {errors.nomor_telepon && (
+          <p className="text-Error-50 text-sm">
+            {errors.nomor_telepon.message}
+          </p>
+        )}
+      </div>
 
-      <Input
-        id="password"
-        label="Password"
-        type="password"
-        register={{ ...register("password") }}
-        errors={errors}
-      />
-      {errors.password && (
-        <p className="text-red-500">{errors.password.message}</p>
-      )}
+      <div className="flex flex-col gap-1">
+        <Input
+          id="sekolah"
+          label="Sekolah"
+          type="text"
+          register={{ ...register("sekolah") }}
+          errors={errors}
+        />
+        {errors.sekolah && (
+          <p className="text-Error-50 text-sm">{errors.sekolah.message}</p>
+        )}
+      </div>
 
-      <Input
-        id="nomor_telepon"
-        label="Nomor Telepon"
-        type="number"
-        register={{ ...register("nomor_telepon") }}
-        errors={errors}
-      />
-      {errors.nomor_telepon && (
-        <p className="text-red-500">{errors.nomor_telepon.message}</p>
-      )}
+      <div className="flex flex-col gap-1">
+        <Input
+          id="hp_ortu"
+          label="Nomor Telepon Orang Tua"
+          type="number"
+          register={{ ...register("hp_ortu") }}
+          errors={errors}
+        />
+        {errors.hp_ortu && (
+          <p className="text-Error-50 text-sm">{errors.hp_ortu.message}</p>
+        )}
+      </div>
 
-      <Input
-        id="sekolah"
-        label="Sekolah"
-        type="text"
-        register={{ ...register("sekolah") }}
-        errors={errors}
-      />
-      {errors.sekolah && (
-        <p className="text-red-500">{errors.sekolah.message}</p>
-      )}
-
-      <Input
-        id="hp_ortu"
-        label="Nomor Telepon Orang Tua"
-        type="number"
-        register={{ ...register("hp_ortu") }}
-        errors={errors}
-      />
-      {errors.hp_ortu && (
-        <p className="text-red-500">{errors.hp_ortu.message}</p>
-      )}
-
-      <Input
-        id="alamat"
-        label="Alamat"
-        type="text"
-        register={{ ...register("alamat") }}
-        errors={errors}
-      />
-      {errors.alamat && <p className="text-red-500">{errors.alamat.message}</p>}
+      <div className="flex flex-col gap-1">
+        <Input
+          id="alamat"
+          label="Alamat"
+          type="text"
+          register={{ ...register("alamat") }}
+          errors={errors}
+        />
+        {errors.alamat && (
+          <p className="text-Error-50 text-sm">{errors.alamat.message}</p>
+        )}
+      </div>
 
       {/* Buat selected berisi SUPER ADMIN dan TENTOR */}
-      <div className="flex flex-row justify-end">
+      <div className="flex flex-row gap-4 justify-end">
         <Button
           center
           bgColor="bg-Neutral-70"
@@ -194,7 +215,7 @@ const CreateSiswa: FC<UserCreateProps> = ({ onClose, onSucsess }) => {
           // label ketika loading true maka labelnya jadi loading
           label={
             isLoading ? (
-              <div className="flex gap-1 items-center">
+              <div className="flex gap-2 items-center">
                 <div className="inline-block h-4 w-4 animate-spin rounded-full border-[3px] border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_3s_linear_infinite]"></div>
                 <span>Loading</span>
               </div>

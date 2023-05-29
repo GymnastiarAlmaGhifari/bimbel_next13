@@ -10,7 +10,7 @@ interface Nota {
 const LihatNota: FC<Nota> = ({ data, onClose }) => {
   return (
     <div>
-      <div className="flex flex-col bg-Neutral-100 rounded-lg py-5 px-4 gap-3">
+      <div className="flex flex-col bg-Neutral-100 rounded-lg px-4 gap-3">
         <div className="flex justify-between">
           <div className="flex items-center h-max w-auto gap-3">
             <div className="h-14 w-14">
@@ -25,15 +25,17 @@ const LihatNota: FC<Nota> = ({ data, onClose }) => {
             </div>
           </div>
         </div>
-        <Button
-          center
-          bgColor="bg-Neutral-70"
-          brColor=""
-          label="Batal"
-          textColor="text-Neutral-30"
-          type="button"
-          onClick={onClose}
-        />
+        <div className="flex justify-end">
+          <Button
+            center
+            bgColor="bg-Neutral-70"
+            brColor=""
+            label="Batal"
+            textColor="text-Neutral-30"
+            type="button"
+            onClick={onClose}
+          />
+        </div>
       </div>
     </div>
   );

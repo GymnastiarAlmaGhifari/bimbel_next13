@@ -34,7 +34,7 @@ const DeleteSiswa: FC<DeleteSiswaProps> = ({ idSiswa, onClose, onSuccess, data, 
     return (
         <div className="flex flex-col gap-6">
             <p className="text-center">
-                Apakah Anda yakin untuk menghapus pengguna <span className="font-semibold">{data?.name}</span>? <br /> proses akan menghapus semua data yang berhubungan dengan pengguna ini
+                Apakah Anda yakin untuk menghapus siswa <span className="font-semibold">{data?.nama}</span>? <br /> proses akan menghapus semua data yang berhubungan dengan siswa ini
             </p>
             <div className="flex gap-4">
                 <Button
