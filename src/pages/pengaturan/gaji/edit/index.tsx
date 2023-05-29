@@ -28,6 +28,7 @@ type FormData = yup.InferType<typeof schema>;
 const GajiEdit: FC<GajiEdit> = ({ gajiId, data, onClose, onSucsess }) => {
   const [isLoading, setIsLoading] = useState(false);
 
+
   const {
     register,
     handleSubmit,
@@ -67,6 +68,7 @@ const GajiEdit: FC<GajiEdit> = ({ gajiId, data, onClose, onSucsess }) => {
         const payload = {
             jumlah_gaji: parseInt(data.gaji.replace(/\D/g, "")),
         };
+        
 
         console.log(payload);
         try {
@@ -80,7 +82,6 @@ const GajiEdit: FC<GajiEdit> = ({ gajiId, data, onClose, onSucsess }) => {
             onClose();
         }
 
-    };
     try {
       await axios.put(`/api/setgaji/${gajiId}`, payload);
       mutate("/api/setgaji");

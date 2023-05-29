@@ -4,7 +4,7 @@ import Button from "@/pages/components/buttons/Button";
 import Image from "next/image";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import * as yup from "yup";
 import useSWR, { mutate } from "swr";
 import fetcher from "@/libs/fetcher";
@@ -23,7 +23,6 @@ const schema = yup.object().shape({
     .required("tidak boleh kosong")
     .min(3, "judul minimal 3 karakter"),
   program_id: yup.string().required(),
-  jadwal_id: yup.string().required(),
 });
 
 type FormData = yup.InferType<typeof schema> & {
@@ -38,10 +37,6 @@ const KelompokEdit: FC<UserEditProps> = ({
 }) => {
   const { data: program, error } = useSWR<any[]>("/api/program", fetcher);
 
-  const { data: jadwal, error: errorJadwal } = useSWR<any[]>(
-    "/api/jadwal",
-    fetcher
-  );
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -55,19 +50,53 @@ const KelompokEdit: FC<UserEditProps> = ({
     resolver: yupResolver(schema),
   });
 
+  const [errorr, setError] = useState<string | null>(null);
+
+
   const onSubmit: SubmitHandler<FormData> = async (data) => {
-    const { nama_kelompok, program_id, jadwal_id } = data;
+    const { nama_kelompok, program_id,} = data;
+
+    console.log("dhjagdjhsa", data);
 
     setIsLoading(true); // Set loading state to true
     try {
-      await axios.put(`/api/kelompok/${kelompokId}`, {
+      const res = await axios.put(`/api/kelompok/${kelompokId}`, {
         nama_kelompok,
         program_id,
-        jadwal_id,
-      });
+              });
       mutate("/api/kelompok");
-    } catch (error) {
-      console.error(error);
+
+      console.log("res", res);
+    } catch (error: any) {
+            console.error(error);
+      
+            if (axios.isAxiosError(error)) {
+              const axiosError = error as AxiosError;
+              if (axiosError.response) {
+                console.log("Response data:", axiosError.response.data);
+                console.log("Response status:", axiosError.response.status);
+      
+                const responseData = axiosError.response.data as { message: string };
+      
+                // Extract the main error message from the response data
+                const errorMessage = responseData.message;
+      
+                setError(`${errorMessage}`);
+              } else if (axiosError.request) {
+                console.log("No response received:", axiosError.request);
+      
+                const request = axiosError.request.toString();
+                setError(`No response received: ${request}`);
+              } else {
+                console.log("Error setting up the request:", axiosError.message);
+      
+                const request = axiosError.message.toString();
+                setError(`Error setting up the request: ${request}`);
+              }
+            } else {
+              console.log("Error:", error.message);
+              setError("An unknown error occurred.");
+            }
     } finally {
       setIsLoading(false);
       onClose();
@@ -133,7 +162,7 @@ const KelompokEdit: FC<UserEditProps> = ({
 
                 <div className="flex flex-col gap-2">
                   <label htmlFor="" className="text-sm text-Primary-10">
-                    Program
+                    Program   
                   </label>
 
                   <div className="relative flex flex-col gap-2">

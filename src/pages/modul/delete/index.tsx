@@ -3,23 +3,21 @@ import axios from "axios";
 import Button from "@/pages/components/buttons/Button";
 import { mutate } from "swr";
 
-interface DeleteSiswaProps {
-    idSiswa: string;
+interface DeleteModulProps {
+    idModul: string;
     onClose: () => void;
     onSuccess: () => void;
     data?: any;
-
 }
-const DeleteSiswa: FC<DeleteSiswaProps> = ({ idSiswa, onClose, onSuccess, data,  }) => {
+const DeleteModul: FC<DeleteModulProps> = ({ idModul, onClose, onSuccess, data }) => {
 
     const [isLoading, setIsLoading] = useState(false);
 
     const onSubmit = async () => {
         setIsLoading(true); // Set loading state to true
         try {
-            await axios.delete(`/api/siswa/${idSiswa}`);
-            mutate("/api/siswa");
-
+            await axios.delete(`/api/modul/${idModul}`);
+            mutate("/api/modul");
 
             onSuccess();
             onClose();
@@ -30,11 +28,10 @@ const DeleteSiswa: FC<DeleteSiswaProps> = ({ idSiswa, onClose, onSuccess, data, 
         }
     };
 
-
     return (
         <div className="flex flex-col gap-6">
             <p className="text-center">
-                Apakah Anda yakin untuk menghapus siswa <span className="font-semibold">{data?.nama}</span>? <br /> proses akan menghapus semua data yang berhubungan dengan siswa ini
+                Apakah Anda yakin untuk menghapus modul <span className="font-semibold">{data?.nama_modul}</span>? <br /> proses akan menghapus semua data yang berhubungan dengan modul ini
             </p>
             <div className="flex gap-4">
                 <Button
@@ -68,4 +65,4 @@ const DeleteSiswa: FC<DeleteSiswaProps> = ({ idSiswa, onClose, onSuccess, data, 
     )
 }
 
-export default DeleteSiswa
+export default DeleteModul

@@ -18,6 +18,7 @@ interface Profile {
   universitas: string;
   mata_pelajaran: string;
   alamat: string;
+  image: string;
 }
 
 const Profile: FC<Profile> = () => {
@@ -59,7 +60,7 @@ const Profile: FC<Profile> = () => {
                       <div className="flex flex-col gap-6 w-max items-center">
                         <div className="h-72 w-60 rounded-lg ring-[8px] ring-Neutral-100 ">
                           <Image
-                            src="https://img.jakpost.net/c/2017/02/15/2017_02_15_21637_1487139254._large.jpg"
+                            src={"/api/user/img?img=" + profile?.image ? "/api/user/img?img=" + profile?.image : "/upload/img/user/default.png"}
                             alt="Foto profile"
                             width={100}
                             height={100}
