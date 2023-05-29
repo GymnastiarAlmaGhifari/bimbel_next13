@@ -18,6 +18,7 @@ interface Profile {
   universitas: string;
   mata_pelajaran: string;
   alamat: string;
+  image: string;
 }
 
 const Profile: FC<Profile> = () => {
@@ -59,30 +60,32 @@ const Profile: FC<Profile> = () => {
           <div className="h-full bg-Neutral-95 relative">
             <div className="w-full h-1/2 bg-gradient-to-br from-Tertiary-50 to-Primary-50">
               <div className="absolute h-full flex items-center justify-center w-full">
-                {isLoading ? (
-                  <div className="flex items-center justify-center">
-                    <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-Primary-50"></div>
-                  </div>
-                ) : (
-                  // map here
-                  <div className="flex gap-20 w-max bg-Neutral-100 relative shadow-[0px_0px_6px_1px_rgba(0,0,0,.2)] p-20 rounded-lg">
-                    <div className="flex flex-col gap-6 w-max items-center">
-                      <div className="h-72 w-60 rounded-lg ring-[8px] ring-Neutral-100 ">
-                        <Image
-                          src="https://img.jakpost.net/c/2017/02/15/2017_02_15_21637_1487139254._large.jpg"
-                          alt="Foto profile"
-                          width={100}
-                          height={100}
-                          className="rounded-lg w-full h-full object-cover"
-                        />
-                      </div>
-                      <div className="flex flex-col gap-3 items-center w-full">
-                        <h1 className="font-bold text-Primary-10 text-lg">
-                          {profile?.name}
-                        </h1>
-                        <h2 className="inline-block py-2 px-4 bg-Primary-50 text-Primary-10 rounded-full font-semibold w-full text-center">
-                          Admin
-                        </h2>
+                {
+                  isLoading ? (
+                    <div className="flex items-center justify-center">
+                      <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-Primary-50"></div>
+                    </div>
+                  ) : (
+                    // map here
+                    <div className="flex gap-20 w-max bg-Neutral-100 relative shadow-[0px_0px_6px_1px_rgba(0,0,0,.2)] p-20 rounded-lg">
+                      <div className="flex flex-col gap-6 w-max items-center">
+                        <div className="h-72 w-60 rounded-lg ring-[8px] ring-Neutral-100 ">
+                          <Image
+                            src={"/api/user/img?img=" + profile?.image ? "/api/user/img?img=" + profile?.image : "/upload/img/user/default.png"}
+                            alt="Foto profile"
+                            width={100}
+                            height={100}
+                            className="rounded-lg w-full h-full object-cover"
+                          />
+                        </div>
+                        <div className="flex flex-col gap-3 items-center w-full">
+                          <h1 className="font-bold text-Primary-10 text-lg">
+                            {profile?.name}
+                          </h1>
+                          <h2 className="inline-block py-2 px-4 bg-Primary-50 text-Primary-10 rounded-full font-semibold w-full text-center">
+                            Admin
+                          </h2>
+                        </div>
                       </div>
                     </div>
                     <div className="flex flex-col gap-5">

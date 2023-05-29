@@ -10,6 +10,7 @@ import fetcher from "@/libs/fetcher";
 import { ModalDetail, ModalSucces } from "@/pages/components/modal/Modal";
 import Create from "./create";
 import EditModul from "./edit";
+import DeleteModul from "./delete";
 
 interface ModulProps {
   id: string;
@@ -40,7 +41,8 @@ const Modul: FC<ModulProps> = () => {
   const [showSuccess, setShowSuccess] = useState(false);
 
   const [selectedEdit, setSelectedEdit] = useState<ModulProps | null>(null);
-
+  const [selectedDelete, setSelectedDelete] = useState<ModulProps | null>(null);
+  
   useEffect(() => {
     const timeoutId = setTimeout(() => {
       setShowSuccess(false);
@@ -91,6 +93,9 @@ const Modul: FC<ModulProps> = () => {
                         onEdit={() => {
                           setSelectedEdit(modul);
                         }}
+                        onDelete={() => {
+                          setSelectedDelete(modul);
+                        }}
                       />
                     ))
                   )}
@@ -104,12 +109,7 @@ const Modul: FC<ModulProps> = () => {
       </div>
       {showSuccess && (
         <ModalSucces label="POOP" onClose={() => setShowSuccess(false)}>
-          {/* <div className="flex flex-col items-center justify-center">
-            <h1 className=" font-bold text-green-500">Berhasil</h1>
-            <p className="text-sm text-gray-500">
-              {selected?.name}Data berhasil diubah
-            </p>
-          </div> */}
+
         </ModalSucces>
       )}
 
@@ -143,6 +143,26 @@ const Modul: FC<ModulProps> = () => {
           />
         </ModalDetail>
       )}
+
+      {
+        selectedDelete && (
+          <ModalDetail
+            titleModal="Hapus Modul"
+            onClose={() => setSelectedDelete(null)}
+          >
+            <DeleteModul
+              onClose={() => setSelectedDelete(null)}
+              onSuccess={
+                () => {
+                  setShowSuccess(true);
+                }
+              }
+              idModul={selectedDelete.id}
+            />
+          </ModalDetail>
+        )
+            }
+      
     </div>
   );
 };

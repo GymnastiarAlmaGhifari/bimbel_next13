@@ -15,13 +15,12 @@ interface CardModulProps {
   thumbnail: string;
   tingkatan: string;
   mapel: string;
-  onClick?: () => void;
   goPdf?: () => void;
   onEdit?: () => void;
+  onDelete?: () => void;
 }
 
 const CardModul: FC<CardModulProps> = ({
-  onClick,
   onEdit,
   kelompok,
   nama_module,
@@ -31,6 +30,7 @@ const CardModul: FC<CardModulProps> = ({
   thumbnail,
   goPdf,
   url,
+  onDelete,
 }) => {
   const detailProfile = () => {
     window.location.href = "/detailProfileSiswa";
@@ -103,7 +103,7 @@ const CardModul: FC<CardModulProps> = ({
           label="Hapus Modul"
           textColor="text-Error-40"
           icon={MdDelete}
-          onClick={onClick}
+          onClick={onDelete}
         />
         <Button
           type="button"

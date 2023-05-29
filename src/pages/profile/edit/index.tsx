@@ -32,8 +32,6 @@ const schema = yup.object().shape({
     .required("tidak boleh kosong")
     .min(3, "judul minimal 3 karakter"),
   email: yup.string().required(),
-  role: yup.string(),
-  mapel: yup.string().required(),
   nomor_telepon: yup.string().required().max(13, "maksimal 13 karakter"),
   lulusan: yup.string().max(13, "maksimal 13 karakter"),
   alamat: yup.string().required(),
@@ -95,11 +93,6 @@ const UserEdit: FC<UserEditProps> = ({ userId, onClose, onSucsess, data }) => {
     };
   }, [setIsListOpen, componentRef]);
 
-  const roleOptions = [
-    { value: "SUPER", label: "SUPER ADMIN" },
-    { value: "ADMIN", label: "ADMIN" },
-    { value: "TENTOR", label: "TENTOR" },
-  ];
 
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -130,30 +123,17 @@ const UserEdit: FC<UserEditProps> = ({ userId, onClose, onSucsess, data }) => {
     setCheckValueUser(value);
   };
 
-  const selectRole = (role: string) => {
-    setValue("role", role);
-    setIsListOpen(false);
-  };
-
-  const selectMapel = (mapel: string) => {
-    setValue("mapel", mapel);
-    setIsListOpenMapel(false);
-  };
 
 
-  const getRoleLabel = (value: string) => {
-    const option = roleOptions.find((option) => option.value === value);
-    return option ? option.label : "";
-  };
 
   // set value mapel dengan data mapel yang sudah ada
-  useEffect(() => {
-    setValue("mapel", data?.mapel?.id);
-  }, [data, setValue]);
 
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
-    const { name, email, role, lulusan, nomor_telepon, mapel, alamat, image } = data;
+
+    console.log(data);
+
+    const { name, email,  lulusan, nomor_telepon, alamat, image } = data;
 
     console.log(data);
     if (!image || image.length === 0) {
@@ -166,8 +146,6 @@ const UserEdit: FC<UserEditProps> = ({ userId, onClose, onSucsess, data }) => {
         await axios.put(`/api/user/noimg/${userId}`, {
           name,
           email,
-          role,
-          mapel_id: mapel,
           nomor_telepon,
           universitas: lulusan,
           alamat,
@@ -227,8 +205,6 @@ const UserEdit: FC<UserEditProps> = ({ userId, onClose, onSucsess, data }) => {
         await axios.put(`/api/user/${userId}`, {
           name,
           email,
-          role,
-          mapel_id: mapel,
           nomor_telepon,
           universitas: lulusan,
           alamat,
@@ -274,14 +250,6 @@ const UserEdit: FC<UserEditProps> = ({ userId, onClose, onSucsess, data }) => {
       }
     }
   };
-  const roleLabel =
-    data?.role === "SUPER"
-      ? "SUPER ADMIN"
-      : data?.role === "ADMIN"
-        ? "ADMIN"
-        : data?.role === "TENTOR"
-          ? "TENTOR"
-          : "Pilih peran";
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex gap-10">
