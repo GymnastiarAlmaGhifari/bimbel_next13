@@ -93,6 +93,7 @@ const DetailAnggota: FC<Siswa> = () => {
                             nama_siswa={siswa.nama}
                             nama_kelompok={siswa.nama_kelompok}
                             hp={siswa.nomor_telepon}
+                            gambar={siswa.image}
                           />
                         ))}
                       </>

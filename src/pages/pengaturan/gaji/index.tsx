@@ -16,6 +16,8 @@ import {
 } from "@/pages/components/modal/Modal";
 import GajiEdit from "./edit";
 import RekeningEdit from "./editRekening";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 
 type GajiProps = {
   id?: string;
@@ -61,6 +63,56 @@ const Gaji: FC<GajiProps> = () => {
       clearTimeout(timeoutId);
     };
   }, [showSuccess]);
+
+  const session = useSession();
+
+  const router = useRouter();
+
+  if (session.data?.user.role === "ADMIN" ||
+    session.data?.user.role === "TENTOR"
+  ) return (
+    <div className="flex flex-row h-screen font-mulish">
+      <Sidebar />
+      <div className="w-full flex flex-col">
+        <Navbar />
+        <div className="h-full p-5 bg-Neutral-95 overflow-auto">
+          <div className="flex flex-col h-full p-4 gap-4 bg-Neutral-100 rounded-lg overflow-auto">
+            <NavbarPengaturan />
+            {/* berikan tulisan hanya super admin yang bisa mengakses halaman ini silahkan kembali */}
+            <div className="flex flex-col items-center justify-center">
+              <h1 className="text-2xl font-bold text-gray-500">
+                Hanya Super Admin yang bisa mengakses halaman ini
+              </h1>
+
+              {session.data?.user.role === "TENTOR" && (
+                <Button
+                  label="Kembali"
+                  bgColor="bg-Primary-100"
+                  textColor="text-white"
+                  brColor="border-transparent"
+                  type="button"
+                  onClick={() => router.push("/dashboard")}
+                />
+              )}
+
+              {session.data?.user.role === "ADMIN" && (
+                <Button
+                  label="Kembali"
+                  bgColor="bg-Primary-100"
+                  textColor="text-white"
+                  brColor="border-transparent"
+                  type="button"
+                  onClick={() => router.push("/pengaturan/program")}
+                />
+              )}
+
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
 
   return (
     <div className="flex flex-row h-screen font-mulish">
