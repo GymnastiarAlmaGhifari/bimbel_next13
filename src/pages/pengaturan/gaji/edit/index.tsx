@@ -19,7 +19,6 @@ interface GajiEdit {
 
 const schema = yup.object().shape({
     gaji: yup.string().required(),
-    role: yup.string().required(),
 });
 
 type FormData = yup.InferType<typeof schema>;
@@ -51,12 +50,18 @@ const GajiEdit: FC<GajiEdit> = ({ gajiId, data, onClose, onSucsess }) => {
 
     const onSubmit: SubmitHandler<FormData> = async (data) => {
 
+        const { gaji } = data;
+
+        console.log(data);
+
         setIsLoading(true);
 
 
         const payload = {
             jumlah_gaji: parseInt(data.gaji.replace(/\D/g, "")),
         };
+
+        console.log(payload);
         try {
             await axios.put(`/api/setgaji/${gajiId}`, payload);
             mutate("/api/setgaji");
@@ -71,7 +76,6 @@ const GajiEdit: FC<GajiEdit> = ({ gajiId, data, onClose, onSucsess }) => {
 
     return (
         <form onSubmit={handleSubmit(onSubmit)} className="flex gap-10">
-
             <Input
                 id="gaji"
                 label="Gaji"
@@ -83,15 +87,27 @@ const GajiEdit: FC<GajiEdit> = ({ gajiId, data, onClose, onSucsess }) => {
                 }
                 defaultValue={formattedgaji}
             />
-            <div className="flex flex-row justify-end">
+            <div className="flex flex-row justify-end gap-4">
                 <Button
-                    type="submit"
+                    center
+                    bgColor="bg-Neutral-70"
+                    brColor=""
+                    label="Batal"
+                    textColor="text-Neutral-30"
+                    type="button"
+                    onClick={onClose}
+                />
+                <Button
                     bgColor="bg-Tertiary-50"
                     brColor=""
                     label="Konfirmasi"
                     textColor="text-Neutral-100"
+                    type="submit"
                     withBgColor
                 />
+                {/* <button type="submit" className="btn btn-primary btn-block">
+                Simpan
+              </button> */}
             </div>
 
         </form>
