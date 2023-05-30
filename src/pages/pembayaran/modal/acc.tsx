@@ -5,10 +5,10 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import Button from "@/pages/components/buttons/Button";
 
 interface Acc {
-  idAcc: string;
-  data: any;
-  onClose: () => void;
-  // onSuccess: () => void;
+    idAcc: string;
+    data: any;
+    onClose: () => void;
+    // onSuccess: () => void;
 }
 
 const Acc: FC<Acc> = ({ idAcc, data, onClose,
@@ -100,18 +100,9 @@ const Acc: FC<Acc> = ({ idAcc, data, onClose,
                         />
                     </div>
                 </div>
-              ) : (
-                "Konfirmasi"
-              )
-            }
-            textColor="text-Neutral-100"
-            withBgColor
-            // disabled={isLoading} // Disable the button when loading is true
-          />
+            </div>
         </div>
-      </div>
-    </div>
-  );
-};
+    )
+}
 
-export default Acc;
+export default Acc
