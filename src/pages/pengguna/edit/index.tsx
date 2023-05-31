@@ -288,10 +288,10 @@ const UserEdit: FC<UserEditProps> = ({ userId, onClose, onSucsess, data }) => {
     data?.role === "SUPER"
       ? "SUPER ADMIN"
       : data?.role === "ADMIN"
-      ? "ADMIN"
-      : data?.role === "TENTOR"
-      ? "TENTOR"
-      : "Pilih peran";
+        ? "ADMIN"
+        : data?.role === "TENTOR"
+          ? "TENTOR"
+          : "Pilih peran";
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex gap-10">
@@ -312,7 +312,7 @@ const UserEdit: FC<UserEditProps> = ({ userId, onClose, onSucsess, data }) => {
           <div>
             <Image
               src={
-                "/api/user/img?img=" + data?.image || "/img/user/default.png"
+                data?.image ? "/api/user/img?img=" + data?.image : "/img/user/default.png"
               }
               alt="Gambar"
               width={200}
@@ -390,11 +390,10 @@ const UserEdit: FC<UserEditProps> = ({ userId, onClose, onSucsess, data }) => {
             <div className="relative flex flex-col gap-2">
               <button
                 type="button"
-                className={` w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${
-                  isListOpen
-                    ? "border-[2px] border-Primary-50 bg-Primary-95"
-                    : "bg-Neutral-95"
-                }`}
+                className={` w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${isListOpen
+                  ? "border-[2px] border-Primary-50 bg-Primary-95"
+                  : "bg-Neutral-95"
+                  }`}
                 onClick={toggleList}
               >
                 {getRoleLabel(watch("role") ?? "") || roleLabel}
@@ -410,11 +409,10 @@ const UserEdit: FC<UserEditProps> = ({ userId, onClose, onSucsess, data }) => {
                       <li key={option.value}>
                         <button
                           type="button"
-                          className={`w-full text-left px-2 py-1 rounded-full ${
-                            watch("role") === option.value
-                              ? "text-Primary-90 bg-Primary-20"
-                              : "text-Primary-20 hover:bg-Primary-95"
-                          }`}
+                          className={`w-full text-left px-2 py-1 rounded-full ${watch("role") === option.value
+                            ? "text-Primary-90 bg-Primary-20"
+                            : "text-Primary-20 hover:bg-Primary-95"
+                            }`}
                           onClick={() => selectRole(option.value)}
                         >
                           {option.label}
@@ -428,11 +426,10 @@ const UserEdit: FC<UserEditProps> = ({ userId, onClose, onSucsess, data }) => {
                         <li key={option.value}>
                           <button
                             type="button"
-                            className={`w-full text-left px-2 py-1 rounded-full ${
-                              watch("role") === option.value
-                                ? "text-Primary-90 bg-Primary-20"
-                                : "text-Primary-20 hover:bg-Primary-95"
-                            }`}
+                            className={`w-full text-left px-2 py-1 rounded-full ${watch("role") === option.value
+                              ? "text-Primary-90 bg-Primary-20"
+                              : "text-Primary-20 hover:bg-Primary-95"
+                              }`}
                             onClick={() => selectRole(option.value)}
                           >
                             {option.label}
@@ -454,11 +451,10 @@ const UserEdit: FC<UserEditProps> = ({ userId, onClose, onSucsess, data }) => {
             <div className="relative flex flex-col gap-2">
               <button
                 type="button"
-                className={` w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${
-                  isListOpenMapel
-                    ? "border-[2px] border-Primary-50 bg-Primary-95"
-                    : "bg-Neutral-95"
-                }`}
+                className={` w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${isListOpenMapel
+                  ? "border-[2px] border-Primary-50 bg-Primary-95"
+                  : "bg-Neutral-95"
+                  }`}
                 onClick={toggleListMapel}
               >
                 {/* buat label */}
@@ -486,11 +482,10 @@ const UserEdit: FC<UserEditProps> = ({ userId, onClose, onSucsess, data }) => {
                       <li key={mapelItem.id}>
                         <button
                           type="button"
-                          className={`w-full text-left px-2 py-1 rounded-full ${
-                            watch("mapel") === mapelItem.id
-                              ? "text-Primary-90 bg-Primary-20"
-                              : "text-Primary-20 hover:bg-Primary-95"
-                          }`}
+                          className={`w-full text-left px-2 py-1 rounded-full ${watch("mapel") === mapelItem.id
+                            ? "text-Primary-90 bg-Primary-20"
+                            : "text-Primary-20 hover:bg-Primary-95"
+                            }`}
                           onClick={() => selectMapel(mapelItem.id)}
                         >
                           {mapelItem.nama_mapel}

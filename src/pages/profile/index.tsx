@@ -60,7 +60,7 @@ const Profile: FC<Profile> = () => {
                       <div className="flex flex-col gap-6 w-max items-center">
                         <div className="h-72 w-60 rounded-lg ring-[8px] ring-Neutral-100 ">
                           <Image
-                            src={"/api/user/img?img=" + profile?.image ? "/api/user/img?img=" + profile?.image : "/upload/img/user/default.png"}
+                            src={profile?.image ? "/api/user/img?img=" + profile?.image : "/img/user/default.png"}
                             alt="Foto profile"
                             width={100}
                             height={100}
@@ -146,15 +146,15 @@ const Profile: FC<Profile> = () => {
               {
                 edit && (
                   <ModalDetail
-                  titleModal="Edit Profile"
-                  onClose={() => setEdit(null)}   
-                  >
-                  <EditProfile
-                    data={profile}
+                    titleModal="Edit Profile"
                     onClose={() => setEdit(null)}
-                    onSucsess={() => setEdit(null)}
-                    userId={edit}
-                  />
+                  >
+                    <EditProfile
+                      data={profile}
+                      onClose={() => setEdit(null)}
+                      onSucsess={() => setEdit(null)}
+                      userId={edit}
+                    />
                   </ModalDetail>
                 )
 

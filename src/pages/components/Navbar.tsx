@@ -51,13 +51,9 @@ const Navbar = () => {
     setIsOpen(!isOpen);
   };
 
-  const pindahProfil = () => {
-    window.location.href = "/profile";
-  };
-
   return (
     <div className="bg-Neutral-100 h-14 flex items-center justify-end gap-6 px-4 py-2 z-40">
-      {/* <Notification onClose={() => {}} /> */}
+      <Notification onClose={() => { }} />
       <button onClick={toggleMenu} className="relative">
         <div className="flex items-center inline-block gap-2">
           <div className="inline-block pr-2 flex flex-col">
@@ -68,7 +64,7 @@ const Navbar = () => {
           <div className="w-10 h-10 rounded-full overflow-clip scale-100 border-[1px] border-Primary-50">
             <Image
               src={
-                "/api/user/img?img=" + users?.image
+                users?.image
                   ? "/api/user/img?img=" + users?.image
                   : "/img/user/default.png"
               }
@@ -87,29 +83,31 @@ const Navbar = () => {
             ref={componentRef}
           >
             {isOpen ? (
-              <Button
-                bgColor="bg-Primary-50"
-                label="Profile"
-                widthAuto
-                brColor=""
-                textColor="text-Primary-10"
-                type="button"
-                onClick={pindahProfil}
-                icon={BsPersonFill}
-              />
+              <Link href="/profile">
+                <Button
+                  bgColor="bg-Primary-50"
+                  label="Profile"
+                  widthAuto
+                  brColor=""
+                  textColor="text-Primary-10"
+                  type="button"
+                  icon={BsPersonFill}
+                />
+              </Link>
             ) : (
               ""
             )}
             {isOpen
-              ? // <Button
-                //   bgColor="bg-Primary-50"
-                //   label="Ubah Password"
-                //   brColor=""
-                //   textColor="text-Primary-10"
-                //   type="button"
-                //   icon={MdOutlineKey}
-                // />
-                ""
+              ?
+              <Button
+                bgColor="bg-Primary-50"
+                label="Ubah Password"
+                brColor=""
+                textColor="text-Primary-10"
+                type="button"
+                icon={MdOutlineKey}
+              />
+
               : ""}
             {isOpen ? (
               <Button

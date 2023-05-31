@@ -71,7 +71,7 @@ const Notification: FC<NotificationProps> = ({ onClose }) => {
           <IoIosNotifications size={40} />
         </div>
         <div className="h-6 w-6 bg-Error-50 rounded-full absolute flex items-center justify-center top-0 right-0 border-[2px] border-Neutral-100">
-          <span className="text-xs font-semibold text-Neutral-100">10</span>
+          <span className="text-xs font-semibold text-Neutral-100">{notification?.jumlah}</span>
         </div>
       </button>
       {isOpen ? (
@@ -81,7 +81,7 @@ const Notification: FC<NotificationProps> = ({ onClose }) => {
         >
           <div className="flex justify-between items-center">
             <h1 className="ml-4 font-bold text-Primary-10">
-              Notifiaction (10)x
+              Notifikasi ({notification?.jumlah})
             </h1>
             <Button
               type="button"
@@ -105,7 +105,7 @@ const Notification: FC<NotificationProps> = ({ onClose }) => {
                   </div>
                 ) : (
                   <>
-                    {notification.map((notif: NotificationProps) => (
+                    {notification.data.map((notif: NotificationProps) => (
                       <CardNotification
                         key={notif.id}
                         // bulan={notif.Bulan}
@@ -119,15 +119,15 @@ const Notification: FC<NotificationProps> = ({ onClose }) => {
                         // tanggal_approve={notif?.tanggal_approve}
                         tanggal_bayar={notif?.tanggal_bayar}
                         status={notif?.status}
-                        // tanggal_jatuh_tempo={notif?.tanggal_jatuh_tempo}
-                        // tanggal_tagihan={notif?.tanggal_tagihan}
-                        // gambar={notif?.siswa.image}
-                        // tahun={notif?.Tahun}
-                        // onClick={() =>
-                        //   setShowNota(notif)
-                        // }
-                        // onAccept={() =>
-                        //   setAcceptnotif(notif)
+                      // tanggal_jatuh_tempo={notif?.tanggal_jatuh_tempo}
+                      // tanggal_tagihan={notif?.tanggal_tagihan}
+                      // gambar={notif?.siswa.image}
+                      // tahun={notif?.Tahun}
+                      // onClick={() =>
+                      //   setShowNota(notif)
+                      // }
+                      // onAccept={() =>
+                      //   setAcceptnotif(notif)
                       />
                     ))}
                   </>

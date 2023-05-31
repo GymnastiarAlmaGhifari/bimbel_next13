@@ -7,7 +7,7 @@ import React, { FC, useEffect, useRef, useState } from "react";
 import { HiOutlineCheck } from "react-icons/hi";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import * as yup from "yup";
 import useSWR, { mutate } from "swr";
 import fetcher from "@/libs/fetcher";
@@ -49,7 +49,7 @@ const Anggota: FC<AnggotaProps> = ({
   onSuccess,
   data,
 }) => {
-  const { data: anggota, error } = useSWR<any[]>(
+  const { data: anggota, error: errorKelompok } = useSWR<any[]>(
     `/api/kelompok/siswa/${kelompokId}`,
     fetcher,
     {
@@ -64,6 +64,7 @@ const Anggota: FC<AnggotaProps> = ({
   });
 
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const {
     register,
@@ -104,6 +105,7 @@ const Anggota: FC<AnggotaProps> = ({
     console.log(checkboxes);
 
     setIsLoading(true); // Set loading state to true
+    setError(null); // Reset error state
 
     try {
       await axios.put(`/api/kelompok/siswa/${kelompokId}`, {
@@ -122,14 +124,38 @@ const Anggota: FC<AnggotaProps> = ({
       setIsLoading(false); // Set loading state to false
       onSuccess(); // Trigger onSuccess function from parent component
       onClose(); // Trigger onClose function from parent component
-    } catch (error) {
-      console.log(error);
+    } catch (error: any) {
+      console.error(error);
+
+      if (axios.isAxiosError(error)) {
+        const axiosError = error as AxiosError;
+        if (axiosError.response) {
+          const responseData = axiosError.response.data as { message: string };
+
+          // Extract the main error message from the response data
+          const errorMessage = responseData.message;
+
+          setError(`${errorMessage}`);
+        } else if (axiosError.request) {
+
+          const request = axiosError.request.toString();
+          setError(`${request}`);
+        } else {
+
+          const request = axiosError.message.toString();
+          setError(`${request}`);
+        }
+      } else {
+        console.log("Error:", error.message);
+        setError("An unknown error occurred.");
+      }
       setIsLoading(false); // Set loading state to false
     }
   };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
+      {error && <p className="text-Error-50 text-sm">{error}</p>}
       <div className="grid grid-cols-6">
         {anggota && anggota.length > 0 ? (
           anggota.map((item) => (

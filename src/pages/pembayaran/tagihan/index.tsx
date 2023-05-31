@@ -60,13 +60,13 @@ const Pembayaran: FC<Pembayaran> = () => {
             <NavbarPembayaran />
             <div className="flex flex-col h-full bg-Neutral-100 py-4 gap-4 rounded-lg overflow-auto">
               <HeadTable
-                noSearch
                 label="Tagihan"
                 riwayat
                 onClick={() => setShowCreate(true)}
                 onHistory={() => {
 
                 }}
+                url="/pembayaran/riwayatPembayaran"
               />
               <div className="flex flex-col rounded-bl-lg rounded-br-lg p-4 gap-4 overflow-y-auto scrollbar">
                 {pembayaran ? (

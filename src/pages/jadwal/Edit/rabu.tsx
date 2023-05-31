@@ -1,5 +1,5 @@
 import { FC, useEffect, useRef, useState } from "react";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import useSWR, { mutate } from "swr";
 import { SubmitHandler, useForm } from "react-hook-form";
 import Input from "@/pages/components/inputs/Input";
@@ -128,6 +128,8 @@ const RabuEdit: FC<RabuEdit> = ({
   const [isListOpenRuang, setIsListOpenRuang] = useState(false);
   const [isListOpenMapel, setIsListOpenMapel] = useState(false);
   const componentRef = useRef<HTMLUListElement>(null);
+
+  const [error, setError] = useState<string | null>(null);
 
   const {
     register,
@@ -280,7 +282,7 @@ const RabuEdit: FC<RabuEdit> = ({
         setCheckValueUser(jadwalIdData?.mapel_id);
       }
     }
-  }, [kelompok, setValue, data, mapel, idRuang, user]);
+  }, [kelompok, setValue, data, mapel, idRuang, user, jadwalIdData]);
 
   const [kelompokTerpilih, setKelompokTerpilih] = useState("");
 
@@ -309,6 +311,7 @@ const RabuEdit: FC<RabuEdit> = ({
     console.log("jsnnnn", payload);
 
     setIsLoading(true);
+    setError(null);
 
     try {
       const response = await axios.put(
@@ -330,8 +333,31 @@ const RabuEdit: FC<RabuEdit> = ({
 
       onSucsess();
       onClose();
-    } catch (error) {
-      console.log(error);
+    } catch (error: any) {
+      console.error(error);
+
+      if (axios.isAxiosError(error)) {
+        const axiosError = error as AxiosError;
+        if (axiosError.response) {
+          const responseData = axiosError.response.data as { message: string };
+
+          // Extract the main error message from the response data
+          const errorMessage = responseData.message;
+
+          setError(`${errorMessage}`);
+        } else if (axiosError.request) {
+
+          const request = axiosError.request.toString();
+          setError(`${request}`);
+        } else {
+
+          const request = axiosError.message.toString();
+          setError(`${request}`);
+        }
+      } else {
+        console.log("Error:", error.message);
+        setError("An unknown error occurred.");
+      }
     } finally {
       setIsLoading(false);
       onSucsess();
@@ -344,6 +370,7 @@ const RabuEdit: FC<RabuEdit> = ({
   };
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="w-max">
+      {error && <p className="text-Error-50 text-sm">{error}</p>}
       <div className="flex flex-row justify-between items-center w-full">
         <div className="flex flex-row items-center w-full">
           <div className="flex flex-col gap-4">
@@ -403,11 +430,10 @@ const RabuEdit: FC<RabuEdit> = ({
                 <div className="relative flex flex-col gap-2">
                   <button
                     type="button"
-                    className={` w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${
-                      isListOpenHari
+                    className={` w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${isListOpenHari
                         ? "border-[2px] border-Primary-50 bg-Primary-95"
                         : "bg-Neutral-95"
-                    }`}
+                      }`}
                     onClick={toggleListHari}
                   >
                     {/* isi dari watch {hari} dan isi dengan data.hari */}
@@ -426,11 +452,10 @@ const RabuEdit: FC<RabuEdit> = ({
                         <li key={option.value}>
                           <button
                             type="button"
-                            className={`w-full text-left px-2 py-1 rounded-full ${
-                              watch("hari") === option.value
+                            className={`w-full text-left px-2 py-1 rounded-full ${watch("hari") === option.value
                                 ? "text-Primary-90 bg-Primary-20"
                                 : "text-Primary-20 hover:bg-Primary-95"
-                            }`}
+                              }`}
                             onClick={() => selectHari(option.value)}
                           >
                             {option.label}
@@ -451,11 +476,10 @@ const RabuEdit: FC<RabuEdit> = ({
                 <div className="relative flex flex-col gap-1">
                   <button
                     type="button"
-                    className={` w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${
-                      isListOpenSesi
+                    className={` w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${isListOpenSesi
                         ? "border-[2px] border-Primary-50 bg-Primary-95"
                         : "bg-Neutral-95"
-                    }`}
+                      }`}
                     onClick={toggleListSesi}
                   >
                     {/* buat label */}
@@ -483,11 +507,10 @@ const RabuEdit: FC<RabuEdit> = ({
                           <li key={sesiItem.id}>
                             <button
                               type="button"
-                              className={`w-full text-left px-2 py-1 rounded-full ${
-                                watch("sesi") === sesiItem.id
+                              className={`w-full text-left px-2 py-1 rounded-full ${watch("sesi") === sesiItem.id
                                   ? "text-Primary-90 bg-Primary-20"
                                   : "text-Primary-20 hover:bg-Primary-95"
-                              }`}
+                                }`}
                               onClick={() => selectSesi(sesiItem.id)}
                             >
                               {sesiItem.nama_sesi}
@@ -512,11 +535,10 @@ const RabuEdit: FC<RabuEdit> = ({
                 <div className="relative flex flex-col gap-2 w-full">
                   <button
                     type="button"
-                    className={` w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${
-                      isListOpenRuang
+                    className={` w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${isListOpenRuang
                         ? "border-[2px] border-Primary-50 bg-Primary-95"
                         : "bg-Neutral-95"
-                    }`}
+                      }`}
                     onClick={toggleListRuang}
                     defaultValue={idRuang}
                   >
@@ -546,11 +568,10 @@ const RabuEdit: FC<RabuEdit> = ({
                           <li key={ruangItem.id}>
                             <button
                               type="button"
-                              className={`w-full text-left px-2 py-1 rounded-full ${
-                                watch("ruang") === ruangItem.id
+                              className={`w-full text-left px-2 py-1 rounded-full ${watch("ruang") === ruangItem.id
                                   ? "text-Primary-90 bg-Primary-20"
                                   : "text-Primary-20 hover:bg-Primary-95"
-                              }`}
+                                }`}
                               onClick={() => selectRuang(ruangItem.id)}
                             >
                               {ruangItem.nama_ruang}
@@ -573,11 +594,10 @@ const RabuEdit: FC<RabuEdit> = ({
                 <div className="relative flex flex-col gap-2">
                   <button
                     type="button"
-                    className={` w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${
-                      isListOpenMapel
+                    className={` w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${isListOpenMapel
                         ? "border-[2px] border-Primary-50 bg-Primary-95"
                         : "bg-Neutral-95"
-                    }`}
+                      }`}
                     onClick={toggleListMapel}
                   >
                     {/* buat label */}
@@ -599,11 +619,10 @@ const RabuEdit: FC<RabuEdit> = ({
                         <li key={mapelItem.id}>
                           <button
                             type="button"
-                            className={`w-full text-left px-2 py-1 rounded-full ${
-                              watch("mapel") === mapelItem.id
+                            className={`w-full text-left px-2 py-1 rounded-full ${watch("mapel") === mapelItem.id
                                 ? "text-Primary-90 bg-Primary-20"
                                 : "text-Primary-20 hover:bg-Primary-95"
-                            }`}
+                              }`}
                             onClick={() => {
                               selectMapel(mapelItem.id);
                               handleCheckChangeUser(mapelItem.id);
