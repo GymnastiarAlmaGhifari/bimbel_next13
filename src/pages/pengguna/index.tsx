@@ -9,7 +9,6 @@ import Create from "./create";
 import HeadTable from "../components/HeadTable";
 import UserCard from "../components/card/CardPengguna";
 import { useSession } from "next-auth/react";
-import UserEditGambar from "./edit/editgambar";
 import Search from "../components/Search";
 import DeletePengguna from "./delete";
 
