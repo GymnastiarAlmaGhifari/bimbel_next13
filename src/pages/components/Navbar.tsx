@@ -13,6 +13,7 @@ import useSWR, { mutate } from "swr";
 import fetcher from "@/libs/fetcher";
 import Notification from "./Notification";
 
+
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
 

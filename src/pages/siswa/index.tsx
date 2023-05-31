@@ -53,10 +53,10 @@ const Siswa: FC<Siswa> = () => {
 
   const { data: siswa, error } = useSWR<Siswa[]>("/api/siswa", fetcher, {});
 
-  let filteredSiswa = siswa;
+  let filteredSiswa: Siswa[] | undefined = siswa;
 
-  if (debouncedValue) {
-    filteredSiswa = siswa?.filter((siswa) =>
+  if (debouncedValue && filteredSiswa) {
+    filteredSiswa = filteredSiswa.filter((siswa) =>
       siswa.nama.toLowerCase().includes(debouncedValue.toLowerCase())
     );
   }
@@ -88,6 +88,33 @@ const Siswa: FC<Siswa> = () => {
     setSelectedDetail(null);
   };
 
+  const PAGE_SIZE = 3;
+  const MAX_PAGE_DISPLAY = 5; // Jumlah maksimal nomor halaman yang ditampilkan
+
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
+
+  let paginatedSiswa: Siswa[] = [];
+  let totalPages = 0;
+  let pageNumbers: number[] = [];
+  if (filteredSiswa) {
+    const startIndex = (currentPage - 1) * PAGE_SIZE;
+    const endIndex = startIndex + PAGE_SIZE;
+    paginatedSiswa = filteredSiswa.slice(startIndex, endIndex);
+    totalPages = Math.ceil(filteredSiswa.length / PAGE_SIZE);
+
+    const startPage = Math.max(currentPage - Math.floor(MAX_PAGE_DISPLAY / 2), 1);
+    const endPage = Math.min(startPage + MAX_PAGE_DISPLAY - 1, totalPages);
+
+    pageNumbers = Array.from({ length: endPage - startPage + 1 }, (_, i) => startPage + i);
+  }
+
+  const isFirstPage = currentPage === 1;
+  const isLastPage = currentPage === totalPages;
+
   return (
     <div className="flex flex-row h-screen font-mulish">
       <Sidebar />
@@ -101,9 +128,9 @@ const Siswa: FC<Siswa> = () => {
               onChange={handleInputChange}
             />
             <div className="flex flex-col rounded-bl-lg rounded-br-lg p-4 gap-4 overflow-y-auto scrollbar">
-              {filteredSiswa ? (
+              {paginatedSiswa ? (
                 <>
-                  {filteredSiswa.length === 0 ? (
+                  {paginatedSiswa.length === 0 ? (
                     <div className="flex flex-col justify-center items-center">
                       <p className="text-2xl font-bold text-Neutral-600">
                         Data Kosong
@@ -114,7 +141,7 @@ const Siswa: FC<Siswa> = () => {
                     </div>
                   ) : (
                     <>
-                      {filteredSiswa.map((siswa) => (
+                      {paginatedSiswa.map((siswa) => (
                         <CardSiswa
                           key={siswa.id}
                           tipe={siswa.kelompok?.program.tipe}
@@ -151,6 +178,34 @@ const Siswa: FC<Siswa> = () => {
                     </div>
                   )}
                 </>
+              )}
+            </div>
+            <div className="flex justify-center">
+              {!isFirstPage && (
+                <button
+                  className="bg-blue-500 text-white px-4 py-2 rounded mr-2"
+                  onClick={() => handlePageChange(currentPage - 1)}
+                >
+                  Previous
+                </button>
+              )}
+              {pageNumbers.map((page) => (
+                <button
+                  key={page}
+                  className={`bg-blue-500 text-white px-4 py-2 rounded mr-2 ${currentPage === page ? "bg-blue-700" : ""
+                    }`}
+                  onClick={() => handlePageChange(page)}
+                >
+                  {page}
+                </button>
+              ))}
+              {!isLastPage && (
+                <button
+                  className="bg-blue-500 text-white px-4 py-2 rounded"
+                  onClick={() => handlePageChange(currentPage + 1)}
+                >
+                  Next
+                </button>
               )}
             </div>
           </div>
@@ -192,27 +247,27 @@ const Siswa: FC<Siswa> = () => {
           wAuto
         >
           <DetailSiswa
-          idSiswa={selectedDetail.id}
-          onClose={
-            () => setSelectedDetail(null)
-          }
-          
+            idSiswa={selectedDetail.id}
+            onClose={
+              () => setSelectedDetail(null)
+            }
+
           />
         </ModalDetail>
       )}
-            {selectedDelete && (
+      {selectedDelete && (
         <ModalDetail titleModal="DeleselectedDelete Siswa" onClose={backSiswa}
           center silang wAuto
         >
           <DeleteSiswa
-              idSiswa={selectedDelete.id}
-              onClose={
-                () => setSelectedDelete(null)
-              }
-              onSuccess={
-                () => setShowSuccess(true)
-              }
-              data={selectedDelete}
+            idSiswa={selectedDelete.id}
+            onClose={
+              () => setSelectedDelete(null)
+            }
+            onSuccess={
+              () => setShowSuccess(true)
+            }
+            data={selectedDelete}
           />
         </ModalDetail>
       )}
