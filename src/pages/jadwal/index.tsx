@@ -472,7 +472,7 @@ const Jadwal: FC<Jadwal> = () => {
                         {/* tambahkan load
                          */}
                         {seninloading ? (
-                          <div className="bg-Neutral-80 rounded-lg h-full text-Tertiary-90 font-bold w-full flex items-center justify-center shadow-[0px_0px_10px_5px_rgba(149,146,146,.25)] relative">
+                          <div className="bg-Neutral-80 rounded-lg h-full text-Tertiary-90 font-bold w-full flex items-center justify-center relative">
                             <ItemJadwalLoading />
                           </div>
                         ) : (
@@ -504,7 +504,7 @@ const Jadwal: FC<Jadwal> = () => {
                           </>
                         )}
                         {selasaLoading ? (
-                          <div className="bg-orange-400 rounded-lg h-full text-Tertiary-90 font-bold w-full flex items-center justify-center shadow-[0px_0px_10px_5px_rgba(149,146,146,.25)] relative">
+                          <div className="bg-Neutral-80 rounded-lg h-full text-Tertiary-90 font-bold w-full flex items-center justify-center relative">
                             <ItemJadwalLoading />
                           </div>
                         ) : (
@@ -536,7 +536,7 @@ const Jadwal: FC<Jadwal> = () => {
                           </>
                         )}
                         {rabuLoading ? (
-                          <div className="bg-orange-400 rounded-lg h-full text-Tertiary-90 font-bold w-full flex items-center justify-center shadow-[0px_0px_10px_5px_rgba(149,146,146,.25)] relative">
+                          <div className="bg-Neutral-80 rounded-lg h-full text-Tertiary-90 font-bold w-full flex items-center justify-center relative">
                             <ItemJadwalLoading />
                           </div>
                         ) : (
@@ -568,7 +568,7 @@ const Jadwal: FC<Jadwal> = () => {
                           </>
                         )}
                         {kamisLoading ? (
-                          <div className="bg-orange-400 rounded-lg h-full text-Tertiary-90 font-bold w-full flex items-center justify-center shadow-[0px_0px_10px_5px_rgba(149,146,146,.25)] relative">
+                          <div className="bg-Neutral-80 rounded-lg h-full text-Tertiary-90 font-bold w-full flex items-center justify-center relative">
                             <ItemJadwalLoading />
                           </div>
                         ) : (
@@ -600,7 +600,7 @@ const Jadwal: FC<Jadwal> = () => {
                           </>
                         )}
                         {jumatLoading ? (
-                          <div className="bg-orange-400 rounded-lg h-full text-Tertiary-90 font-bold w-full flex items-center justify-center shadow-[0px_0px_10px_5px_rgba(149,146,146,.25)] relative">
+                          <div className="bg-Neutral-80 rounded-lg h-full text-Tertiary-90 font-bold w-full flex items-center justify-center relative">
                             <ItemJadwalLoading />
                           </div>
                         ) : (
@@ -632,7 +632,7 @@ const Jadwal: FC<Jadwal> = () => {
                           </>
                         )}
                         {sabtuLoading ? (
-                          <div className="bg-orange-400 rounded-lg h-full text-Tertiary-90 font-bold w-full flex items-center justify-center shadow-[0px_0px_10px_5px_rgba(149,146,146,.25)] relative">
+                          <div className="bg-Neutral-80 rounded-lg h-full text-Tertiary-90 font-bold w-full flex items-center justify-center relative">
                             <ItemJadwalLoading />
                           </div>
                         ) : (
@@ -664,7 +664,7 @@ const Jadwal: FC<Jadwal> = () => {
                           </>
                         )}
                         {mingguLoading ? (
-                          <div className="bg-orange-400 rounded-lg h-full text-Tertiary-90 font-bold w-full flex items-center justify-center shadow-[0px_0px_10px_5px_rgba(149,146,146,.25)] relative">
+                          <div className="bg-Neutral-80 rounded-lg h-full text-Tertiary-90 font-bold w-full flex items-center justify-center relative">
                             <ItemJadwalLoading />
                           </div>
                         ) : (

@@ -5,6 +5,7 @@ import Router from "next/router";
 import { useEffect, useState } from "react";
 import Input from "../components/inputs/Input";
 import Button from "../components/buttons/Button";
+import Image from "next/image";
 
 const Login = () => {
   useEffect(() => {
@@ -57,86 +58,91 @@ const Login = () => {
   };
 
   return (
-    <div className="h-screen flex  px-6 bg-gradient-to-b from-Tertiary-50 to-Primary-60 font-mulish">
-      <div className="w-full max-w-md m-auto">
-        <form
-          onSubmit={handleSubmit}
-          className="w-96 px-6 pt-6 pb-8 flex flex-col gap-2 bg-Neutral-100/10 rounded-lg"
-          style={shadowStyle}
+    <div className="h-screen flex items-center justify-center bg-gradient-to-b from-Tertiary-50 to-Primary-60 font-mulish relative ">
+      <form
+        onSubmit={handleSubmit}
+        className="w-96 px-6 h-max pt-6 pb-8 flex flex-col gap-2 bg-Neutral-100/10 rounded-lg backdrop-blur
+          absolute z-50"
+        style={shadowStyle}
+      >
+        <div className="mb-4">
+          <h2 className="text-center text-3xl font-bold text-Neutral-100">
+            Login
+          </h2>
+          <label
+            className="block text-sm font-bold mb-2 text-Neutral-100"
+            htmlFor="email"
+          >
+            Email
+          </label>
+          <input
+            className="bg-Neutral-95
+              peer
+              h-10
+              w-full
+              px-4
+              py-2
+              rounded-full
+              outline-none
+              transition
+              box-border
+              disabled:opacity-70
+              disabled:cursor-not-allowed
+              focus:border-[2px] focus:border-Primary-50 focus:bg-Primary-99"
+            id="email"
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+        </div>
+        <div>
+          <label
+            className="block text-Neutral-100 text-sm font-bold mb-2"
+            htmlFor="password"
+          >
+            Password
+          </label>
+          <input
+            className="bg-Neutral-95
+              peer
+              h-10
+              w-full
+              px-4
+              py-2
+              rounded-full
+              outline-none
+              transition
+              box-border
+              disabled:opacity-70
+              disabled:cursor-not-allowed
+              focus:border-[2px] focus:border-Primary-50 focus:bg-Primary-99"
+            id="password"
+            type="password"
+            placeholder="******************"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+        </div>
+        <p className="text-red-500 text-xs italic">{error}</p>
+        <a
+          className="inline-block align-baseline text-sm text-right text-Neutral-100 hover:text-blue-800"
+          href="#"
         >
-          <div className="mb-4">
-            <h2 className="text-center text-3xl font-bold text-Neutral-100">
-              Login
-            </h2>
-            <label
-              className="block text-sm font-bold mb-2 text-Neutral-100"
-              htmlFor="email"
-            >
-              Email
-            </label>
-            <input
-              className="bg-Neutral-95
-              peer
-              h-10
-              w-full
-              px-4
-              py-2
-              rounded-full
-              outline-none
-              transition
-              box-border
-              disabled:opacity-70
-              disabled:cursor-not-allowed
-              focus:border-[2px] focus:border-Primary-50 focus:bg-Primary-99"
-              id="email"
-              type="email"
-              placeholder="Email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-          </div>
-          <div>
-            <label
-              className="block text-Neutral-100 text-sm font-bold mb-2"
-              htmlFor="password"
-            >
-              Password
-            </label>
-            <input
-              className="bg-Neutral-95
-              peer
-              h-10
-              w-full
-              px-4
-              py-2
-              rounded-full
-              outline-none
-              transition
-              box-border
-              disabled:opacity-70
-              disabled:cursor-not-allowed
-              focus:border-[2px] focus:border-Primary-50 focus:bg-Primary-99"
-              id="password"
-              type="password"
-              placeholder="******************"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-          </div>
-          <p className="text-red-500 text-xs italic">{error}</p>
-          <a
-            className="inline-block align-baseline text-sm text-right text-Neutral-100 hover:text-blue-800"
-            href="#"
-          >
-            Forgot Password?
-          </a>
-          <button
-            className="bg-Primary-50 hover:bg-Primary-50 text-Neutral-100 font-bold py-2 px-4 rounded-full focus:outline-none focus:shadow-outline"
-            type="submit"
-          >
-            Sign In
-          </button>
-        </form>
+          Forgot Password?
+        </a>
+        <button
+          className="bg-Primary-50 hover:bg-Primary-50 text-Neutral-100 font-bold py-2 px-4 rounded-full focus:outline-none focus:shadow-outline"
+          type="submit"
+        >
+          Sign In
+        </button>
+      </form>
+      <div className="w-full h-full overflow-clip absolute">
+        <Image alt="" src={"/shape1_login.svg"} width={500} height={500} className="object-cover w-full h-full"/>
+      </div>
+      <div className="w-full h-full overflow-clip">
+        <Image alt="" src={"/shape2_login.svg"} width={500} height={500} className="object-cover w-full h-full"/>
       </div>
     </div>
   );

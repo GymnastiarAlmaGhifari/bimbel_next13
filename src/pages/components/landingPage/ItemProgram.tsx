@@ -5,7 +5,7 @@ import { IoIosArrowForward } from "react-icons/io";
 
 export default function ItemProgram() {
   return (
-    <div className="bg-white rounded-lg pb-3 h-auto overflow-hidden w-full ">
+    <div className="bg-Neutral-100 rounded-lg pb-3 h-auto overflow-hidden w-full ">
       <div className="relative">
         <Image
           className="w-full"
