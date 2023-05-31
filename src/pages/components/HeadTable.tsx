@@ -22,10 +22,12 @@ interface HeadTableProps {
   label: string;
   onChange?: (value: string) => void;
   onHistory?: () => void;
+  url?: string;
   nama_kelompok?: string;
 }
 
 const HeadTable: React.FC<HeadTableProps> = ({
+  url,
   role,
   withfilter,
   onClick,
@@ -89,7 +91,7 @@ const HeadTable: React.FC<HeadTableProps> = ({
       </div>
       <div className="flex gap-4">
         {riwayat ? (
-          <Link href={"/pembayaran/riwayatPembayaran"}>
+          <Link href={`${url}`}>
             <Button
               type="button"
               brColor="border-Tertiary-50"
@@ -97,7 +99,12 @@ const HeadTable: React.FC<HeadTableProps> = ({
               bgColor="bg-Tertiary-50"
               label="Riwayat Pembayaran"
               icon={MdHistory}
-              onClick={onHistory}
+              onClick={() => {
+                {
+
+                }
+              }
+              }
               outlined
             />
           </Link>

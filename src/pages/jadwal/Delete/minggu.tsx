@@ -1,5 +1,5 @@
 import { FC, useEffect, useRef, useState } from "react";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import Button from "@/pages/components/buttons/Button";
 import { mutate } from "swr";
 
@@ -23,9 +23,11 @@ const DeleteMinggu: FC<DeleteMingguProps> = ({
   onSuccess,
 }) => {
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const onSubmit = async () => {
     setIsLoading(true); // Set loading state to true
+    setError(null); // Set error state to null
     try {
       const { data } = await axios.delete(`/api/jadwaldetail/${jadwalId}`);
       mutate("/api/jadwal");
@@ -34,8 +36,31 @@ const DeleteMinggu: FC<DeleteMingguProps> = ({
 
       onSuccess();
       onClose();
-    } catch (error) {
-      console.log(error);
+    } catch (error: any) {
+      console.error(error);
+
+      if (axios.isAxiosError(error)) {
+        const axiosError = error as AxiosError;
+        if (axiosError.response) {
+          const responseData = axiosError.response.data as { message: string };
+
+          // Extract the main error message from the response data
+          const errorMessage = responseData.message;
+
+          setError(`${errorMessage}`);
+        } else if (axiosError.request) {
+
+          const request = axiosError.request.toString();
+          setError(`${request}`);
+        } else {
+
+          const request = axiosError.message.toString();
+          setError(`${request}`);
+        }
+      } else {
+        console.log("Error:", error.message);
+        setError("An unknown error occurred.");
+      }
     } finally {
       setIsLoading(true); // Set loading state to true
       onSuccess();
@@ -44,6 +69,7 @@ const DeleteMinggu: FC<DeleteMingguProps> = ({
 
   return (
     <div className="flex flex-col gap-6">
+      {error && <p className="text-Error-50 text-sm">{error}</p>}
       <p className="text-center">
         Apakah Anda yakin untuk menghapus jadwal pada hari{" "}
         <span className="font-semibold">{hari}</span>, dengan sesi{" "}

@@ -131,10 +131,10 @@ const Dashboard = () => {
                     <CardDashboard
                       key={item.id}
                       nama_kelompok={item.kelompok.nama_kelompok}
-                      nama_mapel={item.mapel.nama_mapel}
-                      nama_tentor={item.user.name}
-                      nama_sesi={item.sesi.nama_sesi}
-                      nama_program={item.kelompok.program.nama_program}
+                      nama_mapel={item.mapel?.nama_mapel}
+                      nama_tentor={item.user?.name}
+                      nama_sesi={item.sesi?.nama_sesi}
+                      nama_program={item.kelompok?.program.nama_program}
                     />
                   ))}
                 </div>

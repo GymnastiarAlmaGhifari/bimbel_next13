@@ -6,6 +6,7 @@ import Input from "@/pages/components/inputs/Input";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import Button from "@/pages/components/buttons/Button";
+import { BiHide, BiShow } from "react-icons/bi";
 
 interface UserCreateProps {
   onClose: () => void;
@@ -37,6 +38,14 @@ type FormData = yup.InferType<typeof schema>;
 const CreateSiswa: FC<UserCreateProps> = ({ onClose, onSucsess }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [showPassword, setShowPassword] = useState(false);
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const passwordIcon = showPassword ? <BiHide /> : <BiShow />;
+
 
   const {
     register,
@@ -72,25 +81,20 @@ const CreateSiswa: FC<UserCreateProps> = ({ onClose, onSucsess }) => {
       if (axios.isAxiosError(error)) {
         const axiosError = error as AxiosError;
         if (axiosError.response) {
-          console.log("Response data:", axiosError.response.data);
-          console.log("Response status:", axiosError.response.status);
-
           const responseData = axiosError.response.data as { message: string };
 
           // Extract the main error message from the response data
           const errorMessage = responseData.message;
 
-          setError(`An error occurred: ${errorMessage}`);
+          setError(`${errorMessage}`);
         } else if (axiosError.request) {
-          console.log("No response received:", axiosError.request);
 
           const request = axiosError.request.toString();
-          setError(`No response received: ${request}`);
+          setError(`${request}`);
         } else {
-          console.log("Error setting up the request:", axiosError.message);
 
           const request = axiosError.message.toString();
-          setError(`Error setting up the request: ${request}`);
+          setError(`${request}`);
         }
       } else {
         console.log("Error:", error.message);
@@ -135,9 +139,11 @@ const CreateSiswa: FC<UserCreateProps> = ({ onClose, onSucsess }) => {
         <Input
           id="password"
           label="Password"
-          type="password"
+          type={showPassword ? "text" : "password"}
           register={{ ...register("password") }}
           errors={errors}
+          iconRight={passwordIcon}
+          onIconRightClick={togglePasswordVisibility}
         />
         {errors.password && (
           <p className="text-Error-50 text-sm">{errors.password.message}</p>

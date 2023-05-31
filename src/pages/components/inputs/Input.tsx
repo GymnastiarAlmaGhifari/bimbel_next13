@@ -1,9 +1,6 @@
-"use client";
-
-import {
-    FieldErrors,
-} from "react-hook-form";
-import { BiDollar } from "react-icons/bi";
+import React from "react";
+import { FieldErrors } from "react-hook-form";
+import { BiDollar, BiHide, BiShow } from "react-icons/bi";
 
 interface InputProps {
     id: string;
@@ -13,14 +10,15 @@ interface InputProps {
     formatPrice?: boolean;
     required?: boolean;
     register: any;
-    errors: FieldErrors
+    errors: FieldErrors;
     defaultValue?: string | number;
     inputMode?: string;
     className?: string;
     onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
     value?: string | number;
     checked?: boolean;
-
+    iconRight?: React.ReactNode;
+    onIconRightClick?: () => void;
 }
 
 const Input: React.FC<InputProps> = ({
@@ -38,40 +36,42 @@ const Input: React.FC<InputProps> = ({
     checked,
     inputMode,
     className,
+    iconRight,
+    onIconRightClick,
 }) => {
     return (
         <div className="w-full flex flex-col gap-2">
             {formatPrice && (
-                <BiDollar
-                    size={24}
-                    className="
-              text-neutral-700
-              absolute
-              top-5
-              left-2
-            "
-                />
+                <BiDollar size={24} className="text-neutral-700 absolute top-5 left-2" />
+            )}
+            {iconRight && type !== "password" && (
+                <div
+                    className="text-neutral-700 absolute top-2 right-2 cursor-pointer"
+                    onClick={onIconRightClick}
+                >
+                    {iconRight}
+                </div>
             )}
             <label className="text-sm text-Primary-10">{label}</label>
-            <input
-                id={id}
-                disabled={disabled}
-                {...register}
-                placeholder=" "
-                type={type}
-                onChange={onChange}
-                value={value}
-                checked={checked}
-                inputMode={inputMode}
-                defaultValue={defaultValue}
-                className={`
-                bg-Neutral-95
+            <div className="relative">
+                <input
+                    id={id}
+                    disabled={disabled}
+                    {...register}
+                    placeholder=" "
+                    type={type}
+                    onChange={onChange}
+                    value={value}
+                    checked={checked}
+                    inputMode={inputMode}
+                    defaultValue={defaultValue}
+                    className={`
+            bg-Neutral-95
             peer
             h-10
             w-full
             px-4
             py-2
-             
             rounded-full
             outline-none
             transition
@@ -79,32 +79,30 @@ const Input: React.FC<InputProps> = ({
             disabled:opacity-70
             disabled:cursor-not-allowed
             focus:border-[2px] focus:border-Primary-50 focus:bg-Primary-99
-            ${formatPrice ? 'pl-9' : 'pl-4'}
-
+            ${formatPrice ? "pl-9" : "pl-4"}
           ` + className}
-            />
-            {/* <label
-                className={`
-            absolute 
-            text-md
-            duration-150 
-            transform 
-            -translate-y-3 
-            top-5 
-            z-10 
-            origin-[0] 
-            ${formatPrice ? 'left-9' : 'left-4'}
-            peer-placeholder-shown:scale-100 
-            peer-placeholder-shown:translate-y-0 
-            peer-focus:scale-75
-            peer-focus:-translate-y-4
-
-          `}
-            >
-                {label}
-            </label> */}
+                />
+                {type === "password" && (
+                    <div
+                        className="text-neutral-700 absolute top-2 right-2 cursor-pointer"
+                        onClick={onIconRightClick}
+                    >
+                        {iconRight}
+                    </div>
+                )}
+                {
+                    type === "text" && (
+                        <div
+                            className="text-neutral-700 absolute top-2 right-2 cursor-pointer"
+                            onClick={onIconRightClick}
+                        >
+                            {iconRight}
+                        </div>
+                    )
+                }
+            </div>
         </div>
     );
-}
+};
 
 export default Input;
