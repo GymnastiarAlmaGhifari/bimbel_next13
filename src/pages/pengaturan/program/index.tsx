@@ -12,6 +12,7 @@ import Sidebar from "@/pages/components/Sidebar";
 import Navbar from "@/pages/components/Navbar";
 import NavbarPengaturan from "@/pages/components/NavbarPengaturan";
 import DeleteMapel from "./delete";
+import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 
 interface Program {
   kelas: any;
@@ -50,10 +51,10 @@ const Program: FC<Program> = () => {
     };
   }, [inputValue]);
 
-  let filteredProgram = program;
+  let filteredProgram: Program[] | undefined = program;
 
-  if (debouncedValue) {
-    filteredProgram = program?.filter((program) =>
+  if (debouncedValue && filteredProgram) {
+    filteredProgram = filteredProgram?.filter((program) =>
       program.nama_program.toLowerCase().includes(debouncedValue.toLowerCase())
     );
   }
@@ -85,6 +86,9 @@ const Program: FC<Program> = () => {
     }
   }, [error]);
 
+
+  const [currentPage, setCurrentPage] = useState(1);
+
   const onClose = () => {
     setSelectedProgram(null);
   };
@@ -92,6 +96,39 @@ const Program: FC<Program> = () => {
   if (error) {
     return <p>Error loading program.</p>;
   }
+
+  const PAGE_SIZE = 10;
+  const MAX_PAGE_DISPLAY = 5; // Jumlah maksimal nomor halaman yang ditampilkan
+
+
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
+
+  let paginatedProgram: Program[] = [];
+  let totalPages = 0;
+  let pageNumbers: number[] = [];
+  if (filteredProgram) {
+    const startIndex = (currentPage - 1) * PAGE_SIZE;
+    const endIndex = startIndex + PAGE_SIZE;
+    paginatedProgram = filteredProgram.slice(startIndex, endIndex);
+    totalPages = Math.ceil(filteredProgram.length / PAGE_SIZE);
+
+    const startPage = Math.max(
+      currentPage - Math.floor(MAX_PAGE_DISPLAY / 2),
+      1
+    );
+    const endPage = Math.min(startPage + MAX_PAGE_DISPLAY - 1, totalPages);
+
+    pageNumbers = Array.from(
+      { length: endPage - startPage + 1 },
+      (_, i) => startPage + i
+    );
+  }
+
+  const isFirstPage = currentPage === 1;
+  const isLastPage = currentPage === totalPages;
 
   return (
     <div className="flex flex-row h-screen font-mulish">
@@ -109,9 +146,9 @@ const Program: FC<Program> = () => {
                 onChange={handleInputChange}
               />
               <div className="grid grid-cols-2 rounded-bl-lg rounded-br-lg p-4 gap-4 overflow-y-auto scrollbar-thin scrollbar-track-Neutral-100 scrollbar-thumb-Primary-40 scrollbar-rounded-lg scrollbar">
-                {filteredProgram ? (
+                {paginatedProgram ? (
                   <>
-                    {filteredProgram.length === 0 ? (
+                    {paginatedProgram.length === 0 ? (
                       <div className="flex flex-col items-center justify-center">
                         <h1 className="text-2xl font-bold text-gray-500">
                           Program tidak ditemukan
@@ -121,7 +158,7 @@ const Program: FC<Program> = () => {
                         </p>
                       </div>
                     ) : (
-                      filteredProgram.map((item) => (
+                      paginatedProgram.map((item) => (
                         <CardProgram
                           mapel_ajar="Semua Mata Pelajaran TryOut"
                           deskripsi={item.Deskripsi}
@@ -203,6 +240,42 @@ const Program: FC<Program> = () => {
                   </ModalDetail>
                 )}
 
+              </div>
+              <div className="flex justify-center gap-4">
+                {totalPages > 1 && (
+                  <div className="flex justify-center gap-4">
+                    {!isFirstPage && (
+                      <button
+                        className="bg-Neutral-95 text-Primary-40 font-semibold py-2 px-3 rounded-full hover:bg-Primary-40 hover:text-Primary-95"
+                        onClick={() => handlePageChange(currentPage - 1)}
+                      >
+                        <IoIosArrowBack size={16} />
+                      </button>
+                    )}
+                    <div className="flex gap-2">
+                      {pageNumbers.map((page) => (
+                        <button
+                          key={page}
+                          className={`px-4 py-2 rounded-full font-semibold ${currentPage === page
+                            ? "bg-Primary-40 text-Neutral-100"
+                            : "text-Primary-40 hover:bg-Primary-95 hover:text-Primary-30"
+                            }`}
+                          onClick={() => handlePageChange(page)}
+                        >
+                          {page}
+                        </button>
+                      ))}
+                    </div>
+                    {!isLastPage && (
+                      <button
+                        className="bg-Neutral-95 text-Primary-40 font-semibold py-1 px-3 rounded-full hover:bg-Primary-40 hover:text-Primary-95"
+                        onClick={() => handlePageChange(currentPage + 1)}
+                      >
+                        <IoIosArrowForward size={16} />
+                      </button>
+                    )}
+                  </div>
+                )}
               </div>
             </div>
           </div>

@@ -3,25 +3,24 @@ import Sidebar from "../components/Sidebar";
 import HeadTable from "../components/HeadTable";
 import Navbar from "../components/Navbar";
 import CardPembayaran from "../components/card/CardPembayaranTagihan";
+import { useSession } from "next-auth/react";
 
 const Pembayaran = () => {
+
+  const session = useSession();
+
+  // useEffect if session is alredy exist redirect to /pembayaran/tagihan if session is null then redirect to /
   useEffect(() => {
-    document.title = "Bimbel Linear";
-  });
+    if (session.data) {
+      window.location.href = "/pembayaran/tagihan";
+    } else {
+      window.location.href = "/";
+    }
+  }
+  );
   return (
-    <div className="flex flex-row h-screen font-mulish">
-      <Sidebar />
-      <div className="w-full flex flex-col ">
-        <Navbar />
-        <div className="h-full p-5 bg-Neutral-95 overflow-auto ">
-          <div className="flex flex-col h-full bg-Neutral-100 py-4 gap-4 rounded-lg overflow-auto">
-            <HeadTable label="Pembayaran" riwayat />
-            <div className="flex flex-col rounded-bl-lg rounded-br-lg p-4 gap-4 overflow-y-auto scrollbar">
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+    <>
+    </>
   );
 };
 

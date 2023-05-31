@@ -2,7 +2,7 @@ import Image from "next/image";
 import { FC } from "react";
 import ButtonEdit from "../buttons/ButtonEdit";
 import Button from "../buttons/Button";
-import { MdModeEdit, MdVisibility } from "react-icons/md";
+import { MdDelete, MdModeEdit, MdVisibility } from "react-icons/md";
 import Kelas from "@/pages/pengaturan/kelas";
 import { HiOutlineCheck } from "react-icons/hi";
 
@@ -23,6 +23,7 @@ interface CardPembayaranTagihanProps {
   gambar?: any;
   onClick?: () => void;
   onAccept?: () => void;
+  onDelete?: () => void;
 }
 
 const CardPembayaranTagihan: FC<CardPembayaranTagihanProps> = ({
@@ -42,6 +43,7 @@ const CardPembayaranTagihan: FC<CardPembayaranTagihanProps> = ({
   tahun,
   gambar,
   onAccept,
+  onDelete,
 }) => {
   return (
     <div className="flex flex-col bg-Neutral-100 shadow-[0px_2px_8px_-4px_rgba(0,0,0,.3)] rounded-lg py-5 px-4 gap-3">
@@ -82,7 +84,9 @@ const CardPembayaranTagihan: FC<CardPembayaranTagihanProps> = ({
         </div>
         <div className="flex flex-col items-center gap-1">
           <h3 className="text-sm text-Neutral-30">rekening</h3>
-          <span className="font-bold text-Primary-10"></span>
+          <span className="font-bold text-Primary-10">
+            {nama_rekening} - {nomor_rekening}
+          </span>
         </div>
         <div className="flex flex-col items-center gap-1">
           <h3 className="text-sm text-Neutral-30">Periode Bulan</h3>
@@ -100,13 +104,23 @@ const CardPembayaranTagihan: FC<CardPembayaranTagihanProps> = ({
       <div className="w-full h-[1px] bg-Neutral-30"></div>
       <div className="flex justify-between">
         <h2
-          className={`font-semibold ${
-            status == "LUNAS" ? "text-Primary-40" : ""
-          } ${status == "PENDING" ? "text-Secondary-50" : ""} `}
+          className={`font-semibold ${status == "LUNAS" ? "text-Primary-40" : ""
+            } ${status == "PENDING" ? "text-Secondary-50" : ""} `}
         >
-          {status}
+          {/* buat status jika value dari status = BELUM_BAYAR jadika menjadi Belum Bayar */}
+          {status == "BELUM_BAYAR" ? "Belum Bayar" : status == "LUNAS" ? "Lunas" : status == "PENDING" ? "Pending" : status == "JATUH_TEMPO" ? "Jatuh Tempo" : status}
+
         </h2>
         <div className="flex gap-4 justify-end">
+          <Button
+            bgColor="bg-Error-50"
+            brColor=""
+            label="Hapus Tagihan"
+            textColor="text-Error-40"
+            type="button"
+            icon={MdDelete}
+            onClick={onDelete}
+          />
           {
             // if nota not null show button lihat nota
             nota ? (
@@ -140,6 +154,10 @@ const CardPembayaranTagihan: FC<CardPembayaranTagihanProps> = ({
           ) : (
             ""
           )}
+
+          {/* delete tagihan */}
+
+
         </div>
       </div>
     </div>

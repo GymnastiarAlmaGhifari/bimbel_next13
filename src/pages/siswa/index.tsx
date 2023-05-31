@@ -89,7 +89,7 @@ const Siswa: FC<Siswa> = () => {
     setSelectedDetail(null);
   };
 
-  const PAGE_SIZE = 3;
+  const PAGE_SIZE = 10;
   const MAX_PAGE_DISPLAY = 5; // Jumlah maksimal nomor halaman yang ditampilkan
 
   const [currentPage, setCurrentPage] = useState(1);
@@ -188,36 +188,39 @@ const Siswa: FC<Siswa> = () => {
               )}
             </div>
             <div className="flex justify-center gap-4">
-              {!isFirstPage && (
-                <button
-                  className="bg-Neutral-95 text-Primary-40 font-semibold py-2 px-3 rounded-full hover:bg-Primary-40 hover:text-Primary-95"
-                  onClick={() => handlePageChange(currentPage - 1)}
-                >
-                  <IoIosArrowBack size={16} />
-                </button>
-              )}
-              <div className="flex gap-2">
-                {pageNumbers.map((page) => (
-                  <button
-                    key={page}
-                    className={`  px-4 py-2 rounded-full font-semibold ${
-                      currentPage === page
-                        ? "bg-Primary-40 text-Neutral-100"
-                        : " text-Primary-40 hover:bg-Primary-95 hover:text-Primary-30"
-                    }`}
-                    onClick={() => handlePageChange(page)}
-                  >
-                    {page}
-                  </button>
-                ))}
-              </div>
-              {!isLastPage && (
-                <button
-                  className="bg-Neutral-95 text-Primary-40 font-semibold py-1 px-3 rounded-full hover:bg-Primary-40 hover:text-Primary-95"
-                  onClick={() => handlePageChange(currentPage + 1)}
-                >
-                  <IoIosArrowForward size={16} />
-                </button>
+              {totalPages > 1 && (
+                <div className="flex justify-center gap-4">
+                  {!isFirstPage && (
+                    <button
+                      className="bg-Neutral-95 text-Primary-40 font-semibold py-2 px-3 rounded-full hover:bg-Primary-40 hover:text-Primary-95"
+                      onClick={() => handlePageChange(currentPage - 1)}
+                    >
+                      <IoIosArrowBack size={16} />
+                    </button>
+                  )}
+                  <div className="flex gap-2">
+                    {pageNumbers.map((page) => (
+                      <button
+                        key={page}
+                        className={`px-4 py-2 rounded-full font-semibold ${currentPage === page
+                          ? "bg-Primary-40 text-Neutral-100"
+                          : "text-Primary-40 hover:bg-Primary-95 hover:text-Primary-30"
+                          }`}
+                        onClick={() => handlePageChange(page)}
+                      >
+                        {page}
+                      </button>
+                    ))}
+                  </div>
+                  {!isLastPage && (
+                    <button
+                      className="bg-Neutral-95 text-Primary-40 font-semibold py-1 px-3 rounded-full hover:bg-Primary-40 hover:text-Primary-95"
+                      onClick={() => handlePageChange(currentPage + 1)}
+                    >
+                      <IoIosArrowForward size={16} />
+                    </button>
+                  )}
+                </div>
               )}
             </div>
           </div>
