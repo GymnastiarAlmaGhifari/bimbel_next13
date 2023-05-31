@@ -12,6 +12,7 @@ import Navbar from "@/pages/components/Navbar";
 import NavbarPengaturan from "@/pages/components/NavbarPengaturan";
 import Create from "./create";
 import DeleteSesi from "./delete";
+import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 
 interface Sesi {
   id: string;
@@ -49,10 +50,10 @@ const Sesi: FC<Sesi> = () => {
     };
   }, [inputValue]);
 
-  let filteredSesi = sesi;
+  let filteredSesi: Sesi[] | undefined = sesi;
 
-  if (debouncedValue) {
-    filteredSesi = sesi?.filter((sesi) =>
+  if (debouncedValue && filteredSesi) {
+    filteredSesi = filteredSesi?.filter((sesi) =>
       sesi.nama_sesi.toLowerCase().includes(debouncedValue.toLowerCase())
     );
   }
@@ -80,10 +81,42 @@ const Sesi: FC<Sesi> = () => {
     setSelectedSesi(null);
   };
 
+  const [currentPage, setCurrentPage] = useState(1);
   // const date now
   if (error) {
     return <p>Error loading sesi.</p>;
   }
+  const PAGE_SIZE = 10;
+  const MAX_PAGE_DISPLAY = 5; // Jumlah maksimal nomor halaman yang ditampilkan
+
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
+
+  let paginatedSesi: Sesi[] = [];
+  let totalPages = 0;
+  let pageNumbers: number[] = [];
+  if (filteredSesi) {
+    const startIndex = (currentPage - 1) * PAGE_SIZE;
+    const endIndex = startIndex + PAGE_SIZE;
+    paginatedSesi = filteredSesi.slice(startIndex, endIndex);
+    totalPages = Math.ceil(filteredSesi.length / PAGE_SIZE);
+
+    const startPage = Math.max(
+      currentPage - Math.floor(MAX_PAGE_DISPLAY / 2),
+      1
+    );
+    const endPage = Math.min(startPage + MAX_PAGE_DISPLAY - 1, totalPages);
+
+    pageNumbers = Array.from(
+      { length: endPage - startPage + 1 },
+      (_, i) => startPage + i
+    );
+  }
+
+  const isFirstPage = currentPage === 1;
+  const isLastPage = currentPage === totalPages;
 
   return (
     <div className="flex flex-row h-screen font-mulish">
@@ -101,19 +134,19 @@ const Sesi: FC<Sesi> = () => {
                 onChange={handleInputChange}
               />
               <div className="flex flex-col rounded-bl-lg rounded-br-lg p-4 gap-4 overflow-y-auto scrollbar-thin scrollbar-track-Neutral-100 scrollbar-thumb-Primary-40 scrollbar-rounded-lg scrollbar ">
-                {filteredSesi ? (
+                {paginatedSesi ? (
                   <>
-                    {filteredSesi.length === 0 ? (
+                    {paginatedSesi.length === 0 ? (
                       <div className="flex flex-col items-center justify-center">
                         <h1 className="text-2xl font-bold text-gray-500">
-                          Program tidak ditemukan
+                          Sesi tidak ditemukan
                         </h1>
                         <p className="text-sm text-gray-500">
-                          Program yang anda cari tidak ditemukan
+                          Sesi yang anda cari tidak ditemukan
                         </p>
                       </div>
                     ) : (
-                      filteredSesi.map((sesi) => (
+                      paginatedSesi.map((sesi) => (
                         <CardSesi
                           nama_sesi={sesi.nama_sesi}
                           mulai_sesi={sesi.jam_mulai}
@@ -193,6 +226,42 @@ const Sesi: FC<Sesi> = () => {
                   </ModalDetail>
                 )}
 
+              </div>
+              <div className="flex justify-center gap-4">
+                {totalPages > 1 && (
+                  <div className="flex justify-center gap-4">
+                    {!isFirstPage && (
+                      <button
+                        className="bg-Neutral-95 text-Primary-40 font-semibold py-2 px-3 rounded-full hover:bg-Primary-40 hover:text-Primary-95"
+                        onClick={() => handlePageChange(currentPage - 1)}
+                      >
+                        <IoIosArrowBack size={16} />
+                      </button>
+                    )}
+                    <div className="flex gap-2">
+                      {pageNumbers.map((page) => (
+                        <button
+                          key={page}
+                          className={`px-4 py-2 rounded-full font-semibold ${currentPage === page
+                            ? "bg-Primary-40 text-Neutral-100"
+                            : "text-Primary-40 hover:bg-Primary-95 hover:text-Primary-30"
+                            }`}
+                          onClick={() => handlePageChange(page)}
+                        >
+                          {page}
+                        </button>
+                      ))}
+                    </div>
+                    {!isLastPage && (
+                      <button
+                        className="bg-Neutral-95 text-Primary-40 font-semibold py-1 px-3 rounded-full hover:bg-Primary-40 hover:text-Primary-95"
+                        onClick={() => handlePageChange(currentPage + 1)}
+                      >
+                        <IoIosArrowForward size={16} />
+                      </button>
+                    )}
+                  </div>
+                )}
               </div>
             </div>
           </div>

@@ -12,6 +12,7 @@ import Anggota from "./anggota";
 import Jadwal from "./jadwal";
 import TambahJadwal from "./jadwal";
 import DetailSiswa from "../siswa/detail";
+import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 
 interface Kelompok {
   program: any;
@@ -51,10 +52,10 @@ const Kelompok: FC<Kelompok> = () => {
     {}
   );
 
-  let filteredKelompok = kelompoks;
+  let filteredKelompok: Kelompok[] | undefined = kelompoks;
 
-  if (debouncedValue) {
-    filteredKelompok = kelompoks?.filter((kelompok) =>
+  if (debouncedValue && filteredKelompok) {
+    filteredKelompok = filteredKelompok?.filter((kelompok) =>
       kelompok.nama_kelompok
         .toLowerCase()
         .includes(debouncedValue.toLowerCase())
@@ -95,6 +96,39 @@ const Kelompok: FC<Kelompok> = () => {
     setInputValue(value);
   };
 
+  const PAGE_SIZE = 10;
+  const MAX_PAGE_DISPLAY = 5; // Jumlah maksimal nomor halaman yang ditampilkan
+
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
+
+  let paginatedKelompok: Kelompok[] | undefined = [];
+  let totalPages: number = 0;
+  let pageNumbers: number[] = [];
+  if (filteredKelompok) {
+    const startIndex = (currentPage - 1) * PAGE_SIZE;
+    const endIndex = startIndex + PAGE_SIZE;
+    paginatedKelompok = filteredKelompok.slice(startIndex, endIndex);
+    totalPages = Math.ceil(filteredKelompok.length / PAGE_SIZE);
+
+    const startPage = Math.max(
+      currentPage - Math.floor(MAX_PAGE_DISPLAY / 2),
+      1
+    );
+    const endPage = Math.min(startPage + MAX_PAGE_DISPLAY - 1, totalPages);
+
+    pageNumbers = Array.from(
+      { length: endPage - startPage + 1 },
+      (_, i) => startPage + i
+    );
+  }
+
+  const isFirstPage = currentPage === 1;
+  const isLastPage = currentPage === totalPages;
+
   return (
     <div className="flex flex-row h-screen font-mulish">
       <Sidebar />
@@ -110,12 +144,12 @@ const Kelompok: FC<Kelompok> = () => {
               onChange={handleInputChange}
             />
             <div className="flex flex-col rounded-bl-lg rounded-br-lg p-4 gap-4 overflow-y-auto scollbar scrollbar-thin scrollbar-track-Neutral-100 scrollbar-thumb-Primary-40 scrollbar-rounded-lg ">
-              {filteredKelompok ? (
+              {paginatedKelompok ? (
                 <>
-                  {filteredKelompok.length === 0 ? (
+                  {paginatedKelompok.length === 0 ? (
                     <p>No program found.</p>
                   ) : (
-                    filteredKelompok.map((kelompok) => (
+                    paginatedKelompok.map((kelompok) => (
                       <CardKelompok
                         key={kelompok.id}
                         nama_kelompok={kelompok.nama_kelompok}
@@ -141,6 +175,42 @@ const Kelompok: FC<Kelompok> = () => {
                 </>
               ) : (
                 <p>Loading...</p>
+              )}
+            </div>
+            <div className="flex justify-center gap-4">
+              {totalPages > 1 && (
+                <div className="flex justify-center gap-4">
+                  {!isFirstPage && (
+                    <button
+                      className="bg-Neutral-95 text-Primary-40 font-semibold py-2 px-3 rounded-full hover:bg-Primary-40 hover:text-Primary-95"
+                      onClick={() => handlePageChange(currentPage - 1)}
+                    >
+                      <IoIosArrowBack size={16} />
+                    </button>
+                  )}
+                  <div className="flex gap-2">
+                    {pageNumbers.map((page) => (
+                      <button
+                        key={page}
+                        className={`px-4 py-2 rounded-full font-semibold ${currentPage === page
+                          ? "bg-Primary-40 text-Neutral-100"
+                          : "text-Primary-40 hover:bg-Primary-95 hover:text-Primary-30"
+                          }`}
+                        onClick={() => handlePageChange(page)}
+                      >
+                        {page}
+                      </button>
+                    ))}
+                  </div>
+                  {!isLastPage && (
+                    <button
+                      className="bg-Neutral-95 text-Primary-40 font-semibold py-1 px-3 rounded-full hover:bg-Primary-40 hover:text-Primary-95"
+                      onClick={() => handlePageChange(currentPage + 1)}
+                    >
+                      <IoIosArrowForward size={16} />
+                    </button>
+                  )}
+                </div>
               )}
             </div>
           </div>
