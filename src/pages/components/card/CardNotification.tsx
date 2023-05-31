@@ -19,18 +19,16 @@ const CardNotification: FC<CardNotificationProps> = ({
 }) => {
   return (
     <button
-      className={`flex w-full h-20 gap-4 items-center group ${
-        isRead
-          ? "bg-Neutral-100 hover:bg-Neutral-95"
-          : "bg-Primary-95 hover:bg-Primary-90"
-      }  px-4 py-2`}
+      className={`flex w-full h-20 gap-4 items-center group ${isRead
+        ? "bg-Neutral-100 hover:bg-Neutral-95"
+        : "bg-Primary-95 hover:bg-Primary-90"
+        }  px-4 py-2`}
     >
       <div
-        className={`flex items-center h-max  p-4 rounded-full justify-center ${
-          isRead
-            ? "bg-Neutral-95 text-Neutral-20"
-            : "bg-Primary-80 text-Primary-20"
-        } `}
+        className={`flex items-center h-max  p-4 rounded-full justify-center ${isRead
+          ? "bg-Neutral-95 text-Neutral-20"
+          : "bg-Primary-80 text-Primary-20"
+          } `}
       >
         <MdPayment size={30} />
       </div>
@@ -41,7 +39,7 @@ const CardNotification: FC<CardNotificationProps> = ({
       <div className="w-60 h-full flex flex-col  gap-2">
         <span className="text-sm text-Neutral-30">{tanggal_bayar}</span>
         <span className="text-sm text-Neutral-30 font-semibold">{status}</span>
-        {/* <div className="hidden group-hover:flex justify-end gap-2">
+        <div className="hidden group-hover:flex justify-end gap-2">
           <button className="hover:text-Error-50">
             <MdDelete size={24} />
           </button>
@@ -54,7 +52,7 @@ const CardNotification: FC<CardNotificationProps> = ({
               <BiEnvelope size={24} />
             </button>
           )}
-        </div> */}
+        </div>
       </div>
     </button>
   );

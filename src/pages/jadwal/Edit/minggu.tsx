@@ -129,6 +129,8 @@ const MingguEdit: FC<MingguEdit> = ({
   const [isListOpenMapel, setIsListOpenMapel] = useState(false);
   const componentRef = useRef<HTMLUListElement>(null);
 
+  const [error, setError] = useState<string | null>(null);
+
   const {
     register,
     handleSubmit,
@@ -277,7 +279,7 @@ const MingguEdit: FC<MingguEdit> = ({
         setCheckValueUser(jadwalIdData?.mapel_id);
       }
     }
-  }, [kelompok, setValue, data, mapel, idRuang, user]);
+  }, [kelompok, setValue, data, mapel, idRuang, user, jadwalIdData]);
 
   const [kelompokTerpilih, setKelompokTerpilih] = useState("");
 
@@ -306,6 +308,7 @@ const MingguEdit: FC<MingguEdit> = ({
     console.log("jsnnnn", payload);
 
     setIsLoading(true);
+    setError(null);
 
     try {
       const response = await axios.put(
@@ -341,6 +344,7 @@ const MingguEdit: FC<MingguEdit> = ({
   };
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="w-max">
+      {error && <p className="text-Error-50 text-sm">{error}</p>}
       <div className="flex flex-row justify-between items-center w-full">
         <div className="flex flex-row items-center w-full">
           <div className="flex flex-col gap-4">
@@ -400,11 +404,10 @@ const MingguEdit: FC<MingguEdit> = ({
                 <div className="relative flex flex-col gap-2">
                   <button
                     type="button"
-                    className={` w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${
-                      isListOpenHari
-                        ? "border-[2px] border-Primary-50 bg-Primary-95"
-                        : "bg-Neutral-95"
-                    }`}
+                    className={` w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${isListOpenHari
+                      ? "border-[2px] border-Primary-50 bg-Primary-95"
+                      : "bg-Neutral-95"
+                      }`}
                     onClick={toggleListHari}
                   >
                     {/* isi dari watch {hari} dan isi dengan data.hari */}
@@ -423,11 +426,10 @@ const MingguEdit: FC<MingguEdit> = ({
                         <li key={option.value}>
                           <button
                             type="button"
-                            className={`w-full text-left px-2 py-1 rounded-full ${
-                              watch("hari") === option.value
-                                ? "text-Primary-90 bg-Primary-20"
-                                : "text-Primary-20 hover:bg-Primary-95"
-                            }`}
+                            className={`w-full text-left px-2 py-1 rounded-full ${watch("hari") === option.value
+                              ? "text-Primary-90 bg-Primary-20"
+                              : "text-Primary-20 hover:bg-Primary-95"
+                              }`}
                             onClick={() => selectHari(option.value)}
                           >
                             {option.label}
@@ -448,11 +450,10 @@ const MingguEdit: FC<MingguEdit> = ({
                 <div className="relative flex flex-col gap-1">
                   <button
                     type="button"
-                    className={` w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${
-                      isListOpenSesi
-                        ? "border-[2px] border-Primary-50 bg-Primary-95"
-                        : "bg-Neutral-95"
-                    }`}
+                    className={` w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${isListOpenSesi
+                      ? "border-[2px] border-Primary-50 bg-Primary-95"
+                      : "bg-Neutral-95"
+                      }`}
                     onClick={toggleListSesi}
                   >
                     {/* buat label */}
@@ -480,11 +481,10 @@ const MingguEdit: FC<MingguEdit> = ({
                           <li key={sesiItem.id}>
                             <button
                               type="button"
-                              className={`w-full text-left px-2 py-1 rounded-full ${
-                                watch("sesi") === sesiItem.id
-                                  ? "text-Primary-90 bg-Primary-20"
-                                  : "text-Primary-20 hover:bg-Primary-95"
-                              }`}
+                              className={`w-full text-left px-2 py-1 rounded-full ${watch("sesi") === sesiItem.id
+                                ? "text-Primary-90 bg-Primary-20"
+                                : "text-Primary-20 hover:bg-Primary-95"
+                                }`}
                               onClick={() => selectSesi(sesiItem.id)}
                             >
                               {sesiItem.nama_sesi}
@@ -509,11 +509,10 @@ const MingguEdit: FC<MingguEdit> = ({
                 <div className="relative flex flex-col gap-2 w-full">
                   <button
                     type="button"
-                    className={` w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${
-                      isListOpenRuang
-                        ? "border-[2px] border-Primary-50 bg-Primary-95"
-                        : "bg-Neutral-95"
-                    }`}
+                    className={` w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${isListOpenRuang
+                      ? "border-[2px] border-Primary-50 bg-Primary-95"
+                      : "bg-Neutral-95"
+                      }`}
                     onClick={toggleListRuang}
                     defaultValue={idRuang}
                   >
@@ -543,11 +542,10 @@ const MingguEdit: FC<MingguEdit> = ({
                           <li key={ruangItem.id}>
                             <button
                               type="button"
-                              className={`w-full text-left px-2 py-1 rounded-full ${
-                                watch("ruang") === ruangItem.id
-                                  ? "text-Primary-90 bg-Primary-20"
-                                  : "text-Primary-20 hover:bg-Primary-95"
-                              }`}
+                              className={`w-full text-left px-2 py-1 rounded-full ${watch("ruang") === ruangItem.id
+                                ? "text-Primary-90 bg-Primary-20"
+                                : "text-Primary-20 hover:bg-Primary-95"
+                                }`}
                               onClick={() => selectRuang(ruangItem.id)}
                             >
                               {ruangItem.nama_ruang}
@@ -570,11 +568,10 @@ const MingguEdit: FC<MingguEdit> = ({
                 <div className="relative flex flex-col gap-2">
                   <button
                     type="button"
-                    className={` w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${
-                      isListOpenMapel
-                        ? "border-[2px] border-Primary-50 bg-Primary-95"
-                        : "bg-Neutral-95"
-                    }`}
+                    className={` w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${isListOpenMapel
+                      ? "border-[2px] border-Primary-50 bg-Primary-95"
+                      : "bg-Neutral-95"
+                      }`}
                     onClick={toggleListMapel}
                   >
                     {/* buat label */}
@@ -596,11 +593,10 @@ const MingguEdit: FC<MingguEdit> = ({
                         <li key={mapelItem.id}>
                           <button
                             type="button"
-                            className={`w-full text-left px-2 py-1 rounded-full ${
-                              watch("mapel") === mapelItem.id
-                                ? "text-Primary-90 bg-Primary-20"
-                                : "text-Primary-20 hover:bg-Primary-95"
-                            }`}
+                            className={`w-full text-left px-2 py-1 rounded-full ${watch("mapel") === mapelItem.id
+                              ? "text-Primary-90 bg-Primary-20"
+                              : "text-Primary-20 hover:bg-Primary-95"
+                              }`}
                             onClick={() => {
                               selectMapel(mapelItem.id);
                               handleCheckChangeUser(mapelItem.id);

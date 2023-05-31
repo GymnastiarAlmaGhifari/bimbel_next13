@@ -123,17 +123,11 @@ const UserEdit: FC<UserEditProps> = ({ userId, onClose, onSucsess, data }) => {
     setCheckValueUser(value);
   };
 
-
-
-
-  // set value mapel dengan data mapel yang sudah ada
-
-
   const onSubmit: SubmitHandler<FormData> = async (data) => {
 
     console.log(data);
 
-    const { name, email,  lulusan, nomor_telepon, alamat, image } = data;
+    const { name, email, lulusan, nomor_telepon, alamat, image } = data;
 
     console.log(data);
     if (!image || image.length === 0) {
@@ -270,7 +264,7 @@ const UserEdit: FC<UserEditProps> = ({ userId, onClose, onSucsess, data }) => {
           <div>
             <Image
               src={
-                "/api/user/img?img=" + data?.image || "/img/user/default.png"
+                data?.image ? "/api/user/img?img=" + data?.image : "/img/user/default.png"
               }
               alt="Gambar"
               width={200}
