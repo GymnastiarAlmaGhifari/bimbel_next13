@@ -11,6 +11,7 @@ import EditSiswa from "./edit";
 import CreateSiswa from "./create";
 import DetailSiswa from "./detail";
 import DeleteSiswa from "./delete.tsx";
+import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 
 interface Siswa {
   id: string;
@@ -106,10 +107,16 @@ const Siswa: FC<Siswa> = () => {
     paginatedSiswa = filteredSiswa.slice(startIndex, endIndex);
     totalPages = Math.ceil(filteredSiswa.length / PAGE_SIZE);
 
-    const startPage = Math.max(currentPage - Math.floor(MAX_PAGE_DISPLAY / 2), 1);
+    const startPage = Math.max(
+      currentPage - Math.floor(MAX_PAGE_DISPLAY / 2),
+      1
+    );
     const endPage = Math.min(startPage + MAX_PAGE_DISPLAY - 1, totalPages);
 
-    pageNumbers = Array.from({ length: endPage - startPage + 1 }, (_, i) => startPage + i);
+    pageNumbers = Array.from(
+      { length: endPage - startPage + 1 },
+      (_, i) => startPage + i
+    );
   }
 
   const isFirstPage = currentPage === 1;
@@ -180,31 +187,36 @@ const Siswa: FC<Siswa> = () => {
                 </>
               )}
             </div>
-            <div className="flex justify-center">
+            <div className="flex justify-center gap-4">
               {!isFirstPage && (
                 <button
-                  className="bg-blue-500 text-white px-4 py-2 rounded mr-2"
+                  className="bg-Neutral-95 text-Primary-40 font-semibold py-2 px-3 rounded-full hover:bg-Primary-40 hover:text-Primary-95"
                   onClick={() => handlePageChange(currentPage - 1)}
                 >
-                  Previous
+                  <IoIosArrowBack size={16} />
                 </button>
               )}
-              {pageNumbers.map((page) => (
-                <button
-                  key={page}
-                  className={`bg-blue-500 text-white px-4 py-2 rounded mr-2 ${currentPage === page ? "bg-blue-700" : ""
+              <div className="flex gap-2">
+                {pageNumbers.map((page) => (
+                  <button
+                    key={page}
+                    className={`  px-4 py-2 rounded-full font-semibold ${
+                      currentPage === page
+                        ? "bg-Primary-40 text-Neutral-100"
+                        : " text-Primary-40 hover:bg-Primary-95 hover:text-Primary-30"
                     }`}
-                  onClick={() => handlePageChange(page)}
-                >
-                  {page}
-                </button>
-              ))}
+                    onClick={() => handlePageChange(page)}
+                  >
+                    {page}
+                  </button>
+                ))}
+              </div>
               {!isLastPage && (
                 <button
-                  className="bg-blue-500 text-white px-4 py-2 rounded"
+                  className="bg-Neutral-95 text-Primary-40 font-semibold py-1 px-3 rounded-full hover:bg-Primary-40 hover:text-Primary-95"
                   onClick={() => handlePageChange(currentPage + 1)}
                 >
-                  Next
+                  <IoIosArrowForward size={16} />
                 </button>
               )}
             </div>
@@ -243,30 +255,25 @@ const Siswa: FC<Siswa> = () => {
       )}
 
       {selectedDetail && (
-        <ModalDetail titleModal="Detail Siswa" onClose={backSiswa}
-          wAuto
-        >
+        <ModalDetail titleModal="Detail Siswa" onClose={backSiswa} wAuto>
           <DetailSiswa
             idSiswa={selectedDetail.id}
-            onClose={
-              () => setSelectedDetail(null)
-            }
-
+            onClose={() => setSelectedDetail(null)}
           />
         </ModalDetail>
       )}
       {selectedDelete && (
-        <ModalDetail titleModal="DeleselectedDelete Siswa" onClose={backSiswa}
-          center silang wAuto
+        <ModalDetail
+          titleModal="DeleselectedDelete Siswa"
+          onClose={backSiswa}
+          center
+          silang
+          wAuto
         >
           <DeleteSiswa
             idSiswa={selectedDelete.id}
-            onClose={
-              () => setSelectedDelete(null)
-            }
-            onSuccess={
-              () => setShowSuccess(true)
-            }
+            onClose={() => setSelectedDelete(null)}
+            onSuccess={() => setShowSuccess(true)}
             data={selectedDelete}
           />
         </ModalDetail>

@@ -14,7 +14,6 @@ type ItemJadwalBelumTerisiProps = {
   onClick?: () => void;
 };
 
-
 const ItemJadwalTerisi: FC<ItemJadwalTerisiProps> = ({
   kelompok,
   nama_tentor,
@@ -90,13 +89,5 @@ export const ItemJadwalBelumTerisi: FC<ItemJadwalBelumTerisiProps> = ({
 };
 
 export const ItemJadwalLoading = () => {
-  return (
-    <div className="group flex flex-col justify-center w-full h-full">
-      <div className="flex items-center justify-center h-full">
-        <div className="flex gap-2 items-center">
-          <div className="inline-block h-4 w-4 animate-spin rounded-full border-[3px] border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_3s_linear_infinite]"></div>
-        </div>
-      </div>
-    </div>
-  );
-}
+  return <div className="w-full h-full bg-Error-30 rounded-lg"></div>;
+};
