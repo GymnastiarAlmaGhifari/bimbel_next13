@@ -6,8 +6,6 @@ import Input from "@/pages/components/inputs/Input";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import Button from "@/pages/components/buttons/Button";
-import useSWR from "swr";
-import fetcher from "@/libs/fetcher";
 import Image from "next/image";
 import { IoMdCloudUpload } from "react-icons/io";
 

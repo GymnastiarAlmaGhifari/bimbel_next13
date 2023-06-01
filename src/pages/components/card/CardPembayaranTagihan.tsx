@@ -24,6 +24,7 @@ interface CardPembayaranTagihanProps {
   onClick?: () => void;
   onAccept?: () => void;
   onDelete?: () => void;
+  onDeleteRiwayat?: () => void;
 }
 
 const CardPembayaranTagihan: FC<CardPembayaranTagihanProps> = ({
@@ -44,6 +45,7 @@ const CardPembayaranTagihan: FC<CardPembayaranTagihanProps> = ({
   gambar,
   onAccept,
   onDelete,
+  onDeleteRiwayat,
 }) => {
   return (
     <div className="flex flex-col bg-Neutral-100 shadow-[0px_2px_8px_-4px_rgba(0,0,0,.3)] rounded-lg py-5 px-4 gap-3">
@@ -112,15 +114,27 @@ const CardPembayaranTagihan: FC<CardPembayaranTagihanProps> = ({
 
         </h2>
         <div className="flex gap-4 justify-end">
-          <Button
-            bgColor="bg-Error-50"
-            brColor=""
-            label="Hapus Tagihan"
-            textColor="text-Error-40"
-            type="button"
-            icon={MdDelete}
-            onClick={onDelete}
-          />
+          {status == "LUNAS" ? (
+            <Button
+              bgColor="bg-Error-50"
+              brColor=""
+              label="Hapus Riwayat Tagihan"
+              textColor="text-Error-40"
+              type="button"
+              icon={MdDelete}
+              onClick={onDeleteRiwayat}
+            />
+          ) : (
+            <Button
+              bgColor="bg-Error-50"
+              brColor=""
+              label="Hapus Tagihan"
+              textColor="text-Error-40"
+              type="button"
+              icon={MdDelete}
+              onClick={onDelete}
+            />
+          )}
           {
             // if nota not null show button lihat nota
             nota ? (
@@ -155,7 +169,6 @@ const CardPembayaranTagihan: FC<CardPembayaranTagihanProps> = ({
             ""
           )}
 
-          {/* delete tagihan */}
 
 
         </div>

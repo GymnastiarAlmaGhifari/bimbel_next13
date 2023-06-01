@@ -291,12 +291,6 @@ const User: FC<User> = () => {
       {/* buat modal dari getname  */}
       {showSuccess && (
         <ModalSucces label="" onClose={() => setShowSuccess(false)}>
-          {/* <div className="flex flex-col items-center justify-center">
-            <h1 className=" font-bold text-green-500">Berhasil</h1>
-            <p className="text-sm text-gray-500">
-              {selected?.name}Data berhasil diubah
-            </p>
-          </div> */}
         </ModalSucces>
       )}
 
