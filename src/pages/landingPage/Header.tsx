@@ -11,7 +11,8 @@ export default function Header() {
     alert("Download App");
   };
   const clipPath = {
-    clipPath: "polygon(0 0, 100% 0, 100% 80%, 80% 100%, 20% 90%, 0 100%)",
+    clipPath:
+      "polygon(0 0, 100% 0, 100% 90%, 90% 100%, 80% 90%, 75% 100%, 73% 95%, 70% 100%, 60% 90%, 50% 100%, 40% 90%, 37% 100%, 20% 95%, 10% 100%, 8% 96%,0 100%)",
   };
   return (
     <div

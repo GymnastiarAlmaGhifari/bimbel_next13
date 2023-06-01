@@ -17,7 +17,7 @@ const ButtonInAbout: React.FC<ButtonProps> = ({ link, fileLogo, text }) => {
       onClick={ToSocialMedia}
       className="hover:bg-Primary-95 p-2 rounded-lg"
     >
-      <Image src={fileLogo} alt={text} width={30} height={30} />
+      <Image src={fileLogo} alt={text} width={40} height={40} />
     </button>
   );
 };
