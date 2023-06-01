@@ -14,16 +14,23 @@ interface ItemProgram {
   nama_kelas?: string;
 }
 
-
 const ItemProgram: FC<ItemProgram> = ({
-  deskripsi, gambar, tipe, level, harga, nama_program, nama_kelas,
+  deskripsi,
+  gambar,
+  tipe,
+  level,
+  harga,
+  nama_program,
+  nama_kelas,
 }) => {
   return (
     <div className="bg-Neutral-100 rounded-lg pb-3 h-auto overflow-hidden w-full ">
       <div className="relative">
         <Image
-          className="w-full"
-          src={gambar ? "/api/program/img?img=" + gambar : "/img/user/default.png"}
+          className="w-full bg-red-500"
+          src={
+            gambar ? "/api/program/img?img=" + gambar : "/img/user/default.png"
+          }
           alt="gambar program"
           width={500}
           height={500}
@@ -34,33 +41,14 @@ const ItemProgram: FC<ItemProgram> = ({
         </span>
       </div>
       <div className="flex justify-between px-4 pt-2">
-        <div className="flex flex-col gap-1">
-          <h3 className="text-sm text-Neutral-30">Kelas</h3>
-          <span className="font-bold text-Primary-10">{nama_kelas}</span>
-        </div>
-        <div className="flex flex-col gap-1 items-end">
-          <h3 className="text-sm text-Neutral-30">Level</h3>
-          <span className="font-bold text-Primary-10">{level}</span>
-        </div>
+        <span className="font-bold text-Primary-10">{nama_kelas}</span>
+        <span className="font-bold text-Primary-10">{level}</span>
       </div>
-      <div className="flex justify-between px-4 pt-2">
-        <div className="flex flex-col gap-1">
-          <h3 className="text-sm text-Neutral-30">Tipe</h3>
-          <span className="font-bold text-Primary-10">{tipe}</span>
-        </div>
-        <div className="flex flex-col gap-1 items-end">
-          <h3 className="text-sm text-Neutral-30">Harga</h3>
-          <span className="font-bold text-Primary-10">{harga}</span>
-        </div>
-      </div>
-      <div className="flex justify-between px-4 pt-2">
-        <div className="flex flex-col gap-1">
-          <h3 className="text-sm text-Neutral-30">Deskripsi</h3>
-          <span className="font-bold text-Primary-10">{deskripsi}</span>
-        </div>
-      </div>
+      <span className="font-bold text-Primary-10">{tipe}</span>
+      <span className="font-bold text-Primary-10">{harga}</span>
+      <span className="font-bold text-Primary-10">{deskripsi}</span>
     </div>
   );
-}
+};
 
 export default ItemProgram;
