@@ -11,23 +11,23 @@ datasource db {
 }
 
 model User {
-  id                String  @id @default(cuid())
-  email             String  @unique
-  password          String
-  name              String?
-  role              UserRole //@default(USER)
-  nomor_telepon     String?
-  alamat            String?
-  universitas       String?
-  mapel             mapel? @relation(fields: [mapel_id], references: [id])
-  mapel_id          String?
-  image             String?
-  random            String?
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt 
-  jadwal_details    jadwal_detail[]
-  gaji              gaji[]
-  tagihans          tagihan[]
+  id             String          @id @default(cuid())
+  email          String          @unique
+  password       String
+  name           String?
+  role           UserRole //@default(USER)
+  nomor_telepon  String?
+  alamat         String?
+  universitas    String?
+  mapel          mapel?          @relation(fields: [mapel_id], references: [id])
+  mapel_id       String?
+  image          String?
+  random         String?
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+  jadwal_details jadwal_detail[]
+  gaji           gaji[]
+  tagihans       tagihan[]
 }
 
 // model lokasi {
@@ -50,191 +50,190 @@ model User {
 //     updatedAt DateTime @updatedAt
 // }
 
-model jadwal_detail{
-  id String @id @default(cuid())
-  hari Hari
-  kelompok kelompok? @relation(fields: [kelompok_id], references: [id])
+model jadwal_detail {
+  id          String    @id @default(cuid())
+  hari        Hari
+  kelompok    kelompok? @relation(fields: [kelompok_id], references: [id])
   kelompok_id String?
-  sesi sesi? @relation(fields: [sesi_id], references: [id])
-  sesi_id String?
-  mapel mapel? @relation(fields: [mapel_id], references: [id])
-  mapel_id String?
-  user User? @relation(fields: [user_id], references: [id])
-  user_id String?
-  ruang ruang? @relation(fields: [ruang_id], references: [id])
-  ruang_id String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  sesi        sesi?     @relation(fields: [sesi_id], references: [id])
+  sesi_id     String?
+  mapel       mapel?    @relation(fields: [mapel_id], references: [id])
+  mapel_id    String?
+  user        User?     @relation(fields: [user_id], references: [id])
+  user_id     String?
+  ruang       ruang?    @relation(fields: [ruang_id], references: [id])
+  ruang_id    String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
 }
 
 model ruang {
-  id String @id @default(cuid())
-  nama_ruang String
-  tipe TipeRuang
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id             String          @id @default(cuid())
+  nama_ruang     String
+  tipe           TipeRuang
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
   jadwal_details jadwal_detail[]
-  }
-
-model kelas{
-  id String @id @default(cuid())
-  nama_kelas String @unique
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  mapels mapel[]
-  siswas siswa[]
-  programs program[]
 }
 
-model mapel{
-  id String @id @default(cuid())
-  nama_mapel String
-  kelas_id String?  // Define a foreign key field for the `kelas` model
-  kelas kelas? @relation(fields: [kelas_id], references: [id])
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  users User[]
+model kelas {
+  id         String    @id @default(cuid())
+  nama_kelas String    @unique
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  mapels     mapel[]
+  siswas     siswa[]
+  programs   program[]
+}
+
+model mapel {
+  id             String          @id @default(cuid())
+  nama_mapel     String
+  kelas_id       String? // Define a foreign key field for the `kelas` model
+  kelas          kelas?          @relation(fields: [kelas_id], references: [id])
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+  users          User[]
   jadwal_details jadwal_detail[]
-  modules module[]
+  modules        module[]
 }
 
 model sesi {
-  id        String   @id @default(cuid())
-  nama_sesi String
-  jam_mulai  DateTime @db.Time()
-  jam_selesai DateTime @db.Time ()
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id             String          @id @default(cuid())
+  nama_sesi      String
+  jam_mulai      DateTime        @db.Time()
+  jam_selesai    DateTime        @db.Time()
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
   jadwal_details jadwal_detail[]
 }
 
-model gaji{
-  id String @id @default(cuid())
-  user User @relation(fields: [user_id], references: [id])
-  user_id String
-  jumlah_gaji Int
-  tanggal_gaji DateTime @db.Date
-  Bulan Bulan?
-  Tahun Int?
-  tipe_pembayaran TipePembayaran
+model gaji {
+  id                String           @id @default(cuid())
+  user              User             @relation(fields: [user_id], references: [id])
+  user_id           String
+  jumlah_gaji       Int
+  tanggal_gaji      DateTime         @db.Date
+  Bulan             Bulan?
+  Tahun             Int?
+  tipe_pembayaran   TipePembayaran
   status_pembayaran StatusPembayaran
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt         DateTime         @default(now())
+  updatedAt         DateTime         @updatedAt
 }
 
 model program {
-  id String @id @default(cuid())
+  id           String     @id @default(cuid())
   nama_program String
-  level Level
-  tipe Tipe
-  Deskripsi String?
-  harga Int?
-  img String?
-  kelas kelas @relation(fields: [kelas_id], references: [id])
-  kelas_id String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  kelompoks kelompok[]
+  level        Level
+  tipe         Tipe
+  Deskripsi    String?
+  harga        Int?
+  img          String?
+  kelas        kelas      @relation(fields: [kelas_id], references: [id])
+  kelas_id     String
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+  kelompoks    kelompok[]
 }
 
-model kelompok{
-  id String @id @default(cuid())
-  nama_kelompok String
-  ketua_kelompok_id String?
-  program program @relation(fields: [program_id], references: [id])
-  program_id String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  Siswa siswa[]
-  detail_jadwal jadwal_detail[]
+model kelompok {
+  id                String          @id @default(cuid())
+  nama_kelompok     String
+  program           program         @relation(fields: [program_id], references: [id])
+  program_id        String
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
+  Siswa             siswa[]
+  detail_jadwal     jadwal_detail[]
 }
 
 model siswa {
-  id String @id @default(cuid())
-  nama String
-  email String @unique
-  password String
-  token String? @unique @db.VarChar(255)
+  id            String     @id @default(cuid())
+  nama          String
+  email         String     @unique
+  password      String
+  token         String?    @unique @db.VarChar(255)
   nomor_telepon String
-  alamat String?
-  sekolah String?
-  hp_ortu String?
-  image String?
-  login Boolean @default(false)
-  kelompok kelompok? @relation(fields: [kelompok_id], references: [id])
-  kelompok_id String?
-  kelas kelas? @relation(fields: [kelas_id], references: [id])
-  kelas_id String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  tagihans tagihan[]
-  presensis presensi[]
+  alamat        String?
+  sekolah       String?
+  hp_ortu       String?
+  image         String?
+  login         Boolean    @default(false)
+  kelompok      kelompok?  @relation(fields: [kelompok_id], references: [id])
+  kelompok_id   String?
+  kelas         kelas?     @relation(fields: [kelas_id], references: [id])
+  kelas_id      String?
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+  tagihans      tagihan[]
+  // presensis     presensi[]
 }
 
 model module {
-  id String @id @default(cuid())
+  id          String   @id @default(cuid())
   nama_module String
-  url String?
-  thumbnail String?
-  mapel mapel? @relation(fields: [mapel_id], references: [id])
-  mapel_id String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  url         String?
+  thumbnail   String?
+  mapel       mapel?   @relation(fields: [mapel_id], references: [id])
+  mapel_id    String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
 
-model presensi {
-  id String @id @default(cuid())
-  siswa_id String?
-  siswa siswa? @relation(fields: [siswa_id], references: [id])
-  status StatusPresensi
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
+// model presensi {
+//   id        String         @id @default(cuid())
+//   siswa_id  String?
+//   siswa     siswa?         @relation(fields: [siswa_id], references: [id])
+//   status    StatusPresensi
+//   createdAt DateTime       @default(now())
+//   updatedAt DateTime       @updatedAt
+// }
 
 model tagihan {
-  id String @id @default(cuid())
-  siswa siswa? @relation(fields: [siswa_id], references: [id])
-  siswa_id String?
-  nama_rekening String?
-  nomor_rekening String?
-  jumlah_tagihan Int
-  tanggal_tagihan DateTime @db.Date
-  tanggal_jatuh_tempo DateTime @db.Date
-  tanggal_bayar DateTime? @db.Date
-  tanggal_approve DateTime? @db.Date
-  Bulan Bulan?
-  Tahun Int?
-  status Status
-  nota String?
-  user User? @relation(fields: [user_id], references: [id])
-  user_id String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id                  String    @id @default(cuid())
+  siswa               siswa?    @relation(fields: [siswa_id], references: [id])
+  siswa_id            String?
+  nama_rekening       String?
+  nomor_rekening      String?
+  jumlah_tagihan      Int
+  tanggal_tagihan     DateTime  @db.Date
+  tanggal_jatuh_tempo DateTime  @db.Date
+  tanggal_bayar       DateTime? @db.Date
+  tanggal_approve     DateTime? @db.Date
+  Bulan               Bulan?
+  Tahun               Int?
+  status              Status
+  nota                String?
+  user                User?     @relation(fields: [user_id], references: [id])
+  user_id             String?
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
   // tagihan_details tagihan_detail?
 }
 
 model setgaji {
-  id String @id @default(cuid())
+  id          String   @id @default(cuid())
   jumlah_gaji Int
-  role UserRole
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  role        UserRole
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
 
 model rekening {
-  id String @id @default(cuid())
-  nama_rekening String
+  id             String   @id @default(cuid())
+  nama_rekening  String
   nomor_rekening String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
 }
 
 model diskon {
-  id String @id @default(cuid())
+  id          String   @id @default(cuid())
   nama_diskon String
-  banner String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  banner      String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
 
 enum UserRole {
@@ -252,6 +251,7 @@ enum Hari {
   SABTU
   MINGGU
 }
+
 enum Tipe {
   PRIVATE
   SEMI_PRIVATE
@@ -272,18 +272,21 @@ enum StatusPembayaran {
   BELUM_DIBAYAR
   SUDAH_DIBAYAR
   PENDING
+  DITERIMA
 }
 
 enum Level {
   PREMIUM
   REGULER
 }
+
 enum Status {
   LUNAS
   JATUH_TEMPO
   PENDING
   BELUM_BAYAR
 }
+
 enum StatusPresensi {
   HADIR
   SAKIT

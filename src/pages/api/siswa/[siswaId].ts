@@ -22,11 +22,26 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
   } else if (req.method === "DELETE") {
     try {
-      const siswa = await prisma.siswa.delete({
+      const siswa = await prisma.siswa.findUnique({
         where: { id: siswaId },
       });
 
-      res.status(200).json(siswa);
+      if (siswa) {
+        await prisma.siswa.delete({
+          where: { id: siswaId },
+        });
+
+        //delete image from upload/img/siswa
+        const fs = require("fs");
+        const path = require("path");
+        const filePath = path.join(process.cwd(), "public", "img", "siswa", siswa.image);
+        fs.unlinkSync(filePath);
+
+        res.status(200).json(siswa);
+      } else {
+        return res.status(404).json({ message: "siswa not found" });
+      }
+
     } catch (error) {
       console.error(error);
       res.status(500).json({ message: "Error deleting siswa" });
