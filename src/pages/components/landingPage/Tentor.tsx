@@ -9,6 +9,7 @@ interface tentorProps {
   mataPelajaran: string;
   profile: string;
   wAuto?: boolean;
+  wFull?: boolean;
 }
 
 const Tentor: React.FC<tentorProps> = ({
@@ -21,14 +22,21 @@ const Tentor: React.FC<tentorProps> = ({
   const cardStyle = "";
 
   return (
-    <div className={`flex flex-row h-36 gap-5 shadow-[4px_4px_8px_1px_rgba(101,186,177,0.3)] ${wAuto ? "" : "w-72"} rounded-lg bg-Neutral-100`}>
+    <div
+      className={`flex flex-row h-36 gap-5 shadow-[4px_4px_8px_1px_rgba(101,186,177,0.3)] ${
+        wAuto ? "w-full" : "w-72"
+      } rounded-lg bg-Neutral-100`}
+    >
       <div>
         <Image
-          src={profile}
+          src={
+            profile ? "/api/user/img?img=" + profile : "/img/user/default.png"
+          }
           alt="Profile Tentor"
           width={500}
           height={500}
           className=" w-32 h-full rounded-l-lg"
+          loader={({ src }) => `${src}?cache-control=no-store`}
         />
       </div>
       <div className="flex flex-col gap-1 py-2">

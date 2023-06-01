@@ -5,9 +5,10 @@ import CardPembayaran from "@/pages/components/card/CardPembayaranTagihan";
 import React, { FC, useEffect, useState } from "react";
 import useSWR from "swr";
 import fetcher from "@/libs/fetcher";
-import { ModalDetail } from "@/pages/components/modal/Modal";
+import { ModalDetail, ModalSucces } from "@/pages/components/modal/Modal";
 import LihatNota from "../modal/nota";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
+import DeleteRiwayatTagihan from "../modal/deleteriwayat";
 
 interface RiwayatPembayaran {
   id: string;
@@ -35,6 +36,19 @@ const RiwayatPembayaran: FC<RiwayatPembayaran> = () => {
   const { data: riwayat, error } = useSWR<RiwayatPembayaran[]>("/api/tagihan/riwayat", fetcher);
 
   const [showNota, setShowNota] = useState<RiwayatPembayaran | null>(null);
+  const [selectedDelete, setSelectedDelete] = useState<RiwayatPembayaran | null>(null);
+  const [showSuccess, setShowSuccess] = useState(false);
+
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      setShowSuccess(false);
+    }, 2500);
+
+    return () => {
+      clearTimeout(timeoutId);
+    };
+  }, [showSuccess]);
+
 
   const [inputValue, setInputValue] = useState<string>("");
   const [debouncedValue, setDebouncedValue] = useState<string>("");
@@ -137,6 +151,9 @@ const RiwayatPembayaran: FC<RiwayatPembayaran> = () => {
                           gambar={riwayat?.siswa.image}
                           tahun={riwayat?.Tahun}
                           onClick={() => setShowNota(riwayat)}
+                          onDeleteRiwayat={() => {
+                            setSelectedDelete(riwayat);
+                          }}
                         />
                       ))}
                     </>
@@ -210,7 +227,32 @@ const RiwayatPembayaran: FC<RiwayatPembayaran> = () => {
           <LihatNota data={showNota} onClose={() => setShowNota(null)} />
         </ModalDetail>
       )}
+      {showSuccess && (
+        <ModalSucces label="" onClose={() => setShowSuccess(false)}>
+        </ModalSucces>
+      )}
+      {selectedDelete && (
+        <ModalDetail
+          titleModal="Delete Riwayat Tagihan"
+          onClose={
+            () => setSelectedDelete(null)
+          }
+          center
+          silang
+          wAuto
+        >
+          <DeleteRiwayatTagihan
+            idTagihan={selectedDelete.id}
+            onClose={() => setSelectedDelete(null)}
+            onSuccess={() => {
+              setShowSuccess(true);
+            }}
+            data={selectedDelete}
+          />
+        </ModalDetail>
+      )}
     </div>
+
   );
 };
 

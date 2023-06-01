@@ -8,11 +8,11 @@ interface Acc {
     idAcc: string;
     data: any;
     onClose: () => void;
-    // onSuccess: () => void;
+    onSuccess: () => void;
 }
 
 const Acc: FC<Acc> = ({ idAcc, data, onClose,
-    // onSuccess 
+    onSuccess
 }) => {
 
     const [error, setError] = useState<string | null>(null);
@@ -29,7 +29,7 @@ const Acc: FC<Acc> = ({ idAcc, data, onClose,
 
             mutate(`/api/tagihan`);
             onClose();
-            // onSuccess();
+            onSuccess();
         } catch (error: any) {
             console.error(error);
 

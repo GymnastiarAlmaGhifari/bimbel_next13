@@ -12,6 +12,8 @@ import { signOut } from "next-auth/react";
 import useSWR, { mutate } from "swr";
 import fetcher from "@/libs/fetcher";
 import Notification from "./Notification";
+import { ModalDetail } from "./modal/Modal";
+import ResetPassword from "../pengaturan/gantipassword";
 
 
 const Navbar = () => {
@@ -52,6 +54,8 @@ const Navbar = () => {
     setIsOpen(!isOpen);
   };
 
+  const [gantiPassword, setGantiPassword] = useState<boolean>(false)
+
   return (
     <div className="bg-Neutral-100 h-14 flex items-center justify-end gap-6 px-4 py-2 z-40">
       <Notification onClose={() => { }} />
@@ -69,7 +73,7 @@ const Navbar = () => {
                   ? "/api/user/img?img=" + users?.image
                   : "/img/user/default.png"
               }
-              alt="Megachan"
+              alt="Gambar"
               width={100}
               height={100}
               className="rounded-full w-full h-full object-cover"
@@ -107,6 +111,11 @@ const Navbar = () => {
                 textColor="text-Primary-10"
                 type="button"
                 icon={MdOutlineKey}
+                onClick={
+                  () => {
+                    setGantiPassword(true)
+                  }
+                }
               />
 
               : ""}
@@ -135,6 +144,33 @@ const Navbar = () => {
           ""
         )}
       </button>
+      {
+        gantiPassword && (
+
+          <ModalDetail
+            onClose={
+              () => {
+                setGantiPassword(false)
+              }
+            }
+            titleModal="Ganti Password"
+            center
+          >
+            <ResetPassword
+              onClose={
+                () => {
+                  setGantiPassword(false)
+                }
+              }
+              onSuccess={
+                () => {
+                  setGantiPassword(false)
+                }
+              }
+            />
+          </ModalDetail>
+        )
+      }
     </div>
   );
 };
