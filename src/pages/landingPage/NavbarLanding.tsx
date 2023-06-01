@@ -46,7 +46,7 @@ export default function NavbarLanding() {
   return (
     <nav
       ref={navBg}
-      className="z-50 fixed flex flex-col gap-2 justify-between px-14 py-5 w-screen backdrop-filter lg:flex-row "
+      className="z-50 fixed flex flex-col gap-2 justify-between px-14 py-5 w-screen backdrop-filter lg:flex-row"
     >
       <div className="flex justify-between">
         <svg
