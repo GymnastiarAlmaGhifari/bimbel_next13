@@ -19,7 +19,7 @@ const ItemProgram: FC<ItemProgram> = ({
   deskripsi, gambar, tipe, level, harga, nama_program, nama_kelas,
 }) => {
   return (
-    <div className="bg-white rounded-lg pb-3 h-auto overflow-hidden w-full ">
+    <div className="bg-Neutral-100 rounded-lg pb-3 h-auto overflow-hidden w-full ">
       <div className="relative">
         <Image
           className="w-full"

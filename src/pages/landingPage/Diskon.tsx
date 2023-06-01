@@ -8,7 +8,7 @@ export default function Diskon() {
   return (
     <div
       id="Diskon"
-      className="h-max flex flex-col px-6 items-center bg-gradient-to-b from-Tertiary-60 to-Primary-60 pt-14 "
+      className="h-max flex flex-col px-6 items-center bg-gradient-to-b from-Tertiary-60 to-Primary-60 pt-14"
       style={clipPath}
     >
       <h1 className="text-center font-bold text-white text-3xl">Diskon</h1>
