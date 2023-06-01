@@ -48,7 +48,7 @@ COPY --from=builder /app/.env ./.env
 
 ENV DATABASE_URL=mysql://root:abogoboga@10.1.1.13:3306/nextlinear
 ENV NEXTAUTH_URL=http://localhost:3000
-VOLUME ["/linear/upload"]
+VOLUME ["/app/upload"]
 
 EXPOSE 3000
 
