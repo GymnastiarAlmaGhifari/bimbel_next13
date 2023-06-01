@@ -42,6 +42,9 @@ export const config = {
     "/pengaturan/gaji",
     "/pengaturan/diskon",
 
+    // batasi semua component
+    "/component",
+
     "/api/modul/pdf",
   ],
 };

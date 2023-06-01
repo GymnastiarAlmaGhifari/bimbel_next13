@@ -4,7 +4,6 @@ import Header from "./landingPage/Header";
 import AboutUs from "./landingPage/About";
 import Program from "./landingPage/Program";
 import Benefit from "./landingPage/Benefit";
-import DetailProgram from "./landingPage/DetailProgram";
 import Diskon from "./landingPage/Diskon";
 import Login from "./landingPage/Login";
 import NavbarLanding from "./landingPage/NavbarLanding";

@@ -3,14 +3,14 @@ import axios from "axios";
 import Button from "@/pages/components/buttons/Button";
 import { mutate } from "swr";
 
-interface DeleteTagihanProps {
+interface DeleteRiwayatTagihanProps {
     idTagihan: string;
     onClose: () => void;
     onSuccess: () => void;
     data?: any;
 
 }
-const DeleteTagihan: FC<DeleteTagihanProps> = ({ idTagihan, onClose, onSuccess, data, }) => {
+const DeleteRiwayatTagihan: FC<DeleteRiwayatTagihanProps> = ({ idTagihan, onClose, onSuccess, data, }) => {
 
     const [isLoading, setIsLoading] = useState(false);
 
@@ -18,7 +18,7 @@ const DeleteTagihan: FC<DeleteTagihanProps> = ({ idTagihan, onClose, onSuccess, 
         setIsLoading(true); // Set loading state to true
         try {
             await axios.delete(`/api/tagihan/${idTagihan}`);
-            mutate("/api/tagihan");
+            mutate("/api/tagihan/riwayat");
             onSuccess();
             onClose();
         } catch (error) {
@@ -66,4 +66,4 @@ const DeleteTagihan: FC<DeleteTagihanProps> = ({ idTagihan, onClose, onSuccess, 
     )
 }
 
-export default DeleteTagihan
+export default DeleteRiwayatTagihan

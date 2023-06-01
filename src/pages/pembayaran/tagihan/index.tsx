@@ -60,7 +60,15 @@ const Pembayaran: FC<Pembayaran> = () => {
 
   const [showSuccess, setShowSuccess] = useState(false);
 
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      setShowSuccess(false);
+    }, 2500);
 
+    return () => {
+      clearTimeout(timeoutId);
+    };
+  }, [showSuccess]);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -238,6 +246,10 @@ const Pembayaran: FC<Pembayaran> = () => {
           </div>
         </div>
       </div>
+      {showSuccess && (
+        <ModalSucces label="" onClose={() => setShowSuccess(false)}>
+        </ModalSucces>
+      )}
       {showNota && (
         <ModalDetail silang
           titleModal={`Nota Tagihan ${showNota.siswa.nama} pada ${showNota.Bulan} ${showNota.Tahun}`}
@@ -255,9 +267,9 @@ const Pembayaran: FC<Pembayaran> = () => {
             idAcc={AcceptPembayaran.id}
             data={AcceptPembayaran}
             onClose={() => setAcceptPembayaran(null)}
-          // onSucsess={() => {
-          //   setShowSuccess(true);
-          // }}
+            onSuccess={() => {
+              setShowSuccess(true);
+            }}
           />
         </ModalDetail>
       )}
@@ -270,17 +282,15 @@ const Pembayaran: FC<Pembayaran> = () => {
             onClose={
               () => setShowCreate(false)
             }
-            onSucsess={
-              () => {
-
-              }
-            }
+            onSucsess={() => {
+              setShowSuccess(true);
+            }}
           />
         </ModalDetail>
       )}
       {selectedDelete && (
         <ModalDetail
-          titleModal="DeleselectedDelete Siswa"
+          titleModal="Delete Tagihan"
           onClose={
             () => setSelectedDelete(null)
           }
@@ -291,7 +301,9 @@ const Pembayaran: FC<Pembayaran> = () => {
           <DeleteTagihan
             idTagihan={selectedDelete.id}
             onClose={() => setSelectedDelete(null)}
-            onSuccess={() => setShowSuccess(true)}
+            onSuccess={() => {
+              setShowSuccess(true);
+            }}
             data={selectedDelete}
           />
         </ModalDetail>
