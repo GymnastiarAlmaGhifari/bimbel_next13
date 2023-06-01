@@ -9,6 +9,7 @@ import Button from "@/pages/components/buttons/Button";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import { useSession } from "next-auth/react";
 import useSWR, { mutate } from "swr";
+import { BiHide, BiShow } from "react-icons/bi";
 
 interface UserCreateProps {
   onClose: () => void;
@@ -53,6 +54,15 @@ const Create: FC<UserCreateProps> = ({ onClose, onSucsess }) => {
     fetcher,
     {}
   );
+
+  const [showPassword, setShowPassword] = useState(false);
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const passwordIcon = showPassword ? <BiHide /> : <BiShow />;
+
 
   const {
     register,
@@ -211,8 +221,10 @@ const Create: FC<UserCreateProps> = ({ onClose, onSucsess }) => {
       <Input
         id="password"
         label="Password"
-        type="password"
+        type={showPassword ? "text" : "password"}
         register={{ ...register("password") }}
+        iconRight={passwordIcon}
+        onIconRightClick={togglePasswordVisibility}
         errors={errors}
       />
       {errors.password && (
@@ -226,11 +238,10 @@ const Create: FC<UserCreateProps> = ({ onClose, onSucsess }) => {
         <div className="relative flex flex-col gap-2">
           <button
             type="button"
-            className={` w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${
-              isListOpenRole
-                ? "border-[2px] border-Primary-50 bg-Primary-95"
-                : "bg-Neutral-95"
-            }`}
+            className={` w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${isListOpenRole
+              ? "border-[2px] border-Primary-50 bg-Primary-95"
+              : "bg-Neutral-95"
+              }`}
             onClick={toggleListRole}
           >
             {getRoleLabel(watch("role")) || "Pilih Role"}
@@ -246,11 +257,10 @@ const Create: FC<UserCreateProps> = ({ onClose, onSucsess }) => {
                   <li key={option.value}>
                     <button
                       type="button"
-                      className={`w-full text-left px-2 py-1 rounded-full ${
-                        watch("role") === option.value
-                          ? "text-Primary-90 bg-Primary-20"
-                          : "text-Primary-20 hover:bg-Primary-95"
-                      }`}
+                      className={`w-full text-left px-2 py-1 rounded-full ${watch("role") === option.value
+                        ? "text-Primary-90 bg-Primary-20"
+                        : "text-Primary-20 hover:bg-Primary-95"
+                        }`}
                       onClick={() => selectrole(option.value)}
                     >
                       {option.label}
@@ -264,11 +274,10 @@ const Create: FC<UserCreateProps> = ({ onClose, onSucsess }) => {
                     <li key={option.value}>
                       <button
                         type="button"
-                        className={`w-full text-left px-2 py-1 rounded-full ${
-                          watch("role") === option.value
-                            ? "text-Primary-90 bg-Primary-20"
-                            : "text-Primary-20 hover:bg-Primary-95"
-                        }`}
+                        className={`w-full text-left px-2 py-1 rounded-full ${watch("role") === option.value
+                          ? "text-Primary-90 bg-Primary-20"
+                          : "text-Primary-20 hover:bg-Primary-95"
+                          }`}
                         onClick={() => selectrole(option.value)}
                       >
                         {option.label}
@@ -290,11 +299,10 @@ const Create: FC<UserCreateProps> = ({ onClose, onSucsess }) => {
         <div className="relative flex flex-col gap-2">
           <button
             type="button"
-            className={` w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${
-              isListOpenMapel
-                ? "border-[2px] border-Primary-50 bg-Primary-95"
-                : "bg-Neutral-95"
-            }`}
+            className={` w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${isListOpenMapel
+              ? "border-[2px] border-Primary-50 bg-Primary-95"
+              : "bg-Neutral-95"
+              }`}
             onClick={toggleListMapel}
           >
             {/* buat label */}
@@ -315,11 +323,10 @@ const Create: FC<UserCreateProps> = ({ onClose, onSucsess }) => {
                 <li key={mapelItem.id}>
                   <button
                     type="button"
-                    className={`w-full text-left px-2 py-1 rounded-full ${
-                      watch("mapel") === mapelItem.id
-                        ? "text-Primary-90 bg-Primary-20"
-                        : "text-Primary-20 hover:bg-Primary-95"
-                    }`}
+                    className={`w-full text-left px-2 py-1 rounded-full ${watch("mapel") === mapelItem.id
+                      ? "text-Primary-90 bg-Primary-20"
+                      : "text-Primary-20 hover:bg-Primary-95"
+                      }`}
                     onClick={() => {
                       selectMapel(mapelItem.id);
                       handleCheckChangeUser(mapelItem.id);

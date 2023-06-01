@@ -10,6 +10,8 @@ import { ModalDetail, ModalSucces } from "@/pages/components/modal/Modal";
 import LihatNota from "../modal/nota";
 import Acc from "../modal/acc";
 import Create from "../modal/create";
+import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
+import DeleteTagihan from "../modal/delete";
 
 interface Pembayaran {
   id: string;
@@ -50,6 +52,73 @@ const Pembayaran: FC<Pembayaran> = () => {
     null
   );
 
+  const [selectedDelete, setSelectedDelete] = useState<Pembayaran | null>(null);
+
+
+  const [inputValue, setInputValue] = useState<string>("");
+  const [debouncedValue, setDebouncedValue] = useState<string>("");
+
+  const [showSuccess, setShowSuccess] = useState(false);
+
+
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedValue(inputValue);
+    }, 1000);
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [inputValue]);
+
+
+  let filteredPembayaran: Pembayaran[] | undefined = pembayaran;
+
+  if (debouncedValue && filteredPembayaran) {
+    filteredPembayaran = filteredPembayaran.filter((pembayaran) =>
+      pembayaran.siswa.nama.toLowerCase().includes(debouncedValue.toLowerCase())
+    );
+  }
+
+  const handleInputChange = (value: string) => {
+    setInputValue(value);
+  };
+
+  const PAGE_SIZE = 10;
+  const MAX_PAGE_DISPLAY = 5; // Jumlah maksimal nomor halaman yang ditampilkan
+
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
+
+  let paginatedPembayaran: Pembayaran[] = [];
+  let totalPages = 0;
+  let pageNumbers: number[] = [];
+  if (filteredPembayaran) {
+    const startIndex = (currentPage - 1) * PAGE_SIZE;
+    const endIndex = startIndex + PAGE_SIZE;
+    paginatedPembayaran = filteredPembayaran.slice(startIndex, endIndex);
+    totalPages = Math.ceil(filteredPembayaran.length / PAGE_SIZE);
+
+    const startPage = Math.max(
+      currentPage - Math.floor(MAX_PAGE_DISPLAY / 2),
+      1
+    );
+    const endPage = Math.min(startPage + MAX_PAGE_DISPLAY - 1, totalPages);
+
+    pageNumbers = Array.from(
+      { length: endPage - startPage + 1 },
+      (_, i) => startPage + i
+    );
+  }
+
+  const isFirstPage = currentPage === 1;
+  const isLastPage = currentPage === totalPages;
+
+
   return (
     <div className="flex flex-row h-screen font-mulish">
       <Sidebar />
@@ -60,18 +129,19 @@ const Pembayaran: FC<Pembayaran> = () => {
             <NavbarPembayaran />
             <div className="flex flex-col h-full bg-Neutral-100 py-4 gap-4 rounded-lg overflow-auto">
               <HeadTable
-                noSearch
                 label="Tagihan"
                 riwayat
                 onClick={() => setShowCreate(true)}
                 onHistory={() => {
 
                 }}
+                url="/pembayaran/riwayatPembayaran"
+                onChange={handleInputChange}
               />
               <div className="flex flex-col rounded-bl-lg rounded-br-lg p-4 gap-4 overflow-y-auto scrollbar">
-                {pembayaran ? (
+                {paginatedPembayaran ? (
                   <>
-                    {pembayaran.length === 0 ? (
+                    {paginatedPembayaran.length === 0 ? (
                       <div className="flex flex-col justify-center items-center">
                         <p className="text-2xl font-bold text-Neutral-600">
                           Data Kosong
@@ -80,7 +150,7 @@ const Pembayaran: FC<Pembayaran> = () => {
                       </div>
                     ) : (
                       <>
-                        {pembayaran.map((pembayaran: Pembayaran) => (
+                        {paginatedPembayaran.map((pembayaran: Pembayaran) => (
                           <CardPembayaran
                             key={pembayaran.id}
                             bulan={pembayaran.Bulan}
@@ -101,6 +171,7 @@ const Pembayaran: FC<Pembayaran> = () => {
                             tahun={pembayaran?.Tahun}
                             onClick={() => setShowNota(pembayaran)}
                             onAccept={() => setAcceptPembayaran(pembayaran)}
+                            onDelete={() => setSelectedDelete(pembayaran)}
                           />
                         ))}
                       </>
@@ -125,6 +196,42 @@ const Pembayaran: FC<Pembayaran> = () => {
                       </div>
                     )}
                   </>
+                )}
+              </div>
+              <div className="flex justify-center gap-4">
+                {totalPages > 1 && (
+                  <div className="flex justify-center gap-4">
+                    {!isFirstPage && (
+                      <button
+                        className="bg-Neutral-95 text-Primary-40 font-semibold py-2 px-3 rounded-full hover:bg-Primary-40 hover:text-Primary-95"
+                        onClick={() => handlePageChange(currentPage - 1)}
+                      >
+                        <IoIosArrowBack size={16} />
+                      </button>
+                    )}
+                    <div className="flex gap-2">
+                      {pageNumbers.map((page) => (
+                        <button
+                          key={page}
+                          className={`px-4 py-2 rounded-full font-semibold ${currentPage === page
+                            ? "bg-Primary-40 text-Neutral-100"
+                            : "text-Primary-40 hover:bg-Primary-95 hover:text-Primary-30"
+                            }`}
+                          onClick={() => handlePageChange(page)}
+                        >
+                          {page}
+                        </button>
+                      ))}
+                    </div>
+                    {!isLastPage && (
+                      <button
+                        className="bg-Neutral-95 text-Primary-40 font-semibold py-1 px-3 rounded-full hover:bg-Primary-40 hover:text-Primary-95"
+                        onClick={() => handlePageChange(currentPage + 1)}
+                      >
+                        <IoIosArrowForward size={16} />
+                      </button>
+                    )}
+                  </div>
                 )}
               </div>
             </div>
@@ -168,6 +275,24 @@ const Pembayaran: FC<Pembayaran> = () => {
 
               }
             }
+          />
+        </ModalDetail>
+      )}
+      {selectedDelete && (
+        <ModalDetail
+          titleModal="DeleselectedDelete Siswa"
+          onClose={
+            () => setSelectedDelete(null)
+          }
+          center
+          silang
+          wAuto
+        >
+          <DeleteTagihan
+            idTagihan={selectedDelete.id}
+            onClose={() => setSelectedDelete(null)}
+            onSuccess={() => setShowSuccess(true)}
+            data={selectedDelete}
           />
         </ModalDetail>
       )}

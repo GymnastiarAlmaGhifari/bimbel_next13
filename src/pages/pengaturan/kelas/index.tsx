@@ -12,6 +12,7 @@ import DeleteKelas from "./delete";
 import Sidebar from "@/pages/components/Sidebar";
 import Navbar from "@/pages/components/Navbar";
 import NavbarPengaturan from "@/pages/components/NavbarPengaturan";
+import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 
 interface Kelas {
   id: string;
@@ -48,10 +49,10 @@ const Kelas: FC<Kelas> = () => {
     };
   }, [inputValue]);
 
-  let filteredKelas = kelas;
+  let filteredKelas: Kelas[] | undefined = kelas;
 
-  if (debouncedValue) {
-    filteredKelas = kelas?.filter((kelas) =>
+  if (debouncedValue && filteredKelas) {
+    filteredKelas = filteredKelas?.filter((kelas) =>
       kelas.nama_kelas.toLowerCase().includes(debouncedValue.toLowerCase())
     );
   }
@@ -75,6 +76,39 @@ const Kelas: FC<Kelas> = () => {
     }
   }, [error]);
 
+  const PAGE_SIZE = 10;
+  const MAX_PAGE_DISPLAY = 5; // Jumlah maksimal nomor halaman yang ditampilkan
+
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
+
+  let paginatedKelas: Kelas[] = [];
+  let totalPages = 0;
+  let pageNumbers: number[] = [];
+  if (filteredKelas) {
+    const startIndex = (currentPage - 1) * PAGE_SIZE;
+    const endIndex = startIndex + PAGE_SIZE;
+    paginatedKelas = filteredKelas.slice(startIndex, endIndex);
+    totalPages = Math.ceil(filteredKelas.length / PAGE_SIZE);
+
+    const startPage = Math.max(
+      currentPage - Math.floor(MAX_PAGE_DISPLAY / 2),
+      1
+    );
+    const endPage = Math.min(startPage + MAX_PAGE_DISPLAY - 1, totalPages);
+
+    pageNumbers = Array.from(
+      { length: endPage - startPage + 1 },
+      (_, i) => startPage + i
+    );
+  }
+
+  const isFirstPage = currentPage === 1;
+  const isLastPage = currentPage === totalPages;
+
   const onClose = () => {
     setSelectedKelas(null);
   };
@@ -95,9 +129,9 @@ const Kelas: FC<Kelas> = () => {
                 onChange={handleInputChange}
               />
               <div className="flex flex-col rounded-bl-lg rounded-br-lg p-4 gap-4 overflow-y-auto scrollbar-thin scrollbar-track-Neutral-100 scrollbar-thumb-Primary-40 scrollbar-rounded-lg">
-                {filteredKelas ? (
+                {paginatedKelas ? (
                   <>
-                    {filteredKelas.length === 0 ? (
+                    {paginatedKelas.length === 0 ? (
                       <div className="flex flex-col items-center justify-center">
                         <h1 className="text-2xl font-bold text-gray-500">
                           Kelas tidak ditemukan
@@ -107,7 +141,7 @@ const Kelas: FC<Kelas> = () => {
                         </p>
                       </div>
                     ) : (
-                      filteredKelas.map((kelas) => (
+                      paginatedKelas.map((kelas) => (
                         <CardKelas
                           key={kelas.id}
                           nama_kelas={kelas.nama_kelas}
@@ -178,6 +212,42 @@ const Kelas: FC<Kelas> = () => {
                       kelasId={showDelete.id}
                     />
                   </ModalDetail>
+                )}
+              </div>
+              <div className="flex justify-center gap-4">
+                {totalPages > 1 && (
+                  <div className="flex justify-center gap-4">
+                    {!isFirstPage && (
+                      <button
+                        className="bg-Neutral-95 text-Primary-40 font-semibold py-2 px-3 rounded-full hover:bg-Primary-40 hover:text-Primary-95"
+                        onClick={() => handlePageChange(currentPage - 1)}
+                      >
+                        <IoIosArrowBack size={16} />
+                      </button>
+                    )}
+                    <div className="flex gap-2">
+                      {pageNumbers.map((page) => (
+                        <button
+                          key={page}
+                          className={`px-4 py-2 rounded-full font-semibold ${currentPage === page
+                            ? "bg-Primary-40 text-Neutral-100"
+                            : "text-Primary-40 hover:bg-Primary-95 hover:text-Primary-30"
+                            }`}
+                          onClick={() => handlePageChange(page)}
+                        >
+                          {page}
+                        </button>
+                      ))}
+                    </div>
+                    {!isLastPage && (
+                      <button
+                        className="bg-Neutral-95 text-Primary-40 font-semibold py-1 px-3 rounded-full hover:bg-Primary-40 hover:text-Primary-95"
+                        onClick={() => handlePageChange(currentPage + 1)}
+                      >
+                        <IoIosArrowForward size={16} />
+                      </button>
+                    )}
+                  </div>
                 )}
               </div>
             </div>

@@ -1,5 +1,5 @@
 import { FC, useState } from "react";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { mutate } from "swr";
 import { SubmitHandler, useForm } from "react-hook-form";
 import Input from "@/pages/components/inputs/Input";
@@ -58,6 +58,7 @@ const EditSiswa: FC<UserEditProps> = ({
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     const { nama, email, hp_ortu, nomor_telepon, alamat, sekolah } = data;
     setIsLoading(true);
+    setError(null);
     try {
       await axios.put(`/api/siswa/${siswaId}`, {
         nama,
@@ -70,8 +71,31 @@ const EditSiswa: FC<UserEditProps> = ({
       mutate(`/api/siswa/${siswaId}`);
       mutate(`/api/siswa`);
       // mutate(`/api/user/getadmin`);
-    } catch (error) {
+    } catch (error: any) {
       console.error(error);
+
+      if (axios.isAxiosError(error)) {
+        const axiosError = error as AxiosError;
+        if (axiosError.response) {
+          const responseData = axiosError.response.data as { message: string };
+
+          // Extract the main error message from the response data
+          const errorMessage = responseData.message;
+
+          setError(`${errorMessage}`);
+        } else if (axiosError.request) {
+
+          const request = axiosError.request.toString();
+          setError(`${request}`);
+        } else {
+
+          const request = axiosError.message.toString();
+          setError(`${request}`);
+        }
+      } else {
+        console.log("Error:", error.message);
+        setError("An unknown error occurred.");
+      }
     } finally {
       setIsLoading(false);
       onClose();
@@ -81,6 +105,8 @@ const EditSiswa: FC<UserEditProps> = ({
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5">
+      {error && <p className="text-Error-50 text-sm">{error}</p>}
+
       <div className="flex flex-col gap-4 w-full">
         <Input
           id="nama"

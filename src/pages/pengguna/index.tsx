@@ -9,9 +9,9 @@ import Create from "./create";
 import HeadTable from "../components/HeadTable";
 import UserCard from "../components/card/CardPengguna";
 import { useSession } from "next-auth/react";
-import UserEditGambar from "./edit/editgambar";
 import Search from "../components/Search";
 import DeletePengguna from "./delete";
+import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 
 interface User {
   id: string;
@@ -54,10 +54,10 @@ const User: FC<User> = () => {
     isLoading: superload,
   } = useSWR<User[]>(`/api/user`, fetcher, {});
 
-  let filteredUsers = users;
+  let filteredUsers: User[] | undefined = users;
 
-  if (debouncedValue) {
-    filteredUsers = users?.filter((user) =>
+  if (debouncedValue && filteredUsers) {
+    filteredUsers = filteredUsers?.filter((user) =>
       user.name.toLowerCase().includes(debouncedValue.toLowerCase())
     );
   }
@@ -68,10 +68,10 @@ const User: FC<User> = () => {
     isLoading: adminload,
   } = useSWR<User[]>("/api/user/getadmin", fetcher, {});
 
-  let filteredAdmin = admin;
+  let filteredAdmin: User[] | undefined = admin;
 
-  if (debouncedValue) {
-    filteredAdmin = admin?.filter((user) =>
+  if (debouncedValue && filteredAdmin) {
+    filteredAdmin = filteredAdmin?.filter((user) =>
       user.name.toLowerCase().includes(debouncedValue.toLowerCase())
     );
   }
@@ -106,7 +106,60 @@ const User: FC<User> = () => {
   const handleInputChange = (value: string) => {
     setInputValue(value);
   };
+  const PAGE_SIZE = 3;
+  const MAX_PAGE_DISPLAY = 5; // Jumlah maksimal nomor halaman yang ditampilkan
 
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
+
+  let paginatedUsers: User[] = [];
+  let paginatedAdmin: User[] = [];
+
+  let totalPages = 0;
+  let pageNumbers: number[] = [];
+  if (filteredUsers) {
+    const startIndex = (currentPage - 1) * PAGE_SIZE;
+    const endIndex = startIndex + PAGE_SIZE;
+    paginatedUsers = filteredUsers.slice(startIndex, endIndex);
+    totalPages = Math.ceil(filteredUsers.length / PAGE_SIZE);
+
+    const startPage = Math.max(
+      currentPage - Math.floor(MAX_PAGE_DISPLAY / 2),
+      1
+    );
+    const endPage = Math.min(startPage + MAX_PAGE_DISPLAY - 1, totalPages);
+
+    pageNumbers = Array.from(
+      { length: endPage - startPage + 1 },
+      (_, i) => startPage + i
+    );
+  }
+  if (filteredAdmin) {
+    const startIndex = (currentPage - 1) * PAGE_SIZE;
+    const endIndex = startIndex + PAGE_SIZE;
+    paginatedAdmin = filteredAdmin.slice(startIndex, endIndex);
+    totalPages = Math.ceil(filteredAdmin.length / PAGE_SIZE);
+
+    const startPage = Math.max(
+      currentPage - Math.floor(MAX_PAGE_DISPLAY / 2),
+      1
+    );
+
+    const endPage = Math.min(startPage + MAX_PAGE_DISPLAY - 1, totalPages);
+
+    pageNumbers = Array.from(
+      { length: endPage - startPage + 1 },
+      (_, i) => startPage + i
+    );
+  }
+
+
+
+  const isFirstPage = currentPage === 1;
+  const isLastPage = currentPage === totalPages;
   return (
     <div className="flex flex-row h-screen w-screen absolute overflow-hidden font-mulish">
       <Sidebar />
@@ -126,65 +179,98 @@ const User: FC<User> = () => {
             <div className="flex flex-col rounded-bl-lg rounded-br-lg p-4 gap-4 overflow-y-auto scrollbar">
               {session?.user.role === "SUPER" && (
                 <>
-                  {superload ? (
-                    <p>Loading...</p>
+                  {paginatedUsers ? (
+                    paginatedUsers.length === 0 ? (
+                      <p>Tidak ditemukan pengguna.</p>
+                    ) : (
+                      paginatedUsers.map((user) => (
+                        <UserCard
+                          key={user.id}
+                          nama_user={user.name}
+                          universitas={user.universitas}
+                          nama_mapel={user.mapel?.nama_mapel}
+                          gambar={user?.image}
+                          role={user.role}
+                          onEdit={() => {
+                            setSelected(user);
+                          }}
+                          onHapus={() => {
+                            setSelecteDelete(user);
+                          }}
+                        />
+                      ))
+                    )
                   ) : (
-                    <>
-                      {filteredUsers?.length === 0 ? (
-                        <p>Tidak ditemukan pengguna.</p>
-                      ) : (
-                        filteredUsers?.map((user) => (
-                          <UserCard
-                            key={user.id}
-                            nama_user={user.name}
-                            universitas={user.universitas}
-                            nama_mapel={user.mapel?.nama_mapel}
-                            gambar={user?.image}
-                            role={user.role}
-                            onEdit={() => {
-                              setSelected(user);
-                            }}
-                            onHapus={() => {
-                              setSelecteDelete(user);
-                            }}
-                          />
-                        ))
-                      )}
-                    </>
+                    <p>Loading...</p>
                   )}
                 </>
               )}
 
               {session?.user.role === "ADMIN" && (
                 <>
-                  {adminload ? (
-                    <p>Loading...</p>
+                  {paginatedAdmin ? (
+                    paginatedAdmin.length === 0 ? (
+                      <p>Tidak ditemukan pengguna.</p>
+                    ) : (
+                      paginatedAdmin.map((user) => (
+                        <UserCard
+                          key={user.id}
+                          nama_user={user.name}
+                          universitas={user.universitas}
+                          nama_mapel={user.mapel?.nama_mapel}
+                          gambar={user?.image}
+                          role={user.role}
+                          onEdit={() => {
+                            setSelected(user);
+                          }}
+                          onHapus={() => {
+                            setSelecteDelete(user);
+                          }}
+                        />
+                      ))
+                    )
                   ) : (
-                    <>
-                      {filteredAdmin?.length === 0 ? (
-                        <p>Tidak ditemukan pengguna.</p>
-                      ) : (
-                        filteredAdmin?.map((user) => (
-                          <UserCard
-                            key={user.id}
-                            nama_user={user.name}
-                            universitas={user.universitas}
-                            nama_mapel={user.mapel?.nama_mapel}
-                            gambar={user?.image}
-                            role={user.role}
-                            onEdit={() => {
-                              setSelected(user);
-                            }}
-                            onHapus={() => {
-                              setSelecteDelete(user);
-                            }}
-                          />
-                        ))
-                      )}
-                    </>
+                    <p>Loading...</p>
                   )}
                 </>
               )}
+            </div>
+            <div className="flex justify-center gap-4">
+              {totalPages > 1 && (
+                <div className="flex justify-center gap-4">
+                  {!isFirstPage && (
+                    <button
+                      className="bg-Neutral-95 text-Primary-40 font-semibold py-2 px-3 rounded-full hover:bg-Primary-40 hover:text-Primary-95"
+                      onClick={() => handlePageChange(currentPage - 1)}
+                    >
+                      <IoIosArrowBack size={16} />
+                    </button>
+                  )}
+                  <div className="flex gap-2">
+                    {pageNumbers.map((page) => (
+                      <button
+                        key={page}
+                        className={`px-4 py-2 rounded-full font-semibold ${currentPage === page
+                          ? "bg-Primary-40 text-Neutral-100"
+                          : "text-Primary-40 hover:bg-Primary-95 hover:text-Primary-30"
+                          }`}
+                        onClick={() => handlePageChange(page)}
+                      >
+                        {page}
+                      </button>
+                    ))}
+                  </div>
+                  {!isLastPage && (
+                    <button
+                      className="bg-Neutral-95 text-Primary-40 font-semibold py-1 px-3 rounded-full hover:bg-Primary-40 hover:text-Primary-95"
+                      onClick={() => handlePageChange(currentPage + 1)}
+                    >
+                      <IoIosArrowForward size={16} />
+                    </button>
+                  )}
+                </div>
+              )}
+
             </div>
           </div>
         </div>

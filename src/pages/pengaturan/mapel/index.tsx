@@ -12,6 +12,7 @@ import Sidebar from "@/pages/components/Sidebar";
 import Navbar from "@/pages/components/Navbar";
 import NavbarPengaturan from "@/pages/components/NavbarPengaturan";
 import DeleteMapel from "./delete";
+import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 
 interface Mapel {
   kelas: any;
@@ -51,10 +52,10 @@ const Mapel: FC<Mapel> = () => {
     };
   }, [inputValue]);
 
-  let filteredMapel = mapel;
+  let filteredMapel: Mapel[] | undefined = mapel;
 
-  if (debouncedValue) {
-    filteredMapel = mapel?.filter((mapel) =>
+  if (debouncedValue && filteredMapel) {
+    filteredMapel = filteredMapel?.filter((mapel) =>
       mapel.nama_mapel.toLowerCase().includes(debouncedValue.toLowerCase())
     );
   }
@@ -82,9 +83,41 @@ const Mapel: FC<Mapel> = () => {
     setSelectedMapel(null);
   };
 
+  const [currentPage, setCurrentPage] = useState(1);
   if (error) {
     return <p>Error loading mapel.</p>;
   }
+  const PAGE_SIZE = 10;
+  const MAX_PAGE_DISPLAY = 5; // Jumlah maksimal nomor halaman yang ditampilkan
+
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
+
+  let paginatedMapel: Mapel[] = [];
+  let totalPages = 0;
+  let pageNumbers: number[] = [];
+  if (filteredMapel) {
+    const startIndex = (currentPage - 1) * PAGE_SIZE;
+    const endIndex = startIndex + PAGE_SIZE;
+    paginatedMapel = filteredMapel.slice(startIndex, endIndex);
+    totalPages = Math.ceil(filteredMapel.length / PAGE_SIZE);
+
+    const startPage = Math.max(
+      currentPage - Math.floor(MAX_PAGE_DISPLAY / 2),
+      1
+    );
+    const endPage = Math.min(startPage + MAX_PAGE_DISPLAY - 1, totalPages);
+
+    pageNumbers = Array.from(
+      { length: endPage - startPage + 1 },
+      (_, i) => startPage + i
+    );
+  }
+
+  const isFirstPage = currentPage === 1;
+  const isLastPage = currentPage === totalPages;
 
   return (
     <div className="flex flex-row h-screen font-mulish">
@@ -102,19 +135,19 @@ const Mapel: FC<Mapel> = () => {
                 onChange={handleInputChange}
               />
               <div className="flex flex-col rounded-bl-lg rounded-br-lg p-4 gap-4 overflow-y-auto scrollbar-thin scrollbar-track-Neutral-100 scrollbar-thumb-Primary-40 scrollbar-rounded-lg">
-                {filteredMapel ? (
+                {paginatedMapel ? (
                   <>
-                    {filteredMapel.length === 0 ? (
+                    {paginatedMapel.length === 0 ? (
                       <div className="flex flex-col items-center justify-center">
                         <h1 className="text-2xl font-bold text-gray-500">
-                          Program tidak ditemukan
+                          Mapel tidak ditemukan
                         </h1>
                         <p className="text-sm text-gray-500">
-                          Program yang anda cari tidak ditemukan
+                          Mapel yang anda cari tidak ditemukan
                         </p>
                       </div>
                     ) : (
-                      filteredMapel.map((item) => (
+                      paginatedMapel.map((item) => (
                         <CardMapel
                           key={item.id}
                           nama_kelas={item.kelas?.nama_kelas}
@@ -190,6 +223,42 @@ const Mapel: FC<Mapel> = () => {
                     </ModalDetail>
                   )
                 }
+              </div>
+              <div className="flex justify-center gap-4">
+                {totalPages > 1 && (
+                  <div className="flex justify-center gap-4">
+                    {!isFirstPage && (
+                      <button
+                        className="bg-Neutral-95 text-Primary-40 font-semibold py-2 px-3 rounded-full hover:bg-Primary-40 hover:text-Primary-95"
+                        onClick={() => handlePageChange(currentPage - 1)}
+                      >
+                        <IoIosArrowBack size={16} />
+                      </button>
+                    )}
+                    <div className="flex gap-2">
+                      {pageNumbers.map((page) => (
+                        <button
+                          key={page}
+                          className={`px-4 py-2 rounded-full font-semibold ${currentPage === page
+                            ? "bg-Primary-40 text-Neutral-100"
+                            : "text-Primary-40 hover:bg-Primary-95 hover:text-Primary-30"
+                            }`}
+                          onClick={() => handlePageChange(page)}
+                        >
+                          {page}
+                        </button>
+                      ))}
+                    </div>
+                    {!isLastPage && (
+                      <button
+                        className="bg-Neutral-95 text-Primary-40 font-semibold py-1 px-3 rounded-full hover:bg-Primary-40 hover:text-Primary-95"
+                        onClick={() => handlePageChange(currentPage + 1)}
+                      >
+                        <IoIosArrowForward size={16} />
+                      </button>
+                    )}
+                  </div>
+                )}
               </div>
             </div>
           </div>

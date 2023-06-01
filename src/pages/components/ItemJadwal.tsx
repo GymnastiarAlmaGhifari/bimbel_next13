@@ -87,3 +87,7 @@ export const ItemJadwalBelumTerisi: FC<ItemJadwalBelumTerisiProps> = ({
     </div>
   );
 };
+
+export const ItemJadwalLoading = () => {
+  return <div className="w-full h-full bg-Error-30 rounded-lg"></div>;
+};
