@@ -45,12 +45,12 @@ const Pembayaran: FC<Pembayaran> = () => {
   // state shownota
   const [showNota, setShowNota] = useState<Pembayaran | null>(null);
 
-  // create
-  const [showCreate, setShowCreate] = useState<boolean>(false);
-
   const [AcceptPembayaran, setAcceptPembayaran] = useState<Pembayaran | null>(
     null
   );
+
+  // create
+  const [showCreate, setShowCreate] = useState<boolean>(false);
 
   const [selectedDelete, setSelectedDelete] = useState<Pembayaran | null>(null);
 

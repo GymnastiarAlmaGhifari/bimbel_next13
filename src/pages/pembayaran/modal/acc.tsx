@@ -28,6 +28,7 @@ const Acc: FC<Acc> = ({ idAcc, data, onClose,
             console.log(response.data);
 
             mutate(`/api/tagihan`);
+            mutate(`/api/notif`);
             onClose();
             onSuccess();
         } catch (error: any) {

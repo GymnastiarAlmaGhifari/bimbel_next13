@@ -137,7 +137,7 @@ const CardPembayaranTagihan: FC<CardPembayaranTagihanProps> = ({
           )}
           {
             // if nota not null show button lihat nota
-            nota ? (
+            status != "BELUM_BAYAR" ? (
               <>
                 <Button
                   type="button"
