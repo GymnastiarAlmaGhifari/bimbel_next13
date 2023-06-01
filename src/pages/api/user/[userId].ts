@@ -10,26 +10,42 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   if (req.method === "PUT") {
     try {
-      const kelas = await prisma.user.update({
+      const user = await prisma.user.update({
         where: { id: userId },
         data: { ...req.body },
       });
 
-      res.status(200).json(kelas);
+      res.status(200).json(user);
     } catch (error) {
       console.error(error);
-      res.status(500).json({ message: "Error updating kelas" });
+      res.status(500).json({ message: "Error updating user" });
     }
   } else if (req.method === "DELETE") {
     try {
-      const kelas = await prisma.user.delete({
+      const user = await prisma.user.findUnique({
         where: { id: userId },
       });
 
-      res.status(200).json(kelas);
+      if (user) {
+
+      await prisma.user.delete({
+        where: { id: userId },
+      });
+
+      //delete image user
+      const fs = require('fs');
+      const path = require('path');
+      const filePath = path.join(process.cwd(), 'upload', 'img', 'user', user.image);
+      fs.unlinkSync(filePath);
+
+
+      res.status(200).json(user);
+    } else {
+      return res.status(404).json({ message: "user not found" });
+    }
     } catch (error) {
       console.error(error);
-      res.status(500).json({ message: "Error deleting kelas" });
+      res.status(500).json({ message: "Error deleting user" });
     }
   } else if (req.method === "GET") {
     try {
@@ -38,13 +54,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       });
 
       if (!users) {
-        return res.status(404).json({ message: "Kelas not found" });
+        return res.status(404).json({ message: "user not found" });
       }
 
       res.status(200).json(users);
     } catch (error) {
       console.error(error);
-      res.status(500).json({ message: "Error loading kelas" });
+      res.status(500).json({ message: "Error loading user" });
     }
   } else if (req.method === "DELETE") {
     try {
@@ -64,7 +80,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       res.status(200).json(users);
     } catch (error) {
       console.error(error);
-      res.status(500).json({ message: "Error deleting kelas" });
+      res.status(500).json({ message: "Error deleting user" });
     }
   }
 }

@@ -18,4 +18,22 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             res.status(500).json({ message: "Error deleting gaji" });
         }
     }
+
+    if (req.method === "PUT") {
+        try {
+            const gaji = await prisma.gaji.update({
+                where: {
+                    id: gajiId,
+                },
+                data: {
+                    ...req.body,
+                },
+            });
+
+            res.status(200).json(gaji);
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ message: "Error updating gaji" });
+        }
+    }
 }
