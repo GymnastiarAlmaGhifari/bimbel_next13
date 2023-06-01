@@ -19,7 +19,7 @@ export default function Home() {
   };
 
   return (
-    <div className="font-mulish relative">
+    <div className="font-mulish">
       <NavbarLanding />
       <Header />
       <AboutUs />
