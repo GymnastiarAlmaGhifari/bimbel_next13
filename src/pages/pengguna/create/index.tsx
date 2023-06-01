@@ -28,12 +28,12 @@ const schema = yup.object().shape({
   name: yup
     .string()
     .required("tidak boleh kosong")
-    .min(3, "judul minimal 3 karakter"),
-  password: yup.string().required(),
+    .min(3, "nama minimal 3 karakter"),
+  password: yup.string().required("tidak boleh kosong").min(8, "minimal 8 karakter").max(20, "maksimal 20 karakter"),
   email: yup.string().required(),
   role: yup.string().required(),
   mapel: yup.string().required(),
-  nomor_telepon: yup.string().required().max(13, "maksimal 13 karakter"),
+  nomor_telepon: yup.string().required().max(13, "maksimal 13 karakter").min(12, "minimal 10 karakter"),
   lulusan: yup.string(),
   alamat: yup.string().required(),
 });
