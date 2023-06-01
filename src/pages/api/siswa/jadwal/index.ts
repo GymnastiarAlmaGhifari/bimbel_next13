@@ -64,6 +64,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                         tentor: string | null | undefined;
                         sesi: string | undefined;
                         jam: string;
+                        mulai: Date | undefined;
+                        selesai: Date | undefined;
                     }[] = [];
 
                     const count = jadwal.length;
@@ -75,6 +77,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                         const selesai = jadwal[i].sesi?.jam_selesai as Date;
                         const formattedselesai = new Date(selesai).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", hour12: false, timeZone: "UTC" });
 
+                        const time_mulai = jadwal[i].sesi?.jam_mulai as Date;
+                        const formattedtime_mulai = new Date(time_mulai).getTime();
+
+                        const time_selesai = jadwal[i].sesi?.jam_selesai as Date;
+                        const formattedtime_selesai = new Date(time_selesai).getTime();
+
                         const schedule = {
                             jadwal_id: jadwal[i].id,
                             mapel: jadwal[i].mapel?.nama_mapel,
@@ -83,6 +91,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                             tentor: jadwal[i].user?.name,
                             sesi: jadwal[i].sesi?.nama_sesi,
                             jam: formattedmulai + " - " + formattedselesai,
+                            mulai: jadwal[i].sesi?.jam_mulai,
+                            selesai: jadwal[i].sesi?.jam_selesai,
                         };
 
                         scheduleArray.push(schedule);
