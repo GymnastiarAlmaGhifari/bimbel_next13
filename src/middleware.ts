@@ -45,6 +45,6 @@ export const config = {
     // batasi semua component
     "/component",
 
-    "/api/modul/pdf",
+    // "/api/modul/pdf",
   ],
 };
