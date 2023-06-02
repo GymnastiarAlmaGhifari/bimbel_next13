@@ -166,13 +166,13 @@ const Notification: FC<NotificationProps> = () => {
           {showNota && (
             <ModalDetail silang
               titleModal={`Nota Tagihan ${showNota?.siswa?.nama}` + ` ${showNota?.Bulan}` + ` ${showNota?.Tahun}`}
-              onClose={() => setShowNota(null)}
+              onClose={() => setShowNota(null)} wAuto
             >
               <LihatNota data={showNota} onClose={() => setShowNota(null)} />
             </ModalDetail>
           )}
           {AcceptPembayaran && (
-            <ModalDetail center wAuto
+            <ModalDetail wAuto
               titleModal="Konfirmasi Pembayaran"
               onClose={() => setAcceptPembayaran(null)}
             >

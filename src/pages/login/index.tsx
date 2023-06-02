@@ -7,7 +7,7 @@ import Input from "../components/inputs/Input";
 import Button from "../components/buttons/Button";
 import { BiHide, BiShow } from "react-icons/bi";
 import Link from "next/link";
-
+import Image from "next/image";
 
 const Login = () => {
   useEffect(() => {
@@ -157,7 +157,24 @@ const Login = () => {
           Sign In
         </button>
       </form>
-
+      <div className="w-full h-full overflow-clip absolute ">
+        <Image
+          alt=""
+          src={"/shape1_login.svg"}
+          width={500}
+          height={500}
+          className="object-cover w-full h-full"
+        />
+      </div>
+      <div className="w-full h-full overflow-clip absolute">
+        <Image
+          alt=""
+          src={"/shape2_login.svg"}
+          width={500}
+          height={500}
+          className="object-cover w-full h-full"
+        />
+      </div>
     </div>
   );
 };

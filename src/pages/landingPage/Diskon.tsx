@@ -7,7 +7,7 @@ import fetcher from "@/libs/fetcher";
 export default function Diskon() {
   const clipPath = {
     clipPath:
-      "polygon(0 3%, 3% 5%, 10% 0, 13% 5%, 17% 0, 30% 3%, 32% 0%, 34% 3%, 40% 0%, 60% 5%, 62% 0%, 63% 2%, 70% 0%, 80% 10%, 85% 5%, 90% 7% , 100% 0, 100% 100%, 0 100%)",
+      "polygon(0 3%, 3% 5%, 17% 0, 30% 3%, 32% 0%, 34% 3%, 40% 0%, 60% 5%, 62% 0%, 63% 2%, 70% 0%, 80% 6%, 85% 5%, 90% 7% , 100% 0, 100% 100%, 0 100%)",
   };
 
   const { data: gambar } = useSWR("/api/diskon", fetcher, {})
