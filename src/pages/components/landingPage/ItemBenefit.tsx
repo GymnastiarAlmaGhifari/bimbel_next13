@@ -6,8 +6,7 @@ import { FC } from "react";
 interface ItemBenefitProps {
   label: string;
 }
-
-export const ItemBenefit: FC<ItemBenefitProps> = ({ label }) => {
+const ItemBenefit: FC<ItemBenefitProps> = ({ label }) => {
   return (
     <div className="h-96 w-96 bg-white relative rounded shadow-[4px_4px_0px_0px_rgba(101,186,177,0.3)]  hover:scale-110 hover:transition-all">
       <Image
@@ -23,3 +22,5 @@ export const ItemBenefit: FC<ItemBenefitProps> = ({ label }) => {
     </div>
   );
 };
+
+export default ItemBenefit;
