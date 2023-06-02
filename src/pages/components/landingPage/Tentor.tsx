@@ -43,7 +43,7 @@ const Tentor: React.FC<tentorProps> = ({
         <h2 className="font-semibold ">{nama}</h2>
         <div>
           <p className="text-sm opacity-70 ">Asal Institut</p>
-          <p>{institut}</p>
+          <p>{institut ? institut : "-"}</p>
         </div>
         <div>
           <p className="text-sm opacity-70 ">Mata Pelajaran</p>

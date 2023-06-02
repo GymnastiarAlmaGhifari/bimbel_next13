@@ -68,7 +68,8 @@ const CardProgram: FC<CardProgramProps> = ({
       </div>
       <div className="flex flex-col gap-1">
         <h3 className="text-sm text-Neutral-30">Deskripsi</h3>
-        <span className="font-bold text-Primary-10">{deskripsi}</span>
+        
+        <span className="font-bold text-Primary-10">{deskripsi ? deskripsi : "-"}</span>
       </div>
       <div className="flex flex-col gap-1">
         <h3 className="text-sm text-Neutral-30">harga</h3>

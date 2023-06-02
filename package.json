@@ -46,6 +46,7 @@
     "react-timeit": "^1.2.12",
     "react-use": "^17.4.0",
     "sharp": "^0.32.1",
+    "swiper": "^9.3.2",
     "swr": "^2.1.5",
     "tailwind-scrollbar": "^3.0.1",
     "tailwindcss": "3.3.2",
