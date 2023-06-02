@@ -7,6 +7,7 @@ import * as yup from "yup";
 import Button from "@/pages/components/buttons/Button";
 import { FC, useState } from "react";
 import { BiHide, BiShow } from "react-icons/bi";
+import { signOut } from "next-auth/react";
 
 interface ResetPassword {
     onClose: () => void;
@@ -61,6 +62,7 @@ const ResetPassword: FC<ResetPassword> = ({ onClose, onSuccess, EmailAddress }) 
             mutate(`/api/user`);
             onClose();
             onSuccess();
+            await signOut();
         } catch (error: any) {
             console.error(error);
 
