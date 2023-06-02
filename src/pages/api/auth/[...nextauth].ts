@@ -83,6 +83,8 @@ export const authOptions: AuthOptions = {
         image: token.image,
         // @ts-ignore
         name: token.name,
+        // @ts-ignore
+        email: token.email,
       };
       return Promise.resolve(session);
     },

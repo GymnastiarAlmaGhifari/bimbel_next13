@@ -13,6 +13,9 @@ import NavbarPengaturan from "@/pages/components/NavbarPengaturan";
 import Create from "./create";
 import DeleteSesi from "./delete";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
+import Button from "@/pages/components/buttons/Button";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 
 interface Sesi {
   id: string;
@@ -24,15 +27,20 @@ interface Sesi {
 }
 
 const Sesi: FC<Sesi> = () => {
+
   useEffect(() => {
     document.title = "Bimbel Linear";
   });
   const { data: sesi, error } = useSWR<Sesi[]>("/api/sesi", fetcher, {});
 
+  const { data: session, status } = useSession();
+  const router = useRouter();
+
   const [selectedSesi, setSelectedSesi] = useState<Sesi | null>(null);
   const [selectedSesiDelete, setSelectedSesiDelete] = useState<Sesi | null>(
     null
   );
+
 
   const [showCreate, setShowCreate] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
@@ -57,6 +65,8 @@ const Sesi: FC<Sesi> = () => {
       sesi.nama_sesi.toLowerCase().includes(debouncedValue.toLowerCase())
     );
   }
+
+
 
   const handleInputChange = (inputValue: string) => {
     setInputValue(inputValue);
@@ -118,6 +128,7 @@ const Sesi: FC<Sesi> = () => {
   const isFirstPage = currentPage === 1;
   const isLastPage = currentPage === totalPages;
 
+
   return (
     <div className="flex flex-row h-screen font-mulish">
       <Sidebar />
@@ -128,141 +139,165 @@ const Sesi: FC<Sesi> = () => {
           <div className="flex flex-col h-full p-4 gap-4 bg-Neutral-100 rounded-lg overflow-auto">
             <NavbarPengaturan />
             <div className="flex flex-col h-full bg-Neutral-100 py-4 gap-4 rounded-lg overflow-auto">
-              <HeadTable
-                label="Sesi"
-                onClick={() => setShowCreate(true)}
-                onChange={handleInputChange}
-              />
-              <div className="flex flex-col rounded-bl-lg rounded-br-lg p-4 gap-4 overflow-y-auto scrollbar-thin scrollbar-track-Neutral-100 scrollbar-thumb-Primary-40 scrollbar-rounded-lg scrollbar ">
-                {paginatedSesi ? (
-                  <>
-                    {paginatedSesi.length === 0 ? (
-                      <div className="flex flex-col items-center justify-center">
-                        <h1 className="text-2xl font-bold text-gray-500">
-                          Sesi tidak ditemukan
-                        </h1>
-                        <p className="text-sm text-gray-500">
-                          Sesi yang anda cari tidak ditemukan
-                        </p>
-                      </div>
-                    ) : (
-                      paginatedSesi.map((sesi) => (
-                        <CardSesi
-                          nama_sesi={sesi.nama_sesi}
-                          mulai_sesi={sesi.jam_mulai}
-                          selesai_sesi={sesi.jam_selesai}
-                          key={sesi.id}
-                          onClick={() => {
-                            setSelectedSesi(sesi);
-                          }}
-                          onDelete={() => {
-                            setSelectedSesiDelete(sesi);
-                          }}
-                        />
-                      ))
-                    )}
-                  </>
-                ) : (
-                  <p>Loading...</p>
-                )}
-                {selectedSesi && (
-                  <ModalDetail titleModal="Edit Sesi" onClose={onClose}>
-                    <SesiEdit
-                      data={selectedSesi}
-                      onClose={onClose}
-                      sesiId={selectedSesi.id}
-                    />
-                  </ModalDetail>
-                )}
-
-                {showSuccess && (
-                  <ModalDetail
-                    titleModal="Modal Ruang"
-                    onClose={() => setShowSuccess(false)}
-                  >
-                    <div className="flex flex-col items-center justify-center">
-                      <h1 className="text-2xl font-bold text-green-500">
-                        Berhasil
+              {
+                session?.user.role === "TENTOR"
+                  || session?.user.role === "ADMIN"
+                  ? (
+                    <div className="flex flex-col gap-4 w-full h-full items-center justify-center">
+                      <h1 className="text-2xl font-bold text-gray-500">
+                        Hanya Super Admin yang bisa mengakses halaman ini
                       </h1>
-                      <p className="text-sm text-gray-500">
-                        {selectedSesi?.nama_sesi} berhasil diupdate
-                      </p>
+                      {/* back to dashboard */}
+                      <Button
+                        type="button"
+                        withBgColor
+                        bgColor="bg-Primary-40"
+                        brColor=""
+                        label="Kembali"
+                        icon={IoIosArrowBack}
+                        textColor="text-Primary-95"
+                        onClick={() => router.push("/dashboard")}
+                      />
                     </div>
-                  </ModalDetail>
-                )}
+                  ) : (
+                    <>
+                      <HeadTable
+                        label="Sesi"
+                        onClick={() => setShowCreate(true)}
+                        onChange={handleInputChange}
+                      />
+                      <div className="flex flex-col rounded-bl-lg rounded-br-lg p-4 gap-4 overflow-y-auto scrollbar-thin scrollbar-track-Neutral-100 scrollbar-thumb-Primary-40 scrollbar-rounded-lg scrollbar ">
+                        {paginatedSesi ? (
+                          <>
+                            {paginatedSesi.length === 0 ? (
+                              <div className="flex flex-col items-center justify-center">
+                                <h1 className="text-2xl font-bold text-gray-500">
+                                  Sesi tidak ditemukan
+                                </h1>
+                                <p className="text-sm text-gray-500">
+                                  Sesi yang anda cari tidak ditemukan
+                                </p>
+                              </div>
+                            ) : (
+                              paginatedSesi.map((sesi) => (
+                                <CardSesi
+                                  nama_sesi={sesi.nama_sesi}
+                                  mulai_sesi={sesi.jam_mulai}
+                                  selesai_sesi={sesi.jam_selesai}
+                                  key={sesi.id}
+                                  onClick={() => {
+                                    setSelectedSesi(sesi);
+                                  }}
+                                  onDelete={() => {
+                                    setSelectedSesiDelete(sesi);
+                                  }}
+                                />
+                              ))
+                            )}
+                          </>
+                        ) : (
+                          <p>Loading...</p>
+                        )}
+                        {selectedSesi && (
+                          <ModalDetail titleModal="Edit Sesi" onClose={onClose}>
+                            <SesiEdit
+                              data={selectedSesi}
+                              onClose={onClose}
+                              sesiId={selectedSesi.id}
+                            />
+                          </ModalDetail>
+                        )}
 
-                {/* modal create */}
-                {showCreate && (
-                  <ModalDetail
-                    titleModal="Tambah Ruang"
-                    onClose={() => setShowCreate(false)}
-                  >
-                    <Create
-                      onClose={() => setShowCreate(false)}
-                      onSucsess={() => {
-                        setShowSuccess(true);
-                      }}
-                    />
-                  </ModalDetail>
-                )}
+                        {showSuccess && (
+                          <ModalDetail
+                            titleModal="Modal Ruang"
+                            onClose={() => setShowSuccess(false)}
+                          >
+                            <div className="flex flex-col items-center justify-center">
+                              <h1 className="text-2xl font-bold text-green-500">
+                                Berhasil
+                              </h1>
+                              <p className="text-sm text-gray-500">
+                                {selectedSesi?.nama_sesi} berhasil diupdate
+                              </p>
+                            </div>
+                          </ModalDetail>
+                        )}
 
-                {/* modal delete */}
-                {selectedSesiDelete && (
-                  <ModalDetail
-                    titleModal="Hapus Sesi"
-                    onClose={() => setSelectedSesiDelete(null)}
-                    silang
-                    center
-                    wAuto
-                  >
-                    <DeleteSesi
-                      idSesi={selectedSesiDelete.id}
-                      onClose={() => setSelectedSesiDelete(null)}
-                      onSuccess={() => {
-                        setShowSuccess(true);
-                      }}
-                      data={selectedSesiDelete}
-                    />
-                  </ModalDetail>
-                )}
+                        {/* modal create */}
+                        {showCreate && (
+                          <ModalDetail
+                            titleModal="Tambah Ruang"
+                            onClose={() => setShowCreate(false)}
+                          >
+                            <Create
+                              onClose={() => setShowCreate(false)}
+                              onSucsess={() => {
+                                setShowSuccess(true);
+                              }}
+                            />
+                          </ModalDetail>
+                        )}
 
-              </div>
-              <div className="flex justify-center gap-4">
-                {totalPages > 1 && (
-                  <div className="flex justify-center gap-4">
-                    {!isFirstPage && (
-                      <button
-                        className="bg-Neutral-95 text-Primary-40 font-semibold py-2 px-3 rounded-full hover:bg-Primary-40 hover:text-Primary-95"
-                        onClick={() => handlePageChange(currentPage - 1)}
-                      >
-                        <IoIosArrowBack size={16} />
-                      </button>
-                    )}
-                    <div className="flex gap-2">
-                      {pageNumbers.map((page) => (
-                        <button
-                          key={page}
-                          className={`px-4 py-2 rounded-full font-semibold ${currentPage === page
-                            ? "bg-Primary-40 text-Neutral-100"
-                            : "text-Primary-40 hover:bg-Primary-95 hover:text-Primary-30"
-                            }`}
-                          onClick={() => handlePageChange(page)}
-                        >
-                          {page}
-                        </button>
-                      ))}
-                    </div>
-                    {!isLastPage && (
-                      <button
-                        className="bg-Neutral-95 text-Primary-40 font-semibold py-1 px-3 rounded-full hover:bg-Primary-40 hover:text-Primary-95"
-                        onClick={() => handlePageChange(currentPage + 1)}
-                      >
-                        <IoIosArrowForward size={16} />
-                      </button>
-                    )}
-                  </div>
-                )}
-              </div>
+                        {/* modal delete */}
+                        {selectedSesiDelete && (
+                          <ModalDetail
+                            titleModal="Hapus Sesi"
+                            onClose={() => setSelectedSesiDelete(null)}
+                            silang
+                            center
+                            wAuto
+                          >
+                            <DeleteSesi
+                              idSesi={selectedSesiDelete.id}
+                              onClose={() => setSelectedSesiDelete(null)}
+                              onSuccess={() => {
+                                setShowSuccess(true);
+                              }}
+                              data={selectedSesiDelete}
+                            />
+                          </ModalDetail>
+                        )}
+
+                      </div>
+                      <div className="flex justify-center gap-4">
+                        {totalPages > 1 && (
+                          <div className="flex justify-center gap-4">
+                            {!isFirstPage && (
+                              <button
+                                className="bg-Neutral-95 text-Primary-40 font-semibold py-2 px-3 rounded-full hover:bg-Primary-40 hover:text-Primary-95"
+                                onClick={() => handlePageChange(currentPage - 1)}
+                              >
+                                <IoIosArrowBack size={16} />
+                              </button>
+                            )}
+                            <div className="flex gap-2">
+                              {pageNumbers.map((page) => (
+                                <button
+                                  key={page}
+                                  className={`px-4 py-2 rounded-full font-semibold ${currentPage === page
+                                    ? "bg-Primary-40 text-Neutral-100"
+                                    : "text-Primary-40 hover:bg-Primary-95 hover:text-Primary-30"
+                                    }`}
+                                  onClick={() => handlePageChange(page)}
+                                >
+                                  {page}
+                                </button>
+                              ))}
+                            </div>
+                            {!isLastPage && (
+                              <button
+                                className="bg-Neutral-95 text-Primary-40 font-semibold py-1 px-3 rounded-full hover:bg-Primary-40 hover:text-Primary-95"
+                                onClick={() => handlePageChange(currentPage + 1)}
+                              >
+                                <IoIosArrowForward size={16} />
+                              </button>
+                            )}
+                          </div>
+                        )}
+                      </div>
+                    </>
+                  )}
             </div>
           </div>
         </div>

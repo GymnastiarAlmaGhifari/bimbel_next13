@@ -83,35 +83,62 @@ const Dashboard = () => {
       <div className="w-full h-screen flex flex-col ">
         <Navbar />
         <div className="flex flex-col gap-2 h-full p-5 bg-Neutral-95 overflow-auto">
-          <InfoDashboard
-            tentor={
-              isLoading ? (
-                <div className="animate-pulse h-10 w-10 bg-Neutral-100 rounded-full">
-                  loading
-                </div>
-              ) : (
-                dashboard?.total_tentor
-              )
-            }
-            siswa={
-              isLoading ? (
-                <div className="animate-pulse h-10 w-10 bg-Neutral-100 rounded-full">
-                  loading
-                </div>
-              ) : (
-                dashboard?.total_siswa
-              )
-            }
-            dana={
-              isLoading ? (
-                <div className="animate-pulse h-10 w-10 bg-Neutral-100 rounded-full">
-                  loading
-                </div>
-              ) : (
-                dashboard?.total_tagihan._sum.jumlah_tagihan
-              )
-            }
-          />
+          {
+            session.data?.user.role === "TENTOR" ? (
+              <InfoDashboard
+                // tentor dispaly none
+                siswa={
+                  isLoading ? (
+                    <div className="animate-pulse h-10 w-10 bg-Neutral-100 rounded-full">
+                      loading
+                    </div>
+                  ) : (
+                    dashboard?.total_siswa
+                  )
+                }
+                dana={
+                  isLoading ? (
+                    <div className="animate-pulse h-10 w-10 bg-Neutral-100 rounded-full">
+                      loading
+                    </div>
+                  ) : (
+                    dashboard?.total_tagihan?._sum.jumlah_tagihan
+                  )
+                }
+              />
+            ) : (
+              <InfoDashboard
+                tentor={
+                  isLoading ? (
+                    <div className="animate-pulse h-10 w-10 bg-Neutral-100 rounded-full">
+                      loading
+                    </div>
+                  ) : (
+                    dashboard?.total_tentor
+                  )
+                }
+                siswa={
+                  isLoading ? (
+                    <div className="animate-pulse h-10 w-10 bg-Neutral-100 rounded-full">
+                      loading
+                    </div>
+                  ) : (
+                    dashboard?.total_siswa
+                  )
+                }
+                dana={
+                  isLoading ? (
+                    <div className="animate-pulse h-10 w-10 bg-Neutral-100 rounded-full">
+                      loading
+                    </div>
+                  ) : (
+                    dashboard?.total_tagihan._sum?.jumlah_tagihan
+                  )
+                }
+              />
+            )
+          }
+
           <div className="flex flex-col h-full bg-Neutral-100 py-4 gap-4 rounded-lg overflow-auto">
             <HeadTable noAdd label="Overview Jadwal"
 
