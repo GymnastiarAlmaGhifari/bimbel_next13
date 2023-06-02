@@ -77,7 +77,7 @@ const Notification: FC<NotificationProps> = () => {
         onClick={handleClick}
       >
         <div className="text-Neutral-20">
-          <IoIosNotifications size={40} />
+          <IoIosNotifications size={35} />
         </div>
         {
           notification?.jumlah > 0 ? (

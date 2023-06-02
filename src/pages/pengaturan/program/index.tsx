@@ -70,7 +70,8 @@ const Program: FC<Program> = () => {
 
   const [selectedProgram, setSelectedProgram] = useState<Program | null>(null);
 
-  const [selectedProgramDelete, setSelectedProgramDelete] = useState<Program | null>(null);
+  const [selectedProgramDelete, setSelectedProgramDelete] =
+    useState<Program | null>(null);
 
   const [showCreate, setShowCreate] = useState(false);
 
@@ -91,7 +92,6 @@ const Program: FC<Program> = () => {
     }
   }, [error]);
 
-
   const [currentPage, setCurrentPage] = useState(1);
 
   const onClose = () => {
@@ -104,8 +104,6 @@ const Program: FC<Program> = () => {
 
   const PAGE_SIZE = 10;
   const MAX_PAGE_DISPLAY = 5; // Jumlah maksimal nomor halaman yang ditampilkan
-
-
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
@@ -145,167 +143,164 @@ const Program: FC<Program> = () => {
           <div className="flex flex-col h-full p-4 gap-4 bg-Neutral-100 rounded-lg overflow-auto">
             <NavbarPengaturan />
             <div className="flex flex-col h-full bg-Neutral-100 py-4 gap-4 rounded-lg overflow-auto">
-              {
-                session?.user.role === "TENTOR"
-                  || session?.user.role === "ADMIN"
-                  ? (
-                    <div className="flex flex-col gap-4 w-full h-full items-center justify-center">
-                      <h1 className="text-2xl font-bold text-gray-500">
-                        Hanya Super Admin yang bisa mengakses halaman ini
-                      </h1>
-                      {/* back to dashboard */}
-                      <Button
-                        type="button"
-                        withBgColor
-                        bgColor="bg-Primary-40"
-                        brColor=""
-                        label="Kembali"
-                        icon={IoIosArrowBack}
-                        textColor="text-Primary-95"
-                        onClick={() => router.push("/dashboard")}
-                      />
-                    </div>
-                  ) : (
-                    <>
-                      <HeadTable
-                        label="Program"
-                        onClick={() => setShowCreate(true)}
-                        onChange={handleInputChange}
-                      />
-                      <div className="grid grid-cols-2 rounded-bl-lg rounded-br-lg p-4 gap-4 overflow-y-auto scrollbar-thin scrollbar-track-Neutral-100 scrollbar-thumb-Primary-40 scrollbar-rounded-lg scrollbar">
-                        {paginatedProgram ? (
-                          <>
-                            {paginatedProgram.length === 0 ? (
-                              <div className="flex flex-col items-center justify-center">
-                                <h1 className="text-2xl font-bold text-gray-500">
-                                  Program tidak ditemukan
-                                </h1>
-                                <p className="text-sm text-gray-500">
-                                  Program yang anda cari tidak ditemukan
-                                </p>
-                              </div>
-                            ) : (
-                              paginatedProgram.map((item) => (
-                                <CardProgram
-                                  mapel_ajar="Semua Mata Pelajaran TryOut"
-                                  deskripsi={item.Deskripsi}
-                                  key={item.id}
-                                  nama_program={item.nama_program}
-                                  tipe={item.tipe}
-                                  level={item.level}
-                                  kelas={item.kelas.nama_kelas}
-                                  harga={item.harga}
-                                  onEdit={() => setSelectedProgram(item)}
-                                  gambar={item?.img}
-                                  onDelete={() => setSelectedProgramDelete(item)}
-                                />
-                              ))
-                            )}
-                          </>
-                        ) : (
-                          <p>Loading...</p>
-                        )}
-
-                        {selectedProgram && (
-                          <ModalDetail titleModal="Edit Program" onClose={onClose}>
-                            <ProgramEdit
-                              data={selectedProgram}
-                              onClose={onClose}
-                              programId={selectedProgram.id}
-                            />
-                          </ModalDetail>
-                        )}
-                        {showSuccess && (
-                          <ModalDetail
-                            titleModal="SUCSSES"
-                            onClose={() => setShowSuccess(false)}
-                          >
-                            <div className="flex flex-col items-center justify-center">
-                              <h1 className="text-2xl font-bold text-green-500">
-                                Berhasil
-                              </h1>
-                              <p className="text-sm text-gray-500">
-                                {selectedProgram?.nama_program}Data berhasil diubah
-                              </p>
-                            </div>
-                          </ModalDetail>
-                        )}
-
-                        {/* modal create */}
-                        {showCreate && (
-                          <ModalDetail
-                            titleModal="Tambah Program"
-                            onClose={() => setShowCreate(false)}
-                          >
-                            <CreateProgram
-                              onClose={() => setShowCreate(false)}
-                              onSucsess={() => {
-                                setShowSuccess(true);
-                              }}
-                            />
-                          </ModalDetail>
-                        )}
-
-                        {/* modal delete */}
-                        {selectedProgramDelete && (
-                          <ModalDetail
-                            titleModal="Hapus Program"
-                            onClose={() => setSelectedProgramDelete(null)}
-                            wAuto
-                            silang
-                            center
-                          >
-                            <DeleteMapel
-                              data={selectedProgramDelete}
-                              idProgram={selectedProgramDelete.id}
-                              onClose={() => setSelectedProgramDelete(null)}
-                              onSuccess={() => {
-                                setShowSuccess(true);
-                              }}
-
-                            />
-                          </ModalDetail>
-                        )}
-
-                      </div>
-                      <div className="flex justify-center gap-4">
-                        {totalPages > 1 && (
-                          <div className="flex justify-center gap-4">
-                            {!isFirstPage && (
-                              <button
-                                className="bg-Neutral-95 text-Primary-40 font-semibold py-2 px-3 rounded-full hover:bg-Primary-40 hover:text-Primary-95"
-                                onClick={() => handlePageChange(currentPage - 1)}
-                              >
-                                <IoIosArrowBack size={16} />
-                              </button>
-                            )}
-                            <div className="flex gap-2">
-                              {pageNumbers.map((page) => (
-                                <button
-                                  key={page}
-                                  className={`px-4 py-2 rounded-full font-semibold ${currentPage === page
-                                    ? "bg-Primary-40 text-Neutral-100"
-                                    : "text-Primary-40 hover:bg-Primary-95 hover:text-Primary-30"
-                                    }`}
-                                  onClick={() => handlePageChange(page)}
-                                >
-                                  {page}
-                                </button>
-                              ))}
-                            </div>
-                            {!isLastPage && (
-                              <button
-                                className="bg-Neutral-95 text-Primary-40 font-semibold py-1 px-3 rounded-full hover:bg-Primary-40 hover:text-Primary-95"
-                                onClick={() => handlePageChange(currentPage + 1)}
-                              >
-                                <IoIosArrowForward size={16} />
-                              </button>
-                            )}
+              {session?.user.role === "TENTOR" ||
+              session?.user.role === "ADMIN" ? (
+                <div className="flex flex-col gap-4 w-full h-full items-center justify-center">
+                  <h1 className="text-2xl font-bold text-gray-500">
+                    Hanya Super Admin yang bisa mengakses halaman ini
+                  </h1>
+                  {/* back to dashboard */}
+                  <Button
+                    type="button"
+                    withBgColor
+                    bgColor="bg-Primary-40"
+                    brColor=""
+                    label="Kembali"
+                    icon={IoIosArrowBack}
+                    textColor="text-Primary-95"
+                    onClick={() => router.push("/dashboard")}
+                  />
+                </div>
+              ) : (
+                <>
+                  <HeadTable
+                    label="Program"
+                    onClick={() => setShowCreate(true)}
+                    onChange={handleInputChange}
+                  />
+                  <div className="grid grid-cols-2 rounded-bl-lg rounded-br-lg p-4 gap-4 overflow-y-auto scrollbar-thin scrollbar-track-Neutral-100 scrollbar-thumb-Primary-40 scrollbar-rounded-lg scrollbar">
+                    {paginatedProgram ? (
+                      <>
+                        {paginatedProgram.length === 0 ? (
+                          <div className="flex flex-col items-center justify-center">
+                            <h1 className="text-2xl font-bold text-gray-500">
+                              Program tidak ditemukan
+                            </h1>
+                            <p className="text-sm text-gray-500">
+                              Program yang anda cari tidak ditemukan
+                            </p>
                           </div>
+                        ) : (
+                          paginatedProgram.map((item) => (
+                            <CardProgram
+                              mapel_ajar="Semua Mata Pelajaran TryOut"
+                              deskripsi={item.Deskripsi}
+                              key={item.id}
+                              nama_program={item.nama_program}
+                              tipe={item.tipe}
+                              level={item.level}
+                              kelas={item.kelas.nama_kelas}
+                              harga={item.harga}
+                              onEdit={() => setSelectedProgram(item)}
+                              gambar={item?.img}
+                              onDelete={() => setSelectedProgramDelete(item)}
+                            />
+                          ))
+                        )}
+                      </>
+                    ) : (
+                      <p>Loading...</p>
+                    )}
+
+                    {selectedProgram && (
+                      <ModalDetail titleModal="Edit Program" onClose={onClose}>
+                        <ProgramEdit
+                          data={selectedProgram}
+                          onClose={onClose}
+                          programId={selectedProgram.id}
+                        />
+                      </ModalDetail>
+                    )}
+                    {showSuccess && (
+                      <ModalDetail
+                        titleModal="SUCSSES"
+                        onClose={() => setShowSuccess(false)}
+                      >
+                        <div className="flex flex-col items-center justify-center">
+                          <h1 className="text-2xl font-bold text-green-500">
+                            Berhasil
+                          </h1>
+                          <p className="text-sm text-gray-500">
+                            {selectedProgram?.nama_program}Data berhasil diubah
+                          </p>
+                        </div>
+                      </ModalDetail>
+                    )}
+
+                    {/* modal create */}
+                    {showCreate && (
+                      <ModalDetail
+                        titleModal="Tambah Program"
+                        onClose={() => setShowCreate(false)}
+                      >
+                        <CreateProgram
+                          onClose={() => setShowCreate(false)}
+                          onSucsess={() => {
+                            setShowSuccess(true);
+                          }}
+                        />
+                      </ModalDetail>
+                    )}
+
+                    {/* modal delete */}
+                    {selectedProgramDelete && (
+                      <ModalDetail
+                        titleModal="Hapus Program"
+                        onClose={() => setSelectedProgramDelete(null)}
+                        wAuto
+                        silang
+                        center
+                      >
+                        <DeleteMapel
+                          data={selectedProgramDelete}
+                          idProgram={selectedProgramDelete.id}
+                          onClose={() => setSelectedProgramDelete(null)}
+                          onSuccess={() => {
+                            setShowSuccess(true);
+                          }}
+                        />
+                      </ModalDetail>
+                    )}
+                  </div>
+                  <div className="flex justify-center gap-4">
+                    {totalPages > 1 && (
+                      <div className="flex justify-center gap-4">
+                        {!isFirstPage && (
+                          <button
+                            className="bg-Neutral-95 text-Primary-40 font-semibold py-2 px-3 rounded-full hover:bg-Primary-40 hover:text-Primary-95"
+                            onClick={() => handlePageChange(currentPage - 1)}
+                          >
+                            <IoIosArrowBack size={16} />
+                          </button>
+                        )}
+                        <div className="flex gap-2">
+                          {pageNumbers.map((page) => (
+                            <button
+                              key={page}
+                              className={`px-4 py-2 rounded-full font-semibold ${
+                                currentPage === page
+                                  ? "bg-Primary-40 text-Neutral-100"
+                                  : "text-Primary-40 hover:bg-Primary-95 hover:text-Primary-30"
+                              }`}
+                              onClick={() => handlePageChange(page)}
+                            >
+                              {page}
+                            </button>
+                          ))}
+                        </div>
+                        {!isLastPage && (
+                          <button
+                            className="bg-Neutral-95 text-Primary-40 font-semibold py-1 px-3 rounded-full hover:bg-Primary-40 hover:text-Primary-95"
+                            onClick={() => handlePageChange(currentPage + 1)}
+                          >
+                            <IoIosArrowForward size={16} />
+                          </button>
                         )}
                       </div>
-                    </>
-                  )}
+                    )}
+                  </div>
+                </>
+              )}
             </div>
           </div>
         </div>

@@ -15,7 +15,6 @@ import Notification from "./Notification";
 import { ModalDetail } from "./modal/Modal";
 import ResetPassword from "../pengaturan/gantipassword";
 
-
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -48,7 +47,6 @@ const Navbar = () => {
 
   const sessionEmail = session?.user.email;
 
-
   console.log(sessionEmail);
 
   const { data: users, error } = useSWR(`/api/user/${sessionId}`, fetcher, {});
@@ -59,22 +57,15 @@ const Navbar = () => {
     setIsOpen(!isOpen);
   };
 
-  const [gantiPassword, setGantiPassword] = useState<boolean>(false)
+  const [gantiPassword, setGantiPassword] = useState<boolean>(false);
 
   return (
     <div className="bg-Neutral-100 h-14 flex items-center justify-end gap-6 px-4 py-2 z-40">
-      {
-        session?.user.role === "TENTOR" ||
-          session?.user.role === "ADMIN"
-          ? (
-            ""
-          )
-          : (
-            <Notification
-              id="notification"
-            />
-          )
-      }
+      {session?.user.role === "TENTOR" || session?.user.role === "ADMIN" ? (
+        ""
+      ) : (
+        <Notification id="notification" />
+      )}
       <button onClick={toggleMenu} className="relative">
         <div className="flex items-center inline-block gap-2">
           <div className="inline-block pr-2 flex flex-col">
@@ -118,8 +109,7 @@ const Navbar = () => {
             ) : (
               ""
             )}
-            {isOpen
-              ?
+            {isOpen ? (
               <Button
                 bgColor="bg-Primary-50"
                 label="Ubah Password"
@@ -127,14 +117,13 @@ const Navbar = () => {
                 textColor="text-Primary-10"
                 type="button"
                 icon={MdOutlineKey}
-                onClick={
-                  () => {
-                    setGantiPassword(true)
-                  }
-                }
+                onClick={() => {
+                  setGantiPassword(true);
+                }}
               />
-
-              : ""}
+            ) : (
+              ""
+            )}
             {isOpen ? (
               <Button
                 bgColor="bg-Primary-50"
@@ -160,36 +149,25 @@ const Navbar = () => {
           ""
         )}
       </button>
-      {
-        gantiPassword && (
-
-          <ModalDetail
-            onClose={
-              () => {
-                setGantiPassword(false)
-              }
-            }
-            titleModal="Ganti Password"
-            center
-          >
-            <ResetPassword
-              onClose={
-                () => {
-                  setGantiPassword(false)
-                }
-              }
-              EmailAddress={
-                sessionEmail
-              }
-              onSuccess={
-                () => {
-                  setGantiPassword(false)
-                }
-              }
-            />
-          </ModalDetail>
-        )
-      }
+      {gantiPassword && (
+        <ModalDetail
+          onClose={() => {
+            setGantiPassword(false);
+          }}
+          titleModal="Ganti Password"
+          center
+        >
+          <ResetPassword
+            onClose={() => {
+              setGantiPassword(false);
+            }}
+            EmailAddress={sessionEmail}
+            onSuccess={() => {
+              setGantiPassword(false);
+            }}
+          />
+        </ModalDetail>
+      )}
     </div>
   );
 };

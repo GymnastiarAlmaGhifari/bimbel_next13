@@ -75,7 +75,7 @@ const NginputNgimel = () => {
             >
                 <div className="mb-2">
                     <h2 className="text-center text-3xl font-bold text-Neutral-100">
-                        Input Email
+                        Masukkan Email
                     </h2>
                     <label
                         className="block text-sm font-bold mb-2 text-Neutral-100"
