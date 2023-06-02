@@ -127,7 +127,7 @@ model program {
   nama_program String
   level        Level
   tipe         Tipe
-  Deskripsi    String?
+  Deskripsi    String?    @db.Text
   harga        Int?
   img          String?
   kelas        kelas      @relation(fields: [kelas_id], references: [id])
@@ -138,34 +138,34 @@ model program {
 }
 
 model kelompok {
-  id                String          @id @default(cuid())
-  nama_kelompok     String
-  program           program         @relation(fields: [program_id], references: [id])
-  program_id        String
-  createdAt         DateTime        @default(now())
-  updatedAt         DateTime        @updatedAt
-  Siswa             siswa[]
-  detail_jadwal     jadwal_detail[]
+  id            String          @id @default(cuid())
+  nama_kelompok String
+  program       program         @relation(fields: [program_id], references: [id])
+  program_id    String
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+  Siswa         siswa[]
+  detail_jadwal jadwal_detail[]
 }
 
 model siswa {
-  id            String     @id @default(cuid())
+  id            String    @id @default(cuid())
   nama          String
-  email         String     @unique
+  email         String    @unique
   password      String
-  token         String?    @unique @db.VarChar(255)
+  token         String?   @unique @db.VarChar(255)
   nomor_telepon String
   alamat        String?
   sekolah       String?
   hp_ortu       String?
   image         String?
-  login         Boolean    @default(false)
-  kelompok      kelompok?  @relation(fields: [kelompok_id], references: [id])
+  login         Boolean   @default(false)
+  kelompok      kelompok? @relation(fields: [kelompok_id], references: [id])
   kelompok_id   String?
-  kelas         kelas?     @relation(fields: [kelas_id], references: [id])
+  kelas         kelas?    @relation(fields: [kelas_id], references: [id])
   kelas_id      String?
-  createdAt     DateTime   @default(now())
-  updatedAt     DateTime   @updatedAt
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
   tagihans      tagihan[]
   // presensis     presensi[]
 }
