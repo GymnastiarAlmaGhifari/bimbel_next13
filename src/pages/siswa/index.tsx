@@ -12,6 +12,8 @@ import CreateSiswa from "./create";
 import DetailSiswa from "./detail";
 import DeleteSiswa from "./delete.tsx";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
+import Button from "../components/buttons/Button";
+import { useRouter } from "next/router";
 
 interface Siswa {
   id: string;
@@ -122,6 +124,8 @@ const Siswa: FC<Siswa> = () => {
   const isFirstPage = currentPage === 1;
   const isLastPage = currentPage === totalPages;
 
+  const router = useRouter();
+
   return (
     <div className="flex flex-row h-screen font-mulish">
       <Sidebar />
@@ -129,100 +133,124 @@ const Siswa: FC<Siswa> = () => {
         <Navbar />
         <div className="h-full p-5 bg-Neutral-95 overflow-auto ">
           <div className="flex flex-col h-full bg-Neutral-100 py-4 gap-4 rounded-lg overflow-auto">
-            <HeadTable
-              label="Siswa"
-              onClick={() => setShowCreate(true)}
-              onChange={handleInputChange}
-            />
-            <div className="flex flex-col rounded-bl-lg rounded-br-lg p-4 gap-4 overflow-y-auto scrollbar">
-              {paginatedSiswa ? (
-                <>
-                  {paginatedSiswa.length === 0 ? (
-                    <div className="flex flex-col justify-center items-center">
-                      <p className="text-2xl font-bold text-Neutral-600">
-                        Data Kosong
-                      </p>
-                      <p className="text-Neutral-500">
-                        Silahkan tambahkan data Siswa
-                      </p>
-                    </div>
-                  ) : (
-                    <>
-                      {paginatedSiswa.map((siswa) => (
-                        <CardSiswa
-                          key={siswa.id}
-                          tipe={siswa.kelompok?.program.tipe}
-                          kelas={siswa.kelompok?.program.kelas.nama_kelas}
-                          level={siswa.kelompok?.program.level}
-                          nama_siswa={siswa.nama}
-                          nama_kelompok={siswa.kelompok?.nama_kelompok}
-                          gambar={siswa.image}
-                          hp={siswa.nomor_telepon}
-                          onEdit={() => setSelectedEdit(siswa)}
-                          onClick={() => setSelectedDetail(siswa)}
-                          onDelete={() => setSelectedDelete(siswa)}
-                        />
-                      ))}
-                    </>
-                  )}
-                </>
+            {
+              session?.user.role === "TENTOR" ? (
+                <div className="flex flex-col gap-4 w-full h-full items-center justify-center">
+                  <h1 className="text-2xl font-bold text-gray-500">
+                    Hanya Super Admin dan Admin yang bisa mengakses halaman ini
+                  </h1>
+                  {/* back to dashboard */}
+                  <Button
+                    type="button"
+                    withBgColor
+                    bgColor="bg-Primary-40"
+                    brColor=""
+                    label="Kembali"
+                    icon={IoIosArrowBack}
+                    textColor="text-Primary-95"
+                    onClick={() => router.push("/dashboard")}
+                  />
+                </div>
               ) : (
                 <>
-                  {error ? (
-                    <div className="flex flex-col justify-center items-center">
-                      <p className="text-2xl font-bold text-Neutral-600">
-                        Data Kosong
-                      </p>
-                      <p className="text-Neutral-500">
-                        Silahkan tambahkan data siswa
-                      </p>
-                    </div>
-                  ) : (
-                    <div className="flex flex-col justify-center items-center">
-                      <p className="text-2xl font-bold text-Neutral-600">
-                        Loading...
-                      </p>
-                    </div>
-                  )}
-                </>
-              )}
-            </div>
-            <div className="flex justify-center gap-4">
-              {totalPages > 1 && (
-                <div className="flex justify-center gap-4">
-                  {!isFirstPage && (
-                    <button
-                      className="bg-Neutral-95 text-Primary-40 font-semibold py-2 px-3 rounded-full hover:bg-Primary-40 hover:text-Primary-95"
-                      onClick={() => handlePageChange(currentPage - 1)}
-                    >
-                      <IoIosArrowBack size={16} />
-                    </button>
-                  )}
-                  <div className="flex gap-2">
-                    {pageNumbers.map((page) => (
-                      <button
-                        key={page}
-                        className={`px-4 py-2 rounded-full font-semibold ${currentPage === page
-                          ? "bg-Primary-40 text-Neutral-100"
-                          : "text-Primary-40 hover:bg-Primary-95 hover:text-Primary-30"
-                          }`}
-                        onClick={() => handlePageChange(page)}
-                      >
-                        {page}
-                      </button>
-                    ))}
+                  <HeadTable
+                    label="Siswa"
+                    onClick={() => setShowCreate(true)}
+                    onChange={handleInputChange}
+                  />
+                  <div className="flex flex-col rounded-bl-lg rounded-br-lg p-4 gap-4 overflow-y-auto scrollbar">
+                    {paginatedSiswa ? (
+                      <>
+                        {paginatedSiswa.length === 0 ? (
+                          <div className="flex flex-col justify-center items-center">
+                            <p className="text-2xl font-bold text-Neutral-600">
+                              Data Kosong
+                            </p>
+                            <p className="text-Neutral-500">
+                              Silahkan tambahkan data Siswa
+                            </p>
+                          </div>
+                        ) : (
+                          <>
+                            {paginatedSiswa.map((siswa) => (
+                              <CardSiswa
+                                key={siswa.id}
+                                tipe={siswa.kelompok?.program.tipe}
+                                kelas={siswa.kelompok?.program.kelas.nama_kelas}
+                                level={siswa.kelompok?.program.level}
+                                nama_siswa={siswa.nama}
+                                nama_kelompok={siswa.kelompok?.nama_kelompok}
+                                gambar={siswa.image}
+                                hp={siswa.nomor_telepon}
+                                onEdit={() => setSelectedEdit(siswa)}
+                                onClick={() => setSelectedDetail(siswa)}
+                                onDelete={() => setSelectedDelete(siswa)}
+                              />
+                            ))}
+                          </>
+                        )}
+                      </>
+                    ) : (
+                      <>
+                        {error ? (
+                          <div className="flex flex-col justify-center items-center">
+                            <p className="text-2xl font-bold text-Neutral-600">
+                              Data Kosong
+                            </p>
+                            <p className="text-Neutral-500">
+                              Silahkan tambahkan data siswa
+                            </p>
+                          </div>
+                        ) : (
+                          <div className="flex flex-col justify-center items-center">
+                            <p className="text-2xl font-bold text-Neutral-600">
+                              Loading...
+                            </p>
+                          </div>
+                        )}
+                      </>
+                    )}
                   </div>
-                  {!isLastPage && (
-                    <button
-                      className="bg-Neutral-95 text-Primary-40 font-semibold py-1 px-3 rounded-full hover:bg-Primary-40 hover:text-Primary-95"
-                      onClick={() => handlePageChange(currentPage + 1)}
-                    >
-                      <IoIosArrowForward size={16} />
-                    </button>
-                  )}
-                </div>
-              )}
-            </div>
+                  <div className="flex justify-center gap-4">
+                    {totalPages > 1 && (
+                      <div className="flex justify-center gap-4">
+                        {!isFirstPage && (
+                          <button
+                            className="bg-Neutral-95 text-Primary-40 font-semibold py-2 px-3 rounded-full hover:bg-Primary-40 hover:text-Primary-95"
+                            onClick={() => handlePageChange(currentPage - 1)}
+                          >
+                            <IoIosArrowBack size={16} />
+                          </button>
+                        )}
+                        <div className="flex gap-2">
+                          {pageNumbers.map((page) => (
+                            <button
+                              key={page}
+                              className={`px-4 py-2 rounded-full font-semibold ${currentPage === page
+                                ? "bg-Primary-40 text-Neutral-100"
+                                : "text-Primary-40 hover:bg-Primary-95 hover:text-Primary-30"
+                                }`}
+                              onClick={() => handlePageChange(page)}
+                            >
+                              {page}
+                            </button>
+                          ))}
+                        </div>
+                        {!isLastPage && (
+                          <button
+                            className="bg-Neutral-95 text-Primary-40 font-semibold py-1 px-3 rounded-full hover:bg-Primary-40 hover:text-Primary-95"
+                            onClick={() => handlePageChange(currentPage + 1)}
+                          >
+                            <IoIosArrowForward size={16} />
+                          </button>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                </>
+              )
+            }
+
           </div>
         </div>
       </div>

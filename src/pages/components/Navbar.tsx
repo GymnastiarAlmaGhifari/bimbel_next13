@@ -46,6 +46,11 @@ const Navbar = () => {
   //simpan ke variable session id to use in fetcher
   const sessionId = session?.user.id;
 
+  const sessionEmail = session?.user.email;
+
+
+  console.log(sessionEmail);
+
   const { data: users, error } = useSWR(`/api/user/${sessionId}`, fetcher, {});
 
   mutate(`/api/user/${sessionId}`);
@@ -58,7 +63,18 @@ const Navbar = () => {
 
   return (
     <div className="bg-Neutral-100 h-14 flex items-center justify-end gap-6 px-4 py-2 z-40">
-      <Notification onClose={() => { }} />
+      {
+        session?.user.role === "TENTOR" ||
+          session?.user.role === "ADMIN"
+          ? (
+            ""
+          )
+          : (
+            <Notification
+              id="notification"
+            />
+          )
+      }
       <button onClick={toggleMenu} className="relative">
         <div className="flex items-center inline-block gap-2">
           <div className="inline-block pr-2 flex flex-col">
@@ -161,6 +177,9 @@ const Navbar = () => {
                 () => {
                   setGantiPassword(false)
                 }
+              }
+              EmailAddress={
+                sessionEmail
               }
               onSuccess={
                 () => {

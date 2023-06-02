@@ -79,9 +79,15 @@ const Notification: FC<NotificationProps> = () => {
         <div className="text-Neutral-20">
           <IoIosNotifications size={40} />
         </div>
-        <div className="h-6 w-6 bg-Error-50 rounded-full absolute flex items-center justify-center top-0 right-0 border-[2px] border-Neutral-100">
-          <span className="text-xs font-semibold text-Neutral-100">{notification?.jumlah}</span>
-        </div>
+        {
+          notification?.jumlah > 0 ? (
+            <div className="h-6 w-6 bg-Error-50 rounded-full absolute flex items-center justify-center top-0 right-0 border-[2px] border-Neutral-100">
+              <span className="text-xs font-semibold text-Neutral-100">{notification?.jumlah}</span>
+            </div>
+          ) : (
+            ""
+          )
+        }
       </button>
       {isOpen ? (
         <div

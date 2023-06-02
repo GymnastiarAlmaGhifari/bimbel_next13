@@ -30,11 +30,11 @@ const CardProgram: FC<CardProgramProps> = ({
 }) => {
   const formattedHarga = harga
     ? harga
-        .toLocaleString("id-ID", {
-          style: "currency",
-          currency: "IDR",
-        })
-        .replace(",00", "")
+      .toLocaleString("id-ID", {
+        style: "currency",
+        currency: "IDR",
+      })
+      .replace(",00", "")
     : "";
 
   return (
@@ -79,19 +79,17 @@ const CardProgram: FC<CardProgramProps> = ({
         <h3 className="text-sm text-Neutral-30">Gambar</h3>
 
         <div className="flex flex-col border w-[400px] h-[200px] items-center  justify-center rounded-lg overflow-clip">
-          {gambar ? (
-            <Image
-              src={
-                "/api/program/img?img=" + gambar || "/img/program/default.png"
-              }
-              alt="Gambar"
-              width={200}
-              height={200}
-              className="rounded-lg bg-cover "
-            />
-          ) : (
-            <h1>Tidak Ada Gambar</h1>
-          )}
+
+          <Image
+            src={
+              gambar ? "/api/program/img?img=" + gambar : "/img/user/default.png"
+            }
+            alt="Gambar"
+            width={200}
+            height={200}
+            className="rounded-lg bg-cover "
+          />
+
         </div>
       </div>
       <div className="w-full h-[1px] bg-Neutral-70"></div>

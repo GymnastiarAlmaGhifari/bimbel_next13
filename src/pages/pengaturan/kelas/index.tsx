@@ -13,6 +13,9 @@ import Sidebar from "@/pages/components/Sidebar";
 import Navbar from "@/pages/components/Navbar";
 import NavbarPengaturan from "@/pages/components/NavbarPengaturan";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
+import { useRouter } from "next/router";
+import { useSession } from "next-auth/react";
+import Button from "@/pages/components/buttons/Button";
 
 interface Kelas {
   id: string;
@@ -28,6 +31,9 @@ const Kelas: FC<Kelas> = () => {
   const { data: kelas, error } = useSWR<Kelas[]>("/api/kelas", fetcher, {});
 
   const [selectedKelas, setSelectedKelas] = useState<Kelas | null>(null);
+
+  const { data: session, status } = useSession();
+  const router = useRouter();
 
   // delete selected
   const [showDelete, setShowDelete] = useState<Kelas | null>(null);
@@ -123,133 +129,158 @@ const Kelas: FC<Kelas> = () => {
           <div className="flex flex-col h-full p-4 gap-4 bg-Neutral-100 rounded-lg overflow-auto">
             <NavbarPengaturan />
             <div className="flex flex-col h-full bg-Neutral-100 py-4 gap-4 rounded-lg overflow-auto">
-              <HeadTable
-                label="Kelas"
-                onClick={() => setShowCreate(true)}
-                onChange={handleInputChange}
-              />
-              <div className="flex flex-col rounded-bl-lg rounded-br-lg p-4 gap-4 overflow-y-auto scrollbar-thin scrollbar-track-Neutral-100 scrollbar-thumb-Primary-40 scrollbar-rounded-lg">
-                {paginatedKelas ? (
-                  <>
-                    {paginatedKelas.length === 0 ? (
-                      <div className="flex flex-col items-center justify-center">
-                        <h1 className="text-2xl font-bold text-gray-500">
-                          Kelas tidak ditemukan
-                        </h1>
-                        <p className="text-sm text-gray-500">
-                          Kelas yang anda cari tidak ditemukan
-                        </p>
-                      </div>
-                    ) : (
-                      paginatedKelas.map((kelas) => (
-                        <CardKelas
-                          key={kelas.id}
-                          nama_kelas={kelas.nama_kelas}
-                          onEdit={() => setSelectedKelas(kelas)}
-                          onDelete={() => setShowDelete(kelas)}
-                        />
-                      ))
-                    )}
-                  </>
-                ) : (
-                  <p>Loading...</p>
-                )}
-
-                {selectedKelas && (
-                  <ModalDetail titleModal="Edit Kelas" onClose={onClose}>
-                    <KelasEdit
-                      kelasId={selectedKelas.id}
-                      data={selectedKelas}
-                      onClose={onClose}
-                    />
-                  </ModalDetail>
-                )}
-                {showSuccess && (
-                  <ModalDetail
-                    titleModal="Edit Kelompok"
-                    onClose={() => setShowSuccess(false)}
-                  >
-                    <div className="flex flex-col items-center justify-center">
-                      <h1 className="text-2xl font-bold text-green-500">
-                        Berhasil
+              {
+                session?.user.role === "TENTOR"
+                  || session?.user.role === "ADMIN"
+                  ? (
+                    <div className="flex flex-col gap-4 w-full h-full items-center justify-center">
+                      <h1 className="text-2xl font-bold text-gray-500">
+                        Hanya Super Admin yang bisa mengakses halaman ini
                       </h1>
-                      <p className="text-sm text-gray-500">
-                        {selectedKelas?.nama_kelas}Data berhasil diubah
-                      </p>
+                      {/* back to dashboard */}
+                      <Button
+                        type="button"
+                        withBgColor
+                        bgColor="bg-Primary-40"
+                        brColor=""
+                        label="Kembali"
+                        icon={IoIosArrowBack}
+                        textColor="text-Primary-95"
+                        onClick={() => router.push("/dashboard")}
+                      />
                     </div>
-                  </ModalDetail>
-                )}
+                  ) : (
+                    <>
+                      <HeadTable
+                        label="Kelas"
+                        onClick={() => setShowCreate(true)}
+                        onChange={handleInputChange}
+                      />
+                      <div className="flex flex-col rounded-bl-lg rounded-br-lg p-4 gap-4 overflow-y-auto scrollbar-thin scrollbar-track-Neutral-100 scrollbar-thumb-Primary-40 scrollbar-rounded-lg">
+                        {paginatedKelas ? (
+                          <>
+                            {paginatedKelas.length === 0 ? (
+                              <div className="flex flex-col items-center justify-center">
+                                <h1 className="text-2xl font-bold text-gray-500">
+                                  Kelas tidak ditemukan
+                                </h1>
+                                <p className="text-sm text-gray-500">
+                                  Kelas yang anda cari tidak ditemukan
+                                </p>
+                              </div>
+                            ) : (
+                              paginatedKelas.map((kelas) => (
+                                <CardKelas
+                                  key={kelas.id}
+                                  nama_kelas={kelas.nama_kelas}
+                                  onEdit={() => setSelectedKelas(kelas)}
+                                  onDelete={() => setShowDelete(kelas)}
+                                />
+                              ))
+                            )}
+                          </>
+                        ) : (
+                          <p>Loading...</p>
+                        )}
 
-                {/* modal create */}
-                {showCreate && (
-                  <ModalDetail
-                    titleModal="Tambah Kelas"
-                    onClose={() => setShowCreate(false)}
-                  >
-                    <CreateKelas
-                      onClose={() => setShowCreate(false)}
-                      onSucsess={() => {
-                        setShowSuccess(true);
-                      }}
-                    />
-                  </ModalDetail>
-                )}
-                {showDelete && (
-                  <ModalDetail
-                    titleModal="Hapus Kelas"
-                    wAuto
-                    silang
-                    center
-                    onClose={() => setShowDelete(null)}
+                        {selectedKelas && (
+                          <ModalDetail titleModal="Edit Kelas" onClose={onClose}>
+                            <KelasEdit
+                              kelasId={selectedKelas.id}
+                              data={selectedKelas}
+                              onClose={onClose}
+                            />
+                          </ModalDetail>
+                        )}
+                        {showSuccess && (
+                          <ModalDetail
+                            titleModal="Edit Kelompok"
+                            onClose={() => setShowSuccess(false)}
+                          >
+                            <div className="flex flex-col items-center justify-center">
+                              <h1 className="text-2xl font-bold text-green-500">
+                                Berhasil
+                              </h1>
+                              <p className="text-sm text-gray-500">
+                                {selectedKelas?.nama_kelas}Data berhasil diubah
+                              </p>
+                            </div>
+                          </ModalDetail>
+                        )}
 
-                  >
-                    <DeleteKelas
-                      data={showDelete}
-                      onClose={() => setShowDelete(null)}
-                      onSucsess={() => {
-                        setShowSuccess(true);
-                      }}
-                      kelasId={showDelete.id}
-                    />
-                  </ModalDetail>
-                )}
-              </div>
-              <div className="flex justify-center gap-4">
-                {totalPages > 1 && (
-                  <div className="flex justify-center gap-4">
-                    {!isFirstPage && (
-                      <button
-                        className="bg-Neutral-95 text-Primary-40 font-semibold py-2 px-3 rounded-full hover:bg-Primary-40 hover:text-Primary-95"
-                        onClick={() => handlePageChange(currentPage - 1)}
-                      >
-                        <IoIosArrowBack size={16} />
-                      </button>
-                    )}
-                    <div className="flex gap-2">
-                      {pageNumbers.map((page) => (
-                        <button
-                          key={page}
-                          className={`px-4 py-2 rounded-full font-semibold ${currentPage === page
-                            ? "bg-Primary-40 text-Neutral-100"
-                            : "text-Primary-40 hover:bg-Primary-95 hover:text-Primary-30"
-                            }`}
-                          onClick={() => handlePageChange(page)}
-                        >
-                          {page}
-                        </button>
-                      ))}
-                    </div>
-                    {!isLastPage && (
-                      <button
-                        className="bg-Neutral-95 text-Primary-40 font-semibold py-1 px-3 rounded-full hover:bg-Primary-40 hover:text-Primary-95"
-                        onClick={() => handlePageChange(currentPage + 1)}
-                      >
-                        <IoIosArrowForward size={16} />
-                      </button>
-                    )}
-                  </div>
-                )}
-              </div>
+                        {/* modal create */}
+                        {showCreate && (
+                          <ModalDetail
+                            titleModal="Tambah Kelas"
+                            onClose={() => setShowCreate(false)}
+                          >
+                            <CreateKelas
+                              onClose={() => setShowCreate(false)}
+                              onSucsess={() => {
+                                setShowSuccess(true);
+                              }}
+                            />
+                          </ModalDetail>
+                        )}
+                        {showDelete && (
+                          <ModalDetail
+                            titleModal="Hapus Kelas"
+                            wAuto
+                            silang
+                            center
+                            onClose={() => setShowDelete(null)}
+
+                          >
+                            <DeleteKelas
+                              data={showDelete}
+                              onClose={() => setShowDelete(null)}
+                              onSucsess={() => {
+                                setShowSuccess(true);
+                              }}
+                              kelasId={showDelete.id}
+                            />
+                          </ModalDetail>
+                        )}
+                      </div>
+                      <div className="flex justify-center gap-4">
+                        {totalPages > 1 && (
+                          <div className="flex justify-center gap-4">
+                            {!isFirstPage && (
+                              <button
+                                className="bg-Neutral-95 text-Primary-40 font-semibold py-2 px-3 rounded-full hover:bg-Primary-40 hover:text-Primary-95"
+                                onClick={() => handlePageChange(currentPage - 1)}
+                              >
+                                <IoIosArrowBack size={16} />
+                              </button>
+                            )}
+                            <div className="flex gap-2">
+                              {pageNumbers.map((page) => (
+                                <button
+                                  key={page}
+                                  className={`px-4 py-2 rounded-full font-semibold ${currentPage === page
+                                    ? "bg-Primary-40 text-Neutral-100"
+                                    : "text-Primary-40 hover:bg-Primary-95 hover:text-Primary-30"
+                                    }`}
+                                  onClick={() => handlePageChange(page)}
+                                >
+                                  {page}
+                                </button>
+                              ))}
+                            </div>
+                            {!isLastPage && (
+                              <button
+                                className="bg-Neutral-95 text-Primary-40 font-semibold py-1 px-3 rounded-full hover:bg-Primary-40 hover:text-Primary-95"
+                                onClick={() => handlePageChange(currentPage + 1)}
+                              >
+                                <IoIosArrowForward size={16} />
+                              </button>
+                            )}
+                          </div>
+                        )}
+                      </div>
+                    </>
+                  )
+              }
             </div>
           </div>
         </div>

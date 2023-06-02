@@ -6,6 +6,8 @@ import { IoIosAdd } from "react-icons/io";
 import { FC } from "react";
 import riwayat from "../riwayat";
 import Link from "next/link";
+import { FaRegCreditCard } from "react-icons/fa";
+
 import FilterKelompok from "./dropdownHeadtable/filterKelompok";
 
 interface HeadTableProps {
@@ -24,6 +26,7 @@ interface HeadTableProps {
   onHistory?: () => void;
   url?: string;
   nama_kelompok?: string;
+  onRekening?: () => void;
 }
 
 const HeadTable: React.FC<HeadTableProps> = ({
@@ -42,6 +45,7 @@ const HeadTable: React.FC<HeadTableProps> = ({
   riwayat,
   nama_kelompok,
   noLabel,
+  onRekening,
 }) => {
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (onChange) {
@@ -137,6 +141,22 @@ const HeadTable: React.FC<HeadTableProps> = ({
         ) : (
           ""
         )}
+        {
+          onRekening ? (
+            <Button
+              type="button"
+              brColor="border-Primary-40"
+              textColor="text-Primary-40"
+              bgColor="bg-Primary-40"
+              label="Rekening"
+              outlined
+              onClick={onRekening}
+              icon={FaRegCreditCard}
+            />
+
+          ) : (
+            ""
+          )}
       </div>
     </div>
   );
