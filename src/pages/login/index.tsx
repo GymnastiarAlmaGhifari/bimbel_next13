@@ -148,13 +148,13 @@ const Login = () => {
           className="inline-block align-baseline text-sm text-right text-Neutral-100 hover:text-blue-800"
           href="/nginputngimel"
         >
-          Forgot Password?
+          Lupa Password?
         </Link>
         <button
           className="bg-Primary-50 hover:bg-Primary-50 text-Neutral-100 font-bold py-2 px-4 rounded-full focus:outline-none focus:shadow-outline"
           type="submit"
         >
-          Sign In
+          Masuk
         </button>
       </form>
       <div className="w-full h-full overflow-clip absolute ">

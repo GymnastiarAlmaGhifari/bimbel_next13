@@ -1,5 +1,5 @@
 import { Inter } from "next/font/google";
-import ItemBenefit from "@/pages/components/landingPage/ItemBenefit";
+import { ItemBenefit } from "../components/landingPage/ItemBenefit";
 
 export default function Benefit() {
   return (
@@ -9,10 +9,10 @@ export default function Benefit() {
         Apa yang teman-teman dapatkan ketika bergabung dengan kami?
       </p>
       <div className="grid grid-cols-2 self-center gap-20 h-auto w-auto pb-24">
-        <ItemBenefit />
-        <ItemBenefit />
-        <ItemBenefit />
-        <ItemBenefit />
+        <ItemBenefit label="Ruang Kelas Representatif" />
+        <ItemBenefit label="Tutor Berkompeten" />
+        <ItemBenefit label="Pembelajaran Lebih Fokus 3-6 Anak/Kelas" />
+        <ItemBenefit label="Laporan Report Bulanan" />
       </div>
     </div>
   );
