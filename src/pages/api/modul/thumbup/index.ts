@@ -22,7 +22,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       await fs.copy(sourcePath, newFilePath);
       array.push("File copied successfully.");
 
-      const browser = await puppeteer.launch({ headless: "new" });
+      const browser = await puppeteer.launch({
+        headless: "new",
+        executablePath: '/usr/bin/google-chrome',
+        args: ['--no-sandbox', '--disable-setuid-sandbox'],
+
+      });
+      // const browser = await puppeteer.launch({ headless: "new" });
       const page = await browser.newPage();
 
       try {
