@@ -83,25 +83,25 @@ const Sidebar = () => {
                         }`}
                     >
                       <div>
-                        <BsFillPersonFill size={24} />
+                        <AiFillHome size={24} />
                       </div>
                       {isOpen ? "Home" : ""}
                     </button>
                   </Link>
                 </li>
                 <li>
-                  <Link href="/jadwal">
+                  <Link href="/modul">
                     <button
-                      className={`${router.pathname === "/jadwal"
+                      className={`${router.pathname === "/modul"
                         ? activeStyleButtonSideBar
                         : "hover:bg-Primary-90"
                         } ${baseStyleButtonSideBar} ${isOpen ? "w-full" : "w-14 justify-center"
                         }`}
                     >
                       <div>
-                        <BsFillPersonFill size={24} />
+                        <MdLocalLibrary size={24} />
                       </div>
-                      {isOpen ? "About" : ""}
+                      {isOpen ? "Modul" : ""}
                     </button>
                   </Link>
                 </li>
@@ -156,24 +156,31 @@ const Sidebar = () => {
                     </button>
                   </Link>
                 </li>
-                <li>
-                  <Link href="/pembayaran/tagihan">
-                    <button
-                      className={`${router.pathname === "/pembayaran/gaji" ||
-                        router.pathname === "/pembayaran/tagihan" ||
-                        router.pathname === "/pembayaran/riwayatPembayaran"
-                        ? activeStyleButtonSideBar
-                        : "hover:bg-Primary-90"
-                        } ${baseStyleButtonSideBar} ${isOpen ? "w-full" : "w-14 justify-center"
-                        }`}
-                    >
-                      <div>
-                        <MdPayment size={24} />
-                      </div>
-                      {isOpen ? "Pembayaran" : ""}
-                    </button>
-                  </Link>
-                </li>
+                {
+                  session?.user.role === "ADMIN" ? (
+                    <>
+                    </>
+                  ) : (
+                    <li>
+                      <Link href="/pembayaran/tagihan">
+                        <button
+                          className={`${router.pathname === "/pembayaran/gaji" ||
+                            router.pathname === "/pembayaran/tagihan" ||
+                            router.pathname === "/pembayaran/riwayatPembayaran"
+                            ? activeStyleButtonSideBar
+                            : "hover:bg-Primary-90"
+                            } ${baseStyleButtonSideBar} ${isOpen ? "w-full" : "w-14 justify-center"
+                            }`}
+                        >
+                          <div>
+                            <MdPayment size={24} />
+                          </div>
+                          {isOpen ? "Pembayaran" : ""}
+                        </button>
+                      </Link>
+                    </li>
+                  )
+                }
                 <li>
                   <Link href="/siswa">
                     <button
@@ -222,31 +229,38 @@ const Sidebar = () => {
                     </button>
                   </Link>
                 </li>
-                <li>
-                  <Link href="/pengaturan/program">
-                    <button
-                      className={
-                        // buatkan ketika menyala berada di pengaturan/prgram, pengaturan/module, dan pengaturan/sesi
-                        `${router.pathname === "/pengaturan/program" ||
-                          router.pathname === "/pengaturan/ruang" ||
-                          router.pathname === "/pengaturan/sesi" ||
-                          router.pathname === "/pengaturan/mapel" ||
-                          router.pathname === "/pengaturan/kelas" ||
-                          router.pathname === "/pengaturan/gaji" ||
-                          router.pathname === "/pengaturan/diskon"
-                          ? activeStyleButtonSideBar
-                          : "hover:bg-Primary-90"
-                        } ${baseStyleButtonSideBar} ${isOpen ? "w-full" : "w-14 justify-center"
-                        }`
-                      }
-                    >
-                      <div>
-                        <IoMdSettings size={24} />
-                      </div>
-                      {isOpen ? "Pengaturan" : ""}
-                    </button>
-                  </Link>
-                </li>
+                {
+                  session?.user.role === "ADMIN" ? (
+                    <>
+                    </>
+                  ) : (
+                    <li>
+                      <Link href="/pengaturan/program">
+                        <button
+                          className={
+                            // buatkan ketika menyala berada di pengaturan/prgram, pengaturan/module, dan pengaturan/sesi
+                            `${router.pathname === "/pengaturan/program" ||
+                              router.pathname === "/pengaturan/ruang" ||
+                              router.pathname === "/pengaturan/sesi" ||
+                              router.pathname === "/pengaturan/mapel" ||
+                              router.pathname === "/pengaturan/kelas" ||
+                              router.pathname === "/pengaturan/gaji" ||
+                              router.pathname === "/pengaturan/diskon"
+                              ? activeStyleButtonSideBar
+                              : "hover:bg-Primary-90"
+                            } ${baseStyleButtonSideBar} ${isOpen ? "w-full" : "w-14 justify-center"
+                            }`
+                          }
+                        >
+                          <div>
+                            <IoMdSettings size={24} />
+                          </div>
+                          {isOpen ? "Pengaturan" : ""}
+                        </button>
+                      </Link>
+                    </li>
+                  )
+                }
               </>
             )
 

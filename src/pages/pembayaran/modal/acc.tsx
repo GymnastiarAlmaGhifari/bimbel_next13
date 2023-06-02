@@ -28,6 +28,7 @@ const Acc: FC<Acc> = ({ idAcc, data, onClose,
             console.log(response.data);
 
             mutate(`/api/tagihan`);
+            mutate(`/api/notif`);
             onClose();
             onSuccess();
         } catch (error: any) {
@@ -73,7 +74,6 @@ const Acc: FC<Acc> = ({ idAcc, data, onClose,
             <div className="flex flex-col gap-4">
                 <div className="flex flex-col gap-2">
                     {error && <p className="text-red-500">{error}</p>}
-                    <h1 className="text-2xl font-bold text-Neutral-900">Konfirmasi Pembayaran</h1>
                     <p className="text-Neutral-500">Apakah anda yakin ingin mengkonfirmasi pembayaran ini?</p>
                     <div className="flex flex-row justify-end gap-4">
                         <Button

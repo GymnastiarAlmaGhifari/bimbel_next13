@@ -5,10 +5,12 @@ import Button from "./buttons/Button";
 import { MdDelete } from "react-icons/md";
 import useSWR, { mutate } from "swr";
 import fetcher from "@/libs/fetcher";
+import { ModalDetail, ModalSucces } from "./modal/Modal";
+import Acc from "../pembayaran/modal/acc";
+import LihatNota from "../pembayaran/modal/nota";
 
 interface NotificationProps {
-  onClose: () => void;
-  id?: string;
+  id: string;
   nama_rekening?: string;
   nomor_rekening?: string;
   jumlah_tagihan?: number;
@@ -29,7 +31,7 @@ interface NotificationProps {
   };
 }
 
-const Notification: FC<NotificationProps> = ({ onClose }) => {
+const Notification: FC<NotificationProps> = () => {
   const { data: notification, error } = useSWR("/api/notif", fetcher, {
     refreshInterval: 1000 * 60,
   });
@@ -37,30 +39,37 @@ const Notification: FC<NotificationProps> = ({ onClose }) => {
   const [isOpen, setIsOpen] = useState(false);
   const componentRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    // Menangani klik di luar komponen
-    const handleOutsideClick = (event: any) => {
-      if (
-        componentRef.current &&
-        !componentRef.current.contains(event.target)
-      ) {
-        setIsOpen(false);
-      }
-    };
-
-    // Menambahkan event listener ketika komponen di-mount
-    document.addEventListener("mousedown", handleOutsideClick);
-
-    // Membersihkan event listener ketika komponen di-unmount
-    return () => {
-      document.removeEventListener("mousedown", handleOutsideClick);
-    };
-  }, [setIsOpen, componentRef]);
-
   const handleClick = () => {
     setIsOpen(!isOpen);
-    console.log(open);
+    console.log(isOpen);
   };
+
+  const handleModalClick: React.MouseEventHandler<HTMLDivElement> = (event) => {
+    // Check if the clicked element is a button or has a button ancestor
+    const isButtonClicked = (event.target as HTMLElement).closest("button");
+
+    // Close the modal only if the clicked element is not a button
+    if (!isButtonClicked) {
+      event.stopPropagation();
+    }
+  };
+  const [showNota, setShowNota] = useState<NotificationProps | null>(null);
+
+  const [AcceptPembayaran, setAcceptPembayaran] = useState<NotificationProps | null>(
+    null
+  );
+
+  const [showSuccess, setShowSuccess] = useState(false);
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      setShowSuccess(false);
+    }, 2500);
+
+    return () => {
+      clearTimeout(timeoutId);
+    };
+  }, [showSuccess]);
+
   return (
     <div className="relative">
       <button
@@ -70,14 +79,21 @@ const Notification: FC<NotificationProps> = ({ onClose }) => {
         <div className="text-Neutral-20">
           <IoIosNotifications size={40} />
         </div>
-        <div className="h-6 w-6 bg-Error-50 rounded-full absolute flex items-center justify-center top-0 right-0 border-[2px] border-Neutral-100">
-          <span className="text-xs font-semibold text-Neutral-100">{notification?.jumlah}</span>
-        </div>
+        {
+          notification?.jumlah > 0 ? (
+            <div className="h-6 w-6 bg-Error-50 rounded-full absolute flex items-center justify-center top-0 right-0 border-[2px] border-Neutral-100">
+              <span className="text-xs font-semibold text-Neutral-100">{notification?.jumlah}</span>
+            </div>
+          ) : (
+            ""
+          )
+        }
       </button>
       {isOpen ? (
         <div
           className="absolute right-0 mt-1 flex flex-col bg-Neutral-100 w-[550px] py-2 rounded-lg border-[1px] border-Neutral-90 gap-2"
           ref={componentRef}
+          onClick={handleModalClick}
         >
           <div className="flex justify-between items-center">
             <h1 className="ml-4 font-bold text-Primary-10">
@@ -91,7 +107,7 @@ const Notification: FC<NotificationProps> = ({ onClose }) => {
               icon={IoIosClose}
               noLabel
               textColor="text-Neutral-30"
-              onClick={onClose}
+              onClick={handleClick}
             />
           </div>
           <div className="flex flex-col min-h-max max-h-96 overflow-y-auto scrollbar">
@@ -108,26 +124,17 @@ const Notification: FC<NotificationProps> = ({ onClose }) => {
                     {notification.data.map((notif: NotificationProps) => (
                       <CardNotification
                         key={notif.id}
-                        // bulan={notif.Bulan}
-                        // jumlah_tagihan={notif?.jumlah_tagihan}
-                        // nama_rekening={notif?.nama_rekening}
                         nama_siswa={notif?.siswa?.nama}
-                        // nama_user={notif?.user?.name}
-                        // nomor_rekening={notif?.nomor_rekening}
-                        // nota={notif?.nota}
-                        // status={notif?.status}
-                        // tanggal_approve={notif?.tanggal_approve}
                         tanggal_bayar={notif?.tanggal_bayar}
                         status={notif?.status}
-                      // tanggal_jatuh_tempo={notif?.tanggal_jatuh_tempo}
-                      // tanggal_tagihan={notif?.tanggal_tagihan}
-                      // gambar={notif?.siswa.image}
-                      // tahun={notif?.Tahun}
-                      // onClick={() =>
-                      //   setShowNota(notif)
-                      // }
-                      // onAccept={() =>
-                      //   setAcceptnotif(notif)
+                        onClick={
+                          () => setShowNota(notif)
+                        }
+                        onAccept={() =>
+                          setAcceptPembayaran(
+                            notif
+                          )
+                        }
                       />
                     ))}
                   </>
@@ -152,6 +159,35 @@ const Notification: FC<NotificationProps> = ({ onClose }) => {
               </>
             )}
           </div>
+          {showSuccess && (
+            <ModalSucces label="" onClose={() => setShowSuccess(false)}>
+            </ModalSucces>
+          )}
+          {showNota && (
+            <ModalDetail silang
+              titleModal={`Nota Tagihan ${showNota?.siswa?.nama}` + ` ${showNota?.Bulan}` + ` ${showNota?.Tahun}`}
+              onClose={() => setShowNota(null)} wAuto
+            >
+              <LihatNota data={showNota} onClose={() => setShowNota(null)} />
+            </ModalDetail>
+          )}
+          {AcceptPembayaran && (
+            <ModalDetail wAuto
+              titleModal="Konfirmasi Pembayaran"
+              onClose={() => setAcceptPembayaran(null)}
+            >
+              <Acc
+                idAcc={AcceptPembayaran.id}
+                data={AcceptPembayaran}
+                onClose={
+                  () => setAcceptPembayaran(null)
+                }
+                onSuccess={
+                  () => setShowSuccess(true)
+                }
+              />
+            </ModalDetail>
+          )}
         </div>
       ) : (
         ""

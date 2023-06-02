@@ -13,6 +13,9 @@ import Navbar from "@/pages/components/Navbar";
 import NavbarPengaturan from "@/pages/components/NavbarPengaturan";
 import DeleteMapel from "./delete";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
+import Button from "@/pages/components/buttons/Button";
 
 interface Mapel {
   kelas: any;
@@ -28,6 +31,9 @@ const Mapel: FC<Mapel> = () => {
     document.title = "Bimbel Linear";
   });
   const { data: mapel, error } = useSWR<Mapel[]>("/api/mapel", fetcher, {});
+
+  const { data: session, status } = useSession();
+  const router = useRouter();
 
   const [selectedMapel, setSelectedMapel] = useState<Mapel | null>(null);
   const [selectedMapelDelete, setSelectedMapelDelete] = useState<Mapel | null>(
@@ -129,137 +135,162 @@ const Mapel: FC<Mapel> = () => {
           <div className="flex flex-col h-full p-4 gap-4 bg-Neutral-100 rounded-lg overflow-auto">
             <NavbarPengaturan />
             <div className="flex flex-col h-full bg-Neutral-100 py-4 gap-4 rounded-lg overflow-auto">
-              <HeadTable
-                label="Mata Pelajaran"
-                onClick={() => setShowCreate(true)}
-                onChange={handleInputChange}
-              />
-              <div className="flex flex-col rounded-bl-lg rounded-br-lg p-4 gap-4 overflow-y-auto scrollbar-thin scrollbar-track-Neutral-100 scrollbar-thumb-Primary-40 scrollbar-rounded-lg">
-                {paginatedMapel ? (
-                  <>
-                    {paginatedMapel.length === 0 ? (
-                      <div className="flex flex-col items-center justify-center">
-                        <h1 className="text-2xl font-bold text-gray-500">
-                          Mapel tidak ditemukan
-                        </h1>
-                        <p className="text-sm text-gray-500">
-                          Mapel yang anda cari tidak ditemukan
-                        </p>
-                      </div>
-                    ) : (
-                      paginatedMapel.map((item) => (
-                        <CardMapel
-                          key={item.id}
-                          nama_kelas={item.kelas?.nama_kelas}
-                          nama_mapel={item.nama_mapel}
-                          onClick={() => setSelectedMapel(item)}
-                          onDelete={() => setSelectedMapelDelete(item)}
-                        />
-                      ))
-                    )}
-                  </>
-                ) : (
-                  <p>Loading...</p>
-                )}
-                {selectedMapel && (
-                  <ModalDetail titleModal="Edit Mapel" onClose={onClose}>
-                    <MapelEdit
-                      data={selectedMapel}
-                      onClose={onClose}
-                      mapelId={selectedMapel.id}
-                    />
-                  </ModalDetail>
-                )}
-                {/* buat modal dari getname  */}
-                {showSuccess && (
-                  <ModalDetail
-                    titleModal="SUCSSES"
-                    onClose={() => setShowSuccess(false)}
-                  >
-                    <div className="flex flex-col items-center justify-center">
-                      <h1 className="text-2xl font-bold text-green-500">
-                        Berhasil
+              {
+                session?.user.role === "TENTOR"
+                  || session?.user.role === "ADMIN"
+                  ? (
+                    <div className="flex flex-col gap-4 w-full h-full items-center justify-center">
+                      <h1 className="text-2xl font-bold text-gray-500">
+                        Hanya Super Admin yang bisa mengakses halaman ini
                       </h1>
-                      <p className="text-sm text-gray-500">
-                        {selectedMapel?.nama_mapel}Data berhasil diubah
-                      </p>
-                    </div>
-                  </ModalDetail>
-                )}
-
-                {/* modal create */}
-                {showCreate && (
-                  <ModalDetail
-                    titleModal="Tambah Mapel"
-                    onClose={() => setShowCreate(false)}
-                  >
-                    <CreateMapel
-                      onClose={() => setShowCreate(false)}
-                      onSucsess={() => {
-                        setShowSuccess(true);
-                      }}
-                    />
-                  </ModalDetail>
-                )}
-                {
-                  // modal delete
-                  selectedMapelDelete && (
-                    <ModalDetail
-                      titleModal="Hapus Mapel"
-                      onClose={() => setSelectedMapelDelete(null)}
-                      silang
-                      wAuto
-                      center
-                    >
-                      <DeleteMapel
-                        idMapel={selectedMapelDelete.id}
-                        onClose={() => setSelectedMapelDelete(null)}
-                        onSuccess={() => {
-                          setShowSuccess(true);
-                        }
-                        }
-                        data={selectedMapelDelete}
+                      {/* back to dashboard */}
+                      <Button
+                        type="button"
+                        withBgColor
+                        bgColor="bg-Primary-40"
+                        brColor=""
+                        label="Kembali"
+                        icon={IoIosArrowBack}
+                        textColor="text-Primary-95"
+                        onClick={() => router.push("/dashboard")}
                       />
-                    </ModalDetail>
-                  )
-                }
-              </div>
-              <div className="flex justify-center gap-4">
-                {totalPages > 1 && (
-                  <div className="flex justify-center gap-4">
-                    {!isFirstPage && (
-                      <button
-                        className="bg-Neutral-95 text-Primary-40 font-semibold py-2 px-3 rounded-full hover:bg-Primary-40 hover:text-Primary-95"
-                        onClick={() => handlePageChange(currentPage - 1)}
-                      >
-                        <IoIosArrowBack size={16} />
-                      </button>
-                    )}
-                    <div className="flex gap-2">
-                      {pageNumbers.map((page) => (
-                        <button
-                          key={page}
-                          className={`px-4 py-2 rounded-full font-semibold ${currentPage === page
-                            ? "bg-Primary-40 text-Neutral-100"
-                            : "text-Primary-40 hover:bg-Primary-95 hover:text-Primary-30"
-                            }`}
-                          onClick={() => handlePageChange(page)}
-                        >
-                          {page}
-                        </button>
-                      ))}
                     </div>
-                    {!isLastPage && (
-                      <button
-                        className="bg-Neutral-95 text-Primary-40 font-semibold py-1 px-3 rounded-full hover:bg-Primary-40 hover:text-Primary-95"
-                        onClick={() => handlePageChange(currentPage + 1)}
-                      >
-                        <IoIosArrowForward size={16} />
-                      </button>
-                    )}
-                  </div>
-                )}
-              </div>
+                  ) : (
+                    <>
+                      <HeadTable
+                        label="Mata Pelajaran"
+                        onClick={() => setShowCreate(true)}
+                        onChange={handleInputChange}
+                      />
+                      <div className="flex flex-col rounded-bl-lg rounded-br-lg p-4 gap-4 overflow-y-auto scrollbar-thin scrollbar-track-Neutral-100 scrollbar-thumb-Primary-40 scrollbar-rounded-lg">
+                        {paginatedMapel ? (
+                          <>
+                            {paginatedMapel.length === 0 ? (
+                              <div className="flex flex-col items-center justify-center">
+                                <h1 className="text-2xl font-bold text-gray-500">
+                                  Mapel tidak ditemukan
+                                </h1>
+                                <p className="text-sm text-gray-500">
+                                  Mapel yang anda cari tidak ditemukan
+                                </p>
+                              </div>
+                            ) : (
+                              paginatedMapel.map((item) => (
+                                <CardMapel
+                                  key={item.id}
+                                  nama_kelas={item.kelas?.nama_kelas}
+                                  nama_mapel={item.nama_mapel}
+                                  onClick={() => setSelectedMapel(item)}
+                                  onDelete={() => setSelectedMapelDelete(item)}
+                                />
+                              ))
+                            )}
+                          </>
+                        ) : (
+                          <p>Loading...</p>
+                        )}
+                        {selectedMapel && (
+                          <ModalDetail titleModal="Edit Mapel" onClose={onClose}>
+                            <MapelEdit
+                              data={selectedMapel}
+                              onClose={onClose}
+                              mapelId={selectedMapel.id}
+                            />
+                          </ModalDetail>
+                        )}
+                        {/* buat modal dari getname  */}
+                        {showSuccess && (
+                          <ModalDetail
+                            titleModal="SUCSSES"
+                            onClose={() => setShowSuccess(false)}
+                          >
+                            <div className="flex flex-col items-center justify-center">
+                              <h1 className="text-2xl font-bold text-green-500">
+                                Berhasil
+                              </h1>
+                              <p className="text-sm text-gray-500">
+                                {selectedMapel?.nama_mapel}Data berhasil diubah
+                              </p>
+                            </div>
+                          </ModalDetail>
+                        )}
+
+                        {/* modal create */}
+                        {showCreate && (
+                          <ModalDetail
+                            titleModal="Tambah Mapel"
+                            onClose={() => setShowCreate(false)}
+                          >
+                            <CreateMapel
+                              onClose={() => setShowCreate(false)}
+                              onSucsess={() => {
+                                setShowSuccess(true);
+                              }}
+                            />
+                          </ModalDetail>
+                        )}
+                        {
+                          // modal delete
+                          selectedMapelDelete && (
+                            <ModalDetail
+                              titleModal="Hapus Mapel"
+                              onClose={() => setSelectedMapelDelete(null)}
+                              silang
+                              wAuto
+                              center
+                            >
+                              <DeleteMapel
+                                idMapel={selectedMapelDelete.id}
+                                onClose={() => setSelectedMapelDelete(null)}
+                                onSuccess={() => {
+                                  setShowSuccess(true);
+                                }
+                                }
+                                data={selectedMapelDelete}
+                              />
+                            </ModalDetail>
+                          )
+                        }
+                      </div>
+                      <div className="flex justify-center gap-4">
+                        {totalPages > 1 && (
+                          <div className="flex justify-center gap-4">
+                            {!isFirstPage && (
+                              <button
+                                className="bg-Neutral-95 text-Primary-40 font-semibold py-2 px-3 rounded-full hover:bg-Primary-40 hover:text-Primary-95"
+                                onClick={() => handlePageChange(currentPage - 1)}
+                              >
+                                <IoIosArrowBack size={16} />
+                              </button>
+                            )}
+                            <div className="flex gap-2">
+                              {pageNumbers.map((page) => (
+                                <button
+                                  key={page}
+                                  className={`px-4 py-2 rounded-full font-semibold ${currentPage === page
+                                    ? "bg-Primary-40 text-Neutral-100"
+                                    : "text-Primary-40 hover:bg-Primary-95 hover:text-Primary-30"
+                                    }`}
+                                  onClick={() => handlePageChange(page)}
+                                >
+                                  {page}
+                                </button>
+                              ))}
+                            </div>
+                            {!isLastPage && (
+                              <button
+                                className="bg-Neutral-95 text-Primary-40 font-semibold py-1 px-3 rounded-full hover:bg-Primary-40 hover:text-Primary-95"
+                                onClick={() => handlePageChange(currentPage + 1)}
+                              >
+                                <IoIosArrowForward size={16} />
+                              </button>
+                            )}
+                          </div>
+                        )}
+                      </div>
+                    </>
+                  )
+              }
             </div>
           </div>
         </div>

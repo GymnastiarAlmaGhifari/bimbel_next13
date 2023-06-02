@@ -52,6 +52,11 @@ interface User {
   id: string;
   name: string;
   mapel_id: string;
+  image: string;
+  mapel: {
+    id: string;
+    nama_mapel: string;
+  }
 }
 
 const schema = yup.object().shape({
@@ -654,7 +659,9 @@ const CreateKamis: FC<Kamis> = ({
                     getValues={getValues}
                     groupName="kelompokCheck"
                     label={item.name}
-                    nomor_telepon={item.mapel_id}
+                    nomor_telepon={item.mapel?.nama_mapel}
+                    gambar={item?.image}
+
                   />
                 ))}
                 {errors.kelompokCheck && <p>{errors.kelompokCheck.message}</p>}

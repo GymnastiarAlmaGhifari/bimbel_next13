@@ -52,6 +52,7 @@ interface User {
   id: string;
   name: string;
   mapel_id: string;
+  image: string;
   mapel: {
     id: string;
     nama_mapel: string;
@@ -651,6 +652,7 @@ const MingguEdit: FC<MingguEdit> = ({
                     groupName="kelompokCheck"
                     label={item.name}
                     nomor_telepon={item.mapel?.nama_mapel}
+                    gambar={item?.image}
                   />
                 ))}
                 {errors.kelompokCheck && <p>{errors.kelompokCheck.message}</p>}

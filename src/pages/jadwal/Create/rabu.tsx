@@ -52,6 +52,11 @@ interface User {
   id: string;
   name: string;
   mapel_id: string;
+  image: string;
+  mapel: {
+    id: string;
+    nama_mapel: string;
+  }
 }
 
 const schema = yup.object().shape({
@@ -398,8 +403,8 @@ const CreateRabu: FC<Rabu> = ({
                   <button
                     type="button"
                     className={` w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${isListOpenHari
-                        ? "border-[2px] border-Primary-50 bg-Primary-95"
-                        : "bg-Neutral-95"
+                      ? "border-[2px] border-Primary-50 bg-Primary-95"
+                      : "bg-Neutral-95"
                       }`}
                     onClick={toggleListHari}
                   >
@@ -420,8 +425,8 @@ const CreateRabu: FC<Rabu> = ({
                           <button
                             type="button"
                             className={`w-full text-left px-2 py-1 rounded-full ${watch("hari") === option.value
-                                ? "text-Primary-90 bg-Primary-20"
-                                : "text-Primary-20 hover:bg-Primary-95"
+                              ? "text-Primary-90 bg-Primary-20"
+                              : "text-Primary-20 hover:bg-Primary-95"
                               }`}
                             onClick={() => selectHari(option.value)}
                           >
@@ -444,8 +449,8 @@ const CreateRabu: FC<Rabu> = ({
                   <button
                     type="button"
                     className={` w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${isListOpenSesi
-                        ? "border-[2px] border-Primary-50 bg-Primary-95"
-                        : "bg-Neutral-95"
+                      ? "border-[2px] border-Primary-50 bg-Primary-95"
+                      : "bg-Neutral-95"
                       }`}
                     onClick={toggleListSesi}
                     defaultValue={data}
@@ -476,8 +481,8 @@ const CreateRabu: FC<Rabu> = ({
                             <button
                               type="button"
                               className={`w-full text-left px-2 py-1 rounded-full ${watch("sesi") === sesiItem.id
-                                  ? "text-Primary-90 bg-Primary-20"
-                                  : "text-Primary-20 hover:bg-Primary-95"
+                                ? "text-Primary-90 bg-Primary-20"
+                                : "text-Primary-20 hover:bg-Primary-95"
                                 }`}
                               onClick={() => selectSesi(sesiItem.id)}
                             >
@@ -504,8 +509,8 @@ const CreateRabu: FC<Rabu> = ({
                   <button
                     type="button"
                     className={` w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${isListOpenRuang
-                        ? "border-[2px] border-Primary-50 bg-Primary-95"
-                        : "bg-Neutral-95"
+                      ? "border-[2px] border-Primary-50 bg-Primary-95"
+                      : "bg-Neutral-95"
                       }`}
                     onClick={toggleListRuang}
                     defaultValue={idRuang}
@@ -536,8 +541,8 @@ const CreateRabu: FC<Rabu> = ({
                             <button
                               type="button"
                               className={`w-full text-left px-2 py-1 rounded-full ${watch("ruang") === ruangItem.id
-                                  ? "text-Primary-90 bg-Primary-20"
-                                  : "text-Primary-20 hover:bg-Primary-95"
+                                ? "text-Primary-90 bg-Primary-20"
+                                : "text-Primary-20 hover:bg-Primary-95"
                                 }`}
                               onClick={() => selectRuang(ruangItem.id)}
                             >
@@ -562,8 +567,8 @@ const CreateRabu: FC<Rabu> = ({
                   <button
                     type="button"
                     className={` w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${isListOpenMapel
-                        ? "border-[2px] border-Primary-50 bg-Primary-95"
-                        : "bg-Neutral-95"
+                      ? "border-[2px] border-Primary-50 bg-Primary-95"
+                      : "bg-Neutral-95"
                       }`}
                     onClick={toggleListMapel}
                   >
@@ -587,8 +592,8 @@ const CreateRabu: FC<Rabu> = ({
                           <button
                             type="button"
                             className={`w-full text-left px-2 py-1 rounded-full ${watch("mapel") === mapelItem.id
-                                ? "text-Primary-90 bg-Primary-20"
-                                : "text-Primary-20 hover:bg-Primary-95"
+                              ? "text-Primary-90 bg-Primary-20"
+                              : "text-Primary-20 hover:bg-Primary-95"
                               }`}
                             onClick={() => {
                               selectMapel(mapelItem.id);
@@ -654,7 +659,9 @@ const CreateRabu: FC<Rabu> = ({
                     getValues={getValues}
                     groupName="kelompokCheck"
                     label={item.name}
-                    nomor_telepon={item.mapel_id}
+                    nomor_telepon={item.mapel?.nama_mapel}
+                    gambar={item?.image}
+
                   />
                 ))}
                 {errors.kelompokCheck && <p>{errors.kelompokCheck.message}</p>}

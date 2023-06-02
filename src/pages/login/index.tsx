@@ -5,6 +5,8 @@ import Router from "next/router";
 import { useEffect, useState } from "react";
 import Input from "../components/inputs/Input";
 import Button from "../components/buttons/Button";
+import { BiHide, BiShow } from "react-icons/bi";
+import Link from "next/link";
 import Image from "next/image";
 
 const Login = () => {
@@ -14,6 +16,7 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
+  const [showPassword, setShowPassword] = useState(false);
 
   // if (session) { existing session, redirect to home page }
 
@@ -55,6 +58,10 @@ const Login = () => {
   const shadowStyle = {
     boxShadow:
       "inset 3px 4px 5px rgba(255, 255, 255, 0.1), inset 1px 1px 0 rgba(255, 255, 255, .2), 4px 4px 5px rgba(0, 0, 0, 0.1)",
+  };
+
+  const togglePasswordVisibility = () => {
+    setShowPassword((prevShowPassword) => !prevShowPassword);
   };
 
   return (
@@ -103,34 +110,46 @@ const Login = () => {
           >
             Password
           </label>
-          <input
-            className="bg-Neutral-95
-              peer
-              h-10
-              w-full
-              px-4
-              py-2
-              rounded-full
-              outline-none
-              transition
-              box-border
-              disabled:opacity-70
-              disabled:cursor-not-allowed
-              focus:border-[2px] focus:border-Primary-50 focus:bg-Primary-99"
-            id="password"
-            type="password"
-            placeholder="******************"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
+          <div className="relative">
+            <input
+              className="bg-Neutral-95
+                peer
+                h-10
+                w-full
+                px-4
+                py-2
+                rounded-full
+                outline-none
+                transition
+                box-border
+                disabled:opacity-70
+                disabled:cursor-not-allowed
+                focus:border-[2px] focus:border-Primary-50 focus:bg-Primary-99"
+              id="password"
+              type={showPassword ? "text" : "password"}
+              placeholder="******************"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            <div
+              className="absolute inset-y-0 right-0 pr-3 flex items-center"
+              onClick={togglePasswordVisibility}
+            >
+              {showPassword ? (
+                <BiHide className="text-gray-500 cursor-pointer" />
+              ) : (
+                <BiShow className="text-gray-500 cursor-pointer" />
+              )}
+            </div>
+          </div>
         </div>
         <p className="text-red-500 text-xs italic">{error}</p>
-        <a
+        <Link
           className="inline-block align-baseline text-sm text-right text-Neutral-100 hover:text-blue-800"
-          href="#"
+          href="/nginputngimel"
         >
           Forgot Password?
-        </a>
+        </Link>
         <button
           className="bg-Primary-50 hover:bg-Primary-50 text-Neutral-100 font-bold py-2 px-4 rounded-full focus:outline-none focus:shadow-outline"
           type="submit"
@@ -138,11 +157,23 @@ const Login = () => {
           Sign In
         </button>
       </form>
-      <div className="w-full h-full overflow-clip absolute">
-        <Image alt="" src={"/shape1_login.svg"} width={500} height={500} className="object-cover w-full h-full"/>
+      <div className="w-full h-full overflow-clip absolute ">
+        <Image
+          alt=""
+          src={"/shape1_login.svg"}
+          width={500}
+          height={500}
+          className="object-cover w-full h-full"
+        />
       </div>
-      <div className="w-full h-full overflow-clip">
-        <Image alt="" src={"/shape2_login.svg"} width={500} height={500} className="object-cover w-full h-full"/>
+      <div className="w-full h-full overflow-clip absolute">
+        <Image
+          alt=""
+          src={"/shape2_login.svg"}
+          width={500}
+          height={500}
+          className="object-cover w-full h-full"
+        />
       </div>
     </div>
   );

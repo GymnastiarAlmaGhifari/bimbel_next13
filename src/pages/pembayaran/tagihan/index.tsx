@@ -12,6 +12,10 @@ import Acc from "../modal/acc";
 import Create from "../modal/create";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import DeleteTagihan from "../modal/delete";
+import EditRekening from "../modal/gaji";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
+import Button from "@/pages/components/buttons/Button";
 
 interface Pembayaran {
   id: string;
@@ -42,15 +46,18 @@ const Pembayaran: FC<Pembayaran> = () => {
     isLoading,
   } = useSWR("/api/tagihan", fetcher);
 
+  const { data: session, status } = useSession();
+  const router = useRouter();
+
   // state shownota
   const [showNota, setShowNota] = useState<Pembayaran | null>(null);
-
-  // create
-  const [showCreate, setShowCreate] = useState<boolean>(false);
 
   const [AcceptPembayaran, setAcceptPembayaran] = useState<Pembayaran | null>(
     null
   );
+
+  // create
+  const [showCreate, setShowCreate] = useState<boolean>(false);
 
   const [selectedDelete, setSelectedDelete] = useState<Pembayaran | null>(null);
 
@@ -59,6 +66,8 @@ const Pembayaran: FC<Pembayaran> = () => {
   const [debouncedValue, setDebouncedValue] = useState<string>("");
 
   const [showSuccess, setShowSuccess] = useState(false);
+
+  const [showRekening, setShowRekening] = useState(false);
 
   useEffect(() => {
     const timeoutId = setTimeout(() => {
@@ -136,112 +145,140 @@ const Pembayaran: FC<Pembayaran> = () => {
           <div className="flex flex-col h-full p-4 gap-4 bg-Neutral-100 rounded-lg overflow-auto">
             <NavbarPembayaran />
             <div className="flex flex-col h-full bg-Neutral-100 py-4 gap-4 rounded-lg overflow-auto">
-              <HeadTable
-                label="Tagihan"
-                riwayat
-                onClick={() => setShowCreate(true)}
-                onHistory={() => {
-
-                }}
-                url="/pembayaran/riwayatPembayaran"
-                onChange={handleInputChange}
-              />
-              <div className="flex flex-col rounded-bl-lg rounded-br-lg p-4 gap-4 overflow-y-auto scrollbar">
-                {paginatedPembayaran ? (
-                  <>
-                    {paginatedPembayaran.length === 0 ? (
-                      <div className="flex flex-col justify-center items-center">
-                        <p className="text-2xl font-bold text-Neutral-600">
-                          Data Kosong
-                        </p>
-                        <p className="text-Neutral-500">PP</p>
-                      </div>
-                    ) : (
-                      <>
-                        {paginatedPembayaran.map((pembayaran: Pembayaran) => (
-                          <CardPembayaran
-                            key={pembayaran.id}
-                            bulan={pembayaran.Bulan}
-                            jumlah_tagihan={pembayaran?.jumlah_tagihan}
-                            nama_rekening={pembayaran?.nama_rekening}
-                            nama_siswa={pembayaran?.siswa?.nama}
-                            nama_user={pembayaran?.user?.name}
-                            nomor_rekening={pembayaran?.nomor_rekening}
-                            nota={pembayaran?.nota}
-                            status={pembayaran?.status}
-                            tanggal_approve={pembayaran?.tanggal_approve}
-                            tanggal_bayar={pembayaran?.tanggal_bayar}
-                            tanggal_jatuh_tempo={
-                              pembayaran?.tanggal_jatuh_tempo
-                            }
-                            tanggal_tagihan={pembayaran?.tanggal_tagihan}
-                            gambar={pembayaran?.siswa.image}
-                            tahun={pembayaran?.Tahun}
-                            onClick={() => setShowNota(pembayaran)}
-                            onAccept={() => setAcceptPembayaran(pembayaran)}
-                            onDelete={() => setSelectedDelete(pembayaran)}
-                          />
-                        ))}
-                      </>
-                    )}
-                  </>
-                ) : (
-                  <>
-                    {error ? (
-                      <div className="flex flex-col justify-center items-center">
-                        <p className="text-2xl font-bold text-Neutral-600">
-                          Data Kosong
-                        </p>
-                        <p className="text-Neutral-500">
-                          Silahkan tambahkan data siswa
-                        </p>
-                      </div>
-                    ) : (
-                      <div className="flex flex-col justify-center items-center">
-                        <p className="text-2xl font-bold text-Neutral-600">
-                          Loading...
-                        </p>
-                      </div>
-                    )}
-                  </>
-                )}
-              </div>
-              <div className="flex justify-center gap-4">
-                {totalPages > 1 && (
-                  <div className="flex justify-center gap-4">
-                    {!isFirstPage && (
-                      <button
-                        className="bg-Neutral-95 text-Primary-40 font-semibold py-2 px-3 rounded-full hover:bg-Primary-40 hover:text-Primary-95"
-                        onClick={() => handlePageChange(currentPage - 1)}
-                      >
-                        <IoIosArrowBack size={16} />
-                      </button>
-                    )}
-                    <div className="flex gap-2">
-                      {pageNumbers.map((page) => (
-                        <button
-                          key={page}
-                          className={`px-4 py-2 rounded-full font-semibold ${currentPage === page
-                            ? "bg-Primary-40 text-Neutral-100"
-                            : "text-Primary-40 hover:bg-Primary-95 hover:text-Primary-30"
-                            }`}
-                          onClick={() => handlePageChange(page)}
-                        >
-                          {page}
-                        </button>
-                      ))}
+              {
+                session?.user.role === "TENTOR"
+                  || session?.user.role === "ADMIN"
+                  ? (
+                    <div className="flex flex-col gap-4 w-full h-full items-center justify-center">
+                      <h1 className="text-2xl font-bold text-gray-500">
+                        Hanya Super Admin yang bisa mengakses halaman ini
+                      </h1>
+                      {/* back to dashboard */}
+                      <Button
+                        type="button"
+                        withBgColor
+                        bgColor="bg-Primary-40"
+                        brColor=""
+                        label="Kembali"
+                        icon={IoIosArrowBack}
+                        textColor="text-Primary-95"
+                        onClick={() => router.push("/dashboard")}
+                      />
                     </div>
-                    {!isLastPage && (
-                      <button
-                        className="bg-Neutral-95 text-Primary-40 font-semibold py-1 px-3 rounded-full hover:bg-Primary-40 hover:text-Primary-95"
-                        onClick={() => handlePageChange(currentPage + 1)}
-                      >
-                        <IoIosArrowForward size={16} />
-                      </button>
-                    )}
-                  </div>
-                )}
-              </div>
+                  ) : (
+                    <>
+                      <HeadTable
+                        label="Tagihan"
+                        riwayat
+                        onClick={() => setShowCreate(true)}
+                        onHistory={() => {
+                        }}
+                        url="/pembayaran/riwayatPembayaran"
+                        onChange={handleInputChange}
+                        onRekening={
+                          () => {
+                            setShowRekening(true);
+                          }
+                        }
+                      />
+                      <div className="flex flex-col rounded-bl-lg rounded-br-lg p-4 gap-4 overflow-y-auto scrollbar">
+                        {paginatedPembayaran ? (
+                          <>
+                            {paginatedPembayaran.length === 0 ? (
+                              <div className="flex flex-col justify-center items-center">
+                                <p className="text-2xl font-bold text-Neutral-600">
+                                  Data Kosong
+                                </p>
+                                <p className="text-Neutral-500">PP</p>
+                              </div>
+                            ) : (
+                              <>
+                                {paginatedPembayaran.map((pembayaran: Pembayaran) => (
+                                  <CardPembayaran
+                                    key={pembayaran.id}
+                                    bulan={pembayaran.Bulan}
+                                    jumlah_tagihan={pembayaran?.jumlah_tagihan}
+                                    nama_rekening={pembayaran?.nama_rekening}
+                                    nama_siswa={pembayaran?.siswa?.nama}
+                                    nama_user={pembayaran?.user?.name}
+                                    nomor_rekening={pembayaran?.nomor_rekening}
+                                    nota={pembayaran?.nota}
+                                    status={pembayaran?.status}
+                                    tanggal_approve={pembayaran?.tanggal_approve}
+                                    tanggal_bayar={pembayaran?.tanggal_bayar}
+                                    tanggal_jatuh_tempo={
+                                      pembayaran?.tanggal_jatuh_tempo
+                                    }
+                                    tanggal_tagihan={pembayaran?.tanggal_tagihan}
+                                    gambar={pembayaran?.siswa.image}
+                                    tahun={pembayaran?.Tahun}
+                                    onClick={() => setShowNota(pembayaran)}
+                                    onAccept={() => setAcceptPembayaran(pembayaran)}
+                                    onDelete={() => setSelectedDelete(pembayaran)}
+                                  />
+                                ))}
+                              </>
+                            )}
+                          </>
+                        ) : (
+                          <>
+                            {error ? (
+                              <div className="flex flex-col justify-center items-center">
+                                <p className="text-2xl font-bold text-Neutral-600">
+                                  Data Kosong
+                                </p>
+                                <p className="text-Neutral-500">
+                                  Silahkan tambahkan data siswa
+                                </p>
+                              </div>
+                            ) : (
+                              <div className="flex flex-col justify-center items-center">
+                                <p className="text-2xl font-bold text-Neutral-600">
+                                  Loading...
+                                </p>
+                              </div>
+                            )}
+                          </>
+                        )}
+                      </div>
+                      <div className="flex justify-center gap-4">
+                        {totalPages > 1 && (
+                          <div className="flex justify-center gap-4">
+                            {!isFirstPage && (
+                              <button
+                                className="bg-Neutral-95 text-Primary-40 font-semibold py-2 px-3 rounded-full hover:bg-Primary-40 hover:text-Primary-95"
+                                onClick={() => handlePageChange(currentPage - 1)}
+                              >
+                                <IoIosArrowBack size={16} />
+                              </button>
+                            )}
+                            <div className="flex gap-2">
+                              {pageNumbers.map((page) => (
+                                <button
+                                  key={page}
+                                  className={`px-4 py-2 rounded-full font-semibold ${currentPage === page
+                                    ? "bg-Primary-40 text-Neutral-100"
+                                    : "text-Primary-40 hover:bg-Primary-95 hover:text-Primary-30"
+                                    }`}
+                                  onClick={() => handlePageChange(page)}
+                                >
+                                  {page}
+                                </button>
+                              ))}
+                            </div>
+                            {!isLastPage && (
+                              <button
+                                className="bg-Neutral-95 text-Primary-40 font-semibold py-1 px-3 rounded-full hover:bg-Primary-40 hover:text-Primary-95"
+                                onClick={() => handlePageChange(currentPage + 1)}
+                              >
+                                <IoIosArrowForward size={16} />
+                              </button>
+                            )}
+                          </div>
+                        )}
+                      </div>
+                    </>
+                  )}
             </div>
           </div>
         </div>
@@ -308,6 +345,23 @@ const Pembayaran: FC<Pembayaran> = () => {
           />
         </ModalDetail>
       )}
+      {
+        showRekening && (
+          <ModalDetail
+            titleModal="Gaji"
+            onClose={() => setShowRekening(false)}
+          >
+            <EditRekening
+              onClose={() => setShowRekening(false)}
+              onSucsess={() => {
+                setShowSuccess(true);
+              }
+              }
+            />
+          </ModalDetail>
+        )
+
+      }
     </div>
   );
 };
