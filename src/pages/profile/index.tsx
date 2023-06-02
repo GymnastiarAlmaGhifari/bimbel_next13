@@ -19,6 +19,7 @@ interface Profile {
   mata_pelajaran: string;
   alamat: string;
   image: string;
+  role: string;
 }
 
 const Profile: FC<Profile> = () => {
@@ -72,7 +73,9 @@ const Profile: FC<Profile> = () => {
                             {profile?.name}
                           </h1>
                           <h2 className="inline-block py-2 px-4 bg-Primary-50 text-Primary-10 rounded-full font-semibold w-full text-center">
-                            Admin
+                            {
+                              profile?.role === "SUPER" ? "Super Admin" : profile?.role === "ADMIN" ? "Admin" : "Tentor"
+                            }
                           </h2>
                         </div>
                       </div>
