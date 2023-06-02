@@ -9,6 +9,8 @@ interface CardNotificationProps {
   nama_siswa?: string;
   status?: string;
   tanggal_bayar?: string;
+  onClick?: () => void;
+  onAccept?: () => void;
 }
 
 const CardNotification: FC<CardNotificationProps> = ({
@@ -16,6 +18,8 @@ const CardNotification: FC<CardNotificationProps> = ({
   status,
   nama_siswa,
   tanggal_bayar,
+  onClick,
+  onAccept,
 }) => {
   return (
     <button
@@ -40,15 +44,22 @@ const CardNotification: FC<CardNotificationProps> = ({
         <span className="text-sm text-Neutral-30">{tanggal_bayar}</span>
         <span className="text-sm text-Neutral-30 font-semibold">{status}</span>
         <div className="hidden group-hover:flex justify-end gap-2">
-          <button className="hover:text-Error-50">
+          <button
+            onClick={onAccept}
+
+            className="hover:text-Error-50">
             <MdDelete size={24} />
           </button>
           {isRead ? (
-            <button className="hover:text-Primary-40">
+            <button
+              onClick={onAccept}
+              className="hover:text-Primary-40">
               <BiEnvelopeOpen size={24} />
             </button>
           ) : (
-            <button className="hover:text-Primary-40">
+            <button
+              onClick={onClick}
+              className="hover:text-Primary-40">
               <BiEnvelope size={24} />
             </button>
           )}

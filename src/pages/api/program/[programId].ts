@@ -37,20 +37,35 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
   } else if (req.method === "DELETE") {
     try {
-      const delrelation = await prisma.program.update({
+      const program = await prisma.program.findUnique({
         where: { id: programId },
-        data: {
-          kelompoks: {
-            set: [],
+      });
+
+      if (program) {
+        const delrelation = await prisma.program.update({
+          where: { id: programId },
+          data: {
+            kelompoks: {
+              set: [],
+            },
           },
-        },
-      });
+        });
 
-      const program = await prisma.program.delete({
-        where: { id: programId },
-      });
+        await prisma.program.delete({
+          where: { id: programId },
+        });
 
-      res.status(200).json(program);
+        //delete image program
+        const fs = require("fs");
+        const path = require("path");
+        const filePath = path.join(process.cwd(), "upload", "img", "program", program.img);
+        fs.unlinkSync(filePath);
+
+        return res.status(200).json(program);
+      } else {
+        return res.status(404).json({ message: "Program not found" });
+      }
+      
     } catch (error) {
       console.error(error);
       res.status(500).json({ message: "Error deleting program" });

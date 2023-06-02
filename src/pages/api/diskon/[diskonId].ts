@@ -35,13 +35,27 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
   } else if (req.method === "DELETE") {
     try {
-      const diskon = await prisma.diskon.delete({
+      const diskon = await prisma.diskon.findUnique({
         where: {
           id: id,
         },
       });
+      if (diskon) {
+        await prisma.diskon.delete({
+          where: {
+            id: id,
+          },
+        });
 
-      res.status(200).json(diskon);
+        //delete diskon img 
+        const fs = require("fs");
+        const path = require("path");
+        const filePath = path.join(process.cwd(), "upload", "img", "diskon", diskon.banner);
+
+        res.status(200).json(diskon);
+      } else {
+        res.status(404).json({ message: "Diskon not found" });
+      }
     } catch (error) {
       console.error(error);
       res.status(500).json({ message: "Error deleting diskon" });
