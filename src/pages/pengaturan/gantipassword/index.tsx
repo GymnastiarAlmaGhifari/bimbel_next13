@@ -11,19 +11,23 @@ import { BiHide, BiShow } from "react-icons/bi";
 interface ResetPassword {
     onClose: () => void;
     onSuccess: () => void;
+    EmailAddress?: string
 }
 
 const schema = yup.object().shape({
+
     password: yup.string().required("tidak boleh kosong").min(8, "password minimal 8 karakter"),
     password_confirmation: yup.string()
         .required("tidak boleh kosong")
         .min(8, "password minimal 8 karakter")
         .oneOf([yup.ref('password')], 'password tidak sama'),
+    // password lama
+    password_lama: yup.string().required("tidak boleh kosong").min(8, "password minimal 8 karakter"),
 });
 
 type FormData = yup.InferType<typeof schema>;
 
-const ResetPassword: FC<ResetPassword> = ({ onClose, onSuccess }) => {
+const ResetPassword: FC<ResetPassword> = ({ onClose, onSuccess, EmailAddress }) => {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
@@ -38,13 +42,20 @@ const ResetPassword: FC<ResetPassword> = ({ onClose, onSuccess }) => {
     });
 
     const onSubmit: SubmitHandler<FormData> = async (data) => {
-        const { password } = data;
+
+        // console.log(data);
+
+        // console.log(EmailAddress);
+
+        const { password, password_lama } = data;
 
         setError(null);
 
         try {
-            await axios.post(`/api/user/resetpassword`, {
-                password,
+            await axios.post(`/api/user/ubahpassword`, {
+                email: EmailAddress,
+                password: password_lama,
+                password_baru: password,
             });
 
             mutate(`/api/user`);
@@ -87,6 +98,7 @@ const ResetPassword: FC<ResetPassword> = ({ onClose, onSuccess }) => {
 
     const [showPassword, setShowPassword] = useState(false);
     const [showPasswordConfirmation, setShowPasswordConfirmation] = useState(false);
+    const [showPasswordLama, setShowPasswordLama] = useState(false);
 
     const togglePasswordVisibility = () => {
         setShowPassword(!showPassword);
@@ -96,14 +108,32 @@ const ResetPassword: FC<ResetPassword> = ({ onClose, onSuccess }) => {
         setShowPasswordConfirmation(!showPasswordConfirmation);
     };
 
+    const togglePasswordLamaVisibility = () => {
+        setShowPasswordLama(!showPasswordLama);
+    };
+
     const passwordIcon = showPassword ? <BiHide /> : <BiShow />;
     const passwordConfirmationIcon = showPasswordConfirmation ? <BiHide /> : <BiShow />;
+    const passwordLamaIcon = showPasswordLama ? <BiHide /> : <BiShow />;
     return (
         <div className="flex flex-col gap-6">
             {
                 error && <p className="text-red-500 text-sm">{error}</p>
             }
             <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6">
+                {/* password lama */}
+                <Input
+                    id="password_lama"
+                    label="Password Lama"
+                    type={showPasswordLama ? "text" : "password"}
+                    register={{ ...register("password_lama") }}
+                    iconRight={passwordLamaIcon}
+                    onIconRightClick={togglePasswordLamaVisibility}
+                    errors={errors}
+                />
+                {
+                    errors.password_lama && <p className="text-red-500 text-sm">{errors.password_lama.message}</p>
+                }
                 <Input
                     id="password"
                     label="Password"

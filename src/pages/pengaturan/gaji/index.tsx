@@ -193,7 +193,7 @@ const Gaji: FC<GajiProps> = () => {
       </div>
       {showSuccess && (
         <ModalSucces label="POOP" onClose={() => setShowSuccess(false)}>
-          <div className="">oawkowkao</div>
+          <div className=""></div>
         </ModalSucces>
       )}
       {selectedGaji && (

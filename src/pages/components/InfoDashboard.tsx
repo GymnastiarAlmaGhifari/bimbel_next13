@@ -15,15 +15,24 @@ const InfoDashboard: FC<InfoDashboard> = ({
 }) => {
   return (
     <div className="flex w-full h-48 p-4 bg-Neutral-100 rounded-lg gap-6">
-      <ItemInfoDashboard
-        label="Jumlah Tentor"
-        value={
-          tentor ? tentor : "0"
-        }
-        bgEnd="to-Primary-90"
-        bgStart="from-Primary-50"
-        textColor="text-Primary-20"
-      />
+      {
+        tentor ? (
+          <ItemInfoDashboard
+            label="Jumlah Tentor"
+            value={
+              tentor ? tentor : "0"
+            }
+            bgEnd="to-Primary-90"
+            bgStart="from-Primary-50"
+            textColor="text-Primary-20"
+          />
+        ) : (
+          ""
+        )
+      }
+
+
+
       <ItemInfoDashboard
         label="Jumlah Siswa"
         value={

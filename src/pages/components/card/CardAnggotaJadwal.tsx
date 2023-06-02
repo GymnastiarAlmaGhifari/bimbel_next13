@@ -14,6 +14,7 @@ type CardAnggotaJadwalProps = {
   groupName?: string;
   onChange?: any;
   checked?: any;
+  gambar?: string;
 };
 
 const CardAnggotaJadwal: FC<CardAnggotaJadwalProps> = (
@@ -29,6 +30,7 @@ const CardAnggotaJadwal: FC<CardAnggotaJadwalProps> = (
     groupName,
     onChange,
     checked,
+    gambar,
   }
 ) => {
   // handle check sesuai dengan value yang diinputkan jika true maka akan menampilkan icon check
@@ -81,7 +83,7 @@ const CardAnggotaJadwal: FC<CardAnggotaJadwalProps> = (
           <Image
             alt="Foto Siswa"
             src={
-              "https://indopolitika.com/wp-content/uploads/2014/05/Puan-Maharani.jpg"
+              gambar ? "/api/user/img?img=" + gambar : "/img/user/default.png"
             }
             height={500}
             width={500}

@@ -13,6 +13,9 @@ import Jadwal from "./jadwal";
 import TambahJadwal from "./jadwal";
 import DetailSiswa from "../siswa/detail";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
+import { useRouter } from "next/router";
+import { useSession } from "next-auth/react";
+import Button from "../components/buttons/Button";
 
 interface Kelompok {
   program: any;
@@ -35,6 +38,9 @@ const Kelompok: FC<Kelompok> = () => {
   });
   const [inputValue, setInputValue] = useState<string>("");
   const [debouncedValue, setDebouncedValue] = useState<string>("");
+
+  const { data: session, status } = useSession();
+  const router = useRouter();
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -136,83 +142,107 @@ const Kelompok: FC<Kelompok> = () => {
         <Navbar />
         <div className="h-full p-5 bg-Neutral-95 overflow-auto">
           <div className="flex flex-col h-full bg-Neutral-100 py-4 gap-4 rounded-lg overflow-auto">
-            <HeadTable
-              label="Kelompok"
-              onClick={() => {
-                setShowCreate(true);
-              }}
-              onChange={handleInputChange}
-            />
-            <div className="flex flex-col rounded-bl-lg rounded-br-lg p-4 gap-4 overflow-y-auto scollbar scrollbar-thin scrollbar-track-Neutral-100 scrollbar-thumb-Primary-40 scrollbar-rounded-lg ">
-              {paginatedKelompok ? (
-                <>
-                  {paginatedKelompok.length === 0 ? (
-                    <p>No program found.</p>
-                  ) : (
-                    paginatedKelompok.map((kelompok) => (
-                      <CardKelompok
-                        key={kelompok.id}
-                        nama_kelompok={kelompok.nama_kelompok}
-                        level={kelompok.program.level}
-                        tipe={kelompok.program.tipe}
-                        nama_program={kelompok.program.nama_program}
-                        jumlah_siswa={kelompok.jumlah_siswa}
-                        jumlah_jadwal={kelompok.jumlah_jadwal}
-                        onClick={() => {
-                          setSelected(kelompok);
-                        }}
-                        id={kelompok.id}
-                        addAnggota={() => {
-                          setSelectedAnggota(kelompok);
-                        }}
-                        addJadwal={() => {
-                          setSelectedJadwal(kelompok);
-                        }}
-                        onDetail={() => setSelectedDetail(kelompok)}
-                      />
-                    ))
-                  )}
-                </>
-              ) : (
-                <p>Loading...</p>
-              )}
-            </div>
-            <div className="flex justify-center gap-4">
-              {totalPages > 1 && (
-                <div className="flex justify-center gap-4">
-                  {!isFirstPage && (
-                    <button
-                      className="bg-Neutral-95 text-Primary-40 font-semibold py-2 px-3 rounded-full hover:bg-Primary-40 hover:text-Primary-95"
-                      onClick={() => handlePageChange(currentPage - 1)}
-                    >
-                      <IoIosArrowBack size={16} />
-                    </button>
-                  )}
-                  <div className="flex gap-2">
-                    {pageNumbers.map((page) => (
-                      <button
-                        key={page}
-                        className={`px-4 py-2 rounded-full font-semibold ${currentPage === page
-                          ? "bg-Primary-40 text-Neutral-100"
-                          : "text-Primary-40 hover:bg-Primary-95 hover:text-Primary-30"
-                          }`}
-                        onClick={() => handlePageChange(page)}
-                      >
-                        {page}
-                      </button>
-                    ))}
+            {
+              session?.user.role === "TENTOR"
+                ? (
+                  <div className="flex flex-col gap-4 w-full h-full items-center justify-center">
+                    <h1 className="text-2xl font-bold text-gray-500">
+                      Hanya Super Admin dan Admin yang bisa mengakses halaman ini
+                    </h1>
+                    {/* back to dashboard */}
+                    <Button
+                      type="button"
+                      withBgColor
+                      bgColor="bg-Primary-40"
+                      brColor=""
+                      label="Kembali"
+                      icon={IoIosArrowBack}
+                      textColor="text-Primary-95"
+                      onClick={() => router.push("/dashboard")}
+                    />
                   </div>
-                  {!isLastPage && (
-                    <button
-                      className="bg-Neutral-95 text-Primary-40 font-semibold py-1 px-3 rounded-full hover:bg-Primary-40 hover:text-Primary-95"
-                      onClick={() => handlePageChange(currentPage + 1)}
-                    >
-                      <IoIosArrowForward size={16} />
-                    </button>
-                  )}
-                </div>
-              )}
-            </div>
+                ) : (
+                  <>
+                    <HeadTable
+                      label="Kelompok"
+                      onClick={() => {
+                        setShowCreate(true);
+                      }}
+                      onChange={handleInputChange}
+                    />
+                    <div className="flex flex-col rounded-bl-lg rounded-br-lg p-4 gap-4 overflow-y-auto scollbar scrollbar-thin scrollbar-track-Neutral-100 scrollbar-thumb-Primary-40 scrollbar-rounded-lg ">
+                      {paginatedKelompok ? (
+                        <>
+                          {paginatedKelompok.length === 0 ? (
+                            <p>No program found.</p>
+                          ) : (
+                            paginatedKelompok.map((kelompok) => (
+                              <CardKelompok
+                                key={kelompok.id}
+                                nama_kelompok={kelompok.nama_kelompok}
+                                level={kelompok.program.level}
+                                tipe={kelompok.program.tipe}
+                                nama_program={kelompok.program.nama_program}
+                                jumlah_siswa={kelompok.jumlah_siswa}
+                                jumlah_jadwal={kelompok.jumlah_jadwal}
+                                onClick={() => {
+                                  setSelected(kelompok);
+                                }}
+                                id={kelompok.id}
+                                addAnggota={() => {
+                                  setSelectedAnggota(kelompok);
+                                }}
+                                addJadwal={() => {
+                                  setSelectedJadwal(kelompok);
+                                }}
+                                onDetail={() => setSelectedDetail(kelompok)}
+                              />
+                            ))
+                          )}
+                        </>
+                      ) : (
+                        <p>Loading...</p>
+                      )}
+                    </div>
+                    <div className="flex justify-center gap-4">
+                      {totalPages > 1 && (
+                        <div className="flex justify-center gap-4">
+                          {!isFirstPage && (
+                            <button
+                              className="bg-Neutral-95 text-Primary-40 font-semibold py-2 px-3 rounded-full hover:bg-Primary-40 hover:text-Primary-95"
+                              onClick={() => handlePageChange(currentPage - 1)}
+                            >
+                              <IoIosArrowBack size={16} />
+                            </button>
+                          )}
+                          <div className="flex gap-2">
+                            {pageNumbers.map((page) => (
+                              <button
+                                key={page}
+                                className={`px-4 py-2 rounded-full font-semibold ${currentPage === page
+                                  ? "bg-Primary-40 text-Neutral-100"
+                                  : "text-Primary-40 hover:bg-Primary-95 hover:text-Primary-30"
+                                  }`}
+                                onClick={() => handlePageChange(page)}
+                              >
+                                {page}
+                              </button>
+                            ))}
+                          </div>
+                          {!isLastPage && (
+                            <button
+                              className="bg-Neutral-95 text-Primary-40 font-semibold py-1 px-3 rounded-full hover:bg-Primary-40 hover:text-Primary-95"
+                              onClick={() => handlePageChange(currentPage + 1)}
+                            >
+                              <IoIosArrowForward size={16} />
+                            </button>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  </>
+                )
+            }
           </div>
         </div>
       </div>

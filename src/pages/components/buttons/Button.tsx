@@ -48,15 +48,13 @@ const Button: React.FC<ButtonProps> = ({
     <button
       type={type}
       onClick={onClick}
-      className={`${baseButtonStyle} ${
-        outlined
+      className={`${baseButtonStyle} ${outlined
           ? `${bgColor} bg-opacity-0 border-[2px] ${brColor} ${textColor} font-bold text-sm`
           : `${bgColor} bg-opacity-0  border-none ${textColor}`
-      } ${
-        withBgColor
+        } ${withBgColor
           ? "bg-opacity-90 hover:bg-opacity-100"
           : "hover:bg-opacity-20"
-      } ${widthAuto ? "w-full" : "w-max"} ${center ? "justify-center" : ""}
+        } ${widthAuto ? "w-full" : "w-max"} ${center ? "justify-center" : ""}
       `}
     >
       {Icon && (
