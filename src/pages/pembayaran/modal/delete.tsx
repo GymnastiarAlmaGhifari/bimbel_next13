@@ -22,7 +22,6 @@ const DeleteTagihan: FC<DeleteTagihanProps> = ({ idTagihan, onClose, onSuccess, 
             onSuccess();
             onClose();
         } catch (error) {
-            console.log(error);
         } finally {
             setIsLoading(true); // Set loading state to true
         }

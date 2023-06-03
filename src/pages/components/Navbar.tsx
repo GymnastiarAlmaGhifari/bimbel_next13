@@ -47,8 +47,6 @@ const Navbar = () => {
 
   const sessionEmail = session?.user.email;
 
-  console.log(sessionEmail);
-
   const { data: users, error } = useSWR(`/api/user/${sessionId}`, fetcher, {});
 
   mutate(`/api/user/${sessionId}`);

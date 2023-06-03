@@ -27,7 +27,6 @@ const DetailSiswa: FC<DetailSiswaProps> = ({ idSiswa, onClose }) => {
     isLoading: getSiswaLoading,
   } = useSWR<Siswa>(`/api/siswa/${idSiswa}`, fetcher);
 
-  console.log(getSiswa);
 
   if (getSiswaLoading) {
     // Show loading state while data is being fetched
@@ -46,21 +45,15 @@ const DetailSiswa: FC<DetailSiswaProps> = ({ idSiswa, onClose }) => {
 
   // flex flex-col gap-6 w-[400px] rounded-lg
   return (
-    <div className="flex gap-10 items-center">
-      <div className="flex flex-col items-center gap-2">
-        <div className="flex flex-col gap-6 w-[300px] h-[300px] border rounded-full overflow-clip">
-          <Image
-            src={
-              `/api/siswa/img?img=` + getSiswa?.image ||
-              "/api/siswa/img?img=placeholder.png"
-            }
-            alt="Gambar"
-            width={200}
-            height={200}
-            className="rounded-lg object-cover w-full h-full"
-          />
-        </div>
-        <h3 className="font-bold text-lg">{getSiswa?.nama}</h3>
+    <div className="flex gap-10">
+      <div className="flex flex-col gap-6 w-[400px] border rounded-lg">
+        <Image
+          src={`/api/siswa/img?img=` + getSiswa?.image || "/api/siswa/img?img=placeholder.png"}
+          alt="Gambar"
+          width={200}
+          height={200}
+          className="rounded-lg object-cover wf-full"
+        />
       </div>
 
       <div className="flex flex-col gap-2">

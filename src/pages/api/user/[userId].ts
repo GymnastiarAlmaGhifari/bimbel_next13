@@ -24,6 +24,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     try {
       const users = await prisma.user.findUnique({
         where: { id: userId },
+        include: {
+          mapel: true,
+        },
       });
 
       if (!users) {
@@ -42,8 +45,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         data: {
           jadwal_details: {
             deleteMany: {},
-          }
-        }
+          },
+        },
       });
 
       const deleted = await prisma.user.delete({

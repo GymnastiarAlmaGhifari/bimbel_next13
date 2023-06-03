@@ -307,7 +307,6 @@ const JumatEdit: FC<JumatEdit> = ({
       mapel_id: mapel,
       ruang_id: ruang,
     };
-    console.log("jsnnnn", payload);
 
     setIsLoading(true);
     setError(null);
@@ -317,7 +316,6 @@ const JumatEdit: FC<JumatEdit> = ({
         `/api/jadwaldetail/${jadwalId}`,
         payload
       );
-      console.log(response.data);
 
       mutate(`/api/jadwaldetail/${jadwalId}`);
 
@@ -333,7 +331,6 @@ const JumatEdit: FC<JumatEdit> = ({
       onSucsess();
       onClose();
     } catch (error: any) {
-      console.error(error);
 
       if (axios.isAxiosError(error)) {
         const axiosError = error as AxiosError;
@@ -354,7 +351,6 @@ const JumatEdit: FC<JumatEdit> = ({
           setError(`${request}`);
         }
       } else {
-        console.log("Error:", error.message);
         setError("An unknown error occurred.");
       }
     } finally {

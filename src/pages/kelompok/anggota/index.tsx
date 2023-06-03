@@ -100,9 +100,6 @@ const Anggota: FC<AnggotaProps> = ({
       checkboxes2 = [checkboxes2];
     }
 
-    console.log(checkboxes2);
-
-    console.log(checkboxes);
 
     setIsLoading(true); // Set loading state to true
     setError(null); // Reset error state
@@ -125,7 +122,6 @@ const Anggota: FC<AnggotaProps> = ({
       onSuccess(); // Trigger onSuccess function from parent component
       onClose(); // Trigger onClose function from parent component
     } catch (error: any) {
-      console.error(error);
 
       if (axios.isAxiosError(error)) {
         const axiosError = error as AxiosError;
@@ -146,7 +142,6 @@ const Anggota: FC<AnggotaProps> = ({
           setError(`${request}`);
         }
       } else {
-        console.log("Error:", error.message);
         setError("An unknown error occurred.");
       }
       setIsLoading(false); // Set loading state to false

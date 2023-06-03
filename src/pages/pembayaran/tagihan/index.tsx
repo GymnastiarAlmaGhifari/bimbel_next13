@@ -39,6 +39,12 @@ interface Pembayaran {
   };
 }
 
+interface RekeningProps {
+  id: string;
+  nama_rekening: string;
+  nomor_rekening: string;
+}
+
 const Pembayaran: FC<Pembayaran> = () => {
   const {
     data: pembayaran,
@@ -67,7 +73,7 @@ const Pembayaran: FC<Pembayaran> = () => {
 
   const [showSuccess, setShowSuccess] = useState(false);
 
-  const [showRekening, setShowRekening] = useState(false);
+  const [showRekening, setShowRekening] = useState(null);
 
   useEffect(() => {
     const timeoutId = setTimeout(() => {
@@ -136,6 +142,15 @@ const Pembayaran: FC<Pembayaran> = () => {
   const isLastPage = currentPage === totalPages;
 
 
+  const { data: rekening, error: errorrekening } = useSWR(
+    "/api/rekening",
+    fetcher,
+    {}
+  );
+
+  // map daata rekening sim
+
+
   return (
     <div className="flex flex-row h-screen font-mulish">
       <Sidebar />
@@ -177,7 +192,7 @@ const Pembayaran: FC<Pembayaran> = () => {
                         onChange={handleInputChange}
                         onRekening={
                           () => {
-                            setShowRekening(true);
+                            setShowRekening(rekening);
                           }
                         }
                       />
@@ -349,14 +364,15 @@ const Pembayaran: FC<Pembayaran> = () => {
         showRekening && (
           <ModalDetail
             titleModal="Gaji"
-            onClose={() => setShowRekening(false)}
+            onClose={() => setShowRekening(null)}
           >
             <EditRekening
-              onClose={() => setShowRekening(false)}
+              onClose={() => setShowRekening(null)}
               onSucsess={() => {
                 setShowSuccess(true);
               }
               }
+              data={showRekening}
             />
           </ModalDetail>
         )

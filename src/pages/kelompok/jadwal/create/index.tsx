@@ -160,13 +160,11 @@ const TambahJadwal: FC<TambahJadwalProps> = ({ onClose }) => {
       mutate(`/api/user/getadmin`);
       onClose(); // Set loading state to false
     } catch (error: any) {
-      console.error(error);
 
       if (axios.isAxiosError(error)) {
         const axiosError = error as AxiosError;
         if (axiosError.response) {
-          console.log("Response data:", axiosError.response.data);
-          console.log("Response status:", axiosError.response.status);
+
 
           const responseData = axiosError.response.data as { message: string };
 
@@ -175,18 +173,17 @@ const TambahJadwal: FC<TambahJadwalProps> = ({ onClose }) => {
 
           setError(`An error occurred: ${errorMessage}`);
         } else if (axiosError.request) {
-          console.log("No response received:", axiosError.request);
+
 
           const request = axiosError.request.toString();
           setError(`No response received: ${request}`);
         } else {
-          console.log("Error setting up the request:", axiosError.message);
+
 
           const request = axiosError.message.toString();
           setError(`Error setting up the request: ${request}`);
         }
       } else {
-        console.log("Error:", error.message);
         setError("An unknown error occurred.");
       }
     } finally {
@@ -222,11 +219,10 @@ const TambahJadwal: FC<TambahJadwalProps> = ({ onClose }) => {
         <div className="relative flex flex-col gap-2">
           <button
             type="button"
-            className={` w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${
-              isListOpenHari
+            className={` w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${isListOpenHari
                 ? "border-[2px] border-Primary-50 bg-Primary-95"
                 : "bg-Neutral-95"
-            }`}
+              }`}
             onClick={toggleListHari}
           >
             {getHariLabel(watch("hari")) || "Pilih Hari"}
@@ -241,11 +237,10 @@ const TambahJadwal: FC<TambahJadwalProps> = ({ onClose }) => {
                 <li key={option.value}>
                   <button
                     type="button"
-                    className={`w-full text-left px-2 py-1 rounded-full ${
-                      watch("hari") === option.value
+                    className={`w-full text-left px-2 py-1 rounded-full ${watch("hari") === option.value
                         ? "text-Primary-90 bg-Primary-20"
                         : "text-Primary-20 hover:bg-Primary-95"
-                    }`}
+                      }`}
                     onClick={() => selectHari(option.value)}
                   >
                     {option.label}
@@ -268,11 +263,10 @@ const TambahJadwal: FC<TambahJadwalProps> = ({ onClose }) => {
           <div className="relative flex flex-col gap-2">
             <button
               type="button"
-              className={` w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${
-                isListOpenHari
+              className={` w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${isListOpenHari
                   ? "border-[2px] border-Primary-50 bg-Primary-95"
                   : "bg-Neutral-95"
-              }`}
+                }`}
               onClick={toggleListSesi}
             >
               {getSesiLabel(watch("sesi")) || "Pilih Sesi"}
@@ -287,11 +281,10 @@ const TambahJadwal: FC<TambahJadwalProps> = ({ onClose }) => {
                   <li key={option.value}>
                     <button
                       type="button"
-                      className={`w-full text-left px-2 py-1 rounded-full ${
-                        watch("hari") === option.value
+                      className={`w-full text-left px-2 py-1 rounded-full ${watch("hari") === option.value
                           ? "text-Primary-90 bg-Primary-20"
                           : "text-Primary-20 hover:bg-Primary-95"
-                      }`}
+                        }`}
                       onClick={() => selectSesi(option.value)}
                     >
                       {option.label}
@@ -313,11 +306,10 @@ const TambahJadwal: FC<TambahJadwalProps> = ({ onClose }) => {
           <div className="relative flex flex-col gap-2">
             <button
               type="button"
-              className={` w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${
-                isListOpenHari
+              className={` w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${isListOpenHari
                   ? "border-[2px] border-Primary-50 bg-Primary-95"
                   : "bg-Neutral-95"
-              }`}
+                }`}
               onClick={toggleListRuang}
             >
               {getRuangLabel(watch("ruang")) || "Pilih Ruang"}
@@ -332,11 +324,10 @@ const TambahJadwal: FC<TambahJadwalProps> = ({ onClose }) => {
                   <li key={option.value}>
                     <button
                       type="button"
-                      className={`w-full text-left px-2 py-1 rounded-full ${
-                        watch("ruang") === option.value
+                      className={`w-full text-left px-2 py-1 rounded-full ${watch("ruang") === option.value
                           ? "text-Primary-90 bg-Primary-20"
                           : "text-Primary-20 hover:bg-Primary-95"
-                      }`}
+                        }`}
                       onClick={() => selectRuang(option.value)}
                     >
                       {option.label}
@@ -359,11 +350,10 @@ const TambahJadwal: FC<TambahJadwalProps> = ({ onClose }) => {
         <div className="relative flex flex-col gap-2">
           <button
             type="button"
-            className={` w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${
-              isListOpenMapel
+            className={` w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${isListOpenMapel
                 ? "border-[2px] border-Primary-50 bg-Primary-95"
                 : "bg-Neutral-95"
-            }`}
+              }`}
             onClick={toggleListMapel}
           >
             {getMapelLabel(watch("mapel")) || "Pilih Mapel"}
@@ -378,11 +368,10 @@ const TambahJadwal: FC<TambahJadwalProps> = ({ onClose }) => {
                 <li key={option.value}>
                   <button
                     type="button"
-                    className={`w-full text-left px-2 py-1 rounded-full ${
-                      watch("mapel") === option.value
+                    className={`w-full text-left px-2 py-1 rounded-full ${watch("mapel") === option.value
                         ? "text-Primary-90 bg-Primary-20"
                         : "text-Primary-20 hover:bg-Primary-95"
-                    }`}
+                      }`}
                     onClick={() => selectMapel(option.value)}
                   >
                     {option.label}

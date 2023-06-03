@@ -41,7 +41,6 @@ const Notification: FC<NotificationProps> = () => {
 
   const handleClick = () => {
     setIsOpen(!isOpen);
-    console.log(isOpen);
   };
 
   const handleModalClick: React.MouseEventHandler<HTMLDivElement> = (event) => {

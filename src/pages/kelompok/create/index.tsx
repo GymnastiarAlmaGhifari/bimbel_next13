@@ -72,13 +72,11 @@ const CreateKelompok: FC<CreateKelompokProps> = ({
       onClose(); // Set loading state to false
       onSucsess();
     } catch (error: any) {
-      console.error(error);
 
       if (axios.isAxiosError(error)) {
         const axiosError = error as AxiosError;
         if (axiosError.response) {
-          console.log("Response data:", axiosError.response.data);
-          console.log("Response status:", axiosError.response.status);
+
 
           const responseData = axiosError.response.data as { message: string };
 
@@ -87,18 +85,17 @@ const CreateKelompok: FC<CreateKelompokProps> = ({
 
           setError(`An error occurred: ${errorMessage}`);
         } else if (axiosError.request) {
-          console.log("No response received:", axiosError.request);
+
 
           const request = axiosError.request.toString();
           setError(`No response received: ${request}`);
         } else {
-          console.log("Error setting up the request:", axiosError.message);
+
 
           const request = axiosError.message.toString();
           setError(`Error setting up the request: ${request}`);
         }
       } else {
-        console.log("Error:", error.message);
         setError("An unknown error occurred.");
       }
     } finally {
@@ -165,11 +162,10 @@ const CreateKelompok: FC<CreateKelompokProps> = ({
         <div className="relative flex flex-col gap-2">
           <button
             type="button"
-            className={` w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${
-              isListOpenProgram
-                ? "border-[2px] border-Primary-50 bg-Primary-95"
-                : "bg-Neutral-95"
-            }`}
+            className={` w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${isListOpenProgram
+              ? "border-[2px] border-Primary-50 bg-Primary-95"
+              : "bg-Neutral-95"
+              }`}
             onClick={toggleListProgram}
           >
             {/* buat label */}
@@ -198,11 +194,10 @@ const CreateKelompok: FC<CreateKelompokProps> = ({
                   <li key={programItem.id}>
                     <button
                       type="button"
-                      className={`w-full text-left px-2 py-1 rounded-full ${
-                        watch("program_id") === programItem.id
-                          ? "text-Primary-90 bg-Primary-20"
-                          : "text-Primary-20 hover:bg-Primary-95"
-                      }`}
+                      className={`w-full text-left px-2 py-1 rounded-full ${watch("program_id") === programItem.id
+                        ? "text-Primary-90 bg-Primary-20"
+                        : "text-Primary-20 hover:bg-Primary-95"
+                        }`}
                       onClick={() => selectProgram(programItem.id)}
                     >
                       {programItem.nama_program}

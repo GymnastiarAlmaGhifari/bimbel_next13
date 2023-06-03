@@ -72,7 +72,6 @@ const EditSiswa: FC<UserEditProps> = ({
       mutate(`/api/siswa`);
       // mutate(`/api/user/getadmin`);
     } catch (error: any) {
-      console.error(error);
 
       if (axios.isAxiosError(error)) {
         const axiosError = error as AxiosError;
@@ -93,7 +92,6 @@ const EditSiswa: FC<UserEditProps> = ({
           setError(`${request}`);
         }
       } else {
-        console.log("Error:", error.message);
         setError("An unknown error occurred.");
       }
     } finally {
