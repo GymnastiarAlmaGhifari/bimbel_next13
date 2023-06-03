@@ -12,7 +12,7 @@ import Acc from "../modal/acc";
 import Create from "../modal/create";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import DeleteTagihan from "../modal/delete";
-import EditRekening from "../modal/gaji";
+import EditRekening from "../modal/rekening";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import Button from "@/pages/components/buttons/Button";
