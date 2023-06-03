@@ -28,7 +28,7 @@
 # ENTRYPOINT [ "npm", "run", "start" ]
 
 
-FROM node:18-slim AS builder
+FROM node:lts-slim AS builder
 
 WORKDIR /app
 
@@ -38,7 +38,7 @@ COPY . .
 RUN npx prisma generate
 RUN npm run build
 
-FROM node:18-slim AS runner
+FROM node:lts-slim AS runner
 
 # Install additional dependencies
 RUN apt-get update && apt-get install -y gnupg wget && \
