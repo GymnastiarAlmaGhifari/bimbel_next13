@@ -82,7 +82,7 @@ const CardProgram: FC<CardProgramProps> = ({
 
           <Image
             src={
-              gambar ? "/api/program/img?img=" + gambar : "/img/user/default.png"
+              gambar ? "/api/program/img?img=" + gambar + "&&time=" + Date.now() : "/img/user/default.png"
             }
             alt="Gambar"
             width={200}

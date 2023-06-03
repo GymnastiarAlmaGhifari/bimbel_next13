@@ -1,60 +1,57 @@
-import { NextApiHandler, NextApiRequest } from "next";
+import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
 import formidable from "formidable";
 import path from "path";
 import fs from "fs/promises";
 import prisma from "@/libs/prismadb";
+import { format } from "date-fns";
+import axios from "axios";
 
 export const config = {
-  api: {
-    bodyParser: false,
-  },
+    api: {
+        bodyParser: false,
+    },
 };
-let randomString: string;
 
+const readFile = (
+    req: NextApiRequest,
+    saveLocally?: boolean
+): Promise<{ fields: formidable.Fields; files: formidable.Files }> => {
 
-// export { modifiedTimefromApiimg };
-
-const readFile = (req: NextApiRequest, saveLocally?: boolean): Promise<{ fields: formidable.Fields; files: formidable.Files }> => {
-  const options: formidable.Options = {};
-  if (saveLocally) {
-    options.uploadDir = path.join(process.cwd(), "/upload/img/user");
-    options.filename = (name, ext, path, form) => {
-      const extention = path.originalFilename?.split(".").pop();
-      return req.headers.from + "-" + randomString + "." + extention;
-    };
-  }
-  options.maxFileSize = 2 * 1024 * 1024;
-  const form = formidable(options);
-  return new Promise((resolve, reject) => {
-    form.parse(req, (err, fields, files) => {
-      if (err) reject(err);
-      resolve({ fields, files });
+    const options: formidable.Options = {};
+    if (saveLocally) {
+        options.uploadDir = path.join(process.cwd(), "/upload/img/user");
+        options.filename = (name, ext, path, form) => {
+            return req.headers.from + ".jpg";
+        };
+    }
+    options.maxFileSize = 20 * 1024 * 1024;
+    const form = formidable(options);
+    return new Promise((resolve, reject) => {
+        form.parse(req, (err, fields, files) => {
+            if (err) reject(err);
+            resolve({ fields, files });
+        });
     });
-  });
 };
 
 const handler: NextApiHandler = async (req, res) => {
-  try {
-    await fs.readdir(path.join(process.cwd() + "/upload", "/img", "/user"));
-
-    randomString = Math.floor(100000 + Math.random() * 900000).toString();
-
     try {
-      const user = await prisma.user.update({
-        where: { id: req.headers.from },
-        data: {
-          random: randomString,
-        },
-      });
+        await fs.readdir(path.join(process.cwd() + "/upload", "/img", "/user"));
+
+        const update = await prisma.user.update({
+            where: { id: req.headers.from },
+            data: {
+                image: req.headers.from + ".jpg",
+            },
+        });
+
     } catch (error) {
-      console.error(error);
-      res.status(500).json({ message: "Error updating user" });
+        await fs.mkdir(path.join(process.cwd() + "/upload", "/img", "/user"));
+        res.status(200).json(error);
     }
-  } catch (error) {
-    await fs.mkdir(path.join(process.cwd() + "/upload", "/img", "/user"));
-  }
-  await readFile(req, true);
-  res.json({ done: "ok" });
+
+    await readFile(req, true);
+    res.json({ done: "ok" });
 };
 
-export default handler;
+export default handler;  
