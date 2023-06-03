@@ -135,14 +135,14 @@ const UserEdit: FC<UserEditProps> = ({ userId, onClose, onSucsess, data }) => {
       // const formData = new FormData();
       // formData.append("image", data.image[0]);
       try {
-        await axios.put(`/api/user/noimg/${userId}`, {
+        await axios.put(`/api/user/${userId}`, {
           name,
           email,
           nomor_telepon,
           universitas: lulusan,
           alamat,
         });
-        mutate(`/api/user/noimg/${userId}`);
+        mutate(`/api/user/${userId}`);
         mutate(`/api/user`);
         mutate(`/api/user/getadmin`);
       } catch (error: any) {
