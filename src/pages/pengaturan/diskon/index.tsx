@@ -132,7 +132,7 @@ const Diskon = ({}) => {
                           width={200}
                           height={200}
                           className="rounded-t-lg h-full w-full object-cover"
-                          src={"/api/diskon/img?img=" + diskon.banner}
+                          src={"/api/diskon/img?img=" + diskon.banner + "&&time=" + new Date()}
                         />
                       </div>
 
