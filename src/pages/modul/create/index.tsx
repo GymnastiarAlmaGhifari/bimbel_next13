@@ -104,11 +104,9 @@ const Create: FC<CreateModul> = ({ onClose, onSucsess }) => {
       mutate("/api/mdoul");
       // onClose(); // Set loading state to false
 
-      // console.log(response.data);
       // simpan response data.id ke variable id
       const id = response.data.id;
 
-      // console.log(id);
       // api yang  digunakan untuk upload file
 
       const formData = new FormData();
@@ -120,7 +118,6 @@ const Create: FC<CreateModul> = ({ onClose, onSucsess }) => {
         },
       });
 
-      // console.log(responseUpload.data);
 
       const responsethumb = await axios.post(`/api/modul/thumbup`, {
         id: id,
@@ -130,13 +127,11 @@ const Create: FC<CreateModul> = ({ onClose, onSucsess }) => {
       onClose(); // Set loading state to false
       onSucsess();
     } catch (error: any) {
-      console.error(error);
 
       if (axios.isAxiosError(error)) {
         const axiosError = error as AxiosError;
         if (axiosError.response) {
-          console.log("Response data:", axiosError.response.data);
-          console.log("Response status:", axiosError.response.status);
+
 
           const responseData = axiosError.response.data as { message: string };
 
@@ -145,18 +140,15 @@ const Create: FC<CreateModul> = ({ onClose, onSucsess }) => {
 
           setError(`An error occurred: ${errorMessage}`);
         } else if (axiosError.request) {
-          console.log("No response received:", axiosError.request);
 
           const request = axiosError.request.toString();
           setError(`No response received: ${request}`);
         } else {
-          console.log("Error setting up the request:", axiosError.message);
 
           const request = axiosError.message.toString();
           setError(`Error setting up the request: ${request}`);
         }
       } else {
-        console.log("Error:", error.message);
         setError("An unknown error occurred.");
       }
     } finally {
@@ -215,11 +207,10 @@ const Create: FC<CreateModul> = ({ onClose, onSucsess }) => {
         <div className="relative flex flex-col gap-2">
           <button
             type="button"
-            className={` w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${
-              isListOpenMapel
+            className={` w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${isListOpenMapel
                 ? "border-[2px] border-Primary-50 bg-Primary-95"
                 : "bg-Neutral-95"
-            }`}
+              }`}
             onClick={toggleListMapel}
           >
             {/* buat label */}
@@ -246,11 +237,10 @@ const Create: FC<CreateModul> = ({ onClose, onSucsess }) => {
                   <li key={mapel.id}>
                     <button
                       type="button"
-                      className={`w-full text-left px-2 py-1 rounded-full ${
-                        watch("mapel") === mapel.id
+                      className={`w-full text-left px-2 py-1 rounded-full ${watch("mapel") === mapel.id
                           ? "text-Primary-90 bg-Primary-20"
                           : "text-Primary-20 hover:bg-Primary-95"
-                      }`}
+                        }`}
                       onClick={() => selectMapel(mapel.id)}
                     >
                       {mapel.nama_mapel}

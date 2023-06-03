@@ -22,7 +22,6 @@ const DeleteModul: FC<DeleteModulProps> = ({ idModul, onClose, onSuccess, data }
             onSuccess();
             onClose();
         } catch (error) {
-            console.log(error);
         } finally {
             setIsLoading(true); // Set loading state to true
         }

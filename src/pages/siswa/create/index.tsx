@@ -76,7 +76,6 @@ const CreateSiswa: FC<UserCreateProps> = ({ onClose, onSucsess }) => {
       mutate("/api/siswa");
       onClose(); // Set loading state to false
     } catch (error: any) {
-      console.error(error);
 
       if (axios.isAxiosError(error)) {
         const axiosError = error as AxiosError;
@@ -97,7 +96,6 @@ const CreateSiswa: FC<UserCreateProps> = ({ onClose, onSucsess }) => {
           setError(`${request}`);
         }
       } else {
-        console.log("Error:", error.message);
         setError("An unknown error occurred.");
       }
     } finally {

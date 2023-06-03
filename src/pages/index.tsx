@@ -14,9 +14,6 @@ export default function Home() {
   useEffect(() => {
     document.title = "Bimbel Linear";
   });
-  const consolLogAgim = () => {
-    console.log("Agim");
-  };
 
   return (
     <div className="font-mulish">

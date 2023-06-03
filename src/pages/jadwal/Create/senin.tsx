@@ -273,14 +273,12 @@ const CreateSenin: FC<Senin> = ({
       mapel_id: mapel,
       ruang_id: ruang,
     };
-    console.log("jsnnnn", payload);
 
     setIsLoading(true);
     setError(null);
 
     try {
       const response = await axios.post(`/api/jadwaldetail`, payload);
-      console.log(response.data);
 
       mutate(`/api/jadwaldetail/`);
       // undifened
@@ -291,7 +289,6 @@ const CreateSenin: FC<Senin> = ({
       onSucsess();
       onClose();
     } catch (error: any) {
-      console.error(error);
 
       if (axios.isAxiosError(error)) {
         const axiosError = error as AxiosError;
@@ -312,7 +309,6 @@ const CreateSenin: FC<Senin> = ({
           setError(`${request}`);
         }
       } else {
-        console.log("Error:", error.message);
         setError("An unknown error occurred.");
       }
     } finally {
