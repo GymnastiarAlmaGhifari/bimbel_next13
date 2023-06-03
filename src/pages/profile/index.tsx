@@ -16,10 +16,12 @@ interface Profile {
   name: string;
   nomor_telepon: string;
   universitas: string;
-  mata_pelajaran: string;
   alamat: string;
   image: string;
   role: string;
+  mapel: {
+    nama_mapel: string;
+  }
 }
 
 const Profile: FC<Profile> = () => {
@@ -120,7 +122,7 @@ const Profile: FC<Profile> = () => {
                                 </h3>
                                 <span className="font-bold text-Primary-10">
                                   {
-                                    profile?.mata_pelajaran ? profile?.mata_pelajaran : "-"
+                                    profile?.mapel.nama_mapel ? profile?.mapel.nama_mapel : "-"
                                   }
                                 </span>
                               </div>

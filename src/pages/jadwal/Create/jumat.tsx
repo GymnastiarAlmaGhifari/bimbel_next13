@@ -275,14 +275,12 @@ const CreateJumat: FC<Jumat> = ({
       mapel_id: mapel,
       ruang_id: ruang,
     };
-    console.log("jsnnnn", payload);
 
     setIsLoading(true);
     setError(null);
 
     try {
       const response = await axios.post(`/api/jadwaldetail`, payload);
-      console.log(response.data);
 
       mutate(`/api/jadwaldetail/`);
       // undifened
@@ -293,7 +291,6 @@ const CreateJumat: FC<Jumat> = ({
       onSucsess();
       onClose();
     } catch (error: any) {
-      console.error(error);
 
       if (axios.isAxiosError(error)) {
         const axiosError = error as AxiosError;
@@ -314,7 +311,6 @@ const CreateJumat: FC<Jumat> = ({
           setError(`${request}`);
         }
       } else {
-        console.log("Error:", error.message);
         setError("An unknown error occurred.");
       }
     } finally {

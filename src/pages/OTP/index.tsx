@@ -11,7 +11,6 @@ const OTP = () => {
     const router = useRouter();
     const { email } = router.query;
 
-    console.log(email);
 
     const [otp, setOTP] = useState(["", "", "", "", "", ""]);
     const [error, setError] = useState<string | null>(null);
@@ -48,7 +47,6 @@ const OTP = () => {
         e.preventDefault();
         const OTPValue = Number(otp.join(""));
 
-        console.log(OTPValue);
         try {
             await axios.post(`/api/user/resetemail`, {
                 OTP: OTPValue,
@@ -61,7 +59,6 @@ const OTP = () => {
 
 
         } catch (error: any) {
-            console.error(error);
 
             if (axios.isAxiosError(error)) {
                 const axiosError = error as AxiosError;
@@ -77,7 +74,6 @@ const OTP = () => {
                     setError(`${request}`);
                 }
             } else {
-                console.log("Error:", error.message);
                 setError("An unknown error occurred.");
             }
         }

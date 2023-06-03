@@ -229,13 +229,11 @@ const TambahJadwal: FC<TambahJadwalProps> = ({
       onClose(); // Set loading state to false
       onSucsess();
     } catch (error: any) {
-      console.error(error);
 
       if (axios.isAxiosError(error)) {
         const axiosError = error as AxiosError;
         if (axiosError.response) {
-          console.log("Response data:", axiosError.response.data);
-          console.log("Response status:", axiosError.response.status);
+
 
           const responseData = axiosError.response.data as { message: string };
 
@@ -244,18 +242,18 @@ const TambahJadwal: FC<TambahJadwalProps> = ({
 
           setError(`${errorMessage}`);
         } else if (axiosError.request) {
-          console.log(axiosError.request);
+
 
           const request = axiosError.request.toString();
           setError(request);
         } else {
-          console.log(axiosError.message);
+
 
           const request = axiosError.message.toString();
           setError(request);
         }
       } else {
-        console.log("Error:", error.message);
+
         setError("An unknown error occurred.");
       }
     } finally {
@@ -280,11 +278,10 @@ const TambahJadwal: FC<TambahJadwalProps> = ({
         <div className="relative flex flex-col gap-2">
           <button
             type="button"
-            className={` w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${
-              isListOpenHari
+            className={` w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${isListOpenHari
                 ? "border-[2px] border-Primary-50 bg-Primary-95"
                 : "bg-Neutral-95"
-            }`}
+              }`}
             onClick={toggleListHari}
           >
             {getHariLabel(watch("hari")) || "Pilih Hari"}
@@ -299,11 +296,10 @@ const TambahJadwal: FC<TambahJadwalProps> = ({
                 <li key={option.value}>
                   <button
                     type="button"
-                    className={`w-full text-left px-2 py-1 rounded-full ${
-                      watch("hari") === option.value
+                    className={`w-full text-left px-2 py-1 rounded-full ${watch("hari") === option.value
                         ? "text-Primary-90 bg-Primary-20"
                         : "text-Primary-20 hover:bg-Primary-95"
-                    }`}
+                      }`}
                     onClick={() => selectHari(option.value)}
                   >
                     {option.label}
@@ -326,11 +322,10 @@ const TambahJadwal: FC<TambahJadwalProps> = ({
           <div className="relative flex flex-col gap-2">
             <button
               type="button"
-              className={` w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${
-                isListOpenHari
+              className={` w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${isListOpenHari
                   ? "border-[2px] border-Primary-50 bg-Primary-95"
                   : "bg-Neutral-95"
-              }`}
+                }`}
               onClick={toggleListSesi}
             >
               {watch("sesi") ? (
@@ -356,11 +351,10 @@ const TambahJadwal: FC<TambahJadwalProps> = ({
                     <li key={option.id}>
                       <button
                         type="button"
-                        className={`w-full text-left px-2 py-1 rounded-full ${
-                          watch("hari") === option.id
+                        className={`w-full text-left px-2 py-1 rounded-full ${watch("hari") === option.id
                             ? "text-Primary-90 bg-Primary-20"
                             : "text-Primary-20 hover:bg-Primary-95"
-                        }`}
+                          }`}
                         onClick={() => selectSesi(option.id)}
                       >
                         {option.nama_sesi}
@@ -383,11 +377,10 @@ const TambahJadwal: FC<TambahJadwalProps> = ({
           <div className="relative flex flex-col gap-2">
             <button
               type="button"
-              className={` w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${
-                isListOpenHari
+              className={` w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${isListOpenHari
                   ? "border-[2px] border-Primary-50 bg-Primary-95"
                   : "bg-Neutral-95"
-              }`}
+                }`}
               onClick={toggleListRuang}
             >
               {watch("ruang") ? (
@@ -413,11 +406,10 @@ const TambahJadwal: FC<TambahJadwalProps> = ({
                     <li key={option.id}>
                       <button
                         type="button"
-                        className={`w-full text-left px-2 py-1 rounded-full ${
-                          watch("ruang") === option.id
+                        className={`w-full text-left px-2 py-1 rounded-full ${watch("ruang") === option.id
                             ? "text-Primary-90 bg-Primary-20"
                             : "text-Primary-20 hover:bg-Primary-95"
-                        }`}
+                          }`}
                         onClick={() => selectRuang(option.id)}
                       >
                         {option.nama_ruang}
@@ -441,11 +433,10 @@ const TambahJadwal: FC<TambahJadwalProps> = ({
         <div className="relative flex flex-col gap-2">
           <button
             type="button"
-            className={` w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${
-              isListOpenMapel
+            className={` w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${isListOpenMapel
                 ? "border-[2px] border-Primary-50 bg-Primary-95"
                 : "bg-Neutral-95"
-            }`}
+              }`}
             onClick={toggleListMapel}
           >
             {watch("mapel") ? (
@@ -471,11 +462,10 @@ const TambahJadwal: FC<TambahJadwalProps> = ({
                   <li key={option.id}>
                     <button
                       type="button"
-                      className={`w-full text-left px-2 py-1 rounded-full ${
-                        watch("mapel") === option.id
+                      className={`w-full text-left px-2 py-1 rounded-full ${watch("mapel") === option.id
                           ? "text-Primary-90 bg-Primary-20"
                           : "text-Primary-20 hover:bg-Primary-95"
-                      }`}
+                        }`}
                       onClick={() => {
                         selectMapel(option.id);
                         handleCheckChangeUser(option.id);

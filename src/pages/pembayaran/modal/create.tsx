@@ -97,20 +97,16 @@ const Create: React.FC<Create> = ({
                 program_id,
             });
 
-            console.log(response.data);
 
             mutate(`/api/tagihan/create/${program_id}`);
             mutate("/api/tagihan");
             onClose(); // Set loading state to false
             onSucsess();
         } catch (error: any) {
-            console.error(error);
 
             if (axios.isAxiosError(error)) {
                 const axiosError = error as AxiosError;
                 if (axiosError.response) {
-                    console.log("Response data:", axiosError.response.data);
-                    console.log("Response status:", axiosError.response.status);
 
                     const responseData = axiosError.response.data as { message: string };
 
@@ -119,18 +115,15 @@ const Create: React.FC<Create> = ({
 
                     setErrorAxios(`An error occurred: ${errorMessage}`);
                 } else if (axiosError.request) {
-                    console.log("No response received:", axiosError.request);
 
                     const request = axiosError.request.toString();
                     setErrorAxios(`No response received: ${request}`);
                 } else {
-                    console.log("Error setting up the request:", axiosError.message);
 
                     const request = axiosError.message.toString();
                     setErrorAxios(`Error setting up the request: ${request}`);
                 }
             } else {
-                console.log("Error:", error.message);
                 setErrorAxios("An unknown error occurred.");
             }
         }

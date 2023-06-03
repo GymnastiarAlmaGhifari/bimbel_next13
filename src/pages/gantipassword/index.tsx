@@ -55,13 +55,11 @@ const ResetPassword = () => {
             // redirect back to login page
             router.push(`/login`);
         } catch (error: any) {
-            console.error(error);
 
             if (axios.isAxiosError(error)) {
                 const axiosError = error as AxiosError;
                 if (axiosError.response) {
-                    console.log("Response data:", axiosError.response.data);
-                    console.log("Response status:", axiosError.response.status);
+
 
                     const responseData = axiosError.response.data as { message: string };
 
@@ -70,18 +68,15 @@ const ResetPassword = () => {
 
                     setError(`${errorMessage}`);
                 } else if (axiosError.request) {
-                    console.log("No response received:", axiosError.request);
 
                     const request = axiosError.request.toString();
                     setError(`No response received: ${request}`);
                 } else {
-                    console.log("Error setting up the request:", axiosError.message);
 
                     const request = axiosError.message.toString();
                     setError(`Error setting up the request: ${request}`);
                 }
             } else {
-                console.log("Error:", error.message);
                 setError("An unknown error occurred.");
             }
         } finally {

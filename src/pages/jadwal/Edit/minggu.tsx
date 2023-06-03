@@ -1,5 +1,5 @@
 import { FC, useEffect, useRef, useState } from "react";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import useSWR, { mutate } from "swr";
 import { SubmitHandler, useForm } from "react-hook-form";
 import Input from "@/pages/components/inputs/Input";
@@ -306,7 +306,6 @@ const MingguEdit: FC<MingguEdit> = ({
       mapel_id: mapel,
       ruang_id: ruang,
     };
-    console.log("jsnnnn", payload);
 
     setIsLoading(true);
     setError(null);
@@ -316,7 +315,6 @@ const MingguEdit: FC<MingguEdit> = ({
         `/api/jadwaldetail/${jadwalId}`,
         payload
       );
-      console.log(response.data);
 
       mutate(`/api/jadwaldetail/${jadwalId}`);
 
@@ -331,8 +329,29 @@ const MingguEdit: FC<MingguEdit> = ({
 
       onSucsess();
       onClose();
-    } catch (error) {
-      console.log(error);
+    } catch (error: any) {
+
+      if (axios.isAxiosError(error)) {
+        const axiosError = error as AxiosError;
+        if (axiosError.response) {
+          const responseData = axiosError.response.data as { message: string };
+
+          // Extract the main error message from the response data
+          const errorMessage = responseData.message;
+
+          setError(`${errorMessage}`);
+        } else if (axiosError.request) {
+
+          const request = axiosError.request.toString();
+          setError(`${request}`);
+        } else {
+
+          const request = axiosError.message.toString();
+          setError(`${request}`);
+        }
+      } else {
+        setError("An unknown error occurred.");
+      }
     } finally {
       setIsLoading(false);
       onSucsess();

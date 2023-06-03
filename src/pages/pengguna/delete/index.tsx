@@ -26,7 +26,6 @@ const DeletePengguna: FC<DeletePenggunaProps> = ({
       onSuccess();
       onClose();
     } catch (error) {
-      console.log(error);
     } finally {
       setIsLoading(true); // Set loading state to true
       onSuccess();

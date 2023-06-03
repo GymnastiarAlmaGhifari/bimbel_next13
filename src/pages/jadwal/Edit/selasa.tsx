@@ -305,7 +305,6 @@ const SelasaEdit: FC<SelasaEdit> = ({
       mapel_id: mapel,
       ruang_id: ruang,
     };
-    console.log("jsnnnn", payload);
 
     setIsLoading(true);
     setError(null);
@@ -315,7 +314,6 @@ const SelasaEdit: FC<SelasaEdit> = ({
         `/api/jadwaldetail/${jadwalId}`,
         payload
       );
-      console.log(response.data);
 
       mutate(`/api/jadwaldetail/${jadwalId}`);
 
@@ -331,7 +329,6 @@ const SelasaEdit: FC<SelasaEdit> = ({
       onSucsess();
       onClose();
     } catch (error: any) {
-      console.error(error);
 
       if (axios.isAxiosError(error)) {
         const axiosError = error as AxiosError;
@@ -352,7 +349,6 @@ const SelasaEdit: FC<SelasaEdit> = ({
           setError(`${request}`);
         }
       } else {
-        console.log("Error:", error.message);
         setError("An unknown error occurred.");
       }
     } finally {

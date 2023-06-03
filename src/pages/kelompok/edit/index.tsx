@@ -54,49 +54,43 @@ const KelompokEdit: FC<UserEditProps> = ({
 
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
-    const { nama_kelompok, program_id,} = data;
+    const { nama_kelompok, program_id, } = data;
 
-    console.log("dhjagdjhsa", data);
 
     setIsLoading(true); // Set loading state to true
     try {
       const res = await axios.put(`/api/kelompok/${kelompokId}`, {
         nama_kelompok,
         program_id,
-              });
+      });
       mutate("/api/kelompok");
 
-      console.log("res", res);
     } catch (error: any) {
-            console.error(error);
-      
-            if (axios.isAxiosError(error)) {
-              const axiosError = error as AxiosError;
-              if (axiosError.response) {
-                console.log("Response data:", axiosError.response.data);
-                console.log("Response status:", axiosError.response.status);
-      
-                const responseData = axiosError.response.data as { message: string };
-      
-                // Extract the main error message from the response data
-                const errorMessage = responseData.message;
-      
-                setError(`${errorMessage}`);
-              } else if (axiosError.request) {
-                console.log("No response received:", axiosError.request);
-      
-                const request = axiosError.request.toString();
-                setError(`No response received: ${request}`);
-              } else {
-                console.log("Error setting up the request:", axiosError.message);
-      
-                const request = axiosError.message.toString();
-                setError(`Error setting up the request: ${request}`);
-              }
-            } else {
-              console.log("Error:", error.message);
-              setError("An unknown error occurred.");
-            }
+
+      if (axios.isAxiosError(error)) {
+        const axiosError = error as AxiosError;
+        if (axiosError.response) {
+
+          const responseData = axiosError.response.data as { message: string };
+
+          // Extract the main error message from the response data
+          const errorMessage = responseData.message;
+
+          setError(`${errorMessage}`);
+        } else if (axiosError.request) {
+
+
+          const request = axiosError.request.toString();
+          setError(`No response received: ${request}`);
+        } else {
+
+
+          const request = axiosError.message.toString();
+          setError(`Error setting up the request: ${request}`);
+        }
+      } else {
+        setError("An unknown error occurred.");
+      }
     } finally {
       setIsLoading(false);
       onClose();
@@ -162,17 +156,16 @@ const KelompokEdit: FC<UserEditProps> = ({
 
                 <div className="flex flex-col gap-2">
                   <label htmlFor="" className="text-sm text-Primary-10">
-                    Program   
+                    Program
                   </label>
 
                   <div className="relative flex flex-col gap-2">
                     <button
                       type="button"
-                      className={` w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${
-                        isListOpenProgram
+                      className={` w-full h-10 px-4 text-left outline-none rounded-full flex justify-between items-center ${isListOpenProgram
                           ? "border-[2px] border-Primary-50 bg-Primary-95"
                           : "bg-Neutral-95"
-                      }`}
+                        }`}
                       onClick={toggleListProgram}
                     >
                       {/* buat label */}
@@ -206,11 +199,10 @@ const KelompokEdit: FC<UserEditProps> = ({
                             <li key={programItem.id}>
                               <button
                                 type="button"
-                                className={`w-full text-left px-2 py-1 rounded-full ${
-                                  watch("program_id") === programItem.id
+                                className={`w-full text-left px-2 py-1 rounded-full ${watch("program_id") === programItem.id
                                     ? "text-Primary-90 bg-Primary-20"
                                     : "text-Primary-20 hover:bg-Primary-95"
-                                }`}
+                                  }`}
                                 onClick={() => selectProgram(programItem.id)}
                               >
                                 {programItem.nama_program}
