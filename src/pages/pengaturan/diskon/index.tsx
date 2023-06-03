@@ -28,9 +28,8 @@ const Diskon = ({}) => {
   const [selectedDiskonEdit, setSelectedDiskonEdit] =
     useState<DiskonProps | null>(null);
 
-    const [selectedDiskonDelete, setSelectedDiskonDelete] =
+  const [selectedDiskonDelete, setSelectedDiskonDelete] =
     useState<DiskonProps | null>(null);
-
 
   const {
     data: diskon,
@@ -118,7 +117,7 @@ const Diskon = ({}) => {
                 noSearch
                 onClick={() => setShowCreate(true)}
               />
-              <div className="grid h-full grid-cols-2 w-full rounded-bl-lg rounded-br-lg p-4 gap-4 overflow-y-auto scrollbar-thin scrollbar-track-Neutral-100 scrollbar-thumb-Primary-40 scrollbar-rounded-lg ">
+              <div className="grid h-full grid-cols-2 w-full rounded-bl-lg rounded-br-lg p-4 gap-4 overflow-y-auto scrollbar scrollbar-thin scrollbar-track-Neutral-100 scrollbar-thumb-Primary-40 scrollbar-rounded-lg ">
                 {isLoading ? (
                   <p>Loading...</p>
                 ) : (
@@ -136,37 +135,35 @@ const Diskon = ({}) => {
                           src={"/api/diskon/img?img=" + diskon.banner}
                         />
                       </div>
-                        
+
                       <div className="flex items-center justify-between px-4 py-2">
                         <h1 className="font-semibold text-Primary-20">
                           {diskon.nama_diskon}
                         </h1>
-                      <div className="flex flex-row gap-3">
-                        <Button
-                          bgColor="bg-Primary-40"
-                          withBgColor
-                          brColor=""
-                          textColor="text-Neutral-100"
-                          label="Edit Diskon"
-                          type={"button"}
-                          onClick={() => {
-                            setSelectedDiskonEdit(diskon);
-                          }}
+                        <div className="flex items-center justify-between gap-4">
+                          <Button
+                            bgColor="bg-Error-50"
+                            brColor=""
+                            textColor="text-Error-50"
+                            label="Hapus Diskon"
+                            icon={MdDelete}
+                            type={"button"}
+                            onClick={() => {
+                              setSelectedDiskonDelete(diskon);
+                            }}
                           />
-                      </div>
-                      <div className="flex items-center justify-between px-4 py-2">
-                        <Button
-                          bgColor="bg-Error-40"
-                          withBgColor
-                          brColor=""
-                          textColor="text-Neutral-100"
-                          label="Delete Diskon"
-                          type={"button"}
-                          onClick={() => {
-                            setSelectedDiskonDelete(diskon);
-                          }}
+                          <Button
+                            bgColor="bg-Tertiary-50"
+                            brColor=""
+                            textColor="text-Tertiary-50"
+                            label="Edit Diskon"
+                            icon={MdModeEdit}
+                            type={"button"}
+                            onClick={() => {
+                              setSelectedDiskonEdit(diskon);
+                            }}
                           />
-                          </div>
+                        </div>
                       </div>
                     </div>
                   ))
@@ -195,17 +192,17 @@ const Diskon = ({}) => {
 
       {selectedDiskonDelete && (
         <ModalDetail
+          wAuto
           titleModal="Hapus Diskon"
           onClose={() => setSelectedDiskonDelete(null)}
           center
         >
           <DeleteDiskon
             onClose={() => setSelectedDiskonDelete(null)}
-          onSucsess={() => {
+            onSucsess={() => {
               // success
               setShowSuccess(true);
-            }
-          }
+            }}
             data={selectedDiskonDelete}
             diskonId={selectedDiskonDelete.id}
           />

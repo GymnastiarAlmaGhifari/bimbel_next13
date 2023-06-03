@@ -47,8 +47,7 @@ export default function AboutUs() {
           {users?.map((user: any, index: any) => {
             if (index < 10) {
               return (
-                <Tentor
-                  wAuto
+                <Tentor wAuto
                   key={index}
                   nama={user?.name}
                   institut={user?.universitas}

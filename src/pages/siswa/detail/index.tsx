@@ -20,16 +20,12 @@ interface Siswa {
   image: string;
 }
 
-const DetailSiswa: FC<DetailSiswaProps> = ({
-  idSiswa,
-  onClose,
-}) => {
+const DetailSiswa: FC<DetailSiswaProps> = ({ idSiswa, onClose }) => {
   const {
     data: getSiswa,
     error: getSiswaError,
     isLoading: getSiswaLoading,
   } = useSWR<Siswa>(`/api/siswa/${idSiswa}`, fetcher);
-
 
 
   if (getSiswaLoading) {
@@ -61,26 +57,38 @@ const DetailSiswa: FC<DetailSiswaProps> = ({
       </div>
 
       <div className="flex flex-col gap-2">
-        <h3 className="font-bold">{getSiswa?.nama}</h3>
         <div className="flex flex-col gap-1">
           <h3 className="text-sm text-Neutral-30">Email</h3>
           <span className="font-bold text-Primary-10">{getSiswa?.email}</span>
+          <div className="w-full h-[1px] bg-Neutral-90"></div>
         </div>
         <div className="flex flex-col gap-1">
           <h3 className="text-sm text-Neutral-30">No. Telp</h3>
-          <span className="font-bold text-Primary-10">{getSiswa?.nomor_telepon}</span>
+          <span className="font-bold text-Primary-10">
+            {getSiswa?.nomor_telepon}
+          </span>
+          <div className="w-full h-[1px] bg-Neutral-90"></div>
         </div>
         <div className="flex flex-col gap-1">
           <h3 className="text-sm text-Neutral-30">Alamat</h3>
-          <span className="font-bold text-Primary-10">{getSiswa?.alamat}</span>
+          <span className="font-bold text-Primary-10">
+            {getSiswa?.alamat ? getSiswa.alamat : "-"}
+          </span>
+          <div className="w-full h-[1px] bg-Neutral-90"></div>
         </div>
         <div className="flex flex-col gap-1">
           <h3 className="text-sm text-Neutral-30">Sekolah</h3>
-          <span className="font-bold text-Primary-10">{getSiswa?.sekolah}</span>
+          <span className="font-bold text-Primary-10">
+            {getSiswa?.sekolah ? getSiswa?.sekolah : "-"}
+          </span>
+          <div className="w-full h-[1px] bg-Neutral-90"></div>
         </div>
         <div className="flex flex-col gap-1">
           <h3 className="text-sm text-Neutral-30">HP Ortu</h3>
-          <span className="font-bold text-Primary-10">{getSiswa?.hp_ortu}</span>
+          <span className="font-bold text-Primary-10">
+            {getSiswa?.hp_ortu ? getSiswa?.hp_ortu : "-"}
+          </span>
+          <div className="w-full h-[1px] bg-Neutral-90"></div>
         </div>
       </div>
     </div>

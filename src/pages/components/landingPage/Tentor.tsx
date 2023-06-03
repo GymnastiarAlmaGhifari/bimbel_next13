@@ -23,11 +23,11 @@ const Tentor: React.FC<tentorProps> = ({
 
   return (
     <div
-      className={`flex flex-row h-36 gap-5 shadow-[4px_4px_8px_1px_rgba(101,186,177,0.3)] ${
+      className={`flex flex-row h-40 gap-5 shadow-[4px_4px_8px_1px_rgba(101,186,177,0.3)] ${
         wAuto ? "w-full" : "w-72"
       } rounded-lg bg-Neutral-100`}
     >
-      <div>
+      <div className="w-32 overflow-clip h-full">
         <Image
           src={
             profile ? "/api/user/img?img=" + profile : "/img/user/default.png"
@@ -35,7 +35,7 @@ const Tentor: React.FC<tentorProps> = ({
           alt="Profile Tentor"
           width={500}
           height={500}
-          className=" w-32 h-full rounded-l-lg"
+          className="rounded-l-lg w-full h-full object-cover"
           loader={({ src }) => `${src}?cache-control=no-store`}
         />
       </div>
@@ -43,7 +43,7 @@ const Tentor: React.FC<tentorProps> = ({
         <h2 className="font-semibold ">{nama}</h2>
         <div>
           <p className="text-sm opacity-70 ">Asal Institut</p>
-          <p>{institut}</p>
+          <p>{institut ? institut : "-"}</p>
         </div>
         <div>
           <p className="text-sm opacity-70 ">Mata Pelajaran</p>

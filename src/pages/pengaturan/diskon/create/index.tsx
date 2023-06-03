@@ -115,12 +115,14 @@ const CreateDiskon: FC<CreateDiskon> = ({ onClose, onSuccess }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-10">
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="flex flex-col gap-10 items-center"
+    >
       {error && <p className="text-red-500">{error}</p>}
-      <div className="flex flex-col gap-6 overflow-clip scale-100 w-[400px]">
+      <div className="flex flex-col wf">
         {previewImage ? (
-          <div className="w-full">
-            <h1>Gambar Diskon Landing Page</h1>
+          <div className="">
             <Image
               src={previewImage}
               alt="Gambar"
@@ -131,12 +133,14 @@ const CreateDiskon: FC<CreateDiskon> = ({ onClose, onSuccess }) => {
             />
           </div>
         ) : (
-          <h1 className="-pt-2">Pilih Gambar Diskon Landing Page</h1>
+          <div className="overflow-clip h-[400px] w-full">
+            <h1 className="-pt-2">Pilih Gambar Diskon Landing Page</h1>
+          </div>
         )}
         <div>
           <label
             htmlFor="image"
-            className="bg-Primary-40 text-white px-4 py-2 mt-4 rounded cursor-pointer flex items-center justify-center space-x-2 rounded-full bg-opacity-90 hover:bg-opacity-100"
+            className="bg-Primary-40 text-white px-4 py-2 mt-4 cursor-pointer flex items-center justify-center space-x-2 rounded-full bg-opacity-90 hover:bg-opacity-100"
           >
             <IoMdCloudUpload size={24} />
             <span className="font-semibold">Choose File</span>

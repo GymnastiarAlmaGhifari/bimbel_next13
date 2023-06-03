@@ -76,7 +76,7 @@ const Notification: FC<NotificationProps> = () => {
         onClick={handleClick}
       >
         <div className="text-Neutral-20">
-          <IoIosNotifications size={40} />
+          <IoIosNotifications size={35} />
         </div>
         {
           notification?.jumlah > 0 ? (
@@ -165,13 +165,13 @@ const Notification: FC<NotificationProps> = () => {
           {showNota && (
             <ModalDetail silang
               titleModal={`Nota Tagihan ${showNota?.siswa?.nama}` + ` ${showNota?.Bulan}` + ` ${showNota?.Tahun}`}
-              onClose={() => setShowNota(null)}
+              onClose={() => setShowNota(null)} wAuto
             >
               <LihatNota data={showNota} onClose={() => setShowNota(null)} />
             </ModalDetail>
           )}
           {AcceptPembayaran && (
-            <ModalDetail center wAuto
+            <ModalDetail wAuto
               titleModal="Konfirmasi Pembayaran"
               onClose={() => setAcceptPembayaran(null)}
             >
