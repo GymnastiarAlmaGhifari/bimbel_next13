@@ -28,12 +28,25 @@ export default function AboutUs() {
       <div className="flex flex-col gap-8l w-3/4">
         <h2 className="mb-2 text-3xl font-bold text-center">Tentang Kami</h2>
         <p className="text-center">
-          Lorem ipsum dolor, sit amet consectetur adipisicing elit. Id laborum
-          voluptates saepe obcaecati dolorem adipisci nobis corporis minima
-          nemo? Tenetur quam deserunt possimus facilis consequatur dolorum ipsam
-          quae, maxime aliquam omnis non aut reprehenderit fuga rem nulla neque
-          delectus assumenda doloremque? Laudantium iure nulla amet expedita
-          eveniet reprehenderit quae perspiciatis.
+          Bimbel Linear adalah aplikasi bimbingan belajar yang berlokasi di
+          Kabupaten Solo dan telah berdiri selama 5 tahun. Kami menyediakan
+          program bimbingan belajar untuk siswa dari tingkat SD sampai SMA.
+          Dengan tim tentor berkualitas dan berpengalaman, kami berkomitmen
+          untuk memberikan layanan yang terbaik kepada siswa. Program kami
+          dirancang untuk memahami konsep, penguasaan teknik, dan pengembangan
+          kemampuan berpikir kritis dan kreatif. <br />
+          <br />
+          Di Bimbel Linear, kami mengutamakan pembelajaran interaktif dan
+          melibatkan siswa secara aktif. Melalui penggunaan teknologi terkini
+          dan metode pembelajaran inovatif, kami membantu siswa meningkatkan
+          pemahaman dan keterampilan mereka. Selain itu, kami juga menyediakan
+          layanan bimbingan karir untuk membantu siswa mempersiapkan diri dalam
+          mencapai kesuksesan di masa depan.
+          <br />
+          <br /> Kami berkomitmen untuk memberikan pengalaman belajar terbaik
+          kepada siswa dan terus meningkatkan kualitas layanan kami.
+          Bergabunglah dengan Bimbel Linear sekarang dan temukan lingkungan
+          belajar yang mendukung, inspiratif, dan penuh prestasi!
         </p>
         <div className="flex flex-col items-center gap-2 mt-12">
           <h3 className="font-semibold">Sosial Media Kami: </h3>

@@ -176,11 +176,10 @@ const EditDiskon: FC<DiskonEditProps> = ({
       className="flex flex-col gap-10 items-center"
     >
       {error && <p className="text-red-500">{error}</p>}
-      <div className="flex flex-col gap-6 ">
+      <div className="flex flex-col gap-6 w-full ">
         {previewImage ? (
           <div className="">
-            <h1>Gambar Diskon Landing Page</h1>
-            <div className="overflow-clip h-[400px] w-full bg-red-500">
+            <div className="overflow-clip h-[400px] w-full">
               <Image
                 src={previewImage}
                 alt="Gambar"
@@ -192,7 +191,7 @@ const EditDiskon: FC<DiskonEditProps> = ({
             </div>
           </div>
         ) : (
-          <div className="overflow-clip h-[400px] w-full bg-red-500">
+          <div className="overflow-clip h-[400px] w-full">
             <Image
               src={
                 "/api/diskon/img?img=" + data?.banner || "/img/user/default.png"

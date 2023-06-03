@@ -108,7 +108,7 @@ const User: FC<User> = () => {
   const handleInputChange = (value: string) => {
     setInputValue(value);
   };
-  const PAGE_SIZE = 3;
+  const PAGE_SIZE = 10;
   const MAX_PAGE_DISPLAY = 5; // Jumlah maksimal nomor halaman yang ditampilkan
 
   const [currentPage, setCurrentPage] = useState(1);
