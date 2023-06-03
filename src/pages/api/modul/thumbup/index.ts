@@ -34,7 +34,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       try {
         await page.goto(process.env.NEXTAUTH_URL + "/api/modul/pdf?modul=" + id + ".pdf");
         await page.setViewport({ width: 800, height: 1000 });
-        await page.waitForTimeout(4000);
+        await Promise.all([
+          page.waitForSelector('embed[type="application/pdf"]'),
+          await page.waitForTimeout(10000),
+        ]);
 
         const screenshotPath = join(process.cwd(), "upload/modul/thumb", "temporary.png");
         await page.screenshot({ path: screenshotPath });
