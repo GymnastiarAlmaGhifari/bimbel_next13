@@ -104,11 +104,11 @@ const Create: FC<CreateModul> = ({ onClose, onSucsess }) => {
       mutate("/api/mdoul");
       // onClose(); // Set loading state to false
 
-      console.log(response.data);
+      // console.log(response.data);
       // simpan response data.id ke variable id
       const id = response.data.id;
 
-      console.log(id);
+      // console.log(id);
       // api yang  digunakan untuk upload file
 
       const formData = new FormData();
@@ -120,13 +120,15 @@ const Create: FC<CreateModul> = ({ onClose, onSucsess }) => {
         },
       });
 
-      console.log(responseUpload.data);
+      // console.log(responseUpload.data);
 
       const responsethumb = await axios.post(`/api/modul/thumbup`, {
         id: id,
       });
 
-      console.log(responsethumb.data);
+      // console.log(responsethumb.data);
+      onClose(); // Set loading state to false
+      onSucsess();
     } catch (error: any) {
       console.error(error);
 
