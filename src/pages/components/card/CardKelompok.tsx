@@ -161,9 +161,8 @@ const CardKelompok: FC<CardKelompokProps> = ({
 
   return (
     <div
-      className={`flex flex-col bg-Neutral-100 shadow-[0px_2px_8px_-4px_rgba(0,0,0,.3)] rounded-lg py-5 px-4 gap-3 ${
-        isExpandedDetails || isExpandedJadwal ? "h-max" : ""
-      }`}
+      className={`flex flex-col bg-Neutral-100 shadow-[0px_2px_8px_-4px_rgba(0,0,0,.3)] rounded-lg py-5 px-4 gap-3 ${isExpandedDetails || isExpandedJadwal ? "h-max" : ""
+        }`}
     >
       <div className="flex justify-between">
         <h1 className=" text-Primary-10 font-bold capitalize">
@@ -248,7 +247,7 @@ const CardKelompok: FC<CardKelompokProps> = ({
             label="Hapus Kelompok"
             textColor="text-Error-50"
             icon={MdDelete}
-            // onClick={onClick}
+          // onClick={onClick}
           />
           <Button
             type="button"
@@ -308,7 +307,6 @@ const CardKelompok: FC<CardKelompokProps> = ({
                         icon={IoLogoWhatsapp}
                         onClick={() => {
                           setSiswaHp(student.nomor_telepon);
-                          console.log(student.nomor_telepon);
                           openWhatsApp();
                         }}
                       />

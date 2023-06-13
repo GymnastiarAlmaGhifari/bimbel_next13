@@ -22,13 +22,22 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       await fs.copy(sourcePath, newFilePath);
       array.push("File copied successfully.");
 
-      const browser = await puppeteer.launch({ headless: "new" });
+      const browser = await puppeteer.launch({
+        headless: "new",
+        executablePath: '/usr/bin/google-chrome',
+        args: ['--no-sandbox', '--disable-setuid-sandbox'],
+
+      });
+      // const browser = await puppeteer.launch({ headless: "new" });
       const page = await browser.newPage();
 
       try {
         await page.goto(process.env.NEXTAUTH_URL + "/api/modul/pdf?modul=" + id + ".pdf");
         await page.setViewport({ width: 800, height: 1000 });
-        await page.waitForTimeout(4000);
+        await Promise.all([
+          page.waitForSelector('embed[type="application/pdf"]'),
+          await page.waitForTimeout(10000),
+        ]);
 
         const screenshotPath = join(process.cwd(), "upload/modul/thumb", "temporary.png");
         await page.screenshot({ path: screenshotPath });

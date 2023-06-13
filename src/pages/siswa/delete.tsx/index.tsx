@@ -10,7 +10,7 @@ interface DeleteSiswaProps {
     data?: any;
 
 }
-const DeleteSiswa: FC<DeleteSiswaProps> = ({ idSiswa, onClose, onSuccess, data,  }) => {
+const DeleteSiswa: FC<DeleteSiswaProps> = ({ idSiswa, onClose, onSuccess, data, }) => {
 
     const [isLoading, setIsLoading] = useState(false);
 
@@ -24,7 +24,6 @@ const DeleteSiswa: FC<DeleteSiswaProps> = ({ idSiswa, onClose, onSuccess, data, 
             onSuccess();
             onClose();
         } catch (error) {
-            console.log(error);
         } finally {
             setIsLoading(true); // Set loading state to true
         }

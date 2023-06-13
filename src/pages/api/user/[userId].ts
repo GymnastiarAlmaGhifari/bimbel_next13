@@ -20,37 +20,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       console.error(error);
       res.status(500).json({ message: "Error updating user" });
     }
-  } else if (req.method === "DELETE") {
-    try {
-      const user = await prisma.user.findUnique({
-        where: { id: userId },
-      });
-
-      if (user) {
-
-      await prisma.user.delete({
-        where: { id: userId },
-      });
-
-      //delete image user
-      const fs = require('fs');
-      const path = require('path');
-      const filePath = path.join(process.cwd(), 'upload', 'img', 'user', user.image);
-      fs.unlinkSync(filePath);
-
-
-      res.status(200).json(user);
-    } else {
-      return res.status(404).json({ message: "user not found" });
-    }
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ message: "Error deleting user" });
-    }
   } else if (req.method === "GET") {
     try {
       const users = await prisma.user.findUnique({
         where: { id: userId },
+        include: {
+          mapel: true,
+        },
       });
 
       if (!users) {
@@ -69,13 +45,18 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         data: {
           jadwal_details: {
             deleteMany: {},
-          }
-        }
+          },
+        },
       });
 
       const deleted = await prisma.user.delete({
         where: { id: userId },
       });
+
+      const fs = require('fs');
+      const path = require('path');
+      const filePath = path.join(process.cwd(), 'upload', 'img', 'user', users.image);
+      fs.unlinkSync(filePath);
 
       res.status(200).json(users);
     } catch (error) {

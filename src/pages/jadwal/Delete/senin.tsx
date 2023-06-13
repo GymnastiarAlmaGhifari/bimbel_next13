@@ -38,7 +38,6 @@ const DeleteSenin: FC<DeleteSeninProps> = ({
       onSuccess();
       onClose();
     } catch (error: any) {
-      console.error(error);
 
       if (axios.isAxiosError(error)) {
         const axiosError = error as AxiosError;
@@ -59,7 +58,6 @@ const DeleteSenin: FC<DeleteSeninProps> = ({
           setError(`${request}`);
         }
       } else {
-        console.log("Error:", error.message);
         setError("An unknown error occurred.");
       }
     } finally {

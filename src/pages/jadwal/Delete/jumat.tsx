@@ -38,7 +38,6 @@ const DeleteJumat: FC<DeleteJumatProps> = ({
       onSuccess();
       onClose();
     } catch (error: any) {
-      console.error(error);
 
       if (axios.isAxiosError(error)) {
         const axiosError = error as AxiosError;
@@ -59,7 +58,6 @@ const DeleteJumat: FC<DeleteJumatProps> = ({
           setError(`${request}`);
         }
       } else {
-        console.log("Error:", error.message);
         setError("An unknown error occurred.");
       }
     } finally {

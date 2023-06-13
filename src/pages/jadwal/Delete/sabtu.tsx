@@ -37,7 +37,6 @@ const DeleteSabtu: FC<DeleteSabtuProps> = ({
       onSuccess();
       onClose();
     } catch (error: any) {
-      console.error(error);
 
       if (axios.isAxiosError(error)) {
         const axiosError = error as AxiosError;
@@ -58,7 +57,6 @@ const DeleteSabtu: FC<DeleteSabtuProps> = ({
           setError(`${request}`);
         }
       } else {
-        console.log("Error:", error.message);
         setError("An unknown error occurred.");
       }
     } finally {

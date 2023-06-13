@@ -1,0 +1,42 @@
+
+
+FROM debian:bullseye AS builder
+
+# Install Node.js 18 LTS and npm using apt
+RUN apt update && apt install -y curl
+RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash -
+RUN apt install -y nodejs
+
+WORKDIR /app
+
+COPY package.json package-lock.json ./
+RUN npm ci 
+COPY . .
+RUN npx prisma generate
+RUN npm run build
+
+FROM debian:bullseye AS runner
+
+# Install Node.js 18 LTS and npm using apt
+RUN apt update && apt install -y curl
+RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash -
+RUN apt install -y nodejs
+RUN apt-get update -yy && apt-get install -yy chromium
+
+WORKDIR /app
+COPY --from=builder /app/package.json .
+COPY --from=builder /app/package-lock.json .
+COPY --from=builder /app/next.config.js ./
+COPY --from=builder /app/public ./public
+COPY --from=builder /app/upload ./upload
+COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/.next/ ./.next
+COPY --from=builder /app/.env ./.env
+
+ENV DATABASE_URL=mysql://root:abogoboga@10.1.1.13:3306/nextlinear
+ENV NEXTAUTH_URL=http://localhost:3000
+VOLUME ["/app/upload"]
+
+EXPOSE 3000
+
+CMD npm run start

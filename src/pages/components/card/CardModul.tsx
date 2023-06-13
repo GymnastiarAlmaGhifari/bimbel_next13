@@ -42,7 +42,7 @@ const CardModul: FC<CardModulProps> = ({
       <div className="flex gap-5">
         <div className="h-full w-40">
           <Image
-            src={"/api/modul/thumb?img=" + thumbnail ? "/api/modul/thumb?img=" + thumbnail : "/img/user/default.png"}
+            src={"/api/modul/thumb?img=" + thumbnail + "&&time=" + Date.now() ? "/api/modul/thumb?img=" + thumbnail + "&&time=" + Date.now() : "/img/user/default.png"}
             alt="Megachan"
             width={100}
             height={100}

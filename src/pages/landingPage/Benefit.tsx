@@ -1,5 +1,5 @@
 import { Inter } from "next/font/google";
-import { ItemBenefit } from "../components/landingPage/ItemBenefit";
+import ItemBenefit from "../components/landingPage/ItemBenefit";
 
 export default function Benefit() {
   return (

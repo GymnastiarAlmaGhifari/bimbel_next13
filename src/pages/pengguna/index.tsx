@@ -108,7 +108,7 @@ const User: FC<User> = () => {
   const handleInputChange = (value: string) => {
     setInputValue(value);
   };
-  const PAGE_SIZE = 3;
+  const PAGE_SIZE = 10;
   const MAX_PAGE_DISPLAY = 5; // Jumlah maksimal nomor halaman yang ditampilkan
 
   const [currentPage, setCurrentPage] = useState(1);
@@ -120,9 +120,10 @@ const User: FC<User> = () => {
   const router = useRouter();
 
   let paginatedUsers: User[] = [];
-  let paginatedAdmin: User[] = [];
-  let totalPages = 0;
+  let totalPages: number = 0;
   let pageNumbers: number[] = [];
+
+
   if (filteredUsers) {
     const startIndex = (currentPage - 1) * PAGE_SIZE;
     const endIndex = startIndex + PAGE_SIZE;
@@ -140,35 +141,35 @@ const User: FC<User> = () => {
       (_, i) => startPage + i
     );
   }
-  if (filteredAdmin) {
-    const startIndex = (currentPage - 1) * PAGE_SIZE;
-    const endIndex = startIndex + PAGE_SIZE;
-    paginatedAdmin = filteredAdmin.slice(startIndex, endIndex);
-    totalPages = Math.ceil(filteredAdmin.length / PAGE_SIZE);
 
-    const startPage = Math.max(
-      currentPage - Math.floor(MAX_PAGE_DISPLAY / 2),
-      1
-    );
+  let paginatedAdmin: User[] = [];
 
-    const endPage = Math.min(startPage + MAX_PAGE_DISPLAY - 1, totalPages);
+  if (session?.user.role === "ADMIN") {
+    if (filteredAdmin) {
+      const startIndex = (currentPage - 1) * PAGE_SIZE;
+      const endIndex = startIndex + PAGE_SIZE;
+      paginatedAdmin = filteredAdmin.slice(startIndex, endIndex);
+      totalPages = Math.ceil(filteredAdmin.length / PAGE_SIZE);
 
-    pageNumbers = Array.from(
-      { length: endPage - startPage + 1 },
-      (_, i) => startPage + i
-    );
+      const startPage = Math.max(
+        currentPage - Math.floor(MAX_PAGE_DISPLAY / 2),
+        1
+      );
+
+      const endPage = Math.min(startPage + MAX_PAGE_DISPLAY - 1, totalPages);
+
+      pageNumbers = Array.from(
+        { length: endPage - startPage + 1 },
+        (_, i) => startPage + i
+      );
+    }
   }
+
 
 
 
   const isFirstPage = currentPage === 1;
   const isLastPage = currentPage === totalPages;
-
-  // session === "TENTOR" return 
-  //   <h1 className="text-2xl font-bold text-gray-500">
-  //   Hanya Super Admin yang bisa mengakses halaman ini
-  // </h1>
-
 
   return (
     <div className="flex flex-row h-screen w-screen absolute overflow-hidden font-mulish">
@@ -208,29 +209,32 @@ const User: FC<User> = () => {
                   />
 
                   <div className="flex flex-col rounded-bl-lg rounded-br-lg p-4 gap-4 overflow-y-auto scrollbar">
+
                     {session?.user.role === "SUPER" && (
                       <>
                         {paginatedUsers ? (
-                          paginatedUsers.length === 0 ? (
-                            <p>Tidak ditemukan pengguna.</p>
-                          ) : (
-                            paginatedUsers.map((user) => (
-                              <UserCard
-                                key={user.id}
-                                nama_user={user.name}
-                                universitas={user.universitas}
-                                nama_mapel={user.mapel?.nama_mapel}
-                                gambar={user?.image}
-                                role={user.role}
-                                onEdit={() => {
-                                  setSelected(user);
-                                }}
-                                onHapus={() => {
-                                  setSelecteDelete(user);
-                                }}
-                              />
-                            ))
-                          )
+                          <>
+                            {paginatedUsers.length === 0 ? (
+                              <p>Tidak ditemukan pengguna.</p>
+                            ) : (
+                              paginatedUsers.map((user) => (
+                                <UserCard
+                                  key={user.id}
+                                  nama_user={user.name}
+                                  universitas={user.universitas}
+                                  nama_mapel={user.mapel?.nama_mapel}
+                                  gambar={user?.image}
+                                  role={user.role}
+                                  onEdit={() => {
+                                    setSelected(user);
+                                  }}
+                                  onHapus={() => {
+                                    setSelecteDelete(user);
+                                  }}
+                                />
+                              ))
+                            )}
+                          </>
                         ) : (
                           <p>Loading...</p>
                         )}

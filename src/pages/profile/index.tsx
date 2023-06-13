@@ -16,9 +16,12 @@ interface Profile {
   name: string;
   nomor_telepon: string;
   universitas: string;
-  mata_pelajaran: string;
   alamat: string;
   image: string;
+  role: string;
+  mapel: {
+    nama_mapel: string;
+  }
 }
 
 const Profile: FC<Profile> = () => {
@@ -60,7 +63,7 @@ const Profile: FC<Profile> = () => {
                       <div className="flex flex-col gap-6 w-max items-center">
                         <div className="h-72 w-60 rounded-lg ring-[8px] ring-Neutral-100 ">
                           <Image
-                            src={profile?.image ? "/api/user/img?img=" + profile?.image : "/img/user/default.png"}
+                            src={profile?.image ? "/api/user/img?img=" + profile?.image + "&&time=" + Date.now() : "/img/user/default.png"}
                             alt="Foto profile"
                             width={100}
                             height={100}
@@ -72,7 +75,9 @@ const Profile: FC<Profile> = () => {
                             {profile?.name}
                           </h1>
                           <h2 className="inline-block py-2 px-4 bg-Primary-50 text-Primary-10 rounded-full font-semibold w-full text-center">
-                            Admin
+                            {
+                              profile?.role === "SUPER" ? "Super Admin" : profile?.role === "ADMIN" ? "Admin" : "Tentor"
+                            }
                           </h2>
                         </div>
                       </div>
@@ -117,7 +122,7 @@ const Profile: FC<Profile> = () => {
                                 </h3>
                                 <span className="font-bold text-Primary-10">
                                   {
-                                    profile?.mata_pelajaran ? profile?.mata_pelajaran : "-"
+                                    profile?.mapel.nama_mapel ? profile?.mapel.nama_mapel : "-"
                                   }
                                 </span>
                               </div>

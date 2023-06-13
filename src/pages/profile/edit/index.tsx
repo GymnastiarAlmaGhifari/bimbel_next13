@@ -125,11 +125,9 @@ const UserEdit: FC<UserEditProps> = ({ userId, onClose, onSucsess, data }) => {
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
 
-    console.log(data);
 
     const { name, email, lulusan, nomor_telepon, alamat, image } = data;
 
-    console.log(data);
     if (!image || image.length === 0) {
       // alert("Please select an image");
       // return;
@@ -137,44 +135,38 @@ const UserEdit: FC<UserEditProps> = ({ userId, onClose, onSucsess, data }) => {
       // const formData = new FormData();
       // formData.append("image", data.image[0]);
       try {
-        await axios.put(`/api/user/noimg/${userId}`, {
+        await axios.put(`/api/user/${userId}`, {
           name,
           email,
           nomor_telepon,
           universitas: lulusan,
           alamat,
         });
-        mutate(`/api/user/noimg/${userId}`);
+        mutate(`/api/user/${userId}`);
         mutate(`/api/user`);
         mutate(`/api/user/getadmin`);
       } catch (error: any) {
-        console.error(error);
 
         if (axios.isAxiosError(error)) {
           const axiosError = error as AxiosError;
           if (axiosError.response) {
-            console.log("Response data:", axiosError.response.data);
-            console.log("Response status:", axiosError.response.status);
 
             const responseData = axiosError.response.data as { message: string };
 
             // Extract the main error message from the response data
             const errorMessage = responseData.message;
 
-            setError(`An error occurred: ${errorMessage}`);
+            setError(`${errorMessage}`);
           } else if (axiosError.request) {
-            console.log("No response received:", axiosError.request);
 
             const request = axiosError.request.toString();
             setError(`No response received: ${request}`);
           } else {
-            console.log("Error setting up the request:", axiosError.message);
 
             const request = axiosError.message.toString();
-            setError(`Error setting up the request: ${request}`);
+            setError(`${request}`);
           }
         } else {
-          console.log("Error:", error.message);
           setError("An unknown error occurred.");
         }
       } finally {
@@ -208,33 +200,28 @@ const UserEdit: FC<UserEditProps> = ({ userId, onClose, onSucsess, data }) => {
         mutate(`/api/userimg`);
         mutate(`/api/user/getadmin`);
       } catch (error: any) {
-        console.error(error);
 
         if (axios.isAxiosError(error)) {
           const axiosError = error as AxiosError;
           if (axiosError.response) {
-            console.log("Response data:", axiosError.response.data);
-            console.log("Response status:", axiosError.response.status);
+
 
             const responseData = axiosError.response.data as { message: string };
 
             // Extract the main error message from the response data
             const errorMessage = responseData.message;
 
-            setError(`An error occurred: ${errorMessage}`);
+            setError(` ${errorMessage}`);
           } else if (axiosError.request) {
-            console.log("No response received:", axiosError.request);
 
             const request = axiosError.request.toString();
-            setError(`No response received: ${request}`);
+            setError(` ${request}`);
           } else {
-            console.log("Error setting up the request:", axiosError.message);
 
             const request = axiosError.message.toString();
-            setError(`Error setting up the request: ${request}`);
+            setError(` ${request}`);
           }
         } else {
-          console.log("Error:", error.message);
           setError("An unknown error occurred.");
         }
       } finally {

@@ -300,7 +300,6 @@ const Jadwal: FC<Jadwal> = () => {
   useEffect(() => {
     if (ruang && ruang.length > 0) {
       setValue("ruang_id", ruang[0].id);
-      console.log(ruang[0].id);
       setSelectedRuangId(ruang[0].id);
     }
   }, [ruang, setValue]);
@@ -364,8 +363,8 @@ const Jadwal: FC<Jadwal> = () => {
                           <button
                             type="button"
                             className={`px-4 w-full h-10 text-left outline-none rounded-full flex justify-between items-center ${listOpenRuang
-                                ? "border-[2px] border-Primary-50 bg-Primary-95"
-                                : "bg-Neutral-95"
+                              ? "border-[2px] border-Primary-50 bg-Primary-95"
+                              : "bg-Neutral-95"
                               }`}
                             onClick={toggleListRuang}
                           >
@@ -391,13 +390,12 @@ const Jadwal: FC<Jadwal> = () => {
                                   <li key={ruang.id}>
                                     <button
                                       className={`w-full text-left py-1 px-4 rounded-full ${watch("ruang_id") === ruang.id
-                                          ? "text-Primary-90 bg-Primary-20"
-                                          : "text-Primary-20 hover:bg-Primary-95"
+                                        ? "text-Primary-90 bg-Primary-20"
+                                        : "text-Primary-20 hover:bg-Primary-95"
                                         }`}
                                       onClick={() => {
                                         selectRuang(ruang.id);
                                         setSelectNamaRuang(ruang.nama_ruang);
-                                        console.log(ruang.id);
                                       }}
                                     >
                                       {ruang.nama_ruang}

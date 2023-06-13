@@ -12,7 +12,7 @@ import Acc from "../modal/acc";
 import Create from "../modal/create";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import DeleteTagihan from "../modal/delete";
-import EditRekening from "../modal/gaji";
+import EditRekening from "../modal/rekening";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import Button from "@/pages/components/buttons/Button";
@@ -37,6 +37,12 @@ interface Pembayaran {
     nama: string;
     image: string;
   };
+}
+
+interface RekeningProps {
+  id: string;
+  nama_rekening: string;
+  nomor_rekening: string;
 }
 
 const Pembayaran: FC<Pembayaran> = () => {
@@ -67,7 +73,7 @@ const Pembayaran: FC<Pembayaran> = () => {
 
   const [showSuccess, setShowSuccess] = useState(false);
 
-  const [showRekening, setShowRekening] = useState(false);
+  const [showRekening, setShowRekening] = useState(null);
 
   useEffect(() => {
     const timeoutId = setTimeout(() => {
@@ -136,6 +142,15 @@ const Pembayaran: FC<Pembayaran> = () => {
   const isLastPage = currentPage === totalPages;
 
 
+  const { data: rekening, error: errorrekening } = useSWR(
+    "/api/rekening",
+    fetcher,
+    {}
+  );
+
+  // map daata rekening sim
+
+
   return (
     <div className="flex flex-row h-screen font-mulish">
       <Sidebar />
@@ -177,7 +192,7 @@ const Pembayaran: FC<Pembayaran> = () => {
                         onChange={handleInputChange}
                         onRekening={
                           () => {
-                            setShowRekening(true);
+                            setShowRekening(rekening);
                           }
                         }
                       />
@@ -349,14 +364,15 @@ const Pembayaran: FC<Pembayaran> = () => {
         showRekening && (
           <ModalDetail
             titleModal="Gaji"
-            onClose={() => setShowRekening(false)}
+            onClose={() => setShowRekening(null)}
           >
             <EditRekening
-              onClose={() => setShowRekening(false)}
+              onClose={() => setShowRekening(null)}
               onSucsess={() => {
                 setShowSuccess(true);
               }
               }
+              data={showRekening}
             />
           </ModalDetail>
         )

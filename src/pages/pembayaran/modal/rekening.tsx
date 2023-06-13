@@ -9,11 +9,9 @@ import * as yup from "yup";
 import Button from "@/pages/components/buttons/Button";
 
 interface RekeningProps {
-    id?: string;
-    nama_rekening?: string;
-    nomor_rekening?: string;
     onClose: () => void;
     onSucsess: () => void;
+    data?: any;
 }
 
 const schema = yup.object().shape({
@@ -25,15 +23,11 @@ type FormData = yup.InferType<typeof schema>;
 
 const EditRekening: FC<RekeningProps> = ({
     onClose,
-    onSucsess
+    onSucsess,
+    data
 }) => {
 
-    const { data: rekening, error: errorrekening } = useSWR<RekeningProps[]>(
-        "/api/rekening",
-        fetcher,
-        {}
-    );
-
+    let idrek = data?.id
 
     const [isLoading, setIsLoading] = useState(false);
     const {
@@ -52,7 +46,7 @@ const EditRekening: FC<RekeningProps> = ({
         const { nama_rekening, nomor_rekening } = data;
 
         try {
-            await axios.put(`/api/rekening/${rekening && rekening[0]?.id}`, {
+            await axios.put(`/api/rekening/${idrek}`, {
                 nama_rekening,
                 nomor_rekening,
             });
@@ -60,7 +54,6 @@ const EditRekening: FC<RekeningProps> = ({
 
             onSucsess();
         } catch (error) {
-            console.log(error);
         } finally {
             setIsLoading(false);
             onClose();
@@ -73,8 +66,9 @@ const EditRekening: FC<RekeningProps> = ({
             <Input
                 id="nama_rekening"
                 label="Nama Rekening"
-                defaultValue={rekening && rekening[0]?.nama_rekening}
                 errors={errors}
+                // defautl value diambil dari data yang dikirim dari parent data.?nama_rekening
+                defaultValue={data?.nama_rekening}
                 type="text"
                 register={{ ...register("nama_rekening") }}
             />
@@ -84,7 +78,8 @@ const EditRekening: FC<RekeningProps> = ({
             <Input
                 id="nomor_rekening"
                 label="Nomor Rekening"
-                defaultValue={rekening && rekening[0]?.nomor_rekening}
+                // defautl value diambil dari data yang dikirim dari parent data.?nomor_rekening
+                defaultValue={data?.nomor_rekening}
                 errors={errors}
                 type="number"
                 register={{ ...register("nomor_rekening") }}

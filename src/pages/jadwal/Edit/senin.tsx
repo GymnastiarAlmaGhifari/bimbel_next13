@@ -160,7 +160,6 @@ const SeninEdit: FC<SeninEdit> = ({
     {}
   );
 
-  console.log("jadawalId", jadwalId);
 
   watch("kelompokCheck");
   watch("userCheck");
@@ -307,7 +306,7 @@ const SeninEdit: FC<SeninEdit> = ({
       mapel_id: mapel,
       ruang_id: ruang,
     };
-    console.log("jsnnnn", payload);
+
 
     setIsLoading(true);
     setError(null);
@@ -317,7 +316,6 @@ const SeninEdit: FC<SeninEdit> = ({
         `/api/jadwaldetail/${jadwalId}`,
         payload
       );
-      console.log(response.data);
 
       mutate(`/api/jadwaldetail/${jadwalId}`);
 
@@ -333,7 +331,6 @@ const SeninEdit: FC<SeninEdit> = ({
       onSucsess();
       onClose();
     } catch (error: any) {
-      console.error(error);
 
       if (axios.isAxiosError(error)) {
         const axiosError = error as AxiosError;
@@ -354,7 +351,6 @@ const SeninEdit: FC<SeninEdit> = ({
           setError(`${request}`);
         }
       } else {
-        console.log("Error:", error.message);
         setError("An unknown error occurred.");
       }
     } finally {
