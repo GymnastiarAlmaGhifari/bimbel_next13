@@ -38,7 +38,7 @@ const CreateDiskon: FC<CreateDiskon> = ({ onClose, onSuccess }) => {
     setValue,
     formState: { errors },
   } = useForm<FormData>({
-    resolver: yupResolver(schema),
+    resolver: yupResolver(schema) as any,
   });
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {

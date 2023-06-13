@@ -47,7 +47,7 @@ const EditDiskon: FC<DiskonEditProps> = ({
     setValue,
     formState: { errors },
   } = useForm<FormData>({
-    resolver: yupResolver(schema),
+    resolver: yupResolver(schema) as any,
   });
 
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {

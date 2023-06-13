@@ -34,7 +34,7 @@ const RuangEdit: FC<RuangEditProps> = ({ ruangId, onClose, data }) => {
     setValue,
     formState: { errors },
   } = useForm<FormData>({
-    resolver: yupResolver(schema),
+    resolver: yupResolver(schema) as any,
   });
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {

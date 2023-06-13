@@ -114,7 +114,7 @@ const Jadwal: FC<Jadwal> = () => {
     setValue,
     formState: { errors },
   } = useForm<FormData>({
-    resolver: yupResolver(schema),
+    resolver: yupResolver(schema) as any,
   });
 
   // const [selectRuang, setselectRuang] = useState("");

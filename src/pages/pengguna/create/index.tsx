@@ -71,7 +71,7 @@ const Create: FC<UserCreateProps> = ({ onClose, onSucsess }) => {
     setValue,
     formState: { errors },
   } = useForm<FormData>({
-    resolver: yupResolver(schema),
+    resolver: yupResolver(schema) as any,
   });
 
   const selectrole = (role: string) => {
