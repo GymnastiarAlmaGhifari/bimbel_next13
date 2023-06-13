@@ -57,45 +57,21 @@ We employ GitHub Actions CI for our testing processes, ensuring the quality and 
 
 This project is the result of the collaborative efforts of several contributors. 💖 We appreciate the hard work and dedication of the following individuals:
 
-<div class="contributors-container">
-  <a href="https://github.com/GymnastiarAlmaGhifari/bimbel_next13/graphs/contributors" class="contributor">
-    <img src="https://avatars.githubusercontent.com/u/93438708?s=60&v=4" alt="Yoga Novaindra" class="contributor-image" />
-    <p>Yoga Novaindra</p>
+<table align="center">
+  <tr border="none">
+    <td valign="top">  <a href="https://github.com/GymnastiarAlmaGhifari/bimbel_next13/graphs/contributors">
+    <img src="https://github.com/GymnastiarAlmaGhifari/bimbel_next13/blob/main/public/Yoga%20Novaindra-modified.png" alt="Yoga Novaindra" width="200px">
+    <p align="center">Yoga Novaindra</p>
   </a>
+    </td>
+    <td valign="top">  <a href="https://github.com/GymnastiarAlmaGhifari/bimbel_next13/graphs/contributors">
+    <img src="https://github.com/GymnastiarAlmaGhifari/bimbel_next13/blob/main/public/AGIM-modified.png" alt="Gymnastiar Alma Ghifari" width="200px">
+    <p align="center">Gymnastiar Alma Ghifari</p>
+  </a></td>
+    <td valign="top"><a href="https://github.com/GymnastiarAlmaGhifari/bimbel_next13/graphs/contributors">
+    <img src="https://github.com/GymnastiarAlmaGhifari/bimbel_next13/blob/main/public/Freda-modified.png" alt="Freda Adi Fardana" width="200px">
+    <p align="center">Freda Adi Fardana</p>
+  </a></td>
+  </tr>
+</table>
 
-  <a href="https://github.com/GymnastiarAlmaGhifari/bimbel_next13/graphs/contributors" class="contributor">
-    <img src="https://avatars.githubusercontent.com/u/112359600?s=60&v=4" alt="Gymnastiar Alma Ghifari" class="contributor-image" />
-    <p>Gymnastiar Alma Ghifari</p>
-  </a>
-
-  <a href="https://github.com/GymnastiarAlmaGhifari/bimbel_next13/graphs/contributors" class="contributor">
-    <img src="https://avatars.githubusercontent.com/u/99638622?v=4" alt="Freda Adi Fardana" class="contributor-image" />
-    <p>Freda Adi Fardana</p>
-  </a>
-</div>
-
-<style>
-.contributors-container {
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-}
-
-.contributor {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-}
-
-.contributor-image {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  margin-bottom: 10px;
-}
-
-.contributor p {
-  margin: 0;
-}
-</style>
