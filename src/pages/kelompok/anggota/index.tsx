@@ -74,7 +74,7 @@ const Anggota: FC<AnggotaProps> = ({
     watch,
     formState: { errors },
   } = useForm<FormData>({
-    resolver: yupResolver(schema),
+    resolver: yupResolver(schema) as any,
   });
 
   watch("checkboxes");

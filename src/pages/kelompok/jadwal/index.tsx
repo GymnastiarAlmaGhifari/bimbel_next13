@@ -106,7 +106,7 @@ const TambahJadwal: FC<TambahJadwalProps> = ({
     getValues,
     formState: { errors },
   } = useForm<FormData>({
-    resolver: yupResolver(schema),
+    resolver: yupResolver(schema) as any,
   });
 
   watch("userCheck");

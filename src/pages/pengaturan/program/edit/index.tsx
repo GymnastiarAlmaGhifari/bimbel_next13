@@ -55,7 +55,7 @@ const ProgramEdit: FC<ProgramEditProps> = ({ programId, onClose, data }) => {
     setValue,
     formState: { errors },
   } = useForm<FormData>({
-    resolver: yupResolver(schema),
+    resolver: yupResolver(schema) as any,
   });
 
   const [error, setError] = useState<string | null>(null);

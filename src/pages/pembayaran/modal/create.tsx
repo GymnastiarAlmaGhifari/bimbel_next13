@@ -48,7 +48,7 @@ const Create: React.FC<Create> = ({
         handleSubmit,
         formState: { errors },
     } = useForm<FormData>({
-        resolver: yupResolver(schema),
+        resolver: yupResolver(schema) as any,
     });
 
     const [isListOpenProgram, setIsListOpenProgram] = useState(false);

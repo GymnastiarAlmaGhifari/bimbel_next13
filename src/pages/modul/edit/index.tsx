@@ -84,7 +84,7 @@ const EditModul: FC<MapelEdit> = ({ onClose, onSucces, data, modulId }) => {
     setValue,
     formState: { errors },
   } = useForm<FormData>({
-    resolver: yupResolver(schema),
+    resolver: yupResolver(schema) as any,
   });
 
   useEffect(() => {

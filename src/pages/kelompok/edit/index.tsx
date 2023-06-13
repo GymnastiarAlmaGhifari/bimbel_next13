@@ -47,7 +47,7 @@ const KelompokEdit: FC<UserEditProps> = ({
     setValue,
     formState: { errors },
   } = useForm<FormData>({
-    resolver: yupResolver(schema),
+    resolver: yupResolver(schema) as any,
   });
 
   const [errorr, setError] = useState<string | null>(null);

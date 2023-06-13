@@ -139,7 +139,7 @@ const CreateKamis: FC<Kamis> = ({
     getValues,
     formState: { errors },
   } = useForm<FormData>({
-    resolver: yupResolver(schema),
+    resolver: yupResolver(schema) as any,
   });
   const hariOptions = [
     { value: "SENIN", label: "Senin" },
