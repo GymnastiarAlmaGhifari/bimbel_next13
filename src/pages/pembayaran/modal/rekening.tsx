@@ -27,7 +27,7 @@ const EditRekening: FC<RekeningProps> = ({
     data
 }) => {
 
-    let idrek = data[0]?.id
+    let idrek = data?.id
 
     const [isLoading, setIsLoading] = useState(false);
     const {
@@ -68,7 +68,7 @@ const EditRekening: FC<RekeningProps> = ({
                 label="Nama Rekening"
                 errors={errors}
                 // defautl value diambil dari data yang dikirim dari parent data.?nama_rekening
-                defaultValue={data[0]?.nama_rekening}
+                defaultValue={data?.nama_rekening}
                 type="text"
                 register={{ ...register("nama_rekening") }}
             />
@@ -79,7 +79,7 @@ const EditRekening: FC<RekeningProps> = ({
                 id="nomor_rekening"
                 label="Nomor Rekening"
                 // defautl value diambil dari data yang dikirim dari parent data.?nomor_rekening
-                defaultValue={data[0]?.nomor_rekening}
+                defaultValue={data?.nomor_rekening}
                 errors={errors}
                 type="number"
                 register={{ ...register("nomor_rekening") }}

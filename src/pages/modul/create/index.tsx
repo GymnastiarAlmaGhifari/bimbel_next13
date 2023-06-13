@@ -123,6 +123,9 @@ const Create: FC<CreateModul> = ({ onClose, onSucsess }) => {
         id: id,
       });
 
+      // console.log(responsethumb.data);
+      onClose(); // Set loading state to false
+      onSucsess();
     } catch (error: any) {
 
       if (axios.isAxiosError(error)) {

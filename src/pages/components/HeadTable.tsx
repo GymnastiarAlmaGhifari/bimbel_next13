@@ -4,7 +4,6 @@ import Search from "./Search";
 import Button from "./buttons/Button";
 import { IoIosAdd } from "react-icons/io";
 import { FC } from "react";
-import riwayat from "../riwayat";
 import Link from "next/link";
 import { FaRegCreditCard } from "react-icons/fa";
 

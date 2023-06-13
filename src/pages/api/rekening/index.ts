@@ -10,7 +10,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     if (req.method === "GET") {
         try {
-            const rekening = await prisma.rekening.findMany();
+            const rekening = await prisma.rekening.findFirst();
 
             if (!rekening) {
                 return res.status(404).json({ message: "Rekening not found" });
