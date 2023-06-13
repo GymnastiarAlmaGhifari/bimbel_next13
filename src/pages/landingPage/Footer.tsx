@@ -11,6 +11,16 @@ export default function Footer() {
       <p className="block text-center text-Neutral-100 text-sm">
         © Copyright 2023, Bimbel Linear
       </p>
+      {/* link to privacy police */}
+      <Link href="/privacy-policy">
+        <Button
+          bgColor="bg-Neutral-100"
+          brColor=""
+          label="Privacy Policy"
+          textColor="text-Neutral-100"
+          type={"button"}
+        />
+      </Link>
     </div>
   );
 }
