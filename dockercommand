@@ -1,1 +1,3 @@
+
+docker build -t yoganovaindra/linear-next .
 docker buildx build --platform linux/amd64,linux/arm64 -t yoganovaindra/linear-next -t yoganovaindra/linear-next:v0.6.2-deb --push .
