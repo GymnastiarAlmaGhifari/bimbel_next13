@@ -8,7 +8,10 @@ import path from "path";
 
 export default function Header() {
   const downloadAppMobile = () => {
-    alert("Download App");
+    const link = document.createElement('a');
+    link.href = "https://play.google.com/store/apps/details?id=com.okifirsyah.bimbellinear";
+    link.target = "_blank"; // Open the link in a new tab/window
+    link.click();
   };
   const clipPath = {
     clipPath:
