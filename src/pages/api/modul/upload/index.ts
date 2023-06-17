@@ -24,7 +24,7 @@ const readFile = (
             return "temp.pdf";
         };
     }
-    options.maxFileSize = 20 * 1024 * 1024;
+    options.maxFileSize = 200 * 1024 * 1024;
     const form = formidable(options);
     return new Promise((resolve, reject) => {
         form.parse(req, (err, fields, files) => {
