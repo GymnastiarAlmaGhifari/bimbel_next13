@@ -1,42 +1,77 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+<div align="center">
 
-## This App is deployed using Docker
+![App Screenshot](https://github.com/GymnastiarAlmaGhifari/bimbel_next13/blob/main/public/Logo%20besar.png)
+# <center>Bimbel Linear</center>
+</div>
+<div align="center">
+  <p>Fullstack Application - Typesafe Next.js App</p>
+  <a href="https://youtu.be/zy7OJ99je0E">
+    <img src="https://github.com/GymnastiarAlmaGhifari/bimbel_next13/blob/main/public/landing.png" alt="App Screenshot" height="300">
+  </a>
+  <p>
+  <a href="https://youtu.be/zy7OJ99je0E">
+    Watch Bimbel Linear overview on YouTube
+  </a>
+  </p>
+</div>
+ <p>&nbsp;</p>
 
-[Linear Next](https://hub.docker.com/r/yoganovaindra/linear-next)
+## Table of Contents
 
-## Getting Started
+- [What's Bimbel Linear?](#whats-bimbel-linear)
+- [Technology Used](#technology-used)
+- [Deployment with Docker](#deployment-with-docker)
+- [Testing](#testing)
+- [Contributors](#contributors)
 
-First, run the development server:
+## What's Bimbel Linear? <a name="whats-bimbel-linear"></a>
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-```
+Bimbel Linear is a comprehensive learning application that offers a range of features to enhance the learning experience. It includes a user-friendly landing page that can be customized through the admin panel, providing flexibility for administrators. The application supports multiple administrative roles, including super admin and regular admin, allowing for efficient management. Additionally, Bimbel Linear facilitates seamless communication between tutors and students, with tutors serving as instructors. The platform offers scheduling capabilities for organizing classes, enables the upload of various media formats such as images and PDF modules, and provides a secure payment system. Users can also receive notifications to stay updated on important information and updates within the application. With its versatile features, Bimbel Linear provides a holistic learning environment.
+## Technology Used <a name="technology-used"></a>
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Bimbel Linear is a modern learning platform that leverages various cutting-edge technologies to deliver a seamless and efficient learning experience. The development of this application is built upon a combination of technologies, which are focused on simplicity, modularity, and full-stack type safety.
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+Some of the key technologies used in the development of Bimbel Linear include:
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+- [Next.js](https://nextjs.org/)
+- [TypeScript](https://www.typescriptlang.org/)
+- [Tailwind CSS](https://tailwindcss.com/)
+- [SWR](https://swr.vercel.app/)
+- [Prisma](https://www.prisma.io/)
+- [Nextauth](https://next-auth.js.org/)
+- [MariaDB](https://mariadb.org/)
+- [Docker](https://www.docker.com/)
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+## Deployment with Docker <a name="deployment-with-docker"></a>
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+We have also developed a Docker image for Bimbel Linear called [Linear Next](https://hub.docker.com/r/yoganovaindra/linear-next). You can find the Docker image for Linear Next at the following link: Linear Next Docker Hub.
 
-## Learn More
+Using this Docker image, you can easily deploy Bimbel Linear and ensure consistency in the application's runtime environment. Docker allows you to run the application in a containerized environment, isolating it from the underlying infrastructure and ensuring that it runs consistently across different systems.
 
-To learn more about Next.js, take a look at the following resources:
+By leveraging the Docker image for Linear Next, you can simplify the deployment process and quickly get Bimbel Linear up and running in your desired environment.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Testing
+We employ GitHub Actions CI for our testing processes, ensuring the quality and stability of our codebase. With GitHub Actions, we have established an automated testing workflow that runs various tests, including unit tests, integration tests, and end-to-end tests. This continuous integration approach allows us to detect and address any issues or bugs early in the development cycle, maintaining the reliability and performance of our application. By leveraging the power of GitHub Actions CI, we streamline our testing procedures, enabling faster iterations and delivering a robust and dependable product to our users.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+## Contributors <a name="contributors"></a>
 
-## Deploy on Vercel
+This project is the result of the collaborative efforts of several contributors. 💖 We appreciate the hard work and dedication of the following individuals:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+<table align="center">
+  <tr border="none">
+    <td valign="top">  <a href="https://github.com/GymnastiarAlmaGhifari/bimbel_next13/graphs/contributors">
+    <img src="https://github.com/GymnastiarAlmaGhifari/bimbel_next13/blob/main/public/Yoga%20Novaindra-modified.png" alt="Yoga Novaindra" width="200px">
+    <p align="center">Yoga Novaindra</p>
+  </a>
+    </td>
+    <td valign="top">  <a href="https://github.com/GymnastiarAlmaGhifari/bimbel_next13/graphs/contributors">
+    <img src="https://github.com/GymnastiarAlmaGhifari/bimbel_next13/blob/main/public/AGIM-modified.png" alt="Gymnastiar Alma Ghifari" width="200px">
+    <p align="center">Gymnastiar Alma Ghifari</p>
+  </a></td>
+    <td valign="top"><a href="https://github.com/GymnastiarAlmaGhifari/bimbel_next13/graphs/contributors">
+    <img src="https://github.com/GymnastiarAlmaGhifari/bimbel_next13/blob/main/public/Freda-modified.png" alt="Freda Adi Fardana" width="200px">
+    <p align="center">Freda Adi Fardana</p>
+  </a></td>
+  </tr>
+</table>
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
