@@ -34,6 +34,9 @@ WORKDIR /app
 
 COPY package.json package-lock.json ./
 RUN npm ci
+# RUN npm cache clean --force && \
+#     npm install -g npm@latest && \
+#     npm install
 COPY . .
 RUN npx prisma generate
 RUN npm run build
@@ -41,6 +44,7 @@ RUN npm run build
 FROM node:lts-slim AS runner
 
 # Install additional dependencies
+
 # RUN apt-get update && apt-get install -y gnupg wget && \
 #     wget --quiet --output-document=- https://dl-ssl.google.com/linux/linux_signing_key.pub | gpg --dearmor > /etc/apt/trusted.gpg.d/google-archive.gpg && \
 #     echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" | tee /etc/apt/sources.list.d/google.list && \
