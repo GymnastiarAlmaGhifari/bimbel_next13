@@ -12,6 +12,9 @@
   <a href="https://youtu.be/zy7OJ99je0E">
     Watch Bimbel Linear overview on YouTube
   </a>
+  <a href="https://linear.ygnv.my.id/">
+    Link Website
+  </a>
   </p>
 </div>
  <p>&nbsp;</p>
@@ -59,16 +62,16 @@ This project is the result of the collaborative efforts of several contributors.
 
 <table align="center">
   <tr border="none">
-    <td valign="top">  <a href="https://github.com/GymnastiarAlmaGhifari/bimbel_next13/graphs/contributors">
+    <td valign="top">  <a href="https://yoganova.my.id/">
     <img src="https://github.com/GymnastiarAlmaGhifari/bimbel_next13/blob/main/public/Yoga%20Novaindra-modified.png" alt="Yoga Novaindra" width="200px">
     <p align="center">Yoga Novaindra</p>
   </a>
     </td>
-    <td valign="top">  <a href="https://github.com/GymnastiarAlmaGhifari/bimbel_next13/graphs/contributors">
+    <td valign="top">  <a href="gymnastiarag.my.id">
     <img src="https://github.com/GymnastiarAlmaGhifari/bimbel_next13/blob/main/public/AGIM-modified.png" alt="Gymnastiar Alma Ghifari" width="200px">
     <p align="center">Gymnastiar Alma Ghifari</p>
   </a></td>
-    <td valign="top"><a href="https://github.com/GymnastiarAlmaGhifari/bimbel_next13/graphs/contributors">
+    <td valign="top"><a href="https://github.com/fredaadifardana">
     <img src="https://github.com/GymnastiarAlmaGhifari/bimbel_next13/blob/main/public/Freda-modified.png" alt="Freda Adi Fardana" width="200px">
     <p align="center">Freda Adi Fardana</p>
   </a></td>
